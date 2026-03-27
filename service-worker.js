@@ -1,10 +1,11 @@
-const CACHE = 'hub-socios-v1';
+const CACHE = 'hub-socios-v2';
 const ASSETS = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/icon-192.png',
-  '/icon-512.png'
+  '/icone-192.png',
+  '/icone-512.png',
+  '/icone-180.png'
 ];
 
 self.addEventListener('install', e => {
