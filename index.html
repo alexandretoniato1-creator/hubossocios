@@ -3036,14 +3036,34 @@ function renderPipeline() {
 // ── REUNIÕES ──
 let reunioesData = [];
 
-function loadReunioes() {
+async function loadReunioes() {
+  if (db) {
+    const { data, error } = await db.from('reunioes').select('*').order('data', { ascending: true });
+    if (!error && data) {
+      reunioesData = data.map(r => ({
+        ...r,
+        pauta: r.pauta || [],
+        decisoes: r.decisoes || [],
+        passoss: r.passoss || []
+      }));
+      return;
+    }
+  }
   reunioesData = loadLs('hub_reunioes', []);
 }
-function saveReunioes() {
-  saveLs('hub_reunioes', reunioesData);
+
+async function saveReuniao(r) {
+  if (db) {
+    showSync(true);
+    const { error } = await db.from('reunioes').upsert(r, { onConflict: 'id' });
+    if (error) console.error('Erro ao salvar reunião:', error);
+    showSync(false);
+  } else {
+    saveLs('hub_reunioes', reunioesData);
+  }
 }
 
-function addReuniao() {
+async function addReuniao() {
   const titulo = document.getElementById('rTitulo').value.trim();
   const data = document.getElementById('rData').value;
   const horario = document.getElementById('rHorario').value;
@@ -3056,8 +3076,15 @@ function addReuniao() {
     pauta: [], decisoes: [], passoss: [],
     created_at: new Date().toISOString()
   };
-  reunioesData.unshift(r);
-  saveReunioes();
+  if (db) {
+    showSync(true);
+    const { error } = await db.from('reunioes').insert(r);
+    if (error) { alert('Erro ao agendar.'); showSync(false); return; }
+    showSync(false);
+  } else {
+    reunioesData.unshift(r);
+    saveLs('hub_reunioes', reunioesData);
+  }
   document.getElementById('rTitulo').value = '';
   document.getElementById('rData').value = '';
   document.getElementById('rHorario').value = '';
@@ -3073,45 +3100,45 @@ function toggleReuniao(id) {
   toggle.classList.toggle('open', !isOpen);
 }
 
-function addPauta(id) {
+async function addPauta(id) {
   const input = document.getElementById('rPautaInput-' + id);
   const texto = input.value.trim();
   if (!texto) return;
   const r = reunioesData.find(x => x.id === id);
   if (!r) return;
   r.pauta.push(texto);
-  saveReunioes();
+  await saveReuniao(r);
   input.value = '';
   rerenderCard(id);
 }
-function removePauta(id, idx) {
+async function removePauta(id, idx) {
   const r = reunioesData.find(x => x.id === id);
   if (!r) return;
   r.pauta.splice(idx, 1);
-  saveReunioes();
+  await saveReuniao(r);
   rerenderCard(id);
 }
 
-function addDecisao(id) {
+async function addDecisao(id) {
   const input = document.getElementById('rDecisaoInput-' + id);
   const texto = input.value.trim();
   if (!texto) return;
   const r = reunioesData.find(x => x.id === id);
   if (!r) return;
   r.decisoes.push(texto);
-  saveReunioes();
+  await saveReuniao(r);
   input.value = '';
   rerenderCard(id);
 }
-function removeDecisao(id, idx) {
+async function removeDecisao(id, idx) {
   const r = reunioesData.find(x => x.id === id);
   if (!r) return;
   r.decisoes.splice(idx, 1);
-  saveReunioes();
+  await saveReuniao(r);
   rerenderCard(id);
 }
 
-function addPasso(id) {
+async function addPasso(id) {
   const textoEl = document.getElementById('rPassoTexto-' + id);
   const respEl  = document.getElementById('rPassoResp-' + id);
   const prazoEl = document.getElementById('rPassoPrazo-' + id);
@@ -3121,40 +3148,46 @@ function addPasso(id) {
   if (!r) return;
   if (!r.passoss) r.passoss = [];
   r.passoss.push({ texto, responsavel: respEl.value.trim(), prazo: prazoEl.value, feito: false });
-  saveReunioes();
+  await saveReuniao(r);
   textoEl.value = ''; respEl.value = ''; prazoEl.value = '';
   rerenderCard(id);
 }
-function togglePasso(id, idx) {
+async function togglePasso(id, idx) {
   const r = reunioesData.find(x => x.id === id);
   if (!r || !r.passoss[idx]) return;
   r.passoss[idx].feito = !r.passoss[idx].feito;
-  saveReunioes();
+  await saveReuniao(r);
   rerenderCard(id);
 }
-function removePasso(id, idx) {
+async function removePasso(id, idx) {
   const r = reunioesData.find(x => x.id === id);
   if (!r) return;
   r.passoss.splice(idx, 1);
-  saveReunioes();
+  await saveReuniao(r);
   rerenderCard(id);
 }
 
-function marcarRealizada(id) {
+async function marcarRealizada(id) {
   const r = reunioesData.find(x => x.id === id);
   if (!r) return;
   r.status = r.status === 'realizada' ? 'agendada' : 'realizada';
-  saveReunioes();
+  await saveReuniao(r);
   rerenderCard(id);
 }
-function deleteReuniao(id) {
+async function deleteReuniao(id) {
   if (!confirm('Remover esta reunião?')) return;
   reunioesData = reunioesData.filter(x => x.id !== id);
-  saveReunioes();
+  if (db) {
+    showSync(true);
+    await db.from('reunioes').delete().eq('id', id);
+    showSync(false);
+  } else {
+    saveLs('hub_reunioes', reunioesData);
+  }
   renderReunioes();
 }
 
-function rerenderCard(id) {
+async function rerenderCard(id) {
   const r = reunioesData.find(x => x.id === id);
   const container = document.getElementById('rcard-' + id);
   if (!r || !container) { renderReunioes(); return; }
@@ -3255,8 +3288,8 @@ function buildReuniaoCard(r, open) {
   </div>`;
 }
 
-function renderReunioes() {
-  loadReunioes();
+async function renderReunioes() {
+  await loadReunioes();
   const el = document.getElementById('listaReunioes');
   if (!el) return;
   const agendadas = reunioesData.filter(r => r.status !== 'realizada').sort((a, b) => a.data.localeCompare(b.data));
