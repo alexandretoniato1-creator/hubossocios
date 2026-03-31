@@ -2644,6 +2644,12 @@ function setupRealtime() {
     .on('postgres_changes', { event: '*', schema: 'public', table: 'desempenho' }, () => {
       if (curPage === 'desempenho') renderDesempenho();
     })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'etapas' }, () => {
+      if (curPage === 'pipeline') renderPipeline();
+    })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'pedidos' }, () => {
+      if (curPage === 'pipeline') renderPipeline();
+    })
     .subscribe(status => {
       if (status === 'SUBSCRIBED') setSyncStatus('online');
     });
@@ -2782,10 +2788,59 @@ const ETAPA_CORES = ['#1a3f7a','#1a6b3c','#7a3a1a','#4a1a7a','#1a6b5e','#8a5e00'
 let etapasData = [];
 let pedidosData = [];
 
-function loadPipeline() {
+async function loadPipeline() {
+  if (db) {
+    const [etapasRes, pedidosRes] = await Promise.all([
+      db.from('etapas').select('*').order('ordem', { ascending: true }),
+      db.from('pedidos').select('*').order('created_at', { ascending: false })
+    ]);
+    if (!etapasRes.error && etapasRes.data) etapasData = etapasRes.data;
+    if (!pedidosRes.error && pedidosRes.data) {
+      pedidosData = pedidosRes.data.map(p => ({
+        ...p,
+        etapaId: p.etapa_id,
+        skus: p.skus || []
+      }));
+    }
+    return;
+  }
   etapasData = loadLs('hub_etapas', []);
   pedidosData = loadLs('hub_pedidos', []);
 }
+
+async function saveEtapa(etapa) {
+  if (db) {
+    showSync(true);
+    const { error } = await db.from('etapas').upsert(
+      { id: etapa.id, nome: etapa.nome, cor: etapa.cor, ordem: etapa.ordem || 0 },
+      { onConflict: 'id' }
+    );
+    if (error) console.error('Erro ao salvar etapa:', error);
+    showSync(false);
+  } else {
+    saveLs('hub_etapas', etapasData);
+  }
+}
+
+async function savePedido(pedido) {
+  if (db) {
+    showSync(true);
+    const { error } = await db.from('pedidos').upsert(
+      {
+        id: pedido.id, ref: pedido.ref, empresa: pedido.empresa,
+        etapa_id: pedido.etapaId, moeda: pedido.moeda, valor: pedido.valor,
+        embarque: pedido.embarque, eta: pedido.eta, obs: pedido.obs,
+        skus: pedido.skus || [], created_at: pedido.created_at
+      },
+      { onConflict: 'id' }
+    );
+    if (error) console.error('Erro ao salvar pedido:', error);
+    showSync(false);
+  } else {
+    saveLs('hub_pedidos', pedidosData);
+  }
+}
+
 function savePipeline() {
   saveLs('hub_etapas', etapasData);
   saveLs('hub_pedidos', pedidosData);
@@ -2807,43 +2862,62 @@ function updateEtapaSelect() {
     : '<option value="">— Crie etapas primeiro —</option>';
 }
 
-function carregarSugestao() {
+async function carregarSugestao() {
   if (etapasData.length && !confirm('Isso vai adicionar as etapas sugeridas às já existentes. Continuar?')) return;
   const sugestoes = ['Pedido feito','Em produção','Embarcado','Em trânsito','Desembaraço','No armazém','Concluído'];
-  sugestoes.forEach((nome, i) => {
-    etapasData.push({ id: Date.now() + i, nome, cor: ETAPA_CORES[i % ETAPA_CORES.length] });
-  });
-  savePipeline();
+  for (let i = 0; i < sugestoes.length; i++) {
+    const e = { id: Date.now() + i, nome: sugestoes[i], cor: ETAPA_CORES[i % ETAPA_CORES.length], ordem: etapasData.length + i };
+    etapasData.push(e);
+    await saveEtapa(e);
+  }
   renderPipeline();
 }
 
-function addEtapa() {
+async function addEtapa() {
   const input = document.getElementById('novaEtapaNome');
   const nome = input.value.trim();
   if (!nome) return;
-  etapasData.push({ id: Date.now(), nome, cor: ETAPA_CORES[etapasData.length % ETAPA_CORES.length] });
-  savePipeline();
+  const e = { id: Date.now(), nome, cor: ETAPA_CORES[etapasData.length % ETAPA_CORES.length], ordem: etapasData.length };
+  etapasData.push(e);
+  await saveEtapa(e);
   input.value = '';
   renderPipeline();
 }
-function removeEtapa(id) {
+
+async function removeEtapa(id) {
   const count = pedidosData.filter(p => p.etapaId === id).length;
   if (count && !confirm(`Esta etapa tem ${count} pedido(s). Remover mesmo assim?`)) return;
   etapasData = etapasData.filter(e => e.id !== id);
-  savePipeline();
+  if (db) {
+    showSync(true);
+    await db.from('etapas').delete().eq('id', id);
+    showSync(false);
+  } else {
+    saveLs('hub_etapas', etapasData);
+  }
   renderPipeline();
 }
-function moveEtapa(id, dir) {
+
+async function moveEtapa(id, dir) {
   const idx = etapasData.findIndex(e => e.id === id);
   if (idx < 0) return;
   const ni = idx + dir;
   if (ni < 0 || ni >= etapasData.length) return;
   [etapasData[idx], etapasData[ni]] = [etapasData[ni], etapasData[idx]];
-  savePipeline();
+  etapasData.forEach((e, i) => { e.ordem = i; });
+  if (db) {
+    showSync(true);
+    for (const e of etapasData) {
+      await db.from('etapas').update({ ordem: e.ordem }).eq('id', e.id);
+    }
+    showSync(false);
+  } else {
+    saveLs('hub_etapas', etapasData);
+  }
   renderPipeline();
 }
 
-function addPedido() {
+async function addPedido() {
   const ref = document.getElementById('pRef').value.trim() || ('PO-' + Date.now().toString().slice(-6));
   const etapaIdRaw = document.getElementById('pEtapa').value;
   if (!etapaIdRaw) { alert('Crie pelo menos uma etapa primeiro.'); return; }
@@ -2854,8 +2928,9 @@ function addPedido() {
   const embarque = document.getElementById('pEmbarque').value;
   const eta = document.getElementById('pEta').value;
   const obs = document.getElementById('pObs').value.trim();
-  pedidosData.unshift({ id: Date.now(), ref, empresa, etapaId, moeda, valor, embarque, eta, skus: [], obs, created_at: new Date().toISOString() });
-  savePipeline();
+  const p = { id: Date.now(), ref, empresa, etapaId, moeda, valor, embarque, eta, skus: [], obs, created_at: new Date().toISOString() };
+  pedidosData.unshift(p);
+  await savePedido(p);
   ['pRef','pValor','pEmbarque','pEta','pObs'].forEach(id => { const el = document.getElementById(id); if(el) el.value=''; });
   document.getElementById('novoPedidoForm').classList.add('hidden');
   renderPipeline();
@@ -2918,13 +2993,12 @@ function removePlSkuRow(idx) {
   renderPlSkuList(p.skus);
 }
 
-function savePlModal() {
+async function savePlModal() {
   const p = pedidosData.find(x => x.id === plModalId);
   if (!p) return;
   p.embarque = document.getElementById('plEditEmbarque').value;
   p.eta = document.getElementById('plEditEta').value;
   p.obs = document.getElementById('plEditObs').value.trim();
-  // Collect SKUs from inputs
   const skuRows = document.querySelectorAll('.pl-sku-row');
   p.skus = [];
   skuRows.forEach(row => {
@@ -2932,31 +3006,37 @@ function savePlModal() {
     const qty = row.querySelector('[data-field="qty"]')?.value || '';
     if (nome) p.skus.push({ nome, qty: parseInt(qty)||0 });
   });
-  savePipeline();
+  await savePedido(p);
   document.getElementById('plModalOverlay').classList.add('hidden');
   plModalId = null;
   renderPipeline();
 }
 
-function deletePlPedido() {
+async function deletePlPedido() {
   if (!plModalId) return;
   if (!confirm('Remover este pedido do pipeline?')) return;
-  pedidosData = pedidosData.filter(x => x.id !== plModalId);
-  savePipeline();
+  const id = plModalId;
+  pedidosData = pedidosData.filter(x => x.id !== id);
+  if (db) {
+    showSync(true);
+    await db.from('pedidos').delete().eq('id', id);
+    showSync(false);
+  } else {
+    saveLs('hub_pedidos', pedidosData);
+  }
   document.getElementById('plModalOverlay').classList.add('hidden');
   plModalId = null;
   renderPipeline();
 }
 
-function movePlPedido(dir) {
+async function movePlPedido(dir) {
   const p = pedidosData.find(x => x.id === plModalId);
   if (!p) return;
   const ei = etapasData.findIndex(e => e.id === p.etapaId);
   const ni = ei + dir;
   if (ni < 0 || ni >= etapasData.length) return;
   p.etapaId = etapasData[ni].id;
-  savePipeline();
-  // Update modal header
+  await savePedido(p);
   const etapa = etapasData[ni];
   document.getElementById('plModalSub').textContent = (p.empresa || '') + ' · ' + etapa.nome;
   document.getElementById('plBtnL').disabled = ni <= 0;
@@ -2992,8 +3072,8 @@ function buildPedidoCard(p, etapa) {
   </div>`;
 }
 
-function renderPipeline() {
-  loadPipeline();
+async function renderPipeline() {
+  await loadPipeline();
   // Manager
   const mc = document.getElementById('etapasManagerContent');
   if (mc) {
