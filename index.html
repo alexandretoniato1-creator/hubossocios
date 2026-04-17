@@ -16,6 +16,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="icone-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="icone-16.png">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <style>
 :root{
@@ -745,7 +746,10 @@ select.field-input{cursor:pointer}
         <div class="page-title">Dashboard</div>
         <div class="page-sub">publicidade · ADS · margens</div>
       </div>
-      <button id="editBtn" class="btn btn-ghost" onclick="enterEditMode()" style="margin-top:4px">✎ Editar mês</button>
+      <div style="display:flex;gap:8px;align-items:center;margin-top:4px">
+        <button id="importBtn" class="btn btn-ghost" onclick="openImportModal()" title="Importar planilha mensal">⬆ Importar planilha</button>
+        <button id="editBtn" class="btn btn-ghost" onclick="enterEditMode()">✎ Editar mês</button>
+      </div>
     </div>
 
     <!-- Navegação de meses -->
@@ -3466,6 +3470,264 @@ function closeMobileMenu() {
 
 if (sessionStorage.getItem('hubAuth') === '1') initApp();
 
+// ── IMPORTAÇÃO DE PLANILHA ──
+let _importRows = []; // linhas detectadas da planilha
+let _importEmpresa = ''; // empresa detectada pelo nome do arquivo ou selecionada
+
+// Mapeamento de colunas conhecidas da planilha → campos internos
+const IMPORT_COL_MAP = {
+  'sku': 'sku',
+  'faturamento': 'fat',
+  'fat': 'fat',
+  'pedidos': 'qtdVendas',
+  'qtd_vendas': 'qtdVendas',
+  'qtdvendas': 'qtdVendas',
+  'mc_media': 'mcFinal',
+  'mc_final': 'mcFinal',
+  'mcfinal': 'mcFinal',
+  'mc': 'mcFinal',
+  'custo_unit': 'custo',
+  'custo': 'custo',
+  'ticket_medio': 'ticketMedio',
+  'ticketmedio': 'ticketMedio',
+  'ticket': 'ticketMedio',
+  '%_faturamento': 'pctFat',
+  'pct_faturamento': 'pctFat',
+  'ads': 'ads',
+  'gasto_ads': 'ads',
+  'tacos': 'tacos',
+  'frete': 'frete',
+  'rebait': 'rebait',
+  'lucro_antes': 'lucroAntes',
+  'lucroanres': 'lucroAntes',
+  'lucro_apos': 'lucroApos',
+  'lucroapos': 'lucroApos',
+};
+
+const IMPORT_FIELD_LABELS = {
+  sku: 'SKU',
+  fat: 'Faturamento (R$)',
+  qtdVendas: 'Qtd Vendas',
+  mcFinal: 'M.C. Final (%)',
+  custo: 'Custo Unit.',
+  ticketMedio: 'Ticket Médio (R$)',
+  pctFat: '% Faturamento',
+  ads: 'ADS (R$)',
+  tacos: 'TACOS (%)',
+  frete: 'Frete (R$)',
+  rebait: 'Rebait (R$)',
+  lucroAntes: 'Lucro antes ADS',
+  lucroApos: 'Lucro após ADS',
+};
+
+function openImportModal() {
+  document.getElementById('importModal').classList.remove('hidden');
+  document.getElementById('importFileInput').value = '';
+  document.getElementById('importPreviewSection').classList.add('hidden');
+  document.getElementById('importStatusMsg').textContent = '';
+  document.getElementById('importDropZone').classList.remove('has-file');
+  document.getElementById('importDropLabel').textContent = 'Arraste a planilha aqui ou clique para selecionar';
+  document.getElementById('importMonthLabel').textContent = MONTH_LABELS[currentDashMonth] || currentDashMonth;
+  document.getElementById('importMesSel').value = currentDashMonth;
+  _importRows = [];
+}
+
+function closeImportModal() {
+  document.getElementById('importModal').classList.add('hidden');
+  _importRows = [];
+}
+
+function handleImportFile(file) {
+  if (!file) return;
+  const name = file.name.toLowerCase();
+  if (!name.endsWith('.xlsx') && !name.endsWith('.xls') && !name.endsWith('.csv')) {
+    setImportStatus('❌ Arquivo inválido. Use .xlsx, .xls ou .csv', 'error');
+    return;
+  }
+  // Detectar empresa pelo nome do arquivo
+  _importEmpresa = '';
+  const upperName = file.name.toUpperCase();
+  ['FASTWEB','BTMX','FALCOM','OCTO','LOGBOX'].forEach(e => {
+    if (upperName.includes(e)) _importEmpresa = e;
+  });
+  // Atualizar select se detectado
+  if (_importEmpresa) {
+    document.getElementById('importEmpresaSel').value = _importEmpresa;
+  }
+  document.getElementById('importDropLabel').textContent = `📄 ${file.name}`;
+  document.getElementById('importDropZone').classList.add('has-file');
+  setImportStatus('Lendo arquivo…', 'info');
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      let data;
+      if (name.endsWith('.csv')) {
+        const wb = XLSX.read(e.target.result, {type:'string'});
+        data = wb;
+      } else {
+        const wb = XLSX.read(new Uint8Array(e.target.result), {type:'array'});
+        data = wb;
+      }
+      const sheet = data.Sheets[data.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json(sheet, {defval:''});
+      if (!rows.length) { setImportStatus('❌ Planilha vazia ou sem dados reconhecíveis.', 'error'); return; }
+      processImportRows(rows);
+    } catch(err) {
+      setImportStatus('❌ Erro ao ler arquivo: ' + err.message, 'error');
+    }
+  };
+  if (name.endsWith('.csv')) {
+    reader.readAsText(file);
+  } else {
+    reader.readAsArrayBuffer(file);
+  }
+}
+
+function processImportRows(rawRows) {
+  // Normalizar colunas
+  const firstRow = rawRows[0];
+  const colKeys = Object.keys(firstRow);
+  const colMap = {}; // originalKey → internalKey
+  colKeys.forEach(k => {
+    const norm = k.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_%]/g,'');
+    const mapped = IMPORT_COL_MAP[norm];
+    if (mapped) colMap[k] = mapped;
+  });
+
+  if (!colMap[colKeys.find(k => colMap[k] === 'sku')]) {
+    // Tenta encontrar SKU de outra forma
+    const skuKey = colKeys.find(k => k.toLowerCase().includes('sku'));
+    if (skuKey) colMap[skuKey] = 'sku';
+  }
+
+  const hasSku = Object.values(colMap).includes('sku');
+  if (!hasSku) {
+    setImportStatus('⚠ Coluna "sku" não encontrada. Verifique a planilha.', 'error');
+    return;
+  }
+
+  _importRows = rawRows.map((row, idx) => {
+    const mapped = {_idx: idx};
+    Object.entries(colMap).forEach(([orig, intern]) => {
+      let val = row[orig];
+      if (intern !== 'sku') {
+        val = parseFloat(String(val).replace(',','.')) || 0;
+      } else {
+        val = String(val).trim();
+      }
+      mapped[intern] = val;
+    });
+    return mapped;
+  }).filter(r => r.sku && r.sku !== '');
+
+  if (!_importRows.length) {
+    setImportStatus('❌ Nenhuma linha com SKU válido encontrada.', 'error');
+    return;
+  }
+
+  setImportStatus(`✓ ${_importRows.length} SKU(s) detectado(s). Revise abaixo antes de confirmar.`, 'ok');
+  renderImportPreview();
+  document.getElementById('importPreviewSection').classList.remove('hidden');
+}
+
+function renderImportPreview() {
+  if (!_importRows.length) return;
+  const allFields = [...new Set(_importRows.flatMap(r => Object.keys(r).filter(k => k !== '_idx')))];
+  const pctFields = ['mcFinal','tacos','pctFat'];
+
+  const thead = allFields.map(f => `<th>${IMPORT_FIELD_LABELS[f]||f}</th>`).join('') + '<th style="width:70px">Ações</th>';
+  const tbody = _importRows.map((row, i) => {
+    const cells = allFields.map(f => {
+      const val = row[f];
+      const isPct = pctFields.includes(f);
+      const isNum = f !== 'sku';
+      if (f === 'sku') {
+        return `<td><input class="edit-input" style="width:90px;font-size:11px" value="${val}" onchange="_importRows[${i}]['${f}']=this.value"></td>`;
+      }
+      const dispVal = isPct ? (val*100).toFixed(2) : (isNum ? (val||0) : val);
+      return `<td><input class="edit-input" style="width:90px;font-size:11px" type="number" step="0.01" value="${dispVal}" onchange="_importRows[${i}]['${f}']=${isPct?'parseFloat(this.value)/100':'parseFloat(this.value)||0'}"></td>`;
+    }).join('');
+    return `<tr id="import-row-${i}">${cells}<td><button class="btn btn-danger" style="padding:3px 8px;font-size:10px" onclick="deleteImportRow(${i})">✕</button></td></tr>`;
+  }).join('');
+
+  document.getElementById('importPreviewTable').innerHTML = `
+    <table style="min-width:600px;font-size:11px">
+      <thead><tr>${thead}</tr></thead>
+      <tbody>${tbody}</tbody>
+    </table>`;
+  const countLabel = `${_importRows.length} SKU(s)`;
+  const el1 = document.getElementById('importRowCount');
+  const el2 = document.getElementById('importRowCount2');
+  if (el1) el1.textContent = countLabel;
+  if (el2) el2.textContent = countLabel;
+}
+
+function deleteImportRow(i) {
+  _importRows.splice(i, 1);
+  if (!_importRows.length) {
+    document.getElementById('importPreviewSection').classList.add('hidden');
+    setImportStatus('Todos os SKUs foram removidos. Importe outro arquivo.', 'info');
+    return;
+  }
+  renderImportPreview();
+  setImportStatus(`${_importRows.length} SKU(s) restante(s).`, 'ok');
+}
+
+async function confirmImport() {
+  const empresa = document.getElementById('importEmpresaSel').value;
+  if (!empresa) { setImportStatus('❌ Selecione a empresa antes de confirmar.', 'error'); return; }
+  if (!_importRows.length) { setImportStatus('❌ Nenhum dado para importar.', 'error'); return; }
+  const mes = document.getElementById('importMesSel').value || currentDashMonth;
+
+  // Montar dados de SKU para a empresa
+  const existingSkus = getSkusForMonth(mes);
+  const newSkus = {...existingSkus};
+  newSkus[empresa] = _importRows.map(r => ({
+    sku: r.sku,
+    fat: r.fat || 0,
+    ads: r.ads || 0,
+    tacos: r.tacos || (r.fat > 0 && r.ads > 0 ? r.ads/r.fat : 0),
+    mcAntes: r.mcFinal || 0,
+    mcFinal: r.mcFinal || 0,
+    lucroApos: r.lucroApos || 0,
+    custo: r.custo || 0,
+    ticketMedio: r.ticketMedio || 0,
+    qtdVendas: r.qtdVendas || 0,
+  }));
+  await saveSkusForMonth(mes, newSkus);
+
+  // Atualizar dados mensais da empresa com totais consolidados
+  const existingMonth = getMonthData(mes);
+  const newMonth = {...existingMonth};
+  if (!newMonth[empresa]) newMonth[empresa] = {};
+  const totalFat = _importRows.reduce((s,r)=>s+(r.fat||0),0);
+  const totalAds = _importRows.reduce((s,r)=>s+(r.ads||0),0);
+  const totalQtd = _importRows.reduce((s,r)=>s+(r.qtdVendas||0),0);
+  const avgMc = _importRows.filter(r=>r.mcFinal).reduce((s,r)=>s+(r.mcFinal||0),0) / (_importRows.filter(r=>r.mcFinal).length||1);
+  const avgTacos = totalFat > 0 ? totalAds/totalFat : 0;
+
+  if (totalFat > 0) newMonth[empresa].fat = totalFat;
+  if (totalAds > 0) newMonth[empresa].ads = totalAds;
+  if (avgMc) newMonth[empresa].mcFinal = avgMc;
+  if (avgTacos) newMonth[empresa].tacos = avgTacos;
+  if (totalQtd > 0) newMonth[empresa].qtdVendas = totalQtd;
+  if (totalFat > 0 && totalQtd > 0) newMonth[empresa].ticketMedio = totalFat/totalQtd;
+
+  await saveMonthData(mes, newMonth);
+  await renderDashboard();
+  renderSkus();
+  closeImportModal();
+  showSync(false);
+  setImportStatus('', '');
+}
+
+function setImportStatus(msg, type) {
+  const el = document.getElementById('importStatusMsg');
+  if (!el) return;
+  el.textContent = msg;
+  el.style.color = type === 'error' ? 'var(--red)' : type === 'ok' ? 'var(--green)' : 'var(--muted)';
+}
+
 // PWA Service Worker
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
@@ -3475,5 +3737,107 @@ if ('serviceWorker' in navigator) {
   });
 }
 </script>
+<!-- ── MODAL DE IMPORTAÇÃO DE PLANILHA ── -->
+<style>
+#importModal{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;display:flex;align-items:center;justify-content:center;padding:20px}
+.import-modal-box{background:var(--bg);border-radius:8px;width:100%;max-width:860px;max-height:92vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,.28);display:flex;flex-direction:column}
+.import-modal-header{display:flex;align-items:flex-start;justify-content:space-between;padding:22px 26px 16px;border-bottom:1.5px solid var(--border)}
+.import-modal-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;letter-spacing:-.02em}
+.import-modal-sub{font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-top:3px}
+.import-modal-close{background:none;border:none;font-size:20px;cursor:pointer;color:var(--muted);padding:0;line-height:1}
+.import-modal-close:hover{color:var(--text)}
+.import-modal-body{padding:22px 26px;flex:1}
+.import-drop-zone{border:2px dashed var(--border2);border-radius:6px;padding:32px 20px;text-align:center;cursor:pointer;transition:border-color .15s,background .15s;background:var(--surface2);margin-bottom:16px}
+.import-drop-zone:hover,.import-drop-zone.drag-over{border-color:var(--text);background:var(--surface)}
+.import-drop-zone.has-file{border-color:var(--green);border-style:solid;background:var(--green-bg)}
+.import-drop-icon{font-size:28px;margin-bottom:8px}
+.import-drop-label{font-size:13px;color:var(--muted);font-family:'IBM Plex Mono',monospace}
+.import-drop-zone.has-file .import-drop-label{color:var(--green);font-weight:600}
+.import-empresa-row{display:flex;gap:10px;align-items:flex-end;margin-bottom:14px;flex-wrap:wrap}
+.import-status{font-size:12px;font-family:'IBM Plex Mono',monospace;min-height:18px;margin-bottom:10px}
+.import-preview-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:10px;font-family:'IBM Plex Mono',monospace}
+.import-preview-scroll{overflow-x:auto;border:1.5px solid var(--border);border-radius:5px;background:var(--surface)}
+.import-preview-scroll table thead th{background:var(--surface2)}
+.import-modal-footer{display:flex;justify-content:space-between;align-items:center;padding:14px 26px 20px;border-top:1.5px solid var(--border);gap:8px}
+</style>
+<div id="importModal" class="hidden">
+  <div class="import-modal-box">
+    <div class="import-modal-header">
+      <div>
+        <div class="import-modal-title">Importar planilha mensal</div>
+        <div class="import-modal-sub">Mês atual: <span id="importMonthLabel"></span> · Revise e edite os dados antes de confirmar</div>
+      </div>
+      <button class="import-modal-close" onclick="closeImportModal()">×</button>
+    </div>
+    <div class="import-modal-body">
+
+      <!-- Drop zone -->
+      <div class="import-drop-zone" id="importDropZone"
+        onclick="document.getElementById('importFileInput').click()"
+        ondragover="event.preventDefault();this.classList.add('drag-over')"
+        ondragleave="this.classList.remove('drag-over')"
+        ondrop="event.preventDefault();this.classList.remove('drag-over');handleImportFile(event.dataTransfer.files[0])">
+        <div class="import-drop-icon">📊</div>
+        <div class="import-drop-label" id="importDropLabel">Arraste a planilha aqui ou clique para selecionar</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:4px;font-family:'IBM Plex Mono',monospace">.xlsx · .xls · .csv</div>
+      </div>
+      <input type="file" id="importFileInput" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleImportFile(this.files[0])">
+
+      <!-- Empresa selector -->
+      <div class="import-empresa-row">
+        <div class="field-group" style="min-width:160px">
+          <span class="field-label">Empresa</span>
+          <select class="field-input" id="importEmpresaSel" style="font-size:12px;padding:8px 10px">
+            <option value="">— Selecione —</option>
+            <option>FASTWEB</option><option>BTMX</option><option>FALCOM</option><option>OCTO</option><option>LOGBOX</option>
+          </select>
+        </div>
+        <div class="field-group" style="min-width:160px">
+          <span class="field-label">Mês de referência</span>
+          <select class="field-input" id="importMesSel" style="font-size:12px;padding:8px 10px">
+            <option value="2026-01">Janeiro 2026</option>
+            <option value="2026-02">Fevereiro 2026</option>
+            <option value="2026-03">Março 2026</option>
+            <option value="2026-04">Abril 2026</option>
+            <option value="2026-05">Maio 2026</option>
+            <option value="2026-06">Junho 2026</option>
+            <option value="2026-07">Julho 2026</option>
+            <option value="2026-08">Agosto 2026</option>
+            <option value="2026-09">Setembro 2026</option>
+            <option value="2026-10">Outubro 2026</option>
+            <option value="2026-11">Novembro 2026</option>
+            <option value="2026-12">Dezembro 2026</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Status -->
+      <div class="import-status" id="importStatusMsg"></div>
+
+      <!-- Preview / Edição -->
+      <div id="importPreviewSection" class="hidden">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <div class="import-preview-title">Preview dos dados — edite ou remova linhas antes de confirmar</div>
+          <span style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace" id="importRowCount"></span>
+        </div>
+        <div class="import-preview-scroll">
+          <div id="importPreviewTable"></div>
+        </div>
+        <div style="font-size:10px;color:var(--muted);margin-top:8px;font-family:'IBM Plex Mono',monospace">
+          ⚙ Campos com % (M.C. Final, TACOS) devem ser inseridos como decimais ex: 0.18 = 18%. Edite diretamente na tabela.
+        </div>
+      </div>
+
+    </div>
+    <div class="import-modal-footer">
+      <button class="btn btn-ghost" onclick="closeImportModal()">Cancelar</button>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span style="font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace" id="importRowCount2"></span>
+        <button class="btn btn-primary" id="importConfirmBtn" onclick="confirmImport()">✓ Confirmar importação</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
