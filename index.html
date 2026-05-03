@@ -4135,8 +4135,8 @@ function dismissToast() {
 }
 
 // ── Web Push ──
-const VAPID_PUBLIC_KEY = 'BMso5zaxbiK-7AUj2GUJ4_ZK5Tt7DdbAa6lbIt31WnkQuigFDpkm0B4oFJayw-9ikpyPUgMvpk4dXP0cVE4IRs4';
-const PUSH_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/send-push`;
+const VAPID_PUBLIC_KEY = 'BAbLzuji_pSTGGY2mvYyXB7rBen2KIEMBskxNQEWTezgKxZCMqfqjbcNLPCoRPaoSrMpZ4GYJIuAK9NkeHg20wU';
+const PUSH_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/push-notify`;
 
 async function togglePushPermission() {
   const btn = document.getElementById('notifPushBtn');
@@ -4201,13 +4201,12 @@ async function savePushSubscriptionToDB(sub) {
   const auth = sub.getKey('auth');
   const p256dh = btoa(String.fromCharCode(...new Uint8Array(key))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'');
   const authStr = btoa(String.fromCharCode(...new Uint8Array(auth))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'');
-
-  if (db) {
-    await db.from('push_subscriptions').upsert(
-      { endpoint: sub.endpoint, p256dh, auth: authStr, user_agent: navigator.userAgent.slice(0,200) },
-      { onConflict: 'endpoint' }
-    );
-  }
+  // Usa o endpoint /subscribe da Edge Function push-notify
+  await fetch(PUSH_FUNCTION_URL + '/subscribe', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ endpoint: sub.endpoint, keys: { p256dh, auth: authStr } })
+  });
 }
 
 async function removePushSubscriptionFromDB(endpoint) {
@@ -4235,16 +4234,15 @@ async function updatePushBtn() {
   }
 }
 
-// Envia push via Edge Function (para todos os dispositivos registrados)
+// Envia push via Edge Function /test (dispara para todos os devices registrados)
 async function sendPushNotification(notif) {
   try {
-    await fetch(PUSH_FUNCTION_URL, {
+    await fetch(PUSH_FUNCTION_URL + '/test', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        titulo: `Hub Os Sócios — ${notif.titulo}`,
-        corpo: notif.corpo || '',
-        link_pagina: notif.link_pagina || ''
+        title: `Hub Os Sócios — ${notif.titulo}`,
+        body: notif.corpo || ''
       })
     });
   } catch(e) { console.log('Push remoto não disponível:', e); }
