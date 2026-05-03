@@ -4135,7 +4135,7 @@ function dismissToast() {
 }
 
 // ── Web Push ──
-const VAPID_PUBLIC_KEY = 'BGAQf_FV8ZfzTOe-B8nvxA8ayN5jvR0I1rqY4GVTN24Y31T2o4M5g8n9QaS916jfE5T4bDCs7-sAQOkq-RG9Cew';
+const VAPID_PUBLIC_KEY = 'BElE67GAlIZj2N0cAXOpTrWHF9hQysdzPgQozt9I0ILSbtq6ykEmTUENnQnYqy-BqIr9I3Q8FgIYYe3dzxaXBlY';
 const PUSH_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/push-notify`;
 
 async function togglePushPermission() {
