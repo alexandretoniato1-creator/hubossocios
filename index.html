@@ -2343,6 +2343,27 @@ async function addPost(){
   btn.disabled=false; btn.textContent='Publicar';
 }
 
+async function reenviarNotifPost(id) {
+  let post = null;
+  if (db) {
+    const { data } = await db.from('comunicados').select('*').eq('id', id);
+    if (data && data[0]) post = data[0];
+  }
+  if (!post) return;
+  const lidos = post.lidos || [];
+  const naoLeram = SOCIOS.filter(s => !lidos.includes(s));
+  if (!naoLeram.length) { alert('Todos os sócios já leram este comunicado!'); return; }
+  await fetch(`${PUSH_FUNCTION_URL}/test`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      title: `📢 Hub Os Sócios — Comunicado de ${post.autor}`,
+      body: (post.texto||'').slice(0,80) + ((post.texto||'').length > 80 ? '…' : '')
+    })
+  });
+  showToast({ tipo:'comunicado', titulo:'Push reenviado!', corpo:`Notificação reenviada · Aguardando: ${naoLeram.join(', ')}` });
+}
+
 async function deletePost(id){
   if(!confirm('Remover este comunicado?')) return;
   if(db){
@@ -2437,7 +2458,7 @@ async function renderPosts(){
           <span class="post-read-count">${readCount}/${SOCIOS.length}</span>
         </div>
         <div class="post-actions">
-          <div></div>
+          <button class="btn btn-ghost" style="font-size:11px;padding:5px 12px" onclick="reenviarNotifPost(${p.id})">↺ Notificar não lidos</button>
           <button class="btn btn-danger" onclick="deletePost(${p.id})">Remover</button>
         </div>
       </div>
@@ -3574,12 +3595,55 @@ function buildReuniaoCard(r, open) {
         </div>
       </div>
 
+      <!-- VISTOS POR -->
+      <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:10px;font-family:'IBM Plex Mono',monospace">Visto por</div>
+        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+          ${SOCIOS.map(s => {
+            const isVisto = (r.vistos||[]).includes(s);
+            const color = SOCIO_COLORS[s]||'var(--muted)';
+            const borderStyle = isVisto ? `border-color:${color};color:${color};background:${color}15` : '';
+            return `<div class="post-avatar ${isVisto?'read':'unread'}" title="${s}: ${isVisto?'Visto':'Não visto'}"
+              onclick="toggleReuniaoVisto(${r.id},'${s}')" style="${borderStyle}">${s.charAt(0)}</div>`;
+          }).join('')}
+          <span style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-left:4px">${(r.vistos||[]).length}/${SOCIOS.length}</span>
+          <button class="btn btn-ghost" style="margin-left:auto;font-size:11px;padding:5px 12px" onclick="reenviarNotifReuniao(${r.id})">↺ Notificar não vistos</button>
+        </div>
+      </div>
+
       <div class="reuniao-footer">
         <button class="btn btn-ghost" onclick="marcarRealizada(${r.id})">${r.status === 'realizada' ? '↺ Reabrir reunião' : '✓ Marcar como realizada'}</button>
         <button class="btn btn-danger" onclick="deleteReuniao(${r.id})">Remover reunião</button>
       </div>
     </div>
   </div>`;
+}
+
+async function toggleReuniaoVisto(id, socio) {
+  const r = reunioesData.find(x => x.id === id);
+  if (!r) return;
+  if (!r.vistos) r.vistos = [];
+  const idx = r.vistos.indexOf(socio);
+  if (idx >= 0) r.vistos.splice(idx, 1);
+  else r.vistos.push(socio);
+  await saveReuniao(r);
+  rerenderCard(id);
+}
+
+async function reenviarNotifReuniao(id) {
+  const r = reunioesData.find(x => x.id === id);
+  if (!r) return;
+  const naoViram = SOCIOS.filter(s => !(r.vistos||[]).includes(s));
+  if (!naoViram.length) { alert('Todos os sócios já viram esta reunião!'); return; }
+  await fetch(`${PUSH_FUNCTION_URL}/test`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      title: `🔔 Hub Os Sócios — Reunião: ${r.titulo}`,
+      body: `${r.data.split('-').reverse().join('/')}${r.horario ? ' às ' + r.horario : ''} · Aguardando confirmação de: ${naoViram.join(', ')}`
+    })
+  });
+  showToast({ tipo:'reuniao', titulo:'Push reenviado!', corpo:`Notificação enviada para os sócios que ainda não confirmaram.` });
 }
 
 async function renderReunioes() {
