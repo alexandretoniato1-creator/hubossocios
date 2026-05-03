@@ -4135,52 +4135,119 @@ function dismissToast() {
 }
 
 // ── Web Push ──
+const VAPID_PUBLIC_KEY = 'BMso5zaxbiK-7AUj2GUJ4_ZK5Tt7DdbAa6lbIt31WnkQuigFDpkm0B4oFJayw-9ikpyPUgMvpk4dXP0cVE4IRs4';
+const PUSH_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/send-push`;
+
 async function togglePushPermission() {
   const btn = document.getElementById('notifPushBtn');
-  if (!('Notification' in window)) {
-    alert('Seu navegador não suporta notificações push.');
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+    alert('Seu navegador não suporta Web Push. Use o Chrome ou instale o app (PWA).');
     return;
   }
-  if (Notification.permission === 'granted') {
+
+  // Se já está ativo, desativar
+  const currentSub = await getPushSubscription();
+  if (currentSub) {
+    await currentSub.unsubscribe();
+    await removePushSubscriptionFromDB(currentSub.endpoint);
+    saveLs('hub_push_enabled', false);
     btn.classList.remove('active');
     btn.textContent = 'Ativar';
-    saveLs('hub_push_enabled', false);
     return;
   }
+
+  // Solicitar permissão
   const permission = await Notification.requestPermission();
-  if (permission === 'granted') {
+  if (permission !== 'granted') {
+    alert('Permissão negada. Ative nas configurações do navegador.');
+    return;
+  }
+
+  btn.textContent = '...';
+  btn.disabled = true;
+
+  try {
+    const reg = await navigator.serviceWorker.ready;
+    const sub = await reg.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+    });
+
+    await savePushSubscriptionToDB(sub);
+    saveLs('hub_push_enabled', true);
     btn.classList.add('active');
     btn.textContent = '✓ Ativo';
-    saveLs('hub_push_enabled', true);
+
+    // Notificação de confirmação
+    new Notification('Hub Os Sócios', { body: '🔔 Push ativado com sucesso! Você receberá notificações mesmo com o app fechado.' });
+  } catch(e) {
+    console.error('Erro ao ativar push:', e);
+    alert('Erro ao ativar push: ' + e.message);
+    btn.textContent = 'Ativar';
+  }
+  btn.disabled = false;
+}
+
+async function getPushSubscription() {
+  if (!('serviceWorker' in navigator)) return null;
+  try {
+    const reg = await navigator.serviceWorker.ready;
+    return await reg.pushManager.getSubscription();
+  } catch { return null; }
+}
+
+async function savePushSubscriptionToDB(sub) {
+  const key = sub.getKey('p256dh');
+  const auth = sub.getKey('auth');
+  const p256dh = btoa(String.fromCharCode(...new Uint8Array(key))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'');
+  const authStr = btoa(String.fromCharCode(...new Uint8Array(auth))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'');
+
+  if (db) {
+    await db.from('push_subscriptions').upsert(
+      { endpoint: sub.endpoint, p256dh, auth: authStr, user_agent: navigator.userAgent.slice(0,200) },
+      { onConflict: 'endpoint' }
+    );
   }
 }
 
-function updatePushBtn() {
+async function removePushSubscriptionFromDB(endpoint) {
+  if (db) await db.from('push_subscriptions').delete().eq('endpoint', endpoint);
+}
+
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = atob(base64);
+  return Uint8Array.from([...rawData].map(c => c.charCodeAt(0)));
+}
+
+async function updatePushBtn() {
   const btn = document.getElementById('notifPushBtn');
   if (!btn) return;
-  const enabled = loadLs('hub_push_enabled', false);
-  const granted = 'Notification' in window && Notification.permission === 'granted';
-  if (enabled && granted) {
+  const sub = await getPushSubscription();
+  if (sub && Notification.permission === 'granted') {
     btn.classList.add('active');
     btn.textContent = '✓ Ativo';
+    saveLs('hub_push_enabled', true);
   } else {
     btn.classList.remove('active');
     btn.textContent = 'Ativar';
   }
 }
 
-function sendPushNotification(notif) {
-  const enabled = loadLs('hub_push_enabled', false);
-  if (!enabled || !('Notification' in window) || Notification.permission !== 'granted') return;
+// Envia push via Edge Function (para todos os dispositivos registrados)
+async function sendPushNotification(notif) {
   try {
-    new Notification(`Hub Os Sócios — ${notif.titulo}`, {
-      body: notif.corpo || '',
-      icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="%231a1814"/><text x="16" y="22" text-anchor="middle" font-size="18" fill="white">◈</text></svg>',
-      badge: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="%231a1814"/></svg>',
-      tag: 'hub-notif-' + notif.tipo,
-      silent: false
+    await fetch(PUSH_FUNCTION_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        titulo: `Hub Os Sócios — ${notif.titulo}`,
+        corpo: notif.corpo || '',
+        link_pagina: notif.link_pagina || ''
+      })
     });
-  } catch(e) { console.log('Push não disponível:', e); }
+  } catch(e) { console.log('Push remoto não disponível:', e); }
 }
 
 // ── Verificação de prazos de metas ──
@@ -4213,7 +4280,7 @@ async function checkMetasPrazos() {
 async function initNotifs() {
   await loadNotifs();
   updateNotifBadge();
-  updatePushBtn();
+  await updatePushBtn();
   // Listen for realtime inserts to generate notifications
   if (db) {
     db.channel('hub-notif-triggers')
@@ -4258,6 +4325,16 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('service-worker.js')
       .then(() => console.log('SW registrado'))
       .catch(e => console.log('SW erro:', e));
+  });
+
+  // Navega para a página certa ao clicar na notificação push (com app fechado)
+  navigator.serviceWorker.addEventListener('message', e => {
+    if (e.data?.type === 'NOTIF_CLICK' && e.data.url) {
+      const page = e.data.url.replace('/', '').trim() || 'dashboard';
+      if (document.getElementById('app').style.display !== 'none') {
+        goPage(page);
+      }
+    }
   });
 }
 </script>
