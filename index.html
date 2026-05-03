@@ -4178,8 +4178,6 @@ async function togglePushPermission() {
     btn.classList.add('active');
     btn.textContent = '✓ Ativo';
 
-    // Notificação de confirmação
-    new Notification('Hub Os Sócios', { body: '🔔 Push ativado com sucesso! Você receberá notificações mesmo com o app fechado.' });
   } catch(e) {
     console.error('Erro ao ativar push:', e);
     alert('Erro ao ativar push: ' + e.message);
