@@ -3350,7 +3350,7 @@ let reunioesData = [];
 
 async function loadReunioes() {
   if (db) {
-    const { data, error } = await db.from('reunioes').select('*').order('data', { ascending: true });
+    const { data, error } = await db.from('reunioes').select('*').order('data', { ascending: false });
     if (!error && data) {
       reunioesData = data.map(r => ({
         ...r,
