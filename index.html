@@ -921,6 +921,23 @@ select.field-input{cursor:pointer}
     <!-- VISÃO GERAL -->
     <div id="dVisao">
       <div class="metric-grid" id="metricGrid"></div>
+      <div id="hojeCard" class="hidden" style="margin-bottom:16px">
+        <div class="box" style="border-left:3px solid var(--green);padding:16px 22px">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+            <div>
+              <div class="metric-label" style="margin-bottom:4px">Faturamento hoje</div>
+              <div class="metric-val val-green" id="hojeValor">—</div>
+              <div style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-top:2px" id="hojeInfo"></div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <div style="text-align:right">
+                <div class="metric-label" style="margin-bottom:4px">Pedidos hoje</div>
+                <div class="metric-val" id="hojePedidos">—</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="two-col">
         <div class="box"><div class="box-header"><div class="box-title">Faturamento por canal</div></div><div class="chart-wrap" style="height:190px"><canvas id="cFat"></canvas></div></div>
         <div class="box"><div class="box-header"><div class="box-title">Lucro líquido por canal</div></div><div class="chart-wrap" style="height:190px"><canvas id="cAds"></canvas></div></div>
@@ -1567,11 +1584,19 @@ function showSync(saving=true) {
   if (!saving) syncTimer = setTimeout(() => el.classList.remove('visible'), 2000);
 }
 
-// ── DADOS DA API MAGIS5 ──
+// ── DADOS DA API MAGIS5 — sistema com cache ──
+const MES_ATUAL = new Date().toISOString().slice(0, 7); // '2026-06'
+
 async function fetchDashData(mesAno) {
   if (dashCache[mesAno]) return dashCache[mesAno];
+
+  const isMesAtual = mesAno === MES_ATUAL;
+  const endpoint   = isMesAtual
+    ? `${SUPABASE_URL}/functions/v1/magis5-sync?acao=hoje`
+    : `${SUPABASE_URL}/functions/v1/magis5-sync?acao=ler&mes=${mesAno}`;
+
   try {
-    const res = await fetch(`${SUPABASE_URL}/functions/v1/magis5-dashboard?mesAno=${mesAno}`, {
+    const res = await fetch(endpoint, {
       headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
     });
     if (!res.ok) {
@@ -1579,7 +1604,9 @@ async function fetchDashData(mesAno) {
       return null;
     }
     const data = await res.json();
-    dashCache[mesAno] = data;
+    // Meses fechados ficam em cache permanente; mês atual não (atualiza no próximo refresh)
+    if (!isMesAtual) dashCache[mesAno] = data;
+    else dashCache[mesAno] = data; // cache por sessão
     return data;
   } catch(e) {
     console.error('Erro ao buscar dados Magis5:', e);
@@ -1589,6 +1616,72 @@ async function fetchDashData(mesAno) {
 
 function getDashData(mesAno) {
   return dashCache[mesAno] || null;
+}
+
+// Processa histórico um mês por vez, com progresso visível
+async function processarHistoricoSequencial() {
+  // 1. Checa quais meses faltam
+  let faltam = [];
+  try {
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/magis5-sync?acao=checar`, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+    });
+    const data = await res.json();
+    faltam = data.faltam || [];
+  } catch(e) {
+    console.log('Erro ao checar histórico:', e);
+    return;
+  }
+
+  if (!faltam.length) return; // tudo já em cache
+
+  // 2. Mostra banner de progresso
+  showHistoricoProgress(faltam, 0);
+
+  // 3. Processa um mês por vez
+  for (let i = 0; i < faltam.length; i++) {
+    const mes = faltam[i];
+    showHistoricoProgress(faltam, i);
+    try {
+      await fetch(`${SUPABASE_URL}/functions/v1/magis5-sync?acao=fechar_mes&mes=${mes}`, {
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+      });
+      // Limpa cache local do mês para forçar releitura do Supabase
+      delete dashCache[mes];
+    } catch(e) {
+      console.log(`Erro ao fechar ${mes}:`, e);
+    }
+  }
+
+  // 4. Esconde banner e re-renderiza se estiver num mês que foi carregado
+  hideHistoricoProgress();
+  if (faltam.includes(currentDashMonth)) {
+    await renderDashboard();
+  }
+}
+
+function showHistoricoProgress(faltam, atual) {
+  let banner = document.getElementById('historicoBanner');
+  if (!banner) {
+    banner = document.createElement('div');
+    banner.id = 'historicoBanner';
+    banner.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:12px 20px;border-radius:6px;font-size:12px;font-family:"IBM Plex Mono",monospace;z-index:600;display:flex;align-items:center;gap:12px;box-shadow:0 4px 20px rgba(0,0,0,.25);min-width:280px';
+    document.body.appendChild(banner);
+  }
+  const mes = faltam[atual];
+  const label = mes ? MONTH_LABELS[mes] || mes : '';
+  banner.innerHTML = `
+    <div style="width:10px;height:10px;border:2px solid rgba(245,243,238,.3);border-top-color:var(--bg);border-radius:50%;animation:spin .6s linear infinite;flex-shrink:0"></div>
+    <div style="flex:1">
+      <div style="font-weight:600;margin-bottom:2px">Carregando histórico</div>
+      <div style="opacity:.6">${label} · ${atual + 1} de ${faltam.length}</div>
+    </div>
+    <div style="font-size:11px;opacity:.5">${Math.round((atual / faltam.length) * 100)}%</div>`;
+}
+
+function hideHistoricoProgress() {
+  const banner = document.getElementById('historicoBanner');
+  if (banner) banner.remove();
 }
 
 function deltaTag(curr, prev, invertido) {
@@ -1602,7 +1695,6 @@ function deltaTag(curr, prev, invertido) {
 }
 
 function renderMetricCards(curr, prev) {
-  const has = curr && curr.totais && curr.totais.faturamento > 0;
   const g = document.getElementById('metricGrid');
   if (!g) return;
 
@@ -1616,7 +1708,8 @@ function renderMetricCards(curr, prev) {
   const margem = (t.faturamento > 0) ? t.lucroLiquido / t.faturamento : 0;
   const margemPrev = (p.faturamento > 0) ? p.lucroLiquido / p.faturamento : 0;
   const mcClass = margem < 0 ? 'val-red' : margem < .05 ? 'val-amber' : '';
-  const prevLabel = prev ? `<span style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace">vs ${MONTH_LABELS[MONTHS_ORDER[MONTHS_ORDER.indexOf(currentDashMonth)-1]]?.split(' ')[0]||''}</span>` : '';
+  const pi = MONTHS_ORDER.indexOf(currentDashMonth);
+  const prevLabel = pi > 0 ? `<span style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace">vs ${MONTH_LABELS[MONTHS_ORDER[pi-1]]?.split(' ')[0]||''}</span>` : '';
 
   g.innerHTML = `
     <div class="metric-card">
@@ -1649,6 +1742,25 @@ function renderMetricCards(curr, prev) {
       ${numVal(t.qtdPedidos, '')}
       <div class="metric-sub">${deltaTag(t.qtdPedidos, p.qtdPedidos, false)} ${prevLabel}</div>
     </div>`;
+
+  // Card de hoje — só no mês atual
+  const hojeCard = document.getElementById('hojeCard');
+  if (hojeCard) {
+    if (currentDashMonth === MES_ATUAL && curr && curr.totais) {
+      hojeCard.classList.remove('hidden');
+      const hojeData = curr.fonte === 'cache_dias' || curr.fonte === undefined ? curr : null;
+      const fatHoje = curr.totais.faturamento || 0;
+      const pedHoje = curr.totais.qtdPedidos || 0;
+      document.getElementById('hojeValor').textContent  = fatHoje ? fmt(fatHoje) : '—';
+      document.getElementById('hojePedidos').textContent = pedHoje ? pedHoje.toLocaleString('pt-BR') : '—';
+      const ultima = curr.ultimoDia || curr.data || '';
+      document.getElementById('hojeInfo').textContent = ultima
+        ? `atualizado em ${new Date(ultima + 'T12:00:00').toLocaleDateString('pt-BR')}`
+        : 'dados de hoje';
+    } else {
+      hojeCard.classList.add('hidden');
+    }
+  }
 }
 
 
@@ -3349,6 +3461,8 @@ async function initApp() {
   }
 
   await renderDashboard();
+  // Processa histórico um mês por vez em background (mostra progresso na tela)
+  processarHistoricoSequencial();
   renderPosts(); renderPlanilhas(); renderMetas(); renderDesempenho(); renderReunioes(); renderPipeline();
   await initNotifs();
 }
