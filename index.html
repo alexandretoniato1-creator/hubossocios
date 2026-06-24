@@ -1620,7 +1620,6 @@ function getDashData(mesAno) {
 
 // Processa histórico um mês por vez, com progresso visível
 async function processarHistoricoSequencial() {
-  // 1. Checa quais meses faltam
   let faltam = [];
   try {
     const res = await fetch(`${SUPABASE_URL}/functions/v1/magis5-sync?acao=checar`, {
@@ -1628,55 +1627,53 @@ async function processarHistoricoSequencial() {
     });
     const data = await res.json();
     faltam = data.faltam || [];
-  } catch(e) {
-    console.log('Erro ao checar histórico:', e);
-    return;
-  }
+  } catch(e) { return; }
 
-  if (!faltam.length) return; // tudo já em cache
+  if (!faltam.length) return;
 
-  // 2. Mostra banner de progresso
-  showHistoricoProgress(faltam, 0);
-
-  // 3. Processa um mês por vez
   for (let i = 0; i < faltam.length; i++) {
     const mes = faltam[i];
-    showHistoricoProgress(faltam, i);
+    showHistoricoProgress(faltam.length, i, mes);
     try {
       await fetch(`${SUPABASE_URL}/functions/v1/magis5-sync?acao=fechar_mes&mes=${mes}`, {
         headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
       });
-      // Limpa cache local do mês para forçar releitura do Supabase
       delete dashCache[mes];
     } catch(e) {
       console.log(`Erro ao fechar ${mes}:`, e);
     }
   }
 
-  // 4. Esconde banner e re-renderiza se estiver num mês que foi carregado
   hideHistoricoProgress();
-  if (faltam.includes(currentDashMonth)) {
-    await renderDashboard();
-  }
+  if (faltam.includes(currentDashMonth)) await renderDashboard();
 }
 
-function showHistoricoProgress(faltam, atual) {
+function showHistoricoProgress(total, atual, mes) {
   let banner = document.getElementById('historicoBanner');
   if (!banner) {
     banner = document.createElement('div');
     banner.id = 'historicoBanner';
-    banner.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:12px 20px;border-radius:6px;font-size:12px;font-family:"IBM Plex Mono",monospace;z-index:600;display:flex;align-items:center;gap:12px;box-shadow:0 4px 20px rgba(0,0,0,.25);min-width:280px';
+    banner.style.cssText = [
+      'position:fixed;bottom:20px;left:50%;transform:translateX(-50%)',
+      'background:var(--text);color:var(--bg)',
+      'padding:12px 20px;border-radius:6px',
+      'font-size:12px;font-family:"IBM Plex Mono",monospace',
+      'z-index:600;display:flex;align-items:center;gap:12px',
+      'box-shadow:0 4px 20px rgba(0,0,0,.25);min-width:300px'
+    ].join(';');
     document.body.appendChild(banner);
   }
-  const mes = faltam[atual];
-  const label = mes ? MONTH_LABELS[mes] || mes : '';
+  const pct  = Math.round((atual / total) * 100);
+  const label = MONTH_LABELS[mes] || mes;
   banner.innerHTML = `
     <div style="width:10px;height:10px;border:2px solid rgba(245,243,238,.3);border-top-color:var(--bg);border-radius:50%;animation:spin .6s linear infinite;flex-shrink:0"></div>
     <div style="flex:1">
-      <div style="font-weight:600;margin-bottom:2px">Carregando histórico</div>
-      <div style="opacity:.6">${label} · ${atual + 1} de ${faltam.length}</div>
-    </div>
-    <div style="font-size:11px;opacity:.5">${Math.round((atual / faltam.length) * 100)}%</div>`;
+      <div style="font-weight:600;margin-bottom:4px">Sincronizando histórico — ${pct}%</div>
+      <div style="opacity:.6;margin-bottom:6px">${label} · ${atual + 1} de ${total}</div>
+      <div style="height:3px;background:rgba(245,243,238,.15);border-radius:2px">
+        <div style="height:3px;background:var(--bg);border-radius:2px;width:${pct}%;transition:width .3s"></div>
+      </div>
+    </div>`;
 }
 
 function hideHistoricoProgress() {
