@@ -1585,32 +1585,83 @@ function showSync(saving=true) {
 }
 
 // ── DADOS DA API MAGIS5 — sistema com cache ──
-const MES_ATUAL = new Date().toISOString().slice(0, 7); // '2026-06'
+const MES_ATUAL = new Date().toISOString().slice(0, 7);
+const HOJE_TTL_MS = 30 * 60 * 1000; // 30 minutos
+const HOJE_LS_KEY = 'hub_hoje_updated_at';
+
+function hojeNeedsRefresh() {
+  const last = localStorage.getItem(HOJE_LS_KEY);
+  if (!last) return true;
+  return (Date.now() - parseInt(last)) > HOJE_TTL_MS;
+}
+
+function marcarHojeAtualizado() {
+  localStorage.setItem(HOJE_LS_KEY, Date.now().toString());
+}
 
 async function fetchDashData(mesAno) {
   if (dashCache[mesAno]) return dashCache[mesAno];
 
   const isMesAtual = mesAno === MES_ATUAL;
-  const endpoint   = isMesAtual
-    ? `${SUPABASE_URL}/functions/v1/magis5-sync?acao=hoje`
-    : `${SUPABASE_URL}/functions/v1/magis5-sync?acao=ler&mes=${mesAno}`;
 
   try {
-    const res = await fetch(endpoint, {
-      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
-    });
-    if (!res.ok) {
-      console.error('Erro na Edge Function:', res.status, await res.text());
-      return null;
+    if (isMesAtual) {
+      // 1. Lê o cache do Supabase instantaneamente
+      const resCached = await fetch(`${SUPABASE_URL}/functions/v1/magis5-sync?acao=ler&mes=${mesAno}`, {
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+      });
+      const cached = resCached.ok ? await resCached.json() : null;
+
+      // 2. Se tem dados e não precisa de refresh, usa direto
+      if (cached && cached.totais && cached.totais.qtdPedidos > 0 && !hojeNeedsRefresh()) {
+        dashCache[mesAno] = cached;
+        return cached;
+      }
+
+      // 3. Atualiza em background (busca hoje na API e salva)
+      atualizarHojeBackground(mesAno);
+
+      // 4. Retorna o que tem enquanto atualiza (ou null se vazio)
+      if (cached && cached.totais && cached.totais.qtdPedidos > 0) {
+        dashCache[mesAno] = cached;
+        return cached;
+      }
+      return cached;
+
+    } else {
+      // Meses históricos: lê direto do cache do Supabase
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/magis5-sync?acao=ler&mes=${mesAno}`, {
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+      });
+      if (!res.ok) return null;
+      const data = await res.json();
+      dashCache[mesAno] = data;
+      return data;
     }
-    const data = await res.json();
-    // Meses fechados ficam em cache permanente; mês atual não (atualiza no próximo refresh)
-    if (!isMesAtual) dashCache[mesAno] = data;
-    else dashCache[mesAno] = data; // cache por sessão
-    return data;
   } catch(e) {
     console.error('Erro ao buscar dados Magis5:', e);
     return null;
+  }
+}
+
+async function atualizarHojeBackground(mesAno) {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/magis5-sync?acao=hoje`, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+    });
+    if (!res.ok) return;
+    const data = await res.json();
+    marcarHojeAtualizado();
+    // Atualiza cache e re-renderiza silenciosamente só se ainda está no mês atual
+    if (data && data.totais && currentDashMonth === mesAno) {
+      dashCache[mesAno] = data;
+      renderMetricCards(data, getDashData(MONTHS_ORDER[MONTHS_ORDER.indexOf(mesAno)-1]));
+      renderCharts(data);
+      renderEmpresas('todas', data, getDashData(MONTHS_ORDER[MONTHS_ORDER.indexOf(mesAno)-1]));
+      renderSkus(data);
+    }
+  } catch(e) {
+    console.error('Erro ao atualizar hoje:', e);
   }
 }
 
@@ -1636,18 +1687,22 @@ async function processarHistoricoSequencial() {
     const dia = faltam[i];
     showHistoricoProgress(total, i, dia);
     try {
+      // Timeout de 40s por dia — se travar, pula e continua
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 40000);
       await fetch(`${SUPABASE_URL}/functions/v1/magis5-sync?acao=salvar_dia&dia=${dia}`, {
-        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY },
+        signal: controller.signal
       });
-      // Limpa cache do mês desse dia para forçar releitura
+      clearTimeout(timer);
       delete dashCache[dia.slice(0,7)];
     } catch(e) {
-      console.log(`Erro ao salvar ${dia}:`, e);
+      // Timeout ou erro: pula esse dia silenciosamente, será tentado na próxima abertura
+      console.log(`Pulando ${dia}:`, e.name === 'AbortError' ? 'timeout' : e.message);
     }
   }
 
   hideHistoricoProgress();
-  // Re-renderiza mês atual se foi atualizado
   const mesesAfetados = [...new Set(faltam.map(d => d.slice(0,7)))];
   if (mesesAfetados.includes(currentDashMonth)) await renderDashboard();
 }
@@ -1807,8 +1862,9 @@ async function renderDashboard() {
 }
 
 async function refreshDashboard() {
-  // Força recarga deletando cache do mês atual
+  // Força rebusca deletando cache em memória e zerando TTL do dia
   delete dashCache[currentDashMonth];
+  localStorage.removeItem(HOJE_LS_KEY);
   const btn = document.getElementById('refreshBtn');
   if (btn) { btn.disabled = true; btn.textContent = '↻ Atualizando…'; }
   await renderDashboard();
