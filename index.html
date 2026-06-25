@@ -645,6 +645,9 @@ select.field-input{cursor:pointer}
 .perf-period{background:none;border:none;padding:5px 12px;border-radius:4px;font-size:11px;font-weight:600;cursor:pointer;color:var(--muted);font-family:'IBM Plex Mono',monospace;transition:all .15s;white-space:nowrap}
 .perf-period.active{background:var(--text);color:var(--bg)}
 .perf-period:hover:not(.active){color:var(--text)}
+.hoje-canal-pill{background:none;border:1.5px solid var(--border);border-radius:20px;padding:3px 12px;font-size:11px;font-weight:600;cursor:pointer;color:var(--muted);font-family:'IBM Plex Mono',monospace;transition:all .15s}
+.hoje-canal-pill.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+.hoje-canal-pill:hover:not(.active){border-color:var(--border2);color:var(--text)}
 
 /* ── REUNIÕES ── */
 .reuniao-form-box{background:var(--surface);border:1.5px solid var(--border);border-radius:6px;padding:20px 24px;margin-bottom:24px}
@@ -924,10 +927,10 @@ select.field-input{cursor:pointer}
 
     <!-- VISÃO GERAL -->
     <div id="dVisao">
-      <div class="metric-grid" id="metricGrid"></div>
-      <div id="hojeCard" class="hidden" style="margin-bottom:16px">
-        <div class="box" style="border-left:3px solid var(--green);padding:16px 22px">
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+      <!-- Card de hoje com pills de canal -->
+      <div style="margin-bottom:16px">
+        <div class="box" style="border-left:3px solid var(--green);padding:16px 22px 12px">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:14px">
             <div>
               <div class="metric-label" style="margin-bottom:4px">Faturamento hoje</div>
               <div class="metric-val val-green" id="hojeValor">—</div>
@@ -938,17 +941,28 @@ select.field-input{cursor:pointer}
               <div class="metric-val" id="hojePedidos">—</div>
             </div>
           </div>
+          <!-- Pills de canal -->
+          <div style="display:flex;gap:6px;flex-wrap:wrap" id="hojeCanalPills">
+            <button class="hoje-canal-pill active" onclick="filtHojeCanal(this,'todos')">Todos</button>
+            <button class="hoje-canal-pill" onclick="filtHojeCanal(this,'ML')">ML</button>
+            <button class="hoje-canal-pill" onclick="filtHojeCanal(this,'Shopee')">Shopee</button>
+            <button class="hoje-canal-pill" onclick="filtHojeCanal(this,'TikTok')">TikTok</button>
+            <button class="hoje-canal-pill" onclick="filtHojeCanal(this,'Amazon')">Amazon</button>
+            <button class="hoje-canal-pill" onclick="filtHojeCanal(this,'Magalu')">Magalu</button>
+          </div>
         </div>
       </div>
+
       <!-- SKUs de hoje -->
-      <div id="hojeSkusBox" class="hidden box" style="margin-bottom:16px;overflow-x:auto">
+      <div id="hojeSkusBox" class="box" style="margin-bottom:16px;overflow-x:auto">
         <div class="box-header"><div class="box-title">SKUs vendidos hoje</div></div>
         <table style="min-width:480px"><thead><tr>
           <th>SKU</th><th>Nome</th><th>Canal</th><th>Qtd</th><th>Faturamento</th>
         </tr></thead>
         <tbody id="tbHojeSkus"></tbody></table>
       </div>
-      <div class="box"><div class="box-header"><div class="box-title">Faturamento por canal</div></div><div class="chart-wrap" style="height:220px"><canvas id="cFat"></canvas></div></div>
+
+      <div class="box"><div class="box-header"><div class="box-title">Faturamento por canal — hoje</div></div><div class="chart-wrap" style="height:200px"><canvas id="cFat"></canvas></div></div>
     </div>
 
     <!-- PERFORMANCE -->
@@ -1804,48 +1818,11 @@ function deltaTag(curr, prev, invertido) {
 }
 
 function renderMetricCards(curr, prev) {
-  const g = document.getElementById('metricGrid');
-  if (!g) return;
-  const t = (curr && curr.totais) || {};
-  const p = (prev && prev.totais) || {};
-  const pi = MONTHS_ORDER.indexOf(currentDashMonth);
-  const prevLabel = pi > 0 ? `<span style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace">vs ${MONTH_LABELS[MONTHS_ORDER[pi-1]]?.split(' ')[0]||''}</span>` : '';
-
-  g.innerHTML = `
-    <div class="metric-card">
-      <div class="metric-label">Faturamento total</div>
-      <div class="metric-val val-green">${t.faturamento ? fmt(t.faturamento) : '—'}</div>
-      <div class="metric-sub">${deltaTag(t.faturamento, p.faturamento, false)} ${prevLabel}</div>
-    </div>
-    <div class="metric-card">
-      <div class="metric-label">Qtd pedidos</div>
-      <div class="metric-val">${t.qtdPedidos > 0 ? t.qtdPedidos.toLocaleString('pt-BR') : '—'}</div>
-      <div class="metric-sub">${deltaTag(t.qtdPedidos, p.qtdPedidos, false)} ${prevLabel}</div>
-    </div>
-    <div class="metric-card">
-      <div class="metric-label">Ticket médio</div>
-      <div class="metric-val">${t.faturamento && t.qtdPedidos ? fmt(t.faturamento / t.qtdPedidos) : '—'}</div>
-      <div class="metric-sub">${prevLabel}</div>
-    </div>`;
-
-  // Card de hoje — busca especificamente o dia de hoje no cache
-  const hojeCard = document.getElementById('hojeCard');
-  if (hojeCard) {
-    if (currentDashMonth === MES_ATUAL) {
-      const hoje = new Date(new Date().getTime() - 3*60*60*1000).toISOString().slice(0,10);
-      const hojeData = dashCache['dia__' + hoje];
-      const fatHoje = hojeData?.totais?.faturamento || 0;
-      const pedHoje = hojeData?.totais?.qtdPedidos  || 0;
-      hojeCard.classList.remove('hidden');
-      document.getElementById('hojeValor').textContent   = fatHoje ? fmt(fatHoje) : '—';
-      document.getElementById('hojePedidos').textContent = pedHoje ? pedHoje.toLocaleString('pt-BR') : '—';
-      document.getElementById('hojeInfo').textContent    = hojeData
-        ? `atualizado em ${hoje.split('-').reverse().join('/')}`
-        : 'carregando…';
-    } else {
-      hojeCard.classList.add('hidden');
-    }
-  }
+  // Visão geral agora mostra só dados do dia — cards do mês removidos
+  const hoje = new Date(new Date().getTime() - 3*60*60*1000).toISOString().slice(0,10);
+  const hojeData = dashCache['dia__' + hoje];
+  renderHojeCards(hojeData);
+  renderHojeSkus(hojeData);
 }
 
 
@@ -1884,8 +1861,11 @@ async function renderDashboard() {
   ]);
 
   renderMetricCards(curr, prev);
-  renderCharts(curr);
-  renderHojeSkus(curr);
+  // Gráfico de canal usa dados do dia atual
+  const hoje = new Date(new Date().getTime() - 3*60*60*1000).toISOString().slice(0,10);
+  const hojeData = dashCache['dia__' + hoje] || curr;
+  renderCharts(hojeData);
+  renderHojeSkus(hojeData);
   renderSkus(curr);
 }
 
@@ -2077,21 +2057,59 @@ function renderSkus(data){ /* movido para aba Performance */ }
 
 
 // ── SKUs DE HOJE (Visão Geral) ──
-function renderHojeSkus(data) {
-  const box = document.getElementById('hojeSkusBox');
-  const tb  = document.getElementById('tbHojeSkus');
-  if (!box || !tb) return;
-  if (currentDashMonth !== MES_ATUAL || !data || !data.topSkus || !data.topSkus.length) {
-    box.classList.add('hidden'); return;
+let hojeCanal = 'todos';
+
+function filtHojeCanal(btn, canal) {
+  document.querySelectorAll('.hoje-canal-pill').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  hojeCanal = canal;
+  const hoje = new Date(new Date().getTime() - 3*60*60*1000).toISOString().slice(0,10);
+  const data = dashCache['dia__' + hoje];
+  renderHojeSkus(data);
+  renderHojeCards(data);
+  renderCharts(data);
+}
+
+function renderHojeCards(data) {
+  const pc  = (data && data.porCanal) || {};
+  const tot = (data && data.totais)   || {};
+  let fat = 0, ped = 0;
+  if (hojeCanal === 'todos') {
+    fat = tot.faturamento  || 0;
+    ped = tot.qtdPedidos   || 0;
+  } else {
+    fat = pc[hojeCanal]?.faturamento || 0;
+    ped = pc[hojeCanal]?.qtdPedidos  || 0;
   }
-  box.classList.remove('hidden');
+  const hoje = new Date(new Date().getTime() - 3*60*60*1000).toISOString().slice(0,10);
+  const el = document.getElementById('hojeValor');
+  const ep = document.getElementById('hojePedidos');
+  const ei = document.getElementById('hojeInfo');
+  if (el) el.textContent = fat ? fmt(fat) : '—';
+  if (ep) ep.textContent = ped ? ped.toLocaleString('pt-BR') : '—';
+  if (ei) ei.textContent = data ? `atualizado em ${hoje.split('-').reverse().join('/')}` : 'carregando…';
+}
+
+function renderHojeSkus(data) {
+  const tb = document.getElementById('tbHojeSkus');
+  if (!tb) return;
+  let skus = (data && data.topSkus) ? [...data.topSkus] : [];
+  if (hojeCanal !== 'todos') skus = skus.filter(s => s.canal === hojeCanal);
+  if (!skus.length) {
+    tb.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:12px">Sem dados para hoje</td></tr>`;
+    return;
+  }
   const nomes = getSkuNomes();
-  tb.innerHTML = data.topSkus.slice(0, 15).map(s => {
-    const cor = CANAL_CORES[s.canal] || '#8a8479';
+  tb.innerHTML = skus.map(s => {
+    const cor     = CANAL_CORES[s.canal] || '#8a8479';
     const nomeKey = s.canal + '__' + s.sku;
     return `<tr>
       <td style="font-weight:600;font-family:'IBM Plex Mono',monospace">${s.sku}</td>
-      <td style="color:var(--muted);font-size:12px">${nomes[nomeKey] || '—'}</td>
+      <td><input value="${nomes[nomeKey]||''}" placeholder="Adicionar nome…"
+        style="border:none;background:transparent;font-size:12px;color:var(--text);outline:none;width:100%;cursor:text;padding:2px 4px;border-radius:3px"
+        onfocus="this.style.background='var(--surface2)'"
+        onblur="this.style.background='transparent';saveSkuNome('${nomeKey}',this.value)"
+        onkeydown="if(event.key==='Enter')this.blur()"></td>
       <td><span style="background:${cor}18;color:${cor};padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">${s.canal}</span></td>
       <td style="font-family:'IBM Plex Mono',monospace">${s.qtd.toLocaleString('pt-BR')}</td>
       <td style="font-family:'IBM Plex Mono',monospace">${fmt(s.faturamento)}</td>
