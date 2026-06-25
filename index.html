@@ -641,6 +641,11 @@ select.field-input{cursor:pointer}
 .ranking-acerto{font-size:11px;color:var(--green);font-family:'IBM Plex Mono',monospace;font-weight:600}
 .ranking-erro{font-size:11px;color:var(--red);font-family:'IBM Plex Mono',monospace;font-weight:600}
 
+/* ── PERFORMANCE ── */
+.perf-period{background:none;border:none;padding:5px 12px;border-radius:4px;font-size:11px;font-weight:600;cursor:pointer;color:var(--muted);font-family:'IBM Plex Mono',monospace;transition:all .15s;white-space:nowrap}
+.perf-period.active{background:var(--text);color:var(--bg)}
+.perf-period:hover:not(.active){color:var(--text)}
+
 /* ── REUNIÕES ── */
 .reuniao-form-box{background:var(--surface);border:1.5px solid var(--border);border-radius:6px;padding:20px 24px;margin-bottom:24px}
 .reuniao-form-grid{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:10px;align-items:end}
@@ -914,8 +919,7 @@ select.field-input{cursor:pointer}
 
     <div class="tabs">
       <button class="tab-btn active" onclick="dTab(this,'dVisao')">Visão geral</button>
-      <button class="tab-btn" onclick="dTab(this,'dEmpresas')">Por canal</button>
-      <button class="tab-btn" onclick="dTab(this,'dSkus')">Por SKU</button>
+      <button class="tab-btn" onclick="dTab(this,'dPerf')">Performance</button>
     </div>
 
     <!-- VISÃO GERAL -->
@@ -929,72 +933,83 @@ select.field-input{cursor:pointer}
               <div class="metric-val val-green" id="hojeValor">—</div>
               <div style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-top:2px" id="hojeInfo"></div>
             </div>
-            <div style="display:flex;gap:8px;align-items:center">
-              <div style="text-align:right">
-                <div class="metric-label" style="margin-bottom:4px">Pedidos hoje</div>
-                <div class="metric-val" id="hojePedidos">—</div>
-              </div>
+            <div style="text-align:right">
+              <div class="metric-label" style="margin-bottom:4px">Pedidos hoje</div>
+              <div class="metric-val" id="hojePedidos">—</div>
             </div>
           </div>
         </div>
       </div>
+      <!-- SKUs de hoje -->
+      <div id="hojeSkusBox" class="hidden box" style="margin-bottom:16px;overflow-x:auto">
+        <div class="box-header"><div class="box-title">SKUs vendidos hoje</div></div>
+        <table style="min-width:480px"><thead><tr>
+          <th>SKU</th><th>Nome</th><th>Canal</th><th>Qtd</th><th>Faturamento</th>
+        </tr></thead>
+        <tbody id="tbHojeSkus"></tbody></table>
+      </div>
       <div class="box"><div class="box-header"><div class="box-title">Faturamento por canal</div></div><div class="chart-wrap" style="height:220px"><canvas id="cFat"></canvas></div></div>
     </div>
 
-    <!-- CANAIS -->
-    <div id="dEmpresas" class="hidden">
-      <div class="emp-pills" id="canalPills">
-        <button class="emp-pill active" onclick="filtEmp(this,'todas')">Todos</button>
-        <button class="emp-pill" onclick="filtEmp(this,'ML')" style="display:flex;align-items:center;gap:6px">
-          <img src="https://http2.mlstatic.com/frontend-assets/ml-web-navigation/ui-navigation/6.6.92/mercadolibre/logo_small.png" style="height:16px;width:auto" onerror="this.style.display='none'"> ML
-        </button>
-        <button class="emp-pill" onclick="filtEmp(this,'Shopee')" style="display:flex;align-items:center;gap:6px">
-          <img src="https://cf.shopee.com.br/file/br-50009109-png-0-0/o/mweb-buyer-logo" style="height:16px;width:auto" onerror="this.style.display='none'"> Shopee
-        </button>
-        <button class="emp-pill" onclick="filtEmp(this,'TikTok')" style="display:flex;align-items:center;gap:6px">
-          <svg height="16" viewBox="0 0 24 24" fill="#69C9D0"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V9.01a8.16 8.16 0 004.77 1.52V7.08a4.85 4.85 0 01-1-.39z"/></svg> TikTok
-        </button>
-        <button class="emp-pill" onclick="filtEmp(this,'Amazon')" style="display:flex;align-items:center;gap:6px">
-          <svg height="16" viewBox="0 0 24 24" fill="#f90"><path d="M.045 18.02c.072-.116.187-.124.348-.022 3.636 2.11 7.594 3.166 11.87 3.166 2.852 0 5.668-.533 8.447-1.595l.315-.14c.138-.06.234-.1.293-.13.226-.088.39-.046.5.13.107.175.013.345-.284.51l-.144.075c-1.09.57-2.576 1.09-4.46 1.56-1.78.436-3.485.655-5.12.655-2.776 0-5.296-.535-7.56-1.605-1.64-.773-3.036-1.77-4.19-2.99-.107-.117-.116-.225-.015-.334l.005-.006zM21.485 15.5c-.15-.172-.435-.172-.856.01l-.285.115c-.94.38-1.704.636-2.296.765-1.01.218-1.958.327-2.846.327-1.555 0-2.996-.31-4.32-.924-.898-.42-1.713-1.006-2.44-1.753a.213.213 0 00-.17-.08c-.077 0-.145.03-.204.087l-.012.014c-.103.12-.1.235.01.35.844.888 1.82 1.595 2.93 2.122 1.422.67 2.963 1.006 4.62 1.006.993 0 2.02-.125 3.085-.374 1.007-.236 2.05-.62 3.126-1.15.234-.113.356-.234.364-.36.01-.143-.07-.27-.235-.38l-.47-.324zM11.975 0C5.366 0 0 5.366 0 11.975c0 3.2 1.265 6.11 3.33 8.262l.014.015.006.006c.104.107.21.113.316.015l.015-.015.01-.012c.1-.115.096-.226-.01-.336C1.757 17.933.63 15.082.63 11.975.63 5.71 5.71.63 11.975.63c6.265 0 11.345 5.08 11.345 11.345 0 3.16-1.34 6.057-3.51 8.124-.107.104-.11.215-.008.33l.01.012.012.012c.104.107.212.11.32.008 2.294-2.19 3.726-5.258 3.726-8.486C23.87 5.366 18.584 0 11.975 0z"/></svg> Amazon
-        </button>
-        <button class="emp-pill" onclick="filtEmp(this,'Magalu')" style="display:flex;align-items:center;gap:6px">
-          <svg height="16" viewBox="0 0 24 24" fill="#0072ce"><circle cx="12" cy="12" r="10"/><text x="12" y="16" text-anchor="middle" fill="white" font-size="9" font-weight="bold">M</text></svg> Magalu
-        </button>
-      </div>
-      <div id="canalCards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:16px"></div>
-      <div class="box" style="overflow-x:auto;padding:0">
-        <table style="min-width:500px;margin:0"><thead><tr>
-          <th style="padding-left:24px">Canal</th>
-          <th>Faturamento</th>
-          <th>Qtd Pedidos</th>
-          <th style="padding-right:24px">Ticket Médio</th>
-        </tr></thead>
-        <tbody id="tbEmpresas"></tbody></table>
-      </div>
-    </div>
-
-    <!-- SKUS -->
-    <div id="dSkus" class="hidden">
-      <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap">
-        <span style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em">Ordenar:</span>
-        <select class="field-input" id="sortSku" onchange="renderSkus()" style="padding:6px 10px;font-size:12px">
-          <option value="fat">Faturamento</option>
-          <option value="qtd">Quantidade</option>
+    <!-- PERFORMANCE -->
+    <div id="dPerf" class="hidden">
+      <!-- Filtros de período e canal -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap">
+        <div style="display:flex;gap:4px;background:var(--surface2);border:1.5px solid var(--border);border-radius:6px;padding:3px">
+          <button class="perf-period active" onclick="setPerfPeriod(this,'hoje')">Hoje</button>
+          <button class="perf-period" onclick="setPerfPeriod(this,'7d')">7 dias</button>
+          <button class="perf-period" onclick="setPerfPeriod(this,'mes')">Mês atual</button>
+          <button class="perf-period" onclick="setPerfPeriod(this,'mes_ant')">Mês anterior</button>
+          <button class="perf-period" onclick="setPerfPeriod(this,'custom')">Personalizado</button>
+        </div>
+        <div id="perfCustomRange" style="display:none;gap:6px;align-items:center">
+          <input type="date" id="perfDateFrom" class="field-input" style="padding:5px 8px;font-size:12px" onchange="renderPerf()">
+          <span style="color:var(--muted);font-size:12px">até</span>
+          <input type="date" id="perfDateTo" class="field-input" style="padding:5px 8px;font-size:12px" onchange="renderPerf()">
+        </div>
+        <select id="perfCanal" class="field-input" style="padding:6px 10px;font-size:12px;margin-left:auto" onchange="renderPerf()">
+          <option value="todos">Todos os canais</option>
+          <option value="ML">Mercado Livre</option>
+          <option value="Shopee">Shopee</option>
+          <option value="TikTok">TikTok</option>
+          <option value="Amazon">Amazon</option>
+          <option value="Magalu">Magalu</option>
         </select>
       </div>
+
+      <!-- Cards de performance -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:20px" id="perfCards"></div>
+
+      <!-- Gráfico de barras diário -->
+      <div class="box" style="margin-bottom:16px">
+        <div class="box-header"><div class="box-title" id="perfChartTitle">Faturamento por dia</div></div>
+        <div id="perfSyncMsg" style="display:none;font-size:11px;font-family:'IBM Plex Mono',monospace;color:var(--muted);padding:0 0 10px;text-align:center"></div>
+        <div class="chart-wrap" style="height:240px"><canvas id="cPerf"></canvas></div>
+      </div>
+
+      <!-- Canais no período -->
+      <div class="box" style="margin-bottom:16px;overflow-x:auto">
+        <div class="box-header"><div class="box-title">Por canal</div></div>
+        <div id="perfCanalCards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;padding:0 0 16px"></div>
+      </div>
+
+      <!-- SKUs do período -->
       <div class="box" style="overflow-x:auto">
-        <table style="min-width:560px"><thead><tr>
-          <th>SKU</th>
-          <th>Nome</th>
-          <th>Canal</th>
-          <th>Qtd</th>
-          <th>Faturamento</th>
-          <th>Ticket Médio</th>
+        <div class="box-header">
+          <div class="box-title">SKUs do período</div>
+          <select id="sortPerfSku" class="field-input" style="padding:5px 8px;font-size:11px" onchange="renderPerfSkus()">
+            <option value="fat">Faturamento</option>
+            <option value="qtd">Quantidade</option>
+          </select>
+        </div>
+        <table style="min-width:520px"><thead><tr>
+          <th>SKU</th><th>Nome</th><th>Canal</th><th>Qtd</th><th>Faturamento</th><th>Ticket Médio</th>
         </tr></thead>
-        <tbody id="tbSkus"></tbody></table>
+        <tbody id="tbPerfSkus"></tbody></table>
       </div>
     </div>
   </div>
+
 
   <!-- COMUNICADOS -->
   <div id="page-comunicados" class="hidden fade-in">
@@ -1842,7 +1857,7 @@ async function renderDashboard() {
 
   renderMetricCards(curr, prev);
   renderCharts(curr);
-  renderEmpresas('todas', curr, prev);
+  renderHojeSkus(curr);
   renderSkus(curr);
 }
 
@@ -1903,13 +1918,12 @@ function goPage(p) {
 function dTab(btn, id) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  ['dVisao','dEmpresas','dSkus'].forEach(i => document.getElementById(i).classList.add('hidden'));
+  ['dVisao','dPerf'].forEach(i => document.getElementById(i).classList.add('hidden'));
   document.getElementById(id).classList.remove('hidden');
   const curr = getDashData(currentDashMonth);
   const prev = getDashData(MONTHS_ORDER[MONTHS_ORDER.indexOf(currentDashMonth)-1]);
-  if(id==='dVisao') renderCharts(curr);
-  if(id==='dEmpresas') renderEmpresas('todas', curr, prev);
-  if(id==='dSkus') renderSkus(curr);
+  if(id==='dVisao') { renderCharts(curr); renderHojeSkus(curr); }
+  if(id==='dPerf')  { initPerf(); }
 }
 
 // ── CHARTS ──
@@ -2031,55 +2045,308 @@ function saveSkuNome(key, nome) {
   saveLs('hub_sku_nomes', nomes);
 }
 
-function renderSkus(data){
-  if (!data) data = getDashData(currentDashMonth);
-  const sort = document.getElementById('sortSku').value;
-  let skus = (data && data.topSkus) ? [...data.topSkus] : [];
+function renderSkus(data){ /* movido para aba Performance */ }
 
-  if(sort==='fat') skus.sort((a,b)=>b.faturamento-a.faturamento);
-  else if(sort==='qtd') skus.sort((a,b)=>b.qtd-a.qtd);
 
-  const tb = document.getElementById('tbSkus');
+// ── SKUs DE HOJE (Visão Geral) ──
+function renderHojeSkus(data) {
+  const box = document.getElementById('hojeSkusBox');
+  const tb  = document.getElementById('tbHojeSkus');
+  if (!box || !tb) return;
+  if (currentDashMonth !== MES_ATUAL || !data || !data.topSkus || !data.topSkus.length) {
+    box.classList.add('hidden'); return;
+  }
+  box.classList.remove('hidden');
+  const nomes = getSkuNomes();
+  tb.innerHTML = data.topSkus.slice(0, 15).map(s => {
+    const cor = CANAL_CORES[s.canal] || '#8a8479';
+    const nomeKey = s.canal + '__' + s.sku;
+    return `<tr>
+      <td style="font-weight:600;font-family:'IBM Plex Mono',monospace">${s.sku}</td>
+      <td style="color:var(--muted);font-size:12px">${nomes[nomeKey] || '—'}</td>
+      <td><span style="background:${cor}18;color:${cor};padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">${s.canal}</span></td>
+      <td style="font-family:'IBM Plex Mono',monospace">${s.qtd.toLocaleString('pt-BR')}</td>
+      <td style="font-family:'IBM Plex Mono',monospace">${fmt(s.faturamento)}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ── PERFORMANCE ──
+let perfPeriodo = 'mes';
+let chartPerf   = null;
+
+function setPerfPeriod(btn, periodo) {
+  document.querySelectorAll('.perf-period').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  perfPeriodo = periodo;
+  const customRange = document.getElementById('perfCustomRange');
+  if (customRange) customRange.style.display = periodo === 'custom' ? 'flex' : 'none';
+  if (periodo !== 'custom') renderPerf();
+}
+
+// Calcula range de datas com base no período selecionado
+function getPerfRange() {
+  const hoje = new Date();
+  const brt  = new Date(hoje.getTime() - 3 * 60 * 60 * 1000);
+  const todayStr = brt.toISOString().slice(0, 10);
+  const ano  = brt.getFullYear();
+  const mes  = brt.getMonth() + 1;
+
+  if (perfPeriodo === 'hoje') return { from: todayStr, to: todayStr };
+
+  if (perfPeriodo === '7d') {
+    const d = new Date(brt); d.setDate(d.getDate() - 6);
+    return { from: d.toISOString().slice(0,10), to: todayStr };
+  }
+  if (perfPeriodo === 'mes') {
+    return { from: `${ano}-${String(mes).padStart(2,'0')}-01`, to: todayStr };
+  }
+  if (perfPeriodo === 'mes_ant') {
+    const m = mes === 1 ? 12 : mes - 1;
+    const a = mes === 1 ? ano - 1 : ano;
+    const ultimo = new Date(a, m, 0).getDate();
+    return { from: `${a}-${String(m).padStart(2,'0')}-01`, to: `${a}-${String(m).padStart(2,'0')}-${String(ultimo).padStart(2,'0')}` };
+  }
+  if (perfPeriodo === 'custom') {
+    const from = document.getElementById('perfDateFrom')?.value;
+    const to   = document.getElementById('perfDateTo')?.value;
+    if (from && to) return { from, to };
+  }
+  return { from: todayStr, to: todayStr };
+}
+
+// Gera lista de dias entre duas datas
+function getDiasRange(from, to) {
+  const dias = [];
+  const cur  = new Date(from + 'T12:00:00Z');
+  const end  = new Date(to   + 'T12:00:00Z');
+  while (cur <= end) {
+    dias.push(cur.toISOString().slice(0,10));
+    cur.setDate(cur.getDate() + 1);
+  }
+  return dias;
+}
+
+// Agrega dados de vários dias do cache, filtrando por canal
+function agregaPeriodo(dias, canalFiltro) {
+  const totais   = { faturamento:0, qtdPedidos:0 };
+  const porCanal = {};
+  const skuMap   = {};
+  const fatPorDia = {};
+
+  for (const dia of dias) {
+    const cached = dashCache['dia__' + dia];
+    if (!cached) continue;
+    const payload = cached;
+    const t = payload.totais || {};
+
+    let fatDia = 0;
+    for (const [canal, cd] of Object.entries(payload.porCanal || {})) {
+      if (canalFiltro !== 'todos' && canal !== canalFiltro) continue;
+      const c = cd;
+      fatDia += c.faturamento || 0;
+      totais.faturamento += c.faturamento || 0;
+      totais.qtdPedidos  += c.qtdPedidos  || 0;
+      if (!porCanal[canal]) porCanal[canal] = { faturamento:0, qtdPedidos:0 };
+      porCanal[canal].faturamento += c.faturamento || 0;
+      porCanal[canal].qtdPedidos  += c.qtdPedidos  || 0;
+    }
+    fatPorDia[dia] = (fatPorDia[dia] || 0) + fatDia;
+
+    for (const s of (payload.topSkus || [])) {
+      if (canalFiltro !== 'todos' && s.canal !== canalFiltro) continue;
+      const key = s.canal + '__' + s.sku;
+      if (!skuMap[key]) skuMap[key] = { sku:s.sku, canal:s.canal, qtd:0, faturamento:0 };
+      skuMap[key].qtd         += s.qtd || 0;
+      skuMap[key].faturamento += s.faturamento || 0;
+    }
+  }
+
+  const topSkus = Object.values(skuMap)
+    .sort((a,b) => b.faturamento - a.faturamento).slice(0,50);
+
+  return { totais, porCanal, fatPorDia, topSkus };
+}
+
+// Busca dias que faltam no cache e salva
+async function syncDiasMesAtual() {
+  const hoje = new Date();
+  const brt  = new Date(hoje.getTime() - 3 * 60 * 60 * 1000);
+  const ano  = brt.getFullYear();
+  const mes  = brt.getMonth() + 1;
+  const todayStr = brt.toISOString().slice(0, 10);
+
+  // Todos os dias do mês até hoje
+  const dias = getDiasRange(`${ano}-${String(mes).padStart(2,'0')}-01`, todayStr);
+  const faltam = dias.filter(d => !dashCache['dia__' + d]);
+  if (!faltam.length) return;
+
+  const msg = document.getElementById('perfSyncMsg');
+  if (msg) { msg.style.display = 'block'; }
+
+  for (let i = 0; i < faltam.length; i++) {
+    const dia = faltam[i];
+    if (msg) msg.textContent = `Sincronizando ${dia.split('-').reverse().join('/')} (${i+1}/${faltam.length})…`;
+    try {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 40000);
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/magis5-sync?acao=salvar_dia&dia=${dia}`, {
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY },
+        signal: controller.signal
+      });
+      clearTimeout(timer);
+      if (res.ok) {
+        const data = await res.json();
+        dashCache['dia__' + dia] = data;
+      }
+    } catch(e) { console.log('Skip', dia, e.name); }
+  }
+  if (msg) msg.style.display = 'none';
+  renderPerf();
+}
+
+// Carrega dias do cache do Supabase
+async function loadDiasCacheSupabase(from, to) {
+  const dias = getDiasRange(from, to);
+  const faltam = dias.filter(d => !dashCache['dia__' + d]);
+  if (!faltam.length) return;
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/magis5_cache?select=data,payload&tipo=eq.dia&data=gte.${from}&data=lte.${to}`,
+      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY } }
+    );
+    if (!res.ok) return;
+    const rows = await res.json();
+    for (const row of rows) {
+      dashCache['dia__' + row.data] = row.payload;
+    }
+  } catch(e) { console.log('Erro ao carregar dias cache:', e); }
+}
+
+async function initPerf() {
+  // Carrega dias do Supabase primeiro (rápido)
+  const { from, to } = getPerfRange();
+  await loadDiasCacheSupabase(from, to);
+  renderPerf();
+  // Sync automático do mês atual em background
+  if (perfPeriodo === 'mes' || perfPeriodo === 'hoje' || perfPeriodo === '7d') {
+    syncDiasMesAtual();
+  }
+}
+
+function renderPerf() {
+  const { from, to }    = getPerfRange();
+  const canal           = document.getElementById('perfCanal')?.value || 'todos';
+  const dias            = getDiasRange(from, to);
+  const { totais, porCanal, fatPorDia, topSkus } = agregaPeriodo(dias, canal);
+
+  // Cards
+  const melhorDia = Object.entries(fatPorDia).sort((a,b)=>b[1]-a[1])[0];
+  const ticket    = totais.qtdPedidos > 0 ? totais.faturamento / totais.qtdPedidos : 0;
+  const cards = document.getElementById('perfCards');
+  if (cards) cards.innerHTML = `
+    <div class="metric-card">
+      <div class="metric-label">Faturamento</div>
+      <div class="metric-val val-green">${totais.faturamento > 0 ? fmt(totais.faturamento) : '—'}</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Qtd Pedidos</div>
+      <div class="metric-val">${totais.qtdPedidos > 0 ? totais.qtdPedidos.toLocaleString('pt-BR') : '—'}</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Ticket Médio</div>
+      <div class="metric-val">${ticket > 0 ? fmt(ticket) : '—'}</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Melhor dia</div>
+      <div class="metric-val" style="font-size:16px">${melhorDia ? fmt(melhorDia[1]) : '—'}</div>
+      <div class="metric-sub" style="font-family:'IBM Plex Mono',monospace;font-size:10px">${melhorDia ? melhorDia[0].split('-').reverse().join('/') : ''}</div>
+    </div>`;
+
+  // Gráfico de barras por dia
+  const labels = dias.map(d => d.slice(8)); // só o dia: "01", "02"...
+  const values = dias.map(d => fatPorDia[d] || 0);
+  const bgs    = values.map((v, i) => {
+    if (dias[i] === new Date(new Date().getTime()-3*60*60*1000).toISOString().slice(0,10)) return '#1a6b3c';
+    return canal !== 'todos' ? (CANAL_CORES[canal] || '#f59e0b') : '#f59e0b';
+  });
+
+  if (chartPerf) chartPerf.destroy();
+  const ctx = document.getElementById('cPerf');
+  if (ctx) {
+    chartPerf = new Chart(ctx, {
+      type: 'bar',
+      data: { labels, datasets:[{ data:values, backgroundColor:bgs, borderRadius:4, borderSkipped:false }] },
+      options: {
+        responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: ctx => 'R$ ' + Math.round(ctx.raw).toLocaleString('pt-BR') } } },
+        scales:{
+          y:{ ticks:{color:'#8a8479', callback:v=>'R$'+(v>=1000000?(v/1000000).toFixed(1)+'M':Math.round(v/1000)+'k'), font:{size:10}}, grid:{color:'rgba(0,0,0,.06)'}, border:{display:false} },
+          x:{ ticks:{color:'#8a8479', font:{size:10}}, grid:{display:false}, border:{display:false} }
+        }
+      }
+    });
+  }
+
+  // Cards por canal
+  const canalCards = document.getElementById('perfCanalCards');
+  if (canalCards) {
+    const canaisAtivos = Object.entries(porCanal).filter(([,d]) => d.faturamento > 0).sort((a,b)=>b[1].faturamento-a[1].faturamento);
+    canalCards.innerHTML = canaisAtivos.map(([c, d]) => {
+      const cor = CANAL_CORES[c] || '#8a8479';
+      const tk  = d.qtdPedidos > 0 ? Math.round(d.faturamento / d.qtdPedidos) : 0;
+      return `<div style="background:var(--surface2);border:1.5px solid var(--border);border-top:3px solid ${cor};border-radius:6px;padding:14px 16px">
+        <div style="margin-bottom:8px">${CANAL_LOGOS[c]||c}</div>
+        <div style="font-size:18px;font-weight:700;font-family:'IBM Plex Mono',monospace">${fmt(d.faturamento)}</div>
+        <div style="font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-top:3px">${d.qtdPedidos.toLocaleString('pt-BR')} pedidos${tk?' · Ticket: '+fmt(tk):''}</div>
+      </div>`;
+    }).join('') || '<div style="color:var(--muted);font-size:12px;padding:16px;font-family:\'IBM Plex Mono\',monospace">Sem dados para o período</div>';
+  }
+
+  renderPerfSkus(topSkus);
+}
+
+function renderPerfSkus(topSkusParam) {
+  const sort    = document.getElementById('sortPerfSku')?.value || 'fat';
+  const nomes   = getSkuNomes();
+  let skus      = topSkusParam ? [...topSkusParam] : [];
   if (!skus.length) {
-    tb.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:12px">Sem SKUs para este mês</td></tr>`;
+    // Tenta pegar dos dados já carregados
+    const { from, to } = getPerfRange();
+    const canal = document.getElementById('perfCanal')?.value || 'todos';
+    const dias  = getDiasRange(from, to);
+    skus = agregaPeriodo(dias, canal).topSkus;
+  }
+  if (sort === 'qtd') skus.sort((a,b)=>b.qtd-a.qtd);
+  else skus.sort((a,b)=>b.faturamento-a.faturamento);
+
+  const tb = document.getElementById('tbPerfSkus');
+  if (!tb) return;
+  if (!skus.length) {
+    tb.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:12px">Sem dados para o período selecionado</td></tr>`;
     return;
   }
-  tb.innerHTML = '';
-  const nomes = getSkuNomes();
-
-  skus.forEach(s => {
-    const cor    = CANAL_CORES[s.canal] || '#8a8479';
-    const ticket = s.qtd > 0 ? s.faturamento / s.qtd : 0;
+  tb.innerHTML = skus.map(s => {
+    const cor     = CANAL_CORES[s.canal] || '#8a8479';
+    const ticket  = s.qtd > 0 ? s.faturamento / s.qtd : 0;
     const nomeKey = s.canal + '__' + s.sku;
-    const nomeCustom = nomes[nomeKey] || '';
-
-    tb.innerHTML += `<tr>
+    const nome    = nomes[nomeKey] || '';
+    return `<tr>
       <td style="font-weight:600;font-family:'IBM Plex Mono',monospace">${s.sku}</td>
-      <td>
-        <input
-          value="${nomeCustom}"
-          placeholder="Adicionar nome…"
-          style="border:none;background:transparent;font-size:12px;font-family:'Instrument Sans',sans-serif;color:var(--text);outline:none;width:100%;cursor:text;padding:2px 4px;border-radius:3px"
-          onfocus="this.style.background='var(--surface2)';this.style.border='1.5px solid var(--border2)'"
-          onblur="this.style.background='transparent';this.style.border='none';saveSkuNome('${nomeKey}',this.value)"
-          onkeydown="if(event.key==='Enter')this.blur()"
-          title="Clique para editar o nome do SKU"
-        >
-      </td>
-      <td>
-        <span style="display:inline-flex;align-items:center;gap:4px;background:${cor}18;color:${cor};padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">${s.canal}</span>
-      </td>
+      <td><input value="${nome}" placeholder="Adicionar nome…"
+        style="border:none;background:transparent;font-size:12px;color:var(--text);outline:none;width:100%;cursor:text;padding:2px 4px;border-radius:3px"
+        onfocus="this.style.background='var(--surface2)'"
+        onblur="this.style.background='transparent';saveSkuNome('${nomeKey}',this.value)"
+        onkeydown="if(event.key==='Enter')this.blur()"></td>
+      <td><span style="background:${cor}18;color:${cor};padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">${s.canal}</span></td>
       <td style="font-family:'IBM Plex Mono',monospace">${s.qtd.toLocaleString('pt-BR')}</td>
       <td style="font-family:'IBM Plex Mono',monospace">${fmt(s.faturamento)}</td>
       <td style="font-family:'IBM Plex Mono',monospace;color:var(--muted)">${ticket>0?fmt(ticket):'—'}</td>
     </tr>`;
-  });
+  }).join('');
 }
 
 
-// ═══════════════════════════════════════════════════════════════════
-//  CAMADA DE DADOS — Supabase com fallback para localStorage
-// ═══════════════════════════════════════════════════════════════════
 
 // ── COMUNICADOS ──
 const SOCIOS = ['Ale','Marcelo','Wissam','Lucas'];
