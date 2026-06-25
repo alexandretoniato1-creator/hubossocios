@@ -1632,11 +1632,26 @@ async function fetchDashData(mesAno) {
 
   try {
     if (isMesAtual) {
-      // 1. Lê o cache do Supabase instantaneamente
+      // 1. Lê o cache do Supabase instantaneamente (acumulado do mês)
       const resCached = await fetch(`${SUPABASE_URL}/functions/v1/magis5-sync?acao=ler&mes=${mesAno}`, {
         headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
       });
       const cached = resCached.ok ? await resCached.json() : null;
+
+      // 2. Carrega o dia de hoje no cache de dia (para o card "Faturamento hoje")
+      const hoje = new Date(new Date().getTime() - 3*60*60*1000).toISOString().slice(0,10);
+      if (!dashCache['dia__' + hoje]) {
+        try {
+          const resHoje = await fetch(
+            `${SUPABASE_URL}/rest/v1/magis5_cache?select=payload&tipo=eq.dia&data=eq.${hoje}`,
+            { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY } }
+          );
+          if (resHoje.ok) {
+            const rows = await resHoje.json();
+            if (rows && rows[0]) dashCache['dia__' + hoje] = rows[0].payload;
+          }
+        } catch(e) {}
+      }
 
       // 2. Se tem dados e não precisa de refresh, usa direto
       if (cached && cached.totais && cached.totais.qtdPedidos > 0 && !hojeNeedsRefresh()) {
@@ -1678,13 +1693,23 @@ async function atualizarHojeBackground(mesAno) {
     if (!res.ok) return;
     const data = await res.json();
     marcarHojeAtualizado();
-    // Atualiza cache e re-renderiza silenciosamente só se ainda está no mês atual
+    const hoje = new Date(new Date().getTime() - 3*60*60*1000).toISOString().slice(0,10);
+    // Salva no cache de dia para uso na aba Performance e card de hoje
+    dashCache['dia__' + hoje] = data;
+    // Atualiza cache do mês
     if (data && data.totais && currentDashMonth === mesAno) {
-      dashCache[mesAno] = data;
-      renderMetricCards(data, getDashData(MONTHS_ORDER[MONTHS_ORDER.indexOf(mesAno)-1]));
-      renderCharts(data);
-      renderEmpresas('todas', data, getDashData(MONTHS_ORDER[MONTHS_ORDER.indexOf(mesAno)-1]));
-      renderSkus(data);
+      // Re-lê o mês completo do Supabase para ter o acumulado correto
+      const resMes = await fetch(`${SUPABASE_URL}/functions/v1/magis5-sync?acao=ler&mes=${mesAno}`, {
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+      });
+      if (resMes.ok) {
+        const dataMes = await resMes.json();
+        dashCache[mesAno] = dataMes;
+      }
+      const prev = getDashData(MONTHS_ORDER[MONTHS_ORDER.indexOf(mesAno)-1]);
+      renderMetricCards(dashCache[mesAno], prev);
+      renderCharts(dashCache[mesAno]);
+      renderHojeSkus(data);
     }
   } catch(e) {
     console.error('Erro ao atualizar hoje:', e);
@@ -1803,17 +1828,20 @@ function renderMetricCards(curr, prev) {
       <div class="metric-sub">${prevLabel}</div>
     </div>`;
 
-  // Card de hoje
+  // Card de hoje — busca especificamente o dia de hoje no cache
   const hojeCard = document.getElementById('hojeCard');
   if (hojeCard) {
-    if (currentDashMonth === MES_ATUAL && curr && curr.totais) {
+    if (currentDashMonth === MES_ATUAL) {
+      const hoje = new Date(new Date().getTime() - 3*60*60*1000).toISOString().slice(0,10);
+      const hojeData = dashCache['dia__' + hoje];
+      const fatHoje = hojeData?.totais?.faturamento || 0;
+      const pedHoje = hojeData?.totais?.qtdPedidos  || 0;
       hojeCard.classList.remove('hidden');
-      document.getElementById('hojeValor').textContent   = t.faturamento ? fmt(t.faturamento) : '—';
-      document.getElementById('hojePedidos').textContent = t.qtdPedidos ? t.qtdPedidos.toLocaleString('pt-BR') : '—';
-      const ultima = curr.ultimoDia || curr.data || '';
-      document.getElementById('hojeInfo').textContent = ultima
-        ? `atualizado em ${new Date(ultima + 'T12:00:00').toLocaleDateString('pt-BR')}`
-        : 'dados de hoje';
+      document.getElementById('hojeValor').textContent   = fatHoje ? fmt(fatHoje) : '—';
+      document.getElementById('hojePedidos').textContent = pedHoje ? pedHoje.toLocaleString('pt-BR') : '—';
+      document.getElementById('hojeInfo').textContent    = hojeData
+        ? `atualizado em ${hoje.split('-').reverse().join('/')}`
+        : 'carregando…';
     } else {
       hojeCard.classList.add('hidden');
     }
