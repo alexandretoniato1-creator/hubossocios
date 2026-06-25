@@ -963,11 +963,11 @@ select.field-input{cursor:pointer}
           <button class="perf-period" onclick="setPerfPeriod(this,'custom')">Personalizado</button>
         </div>
         <div id="perfCustomRange" style="display:none;gap:6px;align-items:center">
-          <input type="date" id="perfDateFrom" class="field-input" style="padding:5px 8px;font-size:12px" onchange="renderPerf()">
+          <input type="date" id="perfDateFrom" class="field-input" style="padding:5px 8px;font-size:12px" onchange="initPerf()">
           <span style="color:var(--muted);font-size:12px">até</span>
-          <input type="date" id="perfDateTo" class="field-input" style="padding:5px 8px;font-size:12px" onchange="renderPerf()">
+          <input type="date" id="perfDateTo" class="field-input" style="padding:5px 8px;font-size:12px" onchange="initPerf()">
         </div>
-        <select id="perfCanal" class="field-input" style="padding:6px 10px;font-size:12px;margin-left:auto" onchange="renderPerf()">
+        <select id="perfCanal" class="field-input" style="padding:6px 10px;font-size:12px;margin-left:auto" onchange="initPerf()">
           <option value="todos">Todos os canais</option>
           <option value="ML">Mercado Livre</option>
           <option value="Shopee">Shopee</option>
@@ -2081,7 +2081,7 @@ function setPerfPeriod(btn, periodo) {
   perfPeriodo = periodo;
   const customRange = document.getElementById('perfCustomRange');
   if (customRange) customRange.style.display = periodo === 'custom' ? 'flex' : 'none';
-  if (periodo !== 'custom') renderPerf();
+  if (periodo !== 'custom') initPerf();
 }
 
 // Calcula range de datas com base no período selecionado
@@ -2224,11 +2224,11 @@ async function loadDiasCacheSupabase(from, to) {
 }
 
 async function initPerf() {
-  // Carrega dias do Supabase primeiro (rápido)
   const { from, to } = getPerfRange();
+  // Carrega do Supabase os dias do período selecionado
   await loadDiasCacheSupabase(from, to);
   renderPerf();
-  // Sync automático do mês atual em background
+  // Sync automático só para dias do mês atual que faltam
   if (perfPeriodo === 'mes' || perfPeriodo === 'hoje' || perfPeriodo === '7d') {
     syncDiasMesAtual();
   }
