@@ -941,14 +941,14 @@ select.field-input{cursor:pointer}
               <div class="metric-val" id="hojePedidos">—</div>
             </div>
           </div>
-          <!-- Pills de canal -->
+          <!-- Pills de canal com multi-seleção -->
           <div style="display:flex;gap:6px;flex-wrap:wrap" id="hojeCanalPills">
-            <button class="hoje-canal-pill active" onclick="filtHojeCanal(this,'todos')">Todos</button>
-            <button class="hoje-canal-pill" onclick="filtHojeCanal(this,'ML')">ML</button>
-            <button class="hoje-canal-pill" onclick="filtHojeCanal(this,'Shopee')">Shopee</button>
-            <button class="hoje-canal-pill" onclick="filtHojeCanal(this,'TikTok')">TikTok</button>
-            <button class="hoje-canal-pill" onclick="filtHojeCanal(this,'Amazon')">Amazon</button>
-            <button class="hoje-canal-pill" onclick="filtHojeCanal(this,'Magalu')">Magalu</button>
+            <button class="hoje-canal-pill active" onclick="toggleHojeCanal(this,'todos')">Todos</button>
+            <button class="hoje-canal-pill" onclick="toggleHojeCanal(this,'ML')">ML</button>
+            <button class="hoje-canal-pill" onclick="toggleHojeCanal(this,'Shopee')">Shopee</button>
+            <button class="hoje-canal-pill" onclick="toggleHojeCanal(this,'TikTok')">TikTok</button>
+            <button class="hoje-canal-pill" onclick="toggleHojeCanal(this,'Amazon')">Amazon</button>
+            <button class="hoje-canal-pill" onclick="toggleHojeCanal(this,'Magalu')">Magalu</button>
           </div>
         </div>
       </div>
@@ -981,14 +981,14 @@ select.field-input{cursor:pointer}
           <span style="color:var(--muted);font-size:12px">até</span>
           <input type="date" id="perfDateTo" class="field-input" style="padding:5px 8px;font-size:12px" onchange="initPerf()">
         </div>
-        <select id="perfCanal" class="field-input" style="padding:6px 10px;font-size:12px;margin-left:auto" onchange="initPerf()">
-          <option value="todos">Todos os canais</option>
-          <option value="ML">Mercado Livre</option>
-          <option value="Shopee">Shopee</option>
-          <option value="TikTok">TikTok</option>
-          <option value="Amazon">Amazon</option>
-          <option value="Magalu">Magalu</option>
-        </select>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-left:auto" id="perfCanalPills">
+          <button class="hoje-canal-pill active" onclick="togglePerfCanal(this,'todos')">Todos</button>
+          <button class="hoje-canal-pill" onclick="togglePerfCanal(this,'ML')">ML</button>
+          <button class="hoje-canal-pill" onclick="togglePerfCanal(this,'Shopee')">Shopee</button>
+          <button class="hoje-canal-pill" onclick="togglePerfCanal(this,'TikTok')">TikTok</button>
+          <button class="hoje-canal-pill" onclick="togglePerfCanal(this,'Amazon')">Amazon</button>
+          <button class="hoje-canal-pill" onclick="togglePerfCanal(this,'Magalu')">Magalu</button>
+        </div>
       </div>
 
       <!-- Cards de performance -->
@@ -1016,8 +1016,8 @@ select.field-input{cursor:pointer}
             <option value="qtd">Quantidade</option>
           </select>
         </div>
-        <table style="min-width:520px"><thead><tr>
-          <th>SKU</th><th>Nome</th><th>Canal</th><th>Qtd</th><th>Faturamento</th><th>Ticket Médio</th>
+        <table style="min-width:420px"><thead><tr>
+          <th>SKU</th><th>Canal</th><th>Qtd</th><th>Faturamento</th><th>Ticket Médio</th>
         </tr></thead>
         <tbody id="tbPerfSkus"></tbody></table>
       </div>
@@ -1952,7 +1952,8 @@ function mkOpts(cb){
 }
 function renderCharts(data){
   const pc = (data && data.porCanal) || {};
-  const canais = CANAIS_ORDEM.filter(c => pc[c] && pc[c].qtdPedidos > 0);
+  let canais = CANAIS_ORDEM.filter(c => pc[c] && pc[c].qtdPedidos > 0);
+  if (!hojeCanais.has('todos')) canais = canais.filter(c => hojeCanais.has(c));
   if(charts.fat) charts.fat.destroy();
   if(!canais.length) return;
   const bgs  = canais.map(c => CANAL_CORES[c] || '#8a8479');
@@ -1962,7 +1963,6 @@ function renderCharts(data){
     data:{ labels: canais, datasets:[{ data:fats, backgroundColor:bgs, borderRadius:6, borderSkipped:false }] },
     options: mkOpts(v => 'R$' + (v>=1000000 ? (v/1000000).toFixed(1)+'M' : Math.round(v/1000)+'k'))
   });
-  // Destroi gráficos antigos que não existem mais
   if(charts.ads) { charts.ads.destroy(); charts.ads = null; }
   if(charts.tacos) { charts.tacos.destroy(); charts.tacos = null; }
 }
@@ -2067,29 +2067,82 @@ function renderSkus(data){ /* movido para aba Performance */ }
 
 
 // ── SKUs DE HOJE (Visão Geral) ──
-let hojeCanal = 'todos';
+let hojeCanais = new Set(['todos']); // multi-seleção
 
-function filtHojeCanal(btn, canal) {
-  document.querySelectorAll('.hoje-canal-pill').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  hojeCanal = canal;
+function toggleHojeCanal(btn, canal) {
+  if (canal === 'todos') {
+    hojeCanais = new Set(['todos']);
+    document.querySelectorAll('#hojeCanalPills .hoje-canal-pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  } else {
+    // Remove 'todos' se estava selecionado
+    hojeCanais.delete('todos');
+    document.querySelector('#hojeCanalPills .hoje-canal-pill[onclick*="todos"]')?.classList.remove('active');
+    // Toggle este canal
+    if (hojeCanais.has(canal)) {
+      hojeCanais.delete(canal);
+      btn.classList.remove('active');
+      // Se ficou vazio, volta para todos
+      if (hojeCanais.size === 0) {
+        hojeCanais = new Set(['todos']);
+        document.querySelector('#hojeCanalPills .hoje-canal-pill[onclick*="todos"]')?.classList.add('active');
+      }
+    } else {
+      hojeCanais.add(canal);
+      btn.classList.add('active');
+    }
+  }
   const hoje = new Date(new Date().getTime() - 3*60*60*1000).toISOString().slice(0,10);
   const data = dashCache['dia__' + hoje];
-  renderHojeSkus(data);
   renderHojeCards(data);
+  renderHojeSkus(data);
   renderCharts(data);
 }
+
+// Multi-seleção de canal na Performance
+let perfCanais = new Set(['todos']);
+
+function togglePerfCanal(btn, canal) {
+  if (canal === 'todos') {
+    perfCanais = new Set(['todos']);
+    document.querySelectorAll('#perfCanalPills .hoje-canal-pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  } else {
+    perfCanais.delete('todos');
+    document.querySelector('#perfCanalPills .hoje-canal-pill[onclick*="todos"]')?.classList.remove('active');
+    if (perfCanais.has(canal)) {
+      perfCanais.delete(canal);
+      btn.classList.remove('active');
+      if (perfCanais.size === 0) {
+        perfCanais = new Set(['todos']);
+        document.querySelector('#perfCanalPills .hoje-canal-pill[onclick*="todos"]')?.classList.add('active');
+      }
+    } else {
+      perfCanais.add(canal);
+      btn.classList.add('active');
+    }
+  }
+  renderPerf();
+}
+
+function getCanaisFiltro(canaisSet) {
+  if (canaisSet.has('todos')) return 'todos';
+  return [...canaisSet];
+}
+
 
 function renderHojeCards(data) {
   const pc  = (data && data.porCanal) || {};
   const tot = (data && data.totais)   || {};
   let fat = 0, ped = 0;
-  if (hojeCanal === 'todos') {
-    fat = tot.faturamento  || 0;
-    ped = tot.qtdPedidos   || 0;
+  if (hojeCanais.has('todos')) {
+    fat = tot.faturamento || 0;
+    ped = tot.qtdPedidos  || 0;
   } else {
-    fat = pc[hojeCanal]?.faturamento || 0;
-    ped = pc[hojeCanal]?.qtdPedidos  || 0;
+    for (const c of hojeCanais) {
+      fat += pc[c]?.faturamento || 0;
+      ped += pc[c]?.qtdPedidos  || 0;
+    }
   }
   const hoje = new Date(new Date().getTime() - 3*60*60*1000).toISOString().slice(0,10);
   const el = document.getElementById('hojeValor');
@@ -2104,7 +2157,7 @@ function renderHojeSkus(data) {
   const tb = document.getElementById('tbHojeSkus');
   if (!tb) return;
   let skus = (data && data.topSkus) ? [...data.topSkus] : [];
-  if (hojeCanal !== 'todos') skus = skus.filter(s => s.canal === hojeCanal);
+  if (!hojeCanais.has('todos')) skus = skus.filter(s => hojeCanais.has(s.canal));
   if (!skus.length) {
     tb.innerHTML = `<tr><td colspan="4" style="text-align:center;padding:20px;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:12px">Sem dados para hoje</td></tr>`;
     return;
@@ -2178,22 +2231,23 @@ function getDiasRange(from, to) {
   return dias;
 }
 
-// Agrega dados de vários dias do cache, filtrando por canal
-function agregaPeriodo(dias, canalFiltro) {
+// Agrega dados de vários dias do cache, filtrando por canal(is)
+function agregaPeriodo(dias, canaisFiltro) {
+  // canaisFiltro pode ser 'todos', string simples, ou Set
+  const isAll = canaisFiltro === 'todos' || (canaisFiltro instanceof Set && canaisFiltro.has('todos'));
+  const canaisSet = canaisFiltro instanceof Set ? canaisFiltro : (canaisFiltro === 'todos' ? null : new Set([canaisFiltro]));
+
   const totais   = { faturamento:0, qtdPedidos:0 };
   const porCanal = {};
   const skuMap   = {};
   const fatPorDia = {};
 
   for (const dia of dias) {
-    const cached = dashCache['dia__' + dia];
-    if (!cached) continue;
-    const payload = cached;
-    const t = payload.totais || {};
-
+    const payload = dashCache['dia__' + dia];
+    if (!payload) continue;
     let fatDia = 0;
     for (const [canal, cd] of Object.entries(payload.porCanal || {})) {
-      if (canalFiltro !== 'todos' && canal !== canalFiltro) continue;
+      if (!isAll && !canaisSet.has(canal)) continue;
       const c = cd;
       fatDia += c.faturamento || 0;
       totais.faturamento += c.faturamento || 0;
@@ -2203,19 +2257,15 @@ function agregaPeriodo(dias, canalFiltro) {
       porCanal[canal].qtdPedidos  += c.qtdPedidos  || 0;
     }
     fatPorDia[dia] = (fatPorDia[dia] || 0) + fatDia;
-
     for (const s of (payload.topSkus || [])) {
-      if (canalFiltro !== 'todos' && s.canal !== canalFiltro) continue;
+      if (!isAll && !canaisSet.has(s.canal)) continue;
       const key = s.canal + '__' + s.sku;
       if (!skuMap[key]) skuMap[key] = { sku:s.sku, canal:s.canal, qtd:0, faturamento:0 };
       skuMap[key].qtd         += s.qtd || 0;
       skuMap[key].faturamento += s.faturamento || 0;
     }
   }
-
-  const topSkus = Object.values(skuMap)
-    .sort((a,b) => b.faturamento - a.faturamento).slice(0,50);
-
+  const topSkus = Object.values(skuMap).sort((a,b) => b.faturamento - a.faturamento).slice(0,50);
   return { totais, porCanal, fatPorDia, topSkus };
 }
 
@@ -2290,12 +2340,11 @@ async function initPerf() {
 }
 
 function renderPerf() {
-  const { from, to }    = getPerfRange();
-  const canal           = document.getElementById('perfCanal')?.value || 'todos';
-  const dias            = getDiasRange(from, to);
-  const { totais, porCanal, fatPorDia, topSkus } = agregaPeriodo(dias, canal);
+  const { from, to } = getPerfRange();
+  const dias = getDiasRange(from, to);
+  const { totais, porCanal, fatPorDia, topSkus } = agregaPeriodo(dias, perfCanais);
 
-  // Cards
+  // Cards de métricas
   const melhorDia = Object.entries(fatPorDia).sort((a,b)=>b[1]-a[1])[0];
   const ticket    = totais.qtdPedidos > 0 ? totais.faturamento / totais.qtdPedidos : 0;
   const cards = document.getElementById('perfCards');
@@ -2319,12 +2368,13 @@ function renderPerf() {
     </div>`;
 
   // Gráfico de barras por dia
-  const labels = dias.map(d => d.slice(8)); // só o dia: "01", "02"...
+  const hoje = new Date(new Date().getTime()-3*60*60*1000).toISOString().slice(0,10);
+  const labels = dias.map(d => d.slice(8));
   const values = dias.map(d => fatPorDia[d] || 0);
-  const bgs    = values.map((v, i) => {
-    if (dias[i] === new Date(new Date().getTime()-3*60*60*1000).toISOString().slice(0,10)) return '#1a6b3c';
-    return canal !== 'todos' ? (CANAL_CORES[canal] || '#f59e0b') : '#f59e0b';
-  });
+  const primaryColor = perfCanais.size === 1 && !perfCanais.has('todos')
+    ? (CANAL_CORES[[...perfCanais][0]] || '#f59e0b')
+    : '#f59e0b';
+  const bgs = values.map((v, i) => dias[i] === hoje ? '#1a6b3c' : primaryColor);
 
   if (chartPerf) chartPerf.destroy();
   const ctx = document.getElementById('cPerf');
@@ -2343,14 +2393,19 @@ function renderPerf() {
     });
   }
 
-  // Cards por canal
+  // Cards por canal — clicáveis para filtrar SKUs
   const canalCards = document.getElementById('perfCanalCards');
   if (canalCards) {
-    const canaisAtivos = Object.entries(porCanal).filter(([,d]) => d.faturamento > 0).sort((a,b)=>b[1].faturamento-a[1].faturamento);
+    const canaisAtivos = Object.entries(porCanal)
+      .filter(([,d]) => d.faturamento > 0)
+      .sort((a,b)=>b[1].faturamento-a[1].faturamento);
     canalCards.innerHTML = canaisAtivos.map(([c, d]) => {
-      const cor = CANAL_CORES[c] || '#8a8479';
-      const tk  = d.qtdPedidos > 0 ? Math.round(d.faturamento / d.qtdPedidos) : 0;
-      return `<div style="background:var(--surface2);border:1.5px solid var(--border);border-top:3px solid ${cor};border-radius:6px;padding:14px 16px">
+      const cor     = CANAL_CORES[c] || '#8a8479';
+      const tk      = d.qtdPedidos > 0 ? Math.round(d.faturamento / d.qtdPedidos) : 0;
+      const isActive = perfCanais.has('todos') || perfCanais.has(c);
+      const border  = isActive ? `border:1.5px solid ${cor};` : 'border:1.5px solid var(--border);opacity:.5;';
+      return `<div onclick="togglePerfCanal(document.querySelector('#perfCanalPills .hoje-canal-pill[onclick*=\\'${c}\\']'),'${c}')"
+        style="background:var(--surface2);${border}border-top:3px solid ${cor};border-radius:6px;padding:14px 16px;cursor:pointer;transition:all .15s">
         <div style="margin-bottom:8px">${CANAL_LOGOS[c]||c}</div>
         <div style="font-size:18px;font-weight:700;font-family:'IBM Plex Mono',monospace">${fmt(d.faturamento)}</div>
         <div style="font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-top:3px">${d.qtdPedidos.toLocaleString('pt-BR')} pedidos${tk?' · Ticket: '+fmt(tk):''}</div>
@@ -2378,21 +2433,14 @@ function renderPerfSkus(topSkusParam) {
   const tb = document.getElementById('tbPerfSkus');
   if (!tb) return;
   if (!skus.length) {
-    tb.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:12px">Sem dados para o período selecionado</td></tr>`;
+    tb.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:12px">Sem dados para o período selecionado</td></tr>`;
     return;
   }
   tb.innerHTML = skus.map(s => {
-    const cor     = CANAL_CORES[s.canal] || '#8a8479';
-    const ticket  = s.qtd > 0 ? s.faturamento / s.qtd : 0;
-    const nomeKey = s.canal + '__' + s.sku;
-    const nome    = nomes[nomeKey] || '';
+    const cor    = CANAL_CORES[s.canal] || '#8a8479';
+    const ticket = s.qtd > 0 ? s.faturamento / s.qtd : 0;
     return `<tr>
       <td style="font-weight:600;font-family:'IBM Plex Mono',monospace">${s.sku}</td>
-      <td><input value="${nome}" placeholder="Adicionar nome…"
-        style="border:none;background:transparent;font-size:12px;color:var(--text);outline:none;width:100%;cursor:text;padding:2px 4px;border-radius:3px"
-        onfocus="this.style.background='var(--surface2)'"
-        onblur="this.style.background='transparent';saveSkuNome('${nomeKey}',this.value)"
-        onkeydown="if(event.key==='Enter')this.blur()"></td>
       <td><span style="background:${cor}18;color:${cor};padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">${s.canal}</span></td>
       <td style="font-family:'IBM Plex Mono',monospace">${s.qtd.toLocaleString('pt-BR')}</td>
       <td style="font-family:'IBM Plex Mono',monospace">${fmt(s.faturamento)}</td>
