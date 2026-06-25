@@ -1017,7 +1017,7 @@ select.field-input{cursor:pointer}
           </select>
         </div>
         <table style="min-width:420px"><thead><tr>
-          <th>SKU</th><th>Canal</th><th>Qtd</th><th>Faturamento</th><th>Ticket Médio</th>
+          <th>SKU</th><th>Canais</th><th>Qtd</th><th>Faturamento</th><th>Ticket Médio</th>
         </tr></thead>
         <tbody id="tbPerfSkus"></tbody></table>
       </div>
@@ -2099,27 +2099,31 @@ function toggleHojeCanal(btn, canal) {
   renderCharts(data);
 }
 
-// Multi-seleção de canal na Performance
 let perfCanais = new Set(['todos']);
 
 function togglePerfCanal(btn, canal) {
+  if (!btn) {
+    // Chamado pelo clique no card sem botão correspondente — busca o botão
+    btn = document.querySelector(`#perfCanalPills .hoje-canal-pill[onclick*="'${canal}'"]`);
+  }
   if (canal === 'todos') {
     perfCanais = new Set(['todos']);
     document.querySelectorAll('#perfCanalPills .hoje-canal-pill').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+    if (btn) btn.classList.add('active');
   } else {
+    // Remove 'todos' se estava selecionado
     perfCanais.delete('todos');
-    document.querySelector('#perfCanalPills .hoje-canal-pill[onclick*="todos"]')?.classList.remove('active');
+    document.querySelector('#perfCanalPills .hoje-canal-pill[onclick*="\'todos\'"]')?.classList.remove('active');
     if (perfCanais.has(canal)) {
       perfCanais.delete(canal);
-      btn.classList.remove('active');
+      if (btn) btn.classList.remove('active');
       if (perfCanais.size === 0) {
         perfCanais = new Set(['todos']);
-        document.querySelector('#perfCanalPills .hoje-canal-pill[onclick*="todos"]')?.classList.add('active');
+        document.querySelector('#perfCanalPills .hoje-canal-pill[onclick*="\'todos\'"]')?.classList.add('active');
       }
     } else {
       perfCanais.add(canal);
-      btn.classList.add('active');
+      if (btn) btn.classList.add('active');
     }
   }
   renderPerf();
@@ -2388,6 +2392,23 @@ function renderPerf() {
         scales:{
           y:{ ticks:{color:'#8a8479', callback:v=>'R$'+(v>=1000000?(v/1000000).toFixed(1)+'M':Math.round(v/1000)+'k'), font:{size:10}}, grid:{color:'rgba(0,0,0,.06)'}, border:{display:false} },
           x:{ ticks:{color:'#8a8479', font:{size:10}}, grid:{display:false}, border:{display:false} }
+        },
+        onClick: (e, elements) => {
+          if (!elements.length) return;
+          const idx = elements[0].index;
+          const diaClicado = dias[idx];
+          if (!diaClicado) return;
+          // Seta filtro para dia específico
+          perfPeriodo = 'custom';
+          document.querySelectorAll('.perf-period').forEach(b => b.classList.remove('active'));
+          document.querySelector('.perf-period[onclick*="custom"]')?.classList.add('active');
+          const customRange = document.getElementById('perfCustomRange');
+          if (customRange) customRange.style.display = 'flex';
+          const df = document.getElementById('perfDateFrom');
+          const dt = document.getElementById('perfDateTo');
+          if (df) df.value = diaClicado;
+          if (dt) dt.value = diaClicado;
+          initPerf();
         }
       }
     });
@@ -2417,36 +2438,83 @@ function renderPerf() {
 }
 
 function renderPerfSkus(topSkusParam) {
-  const sort    = document.getElementById('sortPerfSku')?.value || 'fat';
-  const nomes   = getSkuNomes();
-  let skus      = topSkusParam ? [...topSkusParam] : [];
-  if (!skus.length) {
-    // Tenta pegar dos dados já carregados
-    const { from, to } = getPerfRange();
-    const canal = document.getElementById('perfCanal')?.value || 'todos';
-    const dias  = getDiasRange(from, to);
-    skus = agregaPeriodo(dias, canal).topSkus;
-  }
-  if (sort === 'qtd') skus.sort((a,b)=>b.qtd-a.qtd);
-  else skus.sort((a,b)=>b.faturamento-a.faturamento);
-
-  const tb = document.getElementById('tbPerfSkus');
+  const sort  = document.getElementById('sortPerfSku')?.value || 'fat';
+  const tb    = document.getElementById('tbPerfSkus');
   if (!tb) return;
+
+  // Agrupa por SKU (consolida todos os canais)
+  const skuConsolidado = {};
+  const skuPorCanal    = {}; // sku -> [{ canal, qtd, faturamento }]
+
+  let skusFonte = topSkusParam || [];
+  if (!skusFonte.length) {
+    const { from, to } = getPerfRange();
+    skusFonte = agregaPeriodo(getDiasRange(from, to), perfCanais).topSkus;
+  }
+
+  for (const s of skusFonte) {
+    if (!skuConsolidado[s.sku]) {
+      skuConsolidado[s.sku] = { sku: s.sku, qtd: 0, faturamento: 0 };
+      skuPorCanal[s.sku]    = [];
+    }
+    skuConsolidado[s.sku].qtd         += s.qtd || 0;
+    skuConsolidado[s.sku].faturamento += s.faturamento || 0;
+    skuPorCanal[s.sku].push({ canal: s.canal, qtd: s.qtd, faturamento: s.faturamento });
+  }
+
+  let skus = Object.values(skuConsolidado);
+  if (sort === 'qtd') skus.sort((a,b) => b.qtd - a.qtd);
+  else skus.sort((a,b) => b.faturamento - a.faturamento);
+
   if (!skus.length) {
-    tb.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:12px">Sem dados para o período selecionado</td></tr>`;
+    tb.innerHTML = `<tr><td colspan="4" style="text-align:center;padding:24px;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:12px">Sem dados para o período selecionado</td></tr>`;
     return;
   }
-  tb.innerHTML = skus.map(s => {
-    const cor    = CANAL_CORES[s.canal] || '#8a8479';
-    const ticket = s.qtd > 0 ? s.faturamento / s.qtd : 0;
-    return `<tr>
-      <td style="font-weight:600;font-family:'IBM Plex Mono',monospace">${s.sku}</td>
-      <td><span style="background:${cor}18;color:${cor};padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">${s.canal}</span></td>
+
+  tb.innerHTML = skus.map((s, idx) => {
+    const ticket  = s.qtd > 0 ? s.faturamento / s.qtd : 0;
+    const canais  = skuPorCanal[s.sku] || [];
+    const multiCanal = canais.length > 1;
+    // Badges dos canais ativos no SKU
+    const canalBadges = canais.map(c => {
+      const cor = CANAL_CORES[c.canal] || '#8a8479';
+      return `<span style="background:${cor}18;color:${cor};padding:1px 6px;border-radius:8px;font-size:10px;font-weight:600;margin-right:3px">${c.canal}</span>`;
+    }).join('');
+
+    const detalheRows = canais.map(c => {
+      const cor = CANAL_CORES[c.canal] || '#8a8479';
+      const tk  = c.qtd > 0 ? c.faturamento / c.qtd : 0;
+      return `<tr id="detail-${idx}-${c.canal}" class="sku-detail-row" style="background:var(--surface2);display:none">
+        <td style="padding-left:32px;color:${cor};font-size:11px;font-weight:600">↳ ${c.canal}</td>
+        <td style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted)">${c.qtd.toLocaleString('pt-BR')}</td>
+        <td style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted)">${fmt(c.faturamento)}</td>
+        <td style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted)">${tk>0?fmt(tk):'—'}</td>
+      </tr>`;
+    }).join('');
+
+    return `<tr style="cursor:${multiCanal?'pointer':'default'}" onclick="${multiCanal?`toggleSkuDetalhe(${idx},${canais.length})`:''}">
+      <td style="font-weight:600;font-family:'IBM Plex Mono',monospace">
+        ${multiCanal?`<span style="font-size:10px;color:var(--muted);margin-right:4px" id="chevron-${idx}">▶</span>`:''}${s.sku}
+      </td>
+      <td>${canalBadges}</td>
       <td style="font-family:'IBM Plex Mono',monospace">${s.qtd.toLocaleString('pt-BR')}</td>
       <td style="font-family:'IBM Plex Mono',monospace">${fmt(s.faturamento)}</td>
       <td style="font-family:'IBM Plex Mono',monospace;color:var(--muted)">${ticket>0?fmt(ticket):'—'}</td>
-    </tr>`;
+    </tr>${detalheRows}`;
   }).join('');
+}
+
+function toggleSkuDetalhe(idx, qtdCanais) {
+  let algumAberto = false;
+  // Verifica estado atual
+  const firstRow = document.getElementById(`detail-${idx}-${document.querySelectorAll(`[id^="detail-${idx}-"]`)[0]?.id.split('-').slice(2).join('-')}`);
+  if (firstRow) algumAberto = firstRow.style.display !== 'none';
+  // Toggling
+  document.querySelectorAll(`[id^="detail-${idx}-"]`).forEach(r => {
+    r.style.display = algumAberto ? 'none' : '';
+  });
+  const chevron = document.getElementById(`chevron-${idx}`);
+  if (chevron) chevron.textContent = algumAberto ? '▶' : '▼';
 }
 
 
