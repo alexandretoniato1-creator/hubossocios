@@ -1747,12 +1747,24 @@ async function processarHistoricoSequencial() {
 
   if (!faltam.length) return;
 
+  // Garante que só processa dias completamente fechados em BRT
+  // Um dia fecha às 03:00 UTC do dia seguinte (= meia-noite BRT)
+  const agora   = new Date();
+  const horaUTC = agora.getUTCHours();
+  const brt     = new Date(agora.getTime() - 3 * 60 * 60 * 1000);
+  const hoje    = brt.toISOString().slice(0, 10);
+  const ontem   = new Date(brt.getTime() - 86400000).toISOString().slice(0, 10);
+  // Se ainda não passou das 03:00 UTC, ontem ainda não fechou
+  const ultimoFechado = horaUTC < 3 ? new Date(brt.getTime() - 2*86400000).toISOString().slice(0,10) : ontem;
+  faltam = faltam.filter(d => d <= ultimoFechado);
+
+  if (!faltam.length) return;
+
   const total = faltam.length;
   for (let i = 0; i < total; i++) {
     const dia = faltam[i];
     showHistoricoProgress(total, i, dia);
     try {
-      // Timeout de 40s por dia — se travar, pula e continua
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), 40000);
       await fetch(`${SUPABASE_URL}/functions/v1/magis5-sync?acao=salvar_dia&dia=${dia}`, {
@@ -1762,7 +1774,6 @@ async function processarHistoricoSequencial() {
       clearTimeout(timer);
       delete dashCache[dia.slice(0,7)];
     } catch(e) {
-      // Timeout ou erro: pula esse dia silenciosamente, será tentado na próxima abertura
       console.log(`Pulando ${dia}:`, e.name === 'AbortError' ? 'timeout' : e.message);
     }
   }
