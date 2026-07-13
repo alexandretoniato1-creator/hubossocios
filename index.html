@@ -2536,13 +2536,11 @@ function renderPerfSkus(topSkusParam) {
 
   // Dados de ontem para comparação
   const ontemTopSkus = perfComparacaoData?.ontem?.topSkus || [];
-  const ontemSkuMap: Record<string,any> = {};
+  const ontemSkuMap = {};
   for (const s of ontemTopSkus) {
-    // chave consolidada (só sku)
     if (!ontemSkuMap['_'+s.sku]) ontemSkuMap['_'+s.sku] = { qtd:0, faturamento:0 };
     ontemSkuMap['_'+s.sku].qtd         += s.qtd||0;
     ontemSkuMap['_'+s.sku].faturamento += s.faturamento||0;
-    // chave por canal
     ontemSkuMap[s.canal+'__'+s.sku] = s;
   }
 
@@ -2553,8 +2551,8 @@ function renderPerfSkus(topSkusParam) {
     skusFonte = agregaPeriodo(getDiasRange(from, to), perfCanais).topSkus;
   }
 
-  const skuConsolidado: Record<string,any> = {};
-  const skuPorCanal:    Record<string,any[]> = {};
+  const skuConsolidado = {};
+  const skuPorCanal    = {};
 
   for (const s of skusFonte) {
     if (!skuConsolidado[s.sku]) {
