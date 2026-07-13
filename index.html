@@ -1630,7 +1630,7 @@ function showSync(saving=true) {
 
 // ── DADOS DA API MAGIS5 — sistema com cache ──
 const MES_ATUAL = new Date().toISOString().slice(0, 7);
-const HOJE_TTL_MS = 30 * 60 * 1000; // 30 minutos
+const HOJE_TTL_MS = 5 * 60 * 1000; // 5 minutos
 const HOJE_LS_KEY = 'hub_hoje_updated_at';
 
 function hojeNeedsRefresh() {
@@ -2332,7 +2332,6 @@ async function syncDiasMesAtual() {
   renderPerf();
 }
 
-// Carrega dias do cache do Supabase
 async function loadDiasCacheSupabase(from, to) {
   const dias = getDiasRange(from, to);
   const faltam = dias.filter(d => !dashCache['dia__' + d]);
@@ -2344,9 +2343,7 @@ async function loadDiasCacheSupabase(from, to) {
     );
     if (!res.ok) return;
     const rows = await res.json();
-    for (const row of rows) {
-      dashCache['dia__' + row.data] = row.payload;
-    }
+    for (const row of rows) dashCache['dia__' + row.data] = row.payload;
   } catch(e) { console.log('Erro ao carregar dias cache:', e); }
 }
 
@@ -2355,30 +2352,45 @@ async function initPerf() {
   const { from, to } = getPerfRange();
 
   if (perfPeriodo === 'hoje') {
-    // Busca hoje + ontem até o mesmo horário para comparação
-    try {
-      const res = await fetch(`${SUPABASE_URL}/functions/v1/magis5-sync?acao=ate_agora`, {
-        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
-      });
-      if (res.ok) {
-        const data = await res.json();
-        // Salva hoje no dashCache
-        if (data.hoje) {
-          dashCache['dia__' + data.hoje.data] = data.hoje;
-        }
-        perfComparacaoData = data;
+    const agora = new Date();
+    const brt   = new Date(agora.getTime() - 3*60*60*1000);
+    const hoje  = brt.toISOString().slice(0,10);
+    const ontem = new Date(brt.getTime() - 86400000).toISOString().slice(0,10);
+
+    // 1. Mostra cache imediatamente se tiver
+    await loadDiasCacheSupabase(hoje, hoje);
+    await loadDiasCacheSupabase(ontem, ontem);
+    if (dashCache['dia__' + hoje] || dashCache['dia__' + ontem]) {
+      // Monta comparação a partir do cache para exibir rápido
+      const cacheHoje  = dashCache['dia__' + hoje];
+      const cacheOntem = dashCache['dia__' + ontem];
+      if (cacheHoje || cacheOntem) {
+        const horarioRef = brt.toTimeString().slice(0,5);
+        perfComparacaoData = {
+          hoje:  { data: hoje,  horarioRef, ...cacheHoje  },
+          ontem: { data: ontem, horarioRef, ...cacheOntem },
+          _fromCache: true
+        };
+        renderPerf();
       }
-    } catch(e) { console.log('Erro ate_agora:', e); }
-    renderPerf();
+    }
+
+    // 2. Atualiza hoje da API em background
+    fetch(`${SUPABASE_URL}/functions/v1/magis5-sync?acao=ate_agora`, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+    }).then(res => res.ok ? res.json() : null).then(data => {
+      if (!data) return;
+      if (data.hoje) dashCache['dia__' + data.hoje.data] = data.hoje;
+      perfComparacaoData = data;
+      renderPerf(); // atualiza silenciosamente com dados frescos
+    }).catch(e => console.log('Erro background ate_agora:', e));
     return;
   }
 
-  // Para outros períodos: carrega cache do Supabase
   await loadDiasCacheSupabase(from, to);
   renderPerf();
   if (perfPeriodo === 'mes' || perfPeriodo === '7d') syncDiasMesAtual();
   else if (perfPeriodo === 'ontem') {
-    // Garante que ontem está no cache
     const brt   = new Date(new Date().getTime() - 3*60*60*1000);
     const ontem = new Date(brt.getTime() - 86400000).toISOString().slice(0,10);
     if (!dashCache['dia__' + ontem]) syncDiasMesAtual();
