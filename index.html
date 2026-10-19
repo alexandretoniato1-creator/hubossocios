@@ -73,6 +73,22 @@ body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--t
 .login-btn:hover{opacity:.85}
 .login-err{color:var(--red);font-size:12px;margin-top:10px;display:none;font-family:'IBM Plex Mono',monospace}
 
+/* ── USUÁRIO / ADMIN ── */
+.user-box{display:flex;align-items:center;gap:10px;padding:12px 16px;border-top:1px solid rgba(255,255,255,.08)}
+.user-avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#fff;flex-shrink:0}
+.user-name{font-size:13px;font-weight:600;color:var(--bg);line-height:1.1}
+.user-role{font-size:10px;color:rgba(245,243,238,.5);font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.06em}
+.user-link{background:none;border:none;color:rgba(245,243,238,.55);font-size:11px;cursor:pointer;padding:0;font-family:'IBM Plex Mono',monospace;text-decoration:underline}
+.user-link:hover{color:var(--bg)}
+.hub-modal{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:900;display:flex;align-items:center;justify-content:center;padding:20px}
+.hub-modal-box{background:var(--bg);border-radius:6px;width:100%;max-width:420px;padding:28px;box-shadow:0 8px 40px rgba(0,0,0,.3)}
+.hub-modal-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;letter-spacing:-.02em;margin-bottom:6px}
+.hub-modal-sub{font-size:12px;color:var(--muted);margin-bottom:18px;font-family:'IBM Plex Mono',monospace}
+.aba-chip{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border:1.5px solid var(--border);border-radius:14px;font-size:11px;cursor:pointer;user-select:none;margin:2px;font-family:'IBM Plex Mono',monospace;color:var(--muted)}
+.aba-chip.on{background:var(--text);color:var(--bg);border-color:var(--text)}
+.usr-row td{vertical-align:middle}
+.post-avatar.alheio{cursor:default;opacity:.85}
+
 /* ── APP ── */
 #app{display:none;min-height:100vh}
 
@@ -847,10 +863,12 @@ select.field-input{cursor:pointer}
   <div class="login-box">
     <div class="login-logo">Hub Os Sócios</div>
     <div class="login-sub">// acesso restrito</div>
-    <label class="login-label">Senha de acesso</label>
-    <input class="login-input" type="password" id="pwdInput" placeholder="••••••••">
+    <label class="login-label">Usuário</label>
+    <input class="login-input" type="text" id="userInput" placeholder="ex: ale" autocomplete="username" autocapitalize="none" spellcheck="false" style="margin-bottom:16px">
+    <label class="login-label">Senha</label>
+    <input class="login-input" type="password" id="pwdInput" placeholder="••••••••" autocomplete="current-password">
     <button class="login-btn" id="loginBtn" onclick="doLogin()">Entrar</button>
-    <div class="login-err" id="loginErr">Senha incorreta. Tente novamente.</div>
+    <div class="login-err" id="loginErr">Usuário ou senha incorretos.</div>
   </div>
 </div>
 
@@ -871,13 +889,14 @@ select.field-input{cursor:pointer}
 <div class="sidebar" id="sidebar">
   <div class="sidebar-logo">Hub Os Sócios<span>PAINEL INTERNO</span></div>
   <nav class="nav">
-    <div class="nav-item active" onclick="goPage('dashboard')"><span class="nav-icon">◈</span> Dashboard</div>
-    <div class="nav-item" onclick="goPage('comunicados')"><span class="nav-icon">◉</span> Comunicados</div>
-    <div class="nav-item" onclick="goPage('planilhas')"><span class="nav-icon">◧</span> Planilhas</div>
-    <div class="nav-item" onclick="goPage('metas')"><span class="nav-icon">◎</span> Metas</div>
-    <div class="nav-item" onclick="goPage('desempenho')"><span class="nav-icon">◑</span> Desempenho</div>
-    <div class="nav-item" onclick="goPage('reunioes')"><span class="nav-icon">◷</span> Reuniões</div>
-    <div class="nav-item" onclick="goPage('pipeline')"><span class="nav-icon">◫</span> Pipeline</div>
+    <div class="nav-item active" data-aba="dashboard" onclick="goPage('dashboard')"><span class="nav-icon">◈</span> Dashboard</div>
+    <div class="nav-item" data-aba="comunicados" onclick="goPage('comunicados')"><span class="nav-icon">◉</span> Comunicados</div>
+    <div class="nav-item" data-aba="planilhas" onclick="goPage('planilhas')"><span class="nav-icon">◧</span> Planilhas</div>
+    <div class="nav-item" data-aba="metas" onclick="goPage('metas')"><span class="nav-icon">◎</span> Metas</div>
+    <div class="nav-item" data-aba="desempenho" onclick="goPage('desempenho')"><span class="nav-icon">◑</span> Desempenho</div>
+    <div class="nav-item" data-aba="reunioes" onclick="goPage('reunioes')"><span class="nav-icon">◷</span> Reuniões</div>
+    <div class="nav-item" data-aba="pipeline" onclick="goPage('pipeline')"><span class="nav-icon">◫</span> Pipeline</div>
+    <div class="nav-item hidden" data-aba="usuarios" id="navUsuarios" onclick="goPage('usuarios')"><span class="nav-icon">◐</span> Usuários</div>
   </nav>
   <div style="padding:8px 16px;border-top:1px solid rgba(255,255,255,.08)">
     <button class="notif-btn" id="notifBtn" onclick="toggleNotifPanel()" title="Notificações" style="width:100%;justify-content:flex-start;gap:10px;padding:10px 8px;margin:0;font-size:13px;font-weight:500">
@@ -892,7 +911,15 @@ select.field-input{cursor:pointer}
       <span class="sync-label" id="syncLabel">inicializando</span>
     </div>
     <div class="sidebar-date" id="sideDate"></div>
-    <button class="logout-btn" onclick="doLogout()">Sair →</button>
+  </div>
+  <div class="user-box">
+    <div class="user-avatar" id="meAvatar">?</div>
+    <div style="flex:1;min-width:0">
+      <div class="user-name" id="meNome">—</div>
+      <div class="user-role" id="meRole"></div>
+      <button class="user-link" onclick="abrirTrocaSenha(false)">trocar senha</button>
+    </div>
+    <button class="logout-btn" onclick="doLogout()" style="margin:0">Sair →</button>
   </div>
 </div>
 
@@ -900,6 +927,42 @@ select.field-input{cursor:pointer}
 <div class="main">
 
   <!-- DASHBOARD -->
+  <!-- USUÁRIOS (admin) -->
+  <div id="page-usuarios" class="hidden fade-in">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Usuários</div>
+        <div class="page-sub">// logins individuais · abas liberadas por pessoa</div>
+      </div>
+    </div>
+    <div class="box">
+      <div class="box-title" style="margin-bottom:14px">Novo usuário</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;align-items:end">
+        <div class="field-group"><span class="field-label">Nome</span><input class="field-input" id="nuNome" placeholder="ex: Juliana"></div>
+        <div class="field-group"><span class="field-label">Usuário</span><input class="field-input" id="nuUser" placeholder="ex: juliana.rh" autocapitalize="none"></div>
+        <div class="field-group"><span class="field-label">Senha temporária</span><input class="field-input" id="nuSenha" placeholder="mín. 6 caracteres"></div>
+        <div class="field-group"><span class="field-label">Tipo</span>
+          <select class="field-input" id="nuTipo" onchange="nuTipoChange()"><option value="gerente">Gerente</option><option value="socio">Sócio</option></select>
+        </div>
+        <div class="field-group"><span class="field-label">Cor</span><input class="field-input" type="color" id="nuCor" value="#64748b" style="height:38px;padding:3px"></div>
+      </div>
+      <div style="margin-top:12px">
+        <span class="field-label">Abas liberadas</span>
+        <div id="nuAbas" style="margin-top:6px"></div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-top:14px">
+        <button class="btn btn-primary" onclick="criarUsuario()">Criar usuário</button>
+      </div>
+      <div id="nuMsg" style="font-size:12px;font-family:'IBM Plex Mono',monospace;margin-top:8px"></div>
+    </div>
+    <div class="box" style="overflow-x:auto">
+      <div class="box-title" style="margin-bottom:10px">Usuários cadastrados</div>
+      <table style="min-width:760px"><thead><tr>
+        <th>Nome</th><th>Usuário</th><th>Tipo</th><th>Abas liberadas</th><th>Status</th><th></th>
+      </tr></thead><tbody id="tbUsuarios"></tbody></table>
+    </div>
+  </div>
+
   <div id="page-dashboard" class="fade-in">
     <div class="page-header" style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px">
       <div>
@@ -921,48 +984,26 @@ select.field-input{cursor:pointer}
 
 
     <div class="tabs">
-      <button class="tab-btn active" onclick="dTab(this,'dVisao')">Visão geral</button>
+      <button class="tab-btn active" onclick="dTab(this,'dVisao')">Resumo</button>
       <button class="tab-btn" onclick="dTab(this,'dPerf')">Performance</button>
     </div>
 
-    <!-- VISÃO GERAL -->
+    <!-- RESUMO -->
     <div id="dVisao">
-      <!-- Card de hoje com pills de canal -->
-      <div style="margin-bottom:16px">
-        <div class="box" style="border-left:3px solid var(--green);padding:16px 22px 12px">
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:14px">
-            <div>
-              <div class="metric-label" style="margin-bottom:4px">Faturamento hoje</div>
-              <div class="metric-val val-green" id="hojeValor">—</div>
-              <div style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-top:2px" id="hojeInfo"></div>
-            </div>
-            <div style="text-align:right">
-              <div class="metric-label" style="margin-bottom:4px">Pedidos hoje</div>
-              <div class="metric-val" id="hojePedidos">—</div>
-            </div>
-          </div>
-          <!-- Pills de canal com multi-seleção -->
-          <div style="display:flex;gap:6px;flex-wrap:wrap" id="hojeCanalPills">
-            <button class="hoje-canal-pill active" onclick="toggleHojeCanal(this,'todos')">Todos</button>
-            <button class="hoje-canal-pill" onclick="toggleHojeCanal(this,'ML')">ML</button>
-            <button class="hoje-canal-pill" onclick="toggleHojeCanal(this,'Shopee')">Shopee</button>
-            <button class="hoje-canal-pill" onclick="toggleHojeCanal(this,'TikTok')">TikTok</button>
-            <button class="hoje-canal-pill" onclick="toggleHojeCanal(this,'Amazon')">Amazon</button>
-            <button class="hoje-canal-pill" onclick="toggleHojeCanal(this,'Magalu')">Magalu</button>
-          </div>
-        </div>
-      </div>
+      <!-- Linha 1: pulso do dia -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:12px" id="rsPulso"></div>
 
-      <!-- SKUs de hoje -->
-      <div id="hojeSkusBox" class="box" style="margin-bottom:16px;overflow-x:auto">
-        <div class="box-header"><div class="box-title">SKUs vendidos hoje</div></div>
-        <table style="min-width:400px"><thead><tr>
-          <th>SKU</th><th>Canal</th><th>Qtd</th><th>Faturamento</th>
-        </tr></thead>
-        <tbody id="tbHojeSkus"></tbody></table>
-      </div>
+      <!-- Linha 2: mês + meta -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin-bottom:12px" id="rsMes"></div>
 
-      <div class="box"><div class="box-header"><div class="box-title">Faturamento por canal — hoje</div></div><div class="chart-wrap" style="height:200px"><canvas id="cFat"></canvas></div></div>
+      <!-- Linha 3: agenda e atenção -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:12px" id="rsAgenda"></div>
+
+      <!-- Linha 4: metas abertas -->
+      <div class="box" id="rsMetasBox" style="padding:0">
+        <div class="box-header" style="padding:18px 22px 0"><div class="box-title">Metas em andamento</div></div>
+        <div id="rsMetas" style="padding:12px 22px 18px"></div>
+      </div>
     </div>
 
     <!-- PERFORMANCE -->
@@ -1542,43 +1583,237 @@ if (CONFIGURED) {
   }
 }
 
-// ── SENHA (hash SHA-256 de 'socios2025') ──
-const PWD_HASH = '1e945599d3e68a5276d1eb92efe0628fbb6784abf5fa6124bdfb625d78da7d70';
+// ── LOGIN INDIVIDUAL (Supabase Auth) ──
+const LOGIN_DOMINIO = '@hubossocios.app';
+const TODAS_ABAS = [
+  ['dashboard','Dashboard'],['comunicados','Comunicados'],['planilhas','Planilhas'],
+  ['metas','Metas'],['desempenho','Desempenho'],['reunioes','Reuniões'],['pipeline','Pipeline']
+];
+let ME = null;          // perfil do usuário logado
+let USUARIOS = [];      // todos os perfis ativos
+let ACCESS_TOKEN = null;
 
-async function sha256(str) {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2,'0')).join('');
+function authH(extra) {
+  return Object.assign({ 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + (ACCESS_TOKEN || SUPABASE_KEY) }, extra || {});
+}
+
+function mostrarLogin(msg) {
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+  const err = document.getElementById('loginErr');
+  if (msg) { err.textContent = msg; err.style.display = 'block'; }
+  const btn = document.getElementById('loginBtn');
+  btn.textContent = 'Entrar'; btn.disabled = false;
 }
 
 async function doLogin() {
   const btn = document.getElementById('loginBtn');
-  btn.textContent = '...';
-  btn.disabled = true;
-  const v = document.getElementById('pwdInput').value;
-  const h = await sha256(v);
-  if (h === PWD_HASH) {
-    sessionStorage.setItem('hubAuth','1');
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
-    initApp();
-  } else {
-    document.getElementById('loginErr').style.display = 'block';
+  const err = document.getElementById('loginErr');
+  const user = document.getElementById('userInput').value.trim().toLowerCase();
+  const pwd  = document.getElementById('pwdInput').value;
+  if (!user || !pwd) { err.textContent = 'Preencha usuário e senha.'; err.style.display = 'block'; return; }
+  btn.textContent = '...'; btn.disabled = true; err.style.display = 'none';
+  const { data, error } = await db.auth.signInWithPassword({ email: user + LOGIN_DOMINIO, password: pwd });
+  if (error || !data?.session) {
     document.getElementById('pwdInput').value = '';
-    btn.textContent = 'Entrar';
-    btn.disabled = false;
+    mostrarLogin('Usuário ou senha incorretos.');
+    return;
   }
+  ACCESS_TOKEN = data.session.access_token;
+  await entrarNoHub(data.session.user.id);
 }
-document.getElementById('pwdInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') doLogin();
-});
+document.getElementById('pwdInput').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+document.getElementById('userInput').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('pwdInput').focus(); });
 
-function doLogout() {
-  sessionStorage.removeItem('hubAuth');
+async function doLogout() {
+  try { await db.auth.signOut(); } catch(e) {}
   location.reload();
 }
-if (sessionStorage.getItem('hubAuth') === '1') {
+
+async function carregarUsuarios() {
+  const { data } = await db.from('perfis').select('*').order('created_at', { ascending: true });
+  USUARIOS = (data || []);
+  const ativos = USUARIOS.filter(u => u.ativo);
+  // Mantém compatibilidade com o restante do hub (lidos/vistos por nome)
+  SOCIOS = ativos.filter(u => u.tipo === 'socio').map(u => u.nome);
+  SOCIO_COLORS = {};
+  ativos.forEach(u => { SOCIO_COLORS[u.nome] = u.cor; });
+}
+
+function podeVer(aba) {
+  if (!ME) return false;
+  if (aba === 'usuarios') return ME.is_admin;
+  return (ME.abas || []).includes(aba);
+}
+
+function aplicarPermissoes() {
+  document.querySelectorAll('.nav-item[data-aba]').forEach(el => {
+    el.classList.toggle('hidden', !podeVer(el.dataset.aba));
+  });
+  document.getElementById('meNome').textContent = ME.nome;
+  document.getElementById('meRole').textContent = ME.is_admin ? 'admin' : (ME.tipo === 'socio' ? 'sócio' : 'gerente');
+  const av = document.getElementById('meAvatar');
+  av.textContent = ME.nome.charAt(0).toUpperCase();
+  av.style.background = ME.cor;
+  // Autor do comunicado = quem está logado
+  const pa = document.getElementById('postAutor');
+  if (pa) { pa.innerHTML = `<option value="${ME.nome}">${ME.nome}</option>`; pa.value = ME.nome; pa.closest('.field-group').style.display = 'none'; }
+}
+
+function primeiraAbaPermitida() {
+  const ordem = TODAS_ABAS.map(a => a[0]).concat(['usuarios']);
+  return ordem.find(a => podeVer(a)) || null;
+}
+
+async function entrarNoHub(uid) {
+  await carregarUsuarios();
+  ME = USUARIOS.find(u => u.id === uid) || null;
+  if (!ME) { await db.auth.signOut(); mostrarLogin('Usuário sem perfil cadastrado. Fale com o administrador.'); return; }
+  if (!ME.ativo) { await db.auth.signOut(); mostrarLogin('Este acesso está desativado.'); return; }
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
+  aplicarPermissoes();
+  const inicial = primeiraAbaPermitida();
+  if (!inicial) { document.querySelector('.main').innerHTML = '<div style="padding:60px;text-align:center;color:var(--muted)">Nenhuma aba liberada para você ainda. Fale com o administrador.</div>'; return; }
+  if (ME.trocar_senha) abrirTrocaSenha(true);
+  await initApp(inicial);
+}
+
+// Sessão persistente (não precisa logar toda vez)
+async function verificarSessao() {
+  if (!db) { mostrarLogin('Supabase não configurado.'); return; }
+  const { data } = await db.auth.getSession();
+  if (data?.session) {
+    ACCESS_TOKEN = data.session.access_token;
+    await entrarNoHub(data.session.user.id);
+  } else {
+    mostrarLogin();
+  }
+  db.auth.onAuthStateChange((evt, session) => {
+    ACCESS_TOKEN = session?.access_token || null;
+    if (evt === 'SIGNED_OUT') location.reload();
+  });
+}
+
+// ── TROCA DE SENHA ──
+function abrirTrocaSenha(obrigatoria) {
+  const old = document.getElementById('modalSenha'); if (old) old.remove();
+  const m = document.createElement('div');
+  m.className = 'hub-modal'; m.id = 'modalSenha';
+  m.innerHTML = `<div class="hub-modal-box">
+    <div class="hub-modal-title">${obrigatoria ? 'Crie sua senha' : 'Trocar senha'}</div>
+    <div class="hub-modal-sub">${obrigatoria ? 'Primeiro acesso: troque a senha temporária por uma só sua.' : 'Mínimo 6 caracteres.'}</div>
+    <div class="field-group" style="margin-bottom:10px"><span class="field-label">Nova senha</span><input class="field-input" type="password" id="ns1" autocomplete="new-password"></div>
+    <div class="field-group"><span class="field-label">Repita a nova senha</span><input class="field-input" type="password" id="ns2" autocomplete="new-password"></div>
+    <div id="nsMsg" style="font-size:12px;color:var(--red);font-family:'IBM Plex Mono',monospace;min-height:18px;margin-top:8px"></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
+      ${obrigatoria ? '' : '<button class="btn btn-ghost" onclick="document.getElementById(\'modalSenha\').remove()">Cancelar</button>'}
+      <button class="btn btn-primary" id="nsBtn" onclick="salvarNovaSenha()">Salvar senha</button>
+    </div>
+  </div>`;
+  document.body.appendChild(m);
+  setTimeout(() => document.getElementById('ns1')?.focus(), 50);
+}
+
+async function salvarNovaSenha() {
+  const a = document.getElementById('ns1').value, b = document.getElementById('ns2').value;
+  const msg = document.getElementById('nsMsg'), btn = document.getElementById('nsBtn');
+  if (a.length < 6) { msg.textContent = 'A senha precisa ter pelo menos 6 caracteres.'; return; }
+  if (a !== b) { msg.textContent = 'As senhas não conferem.'; return; }
+  btn.disabled = true; btn.textContent = 'Salvando…';
+  const { error } = await db.auth.updateUser({ password: a });
+  if (error) { msg.textContent = 'Erro: ' + error.message; btn.disabled = false; btn.textContent = 'Salvar senha'; return; }
+  await db.from('perfis').update({ trocar_senha: false }).eq('id', ME.id);
+  ME.trocar_senha = false;
+  document.getElementById('modalSenha').remove();
+  showToast({ tipo: 'meta', titulo: 'Senha atualizada', corpo: 'Use a nova senha nos próximos acessos.' });
+}
+
+// ── ADMIN: USUÁRIOS ──
+let nuAbasSel = new Set();
+function renderNuAbas() {
+  const el = document.getElementById('nuAbas'); if (!el) return;
+  el.innerHTML = TODAS_ABAS.map(([k, l]) =>
+    `<span class="aba-chip ${nuAbasSel.has(k)?'on':''}" onclick="nuToggleAba('${k}')">${l}</span>`).join('');
+}
+function nuToggleAba(k) { nuAbasSel.has(k) ? nuAbasSel.delete(k) : nuAbasSel.add(k); renderNuAbas(); }
+function nuTipoChange() {
+  if (document.getElementById('nuTipo').value === 'socio') nuAbasSel = new Set(TODAS_ABAS.map(a => a[0]));
+  renderNuAbas();
+}
+
+async function criarUsuario() {
+  const msg = document.getElementById('nuMsg');
+  const nome = document.getElementById('nuNome').value.trim();
+  const user = document.getElementById('nuUser').value.trim().toLowerCase();
+  const senha = document.getElementById('nuSenha').value;
+  const tipo = document.getElementById('nuTipo').value;
+  const cor = document.getElementById('nuCor').value;
+  if (!nome || !user || !senha) { msg.style.color = 'var(--red)'; msg.textContent = 'Preencha nome, usuário e senha.'; return; }
+  if (!nuAbasSel.size) { msg.style.color = 'var(--red)'; msg.textContent = 'Libere pelo menos uma aba.'; return; }
+  const { error } = await db.rpc('hub_criar_usuario', {
+    p_username: user, p_nome: nome, p_senha: senha, p_tipo: tipo,
+    p_abas: [...nuAbasSel], p_cor: cor, p_is_admin: false
+  });
+  if (error) { msg.style.color = 'var(--red)'; msg.textContent = error.message; return; }
+  msg.style.color = 'var(--green)';
+  msg.textContent = `✓ Criado. Passe para ${nome}: usuário "${user}" e a senha temporária. Ele troca no primeiro acesso.`;
+  ['nuNome','nuUser','nuSenha'].forEach(id => document.getElementById(id).value = '');
+  nuAbasSel = new Set(); renderNuAbas();
+  await carregarUsuarios(); renderUsuarios();
+}
+
+async function renderUsuarios() {
+  renderNuAbas();
+  await carregarUsuarios();
+  const tb = document.getElementById('tbUsuarios'); if (!tb) return;
+  tb.innerHTML = USUARIOS.map(u => {
+    const chips = TODAS_ABAS.map(([k, l]) =>
+      `<span class="aba-chip ${(u.abas||[]).includes(k)?'on':''}" onclick="toggleAbaUsuario('${u.id}','${k}')">${l}</span>`).join('');
+    const souEu = u.id === ME.id;
+    return `<tr class="usr-row" style="${u.ativo?'':'opacity:.45'}">
+      <td><div style="display:flex;align-items:center;gap:8px">
+        <div class="user-avatar" style="background:${u.cor};width:26px;height:26px;font-size:11px">${u.nome.charAt(0)}</div>
+        <strong>${u.nome}</strong>${u.is_admin?' <span class="badge ok">admin</span>':''}</div></td>
+      <td style="font-family:'IBM Plex Mono',monospace;font-size:12px">${u.username}</td>
+      <td style="font-size:12px">${u.tipo === 'socio' ? 'Sócio' : 'Gerente'}</td>
+      <td style="max-width:360px">${chips}</td>
+      <td style="font-size:11px;font-family:'IBM Plex Mono',monospace">${u.ativo ? (u.trocar_senha ? '<span style="color:var(--amber)">aguardando 1º acesso</span>' : '<span style="color:var(--green)">ativo</span>') : 'desativado'}</td>
+      <td style="white-space:nowrap">
+        <button class="btn btn-ghost" style="font-size:11px;padding:4px 10px" onclick="redefinirSenhaUsuario('${u.id}','${u.nome}')">Redefinir senha</button>
+        ${souEu ? '' : `<button class="btn ${u.ativo?'btn-danger':'btn-ghost'}" style="font-size:11px;padding:4px 10px" onclick="toggleAtivoUsuario('${u.id}',${!u.ativo})">${u.ativo?'Desativar':'Reativar'}</button>`}
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+async function toggleAbaUsuario(id, aba) {
+  const u = USUARIOS.find(x => x.id === id); if (!u) return;
+  const abas = new Set(u.abas || []);
+  abas.has(aba) ? abas.delete(aba) : abas.add(aba);
+  if (id === ME.id && !abas.size) { alert('Você precisa manter pelo menos uma aba.'); return; }
+  const { error } = await db.from('perfis').update({ abas: [...abas] }).eq('id', id);
+  if (error) { alert('Erro: ' + error.message); return; }
+  if (id === ME.id) { ME.abas = [...abas]; aplicarPermissoes(); }
+  renderUsuarios();
+}
+
+async function toggleAtivoUsuario(id, ativo) {
+  const u = USUARIOS.find(x => x.id === id);
+  if (!ativo && !confirm(`Desativar o acesso de ${u?.nome}? Ele não consegue mais entrar, mas o histórico fica.`)) return;
+  const { error } = await db.from('perfis').update({ ativo }).eq('id', id);
+  if (error) { alert('Erro: ' + error.message); return; }
+  renderUsuarios();
+}
+
+async function redefinirSenhaUsuario(id, nome) {
+  const nova = prompt(`Nova senha temporária para ${nome} (mín. 6 caracteres).\nEle será obrigado a trocar no próximo acesso:`);
+  if (nova === null) return;
+  if (nova.length < 6) { alert('A senha precisa ter pelo menos 6 caracteres.'); return; }
+  const { error } = await db.rpc('hub_redefinir_senha', { p_id: id, p_senha: nova });
+  if (error) { alert('Erro: ' + error.message); return; }
+  alert(`Senha de ${nome} redefinida.`);
+  renderUsuarios();
 }
 
 // ── SYNC STATUS ──
@@ -1652,7 +1887,7 @@ async function fetchDashData(mesAno) {
     if (isMesAtual) {
       // 1. Lê o cache do Supabase instantaneamente (acumulado do mês)
       const resCached = await fetch(`${SUPABASE_URL}/functions/v1/magis5-sync?acao=ler&mes=${mesAno}`, {
-        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+        headers: { ...authH() }
       });
       const cached = resCached.ok ? await resCached.json() : null;
 
@@ -1662,7 +1897,7 @@ async function fetchDashData(mesAno) {
         try {
           const resHoje = await fetch(
             `${SUPABASE_URL}/rest/v1/magis5_cache?select=payload&tipo=eq.dia&data=eq.${hoje}`,
-            { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY } }
+            { headers: { ...authH() } }
           );
           if (resHoje.ok) {
             const rows = await resHoje.json();
@@ -1690,7 +1925,7 @@ async function fetchDashData(mesAno) {
     } else {
       // Meses históricos: lê direto do cache do Supabase
       const res = await fetch(`${SUPABASE_URL}/functions/v1/magis5-sync?acao=ler&mes=${mesAno}`, {
-        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+        headers: { ...authH() }
       });
       if (!res.ok) return null;
       const data = await res.json();
@@ -1706,7 +1941,7 @@ async function fetchDashData(mesAno) {
 async function atualizarHojeBackground(mesAno) {
   try {
     const res = await fetch(`${SUPABASE_URL}/functions/v1/magis5-sync?acao=hoje`, {
-      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+      headers: { ...authH() }
     });
     if (!res.ok) return;
     const data = await res.json();
@@ -1718,16 +1953,15 @@ async function atualizarHojeBackground(mesAno) {
     if (data && data.totais && currentDashMonth === mesAno) {
       // Re-lê o mês completo do Supabase para ter o acumulado correto
       const resMes = await fetch(`${SUPABASE_URL}/functions/v1/magis5-sync?acao=ler&mes=${mesAno}`, {
-        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+        headers: { ...authH() }
       });
       if (resMes.ok) {
         const dataMes = await resMes.json();
         dashCache[mesAno] = dataMes;
       }
       const prev = getDashData(MONTHS_ORDER[MONTHS_ORDER.indexOf(mesAno)-1]);
-      renderMetricCards(dashCache[mesAno], prev);
-      renderCharts(dashCache[mesAno]);
-      renderHojeSkus(data);
+      // Resumo re-renderiza com dados frescos se estiver visível
+      if (!document.getElementById('dVisao')?.classList.contains('hidden')) renderResumo();
     }
   } catch(e) {
     console.error('Erro ao atualizar hoje:', e);
@@ -1743,7 +1977,7 @@ async function processarHistoricoSequencial() {
   let faltam = [];
   try {
     const res = await fetch(`${SUPABASE_URL}/functions/v1/magis5-sync?acao=checar`, {
-      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+      headers: { ...authH() }
     });
     const data = await res.json();
     faltam = data.faltam || [];
@@ -1772,7 +2006,7 @@ async function processarHistoricoSequencial() {
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), 40000);
       await fetch(`${SUPABASE_URL}/functions/v1/magis5-sync?acao=salvar_dia&dia=${dia}`, {
-        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY },
+        headers: { ...authH() },
         signal: controller.signal
       });
       clearTimeout(timer);
@@ -1832,13 +2066,7 @@ function deltaTag(curr, prev, invertido) {
   return `<span class="delta-down">↓ ${pStr}</span>`;
 }
 
-function renderMetricCards(curr, prev) {
-  // Visão geral agora mostra só dados do dia — cards do mês removidos
-  const hoje = new Date(new Date().getTime() - 3*60*60*1000).toISOString().slice(0,10);
-  const hojeData = dashCache['dia__' + hoje];
-  renderHojeCards(hojeData);
-  renderHojeSkus(hojeData);
-}
+function renderMetricCards(curr, prev) { /* substituído pelo Resumo */ }
 
 
 function prevDashMonth() {
@@ -1852,7 +2080,8 @@ function nextDashMonth() {
 
 function setDashLoading(loading) {
   const g = document.getElementById('metricGrid');
-  if (loading && g) {
+  if (!g) return;
+  if (loading) {
     g.innerHTML = `<div style="grid-column:1/-1" class="loading-row"><span class="spinner"></span>carregando dados Magis5…</div>`;
     const tb1 = document.getElementById('tbEmpresas');
     const tb2 = document.getElementById('tbSkus');
@@ -1875,13 +2104,9 @@ async function renderDashboard() {
     i > 0 ? fetchDashData(MONTHS_ORDER[i-1]) : Promise.resolve(null)
   ]);
 
-  renderMetricCards(curr, prev);
-  // Gráfico de canal usa dados do dia atual
-  const hoje = new Date(new Date().getTime() - 3*60*60*1000).toISOString().slice(0,10);
-  const hojeData = dashCache['dia__' + hoje] || curr;
-  renderCharts(hojeData);
-  renderHojeSkus(hojeData);
-  renderSkus(curr);
+  // Aba ativa decide o que renderizar
+  const perfVisivel = !document.getElementById('dPerf')?.classList.contains('hidden');
+  if (perfVisivel) initPerf(); else renderResumo();
   // Esconde navegação de mês na aba Visão Geral (padrão ao carregar)
   const monthNav = document.querySelector('.month-nav');
   if (monthNav) monthNav.style.display = 'none';
@@ -1890,6 +2115,8 @@ async function renderDashboard() {
 async function refreshDashboard() {
   // Força rebusca deletando cache em memória e zerando TTL do dia
   delete dashCache[currentDashMonth];
+  delete dashCache['dia__' + brtHoje()];
+  perfComparacaoData = null;
   localStorage.removeItem(HOJE_LS_KEY);
   const btn = document.getElementById('refreshBtn');
   if (btn) { btn.disabled = true; btn.textContent = '↻ Atualizando…'; }
@@ -1924,6 +2151,7 @@ const charts = {};
 let chartSkuEmp = null;
 
 function goPage(p) {
+  if (ME && !podeVer(p)) { const alt = primeiraAbaPermitida(); if (!alt || alt === p) return; p = alt; }
   if (window.innerWidth <= 768) closeMobileMenu();
   document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('[onclick*="goPage"]').forEach(el => {
@@ -1939,6 +2167,7 @@ function goPage(p) {
   if(p==='desempenho') renderDesempenho();
   if(p==='reunioes') renderReunioes();
   if(p==='pipeline') renderPipeline();
+  if(p==='usuarios') renderUsuarios();
 }
 
 function dTab(btn, id) {
@@ -1949,13 +2178,7 @@ function dTab(btn, id) {
   // Esconde navegação de mês na Visão Geral
   const monthNav = document.querySelector('.month-nav');
   if (monthNav) monthNav.style.display = id === 'dVisao' ? 'none' : '';
-  if(id==='dVisao') {
-    const hoje = new Date(new Date().getTime() - 3*60*60*1000).toISOString().slice(0,10);
-    const hojeData = dashCache['dia__' + hoje];
-    renderHojeCards(hojeData);
-    renderHojeSkus(hojeData);
-    renderCharts(hojeData);
-  }
+  if(id==='dVisao') renderResumo();
   if(id==='dPerf') initPerf();
 }
 
@@ -1966,6 +2189,7 @@ function mkOpts(cb){
       x:{ticks:{color:'#8a8479',font:{size:11,weight:'500'}},grid:{display:false},border:{display:false}}}};
 }
 function renderCharts(data){
+  if (!document.getElementById('cFat')) return;
   const pc = (data && data.porCanal) || {};
   let canais = CANAIS_ORDEM.filter(c => pc[c] && pc[c].qtdPedidos > 0);
   if (!hojeCanais.has('todos')) canais = canais.filter(c => hojeCanais.has(c));
@@ -2151,6 +2375,7 @@ function getCanaisFiltro(canaisSet) {
 
 
 function renderHojeCards(data) {
+  if (!document.getElementById('hojeValor')) return;
   const pc  = (data && data.porCanal) || {};
   const tot = (data && data.totais)   || {};
   let fat = 0, ped = 0;
@@ -2191,6 +2416,223 @@ function renderHojeSkus(data) {
       <td style="font-family:'IBM Plex Mono',monospace">${s.qtd.toLocaleString('pt-BR')}</td>
       <td style="font-family:'IBM Plex Mono',monospace">${fmt(s.faturamento)}</td>
     </tr>`;
+  }).join('');
+}
+
+// ── RESUMO (home do dashboard) ──
+function brtHoje() {
+  return new Date(new Date().getTime() - 3*60*60*1000).toISOString().slice(0,10);
+}
+function diaOffset(base, n) {
+  const d = new Date(base + 'T12:00:00Z'); d.setDate(d.getDate() + n);
+  return d.toISOString().slice(0,10);
+}
+
+// Config compartilhada (meta mensal etc.)
+async function getConfig(chave) {
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/hub_config?select=valor&chave=eq.${chave}`,
+      { headers: { ...authH() } });
+    if (!r.ok) return null;
+    const rows = await r.json();
+    return rows[0]?.valor ?? null;
+  } catch(e) { return null; }
+}
+async function setConfig(chave, valor) {
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/hub_config`, {
+      method: 'POST',
+      headers: { ...authH(),
+        'Content-Type': 'application/json', 'Prefer': 'resolution=merge-duplicates' },
+      body: JSON.stringify({ chave, valor, updated_at: new Date().toISOString() })
+    });
+  } catch(e) { console.log('setConfig erro', e); }
+}
+
+function rsCard(label, valor, sub, opts = {}) {
+  const click = opts.onclick ? `onclick="${opts.onclick}" style="cursor:pointer"` : '';
+  const cls   = opts.cls || '';
+  return `<div class="metric-card" ${click}>
+    <div class="metric-label">${label}</div>
+    <div class="metric-val ${cls}" style="${opts.valStyle||''}">${valor}</div>
+    <div class="metric-sub" style="font-family:'IBM Plex Mono',monospace;font-size:10px">${sub||''}</div>
+  </div>`;
+}
+
+function rsDelta(atual, anterior, sufixo) {
+  if (!anterior) return '';
+  const d = (atual - anterior) / anterior * 100;
+  const cor = d >= 0 ? 'var(--green)' : 'var(--red)';
+  return `<span style="color:${cor}">${d>=0?'↑':'↓'} ${Math.abs(d).toFixed(1)}%</span> ${sufixo||''}`;
+}
+
+async function renderResumo() {
+  const hoje  = brtHoje();
+  const ontem = diaOffset(hoje, -1);
+  const mes   = hoje.slice(0,7);
+
+  // Placeholders enquanto carrega
+  const pulso = document.getElementById('rsPulso');
+  if (pulso && !pulso.innerHTML) pulso.innerHTML = `<div class="loading-row" style="grid-column:1/-1"><span class="spinner"></span>carregando…</div>`;
+
+  // 1. Dados do dia + ontem até mesmo horário (reaproveita perfComparacaoData se fresco)
+  let comp = perfComparacaoData;
+  if (!comp || comp._fromCache) {
+    try {
+      const r = await fetch(`${SUPABASE_URL}/functions/v1/magis5-sync?acao=ate_agora`,
+        { headers: { ...authH() } });
+      if (r.ok) { comp = await r.json(); perfComparacaoData = comp; if (comp.hoje) dashCache['dia__'+hoje] = comp.hoje; }
+    } catch(e) {}
+  }
+  const hT = comp?.hoje?.totais || {};
+  const oT = comp?.ontem?.totais || {};
+  const ref = comp?.hoje?.horarioRef || '';
+
+  // 2. Últimos 7 dias + mês (cache do Supabase)
+  const ini7  = diaOffset(hoje, -7);
+  const iniMes = mes + '-01';
+  await loadDiasCacheSupabase(iniMes < ini7 ? iniMes : ini7, ontem);
+
+  let fatMes = hT.faturamento || 0, pedMes = hT.qtdPedidos || 0;
+  for (const d of getDiasRange(iniMes, ontem)) {
+    const p = dashCache['dia__'+d]; if (!p) continue;
+    fatMes += p.totais?.faturamento || 0; pedMes += p.totais?.qtdPedidos || 0;
+  }
+  let fat7 = 0, n7 = 0;
+  for (const d of getDiasRange(ini7, ontem)) {
+    const p = dashCache['dia__'+d]; if (!p) continue;
+    fat7 += p.totais?.faturamento || 0; n7++;
+  }
+  const media7 = n7 ? fat7 / n7 : 0;
+  const diaNum = parseInt(hoje.slice(8));
+  const [ano, m] = mes.split('-').map(Number);
+  const diasNoMes = new Date(ano, m, 0).getDate();
+  const diasRestantes = diasNoMes - diaNum;
+  const projecao = fatMes + media7 * diasRestantes;
+
+  // Linha 1 — pulso
+  if (pulso) pulso.innerHTML =
+    rsCard('Faturamento hoje', hT.faturamento ? fmt(hT.faturamento) : '—',
+      rsDelta(hT.faturamento, oT.faturamento, `vs ontem${ref?' até '+ref:''}`), { cls:'val-green', onclick:"dTab(document.querySelector('.tab-btn[onclick*=dPerf]'),'dPerf')" }) +
+    rsCard('Pedidos hoje', hT.qtdPedidos ? hT.qtdPedidos.toLocaleString('pt-BR') : '—',
+      rsDelta(hT.qtdPedidos, oT.qtdPedidos, `vs ontem${ref?' até '+ref:''}`), { onclick:"dTab(document.querySelector('.tab-btn[onclick*=dPerf]'),'dPerf')" }) +
+    rsCard('Ticket médio hoje', hT.qtdPedidos ? fmt(hT.faturamento/hT.qtdPedidos) : '—',
+      oT.qtdPedidos ? rsDelta(hT.faturamento/hT.qtdPedidos, oT.faturamento/oT.qtdPedidos, 'vs ontem') : '');
+
+  // Linha 2 — mês + meta
+  const metaMes = await getConfig('meta_mes_' + mes);
+  const metaVal = metaMes ? parseFloat(metaMes) : 0;
+  const pctMeta = metaVal ? Math.min(100, fatMes / metaVal * 100) : 0;
+  const pctMes  = diaNum / diasNoMes * 100;
+  const ritmo   = metaVal ? (pctMeta >= pctMes ? 'var(--green)' : 'var(--red)') : 'var(--muted)';
+  const mesEl = document.getElementById('rsMes');
+  if (mesEl) mesEl.innerHTML = `
+    <div class="metric-card">
+      <div class="metric-label">Acumulado do mês</div>
+      <div class="metric-val val-green">${fatMes ? fmt(fatMes) : '—'}</div>
+      <div class="metric-sub" style="font-family:'IBM Plex Mono',monospace;font-size:10px">
+        ${pedMes.toLocaleString('pt-BR')} pedidos · média 7d ${fmt(media7)}/dia · projeção <strong>${fmt(projecao)}</strong>
+      </div>
+    </div>
+    <div class="metric-card" style="position:relative">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div class="metric-label">Meta do mês</div>
+        <button onclick="editarMetaMes('${mes}')" title="Definir meta" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:12px">✎</button>
+      </div>
+      <div class="metric-val" style="font-size:18px">${metaVal ? fmt(metaVal) : '<span style="color:var(--muted);font-size:13px">não definida</span>'}</div>
+      ${metaVal ? `
+      <div style="height:6px;background:var(--border);border-radius:3px;margin:8px 0 4px;position:relative">
+        <div style="height:6px;width:${pctMeta.toFixed(1)}%;background:${ritmo};border-radius:3px"></div>
+        <div style="position:absolute;top:-3px;left:${pctMes.toFixed(1)}%;width:2px;height:12px;background:var(--text);opacity:.5" title="dia ${diaNum} de ${diasNoMes}"></div>
+      </div>
+      <div class="metric-sub" style="font-family:'IBM Plex Mono',monospace;font-size:10px;display:flex;justify-content:space-between">
+        <span style="color:${ritmo}">${pctMeta.toFixed(1)}% da meta</span>
+        <span>${pctMes.toFixed(0)}% do mês · faltam ${fmt(Math.max(0, metaVal - fatMes))}</span>
+      </div>` : `<div class="metric-sub" style="font-size:10px">clique em ✎ para definir</div>`}
+    </div>`;
+
+  // Linha 3 — agenda
+  renderResumoAgenda();
+}
+
+async function editarMetaMes(mes) {
+  const atual = await getConfig('meta_mes_' + mes);
+  const v = prompt('Meta de faturamento para ' + (MONTH_LABELS[mes] || mes) + ' (R$):', atual || '');
+  if (v === null) return;
+  const num = parseFloat(String(v).replace(/\./g,'').replace(',','.'));
+  if (isNaN(num) || num <= 0) { alert('Valor inválido.'); return; }
+  await setConfig('meta_mes_' + mes, num);
+  renderResumo();
+}
+
+async function renderResumoAgenda() {
+  const el = document.getElementById('rsAgenda');
+  if (!el) return;
+  const hoje = brtHoje();
+
+  // Comunicados últimos 7 dias
+  let posts = [];
+  try {
+    if (db) { const {data} = await db.from('comunicados').select('id,autor,texto,created_at').order('created_at',{ascending:false}).limit(20); posts = data || []; }
+    else posts = loadLs('hub_posts', []);
+  } catch(e) {}
+  const corte7 = new Date(Date.now() - 7*86400000).toISOString();
+  const recentes = posts.filter(p => (p.created_at||'') >= corte7);
+  const ultimo = posts[0];
+
+  // Próxima reunião
+  try { await loadReunioes(); } catch(e) {}
+  const prox = (reunioesData||[]).filter(r => r.status !== 'realizada' && r.data >= hoje).sort((a,b)=>a.data.localeCompare(b.data))[0];
+
+  // Pipeline — ETA nos próximos 7 dias
+  try { await loadPipeline(); } catch(e) {}
+  const fim7 = diaOffset(hoje, 7);
+  const chegando = (pedidosData||[]).filter(p => p.eta && p.eta >= hoje && p.eta <= fim7).sort((a,b)=>a.eta.localeCompare(b.eta));
+
+  const fmtD = d => d ? d.split('-').reverse().slice(0,2).join('/') : '';
+
+  el.innerHTML =
+    rsCard('Comunicados', recentes.length ? `${recentes.length} <span style="font-size:12px;color:var(--muted)">nos últimos 7 dias</span>` : '<span style="font-size:13px;color:var(--muted)">nenhum recente</span>',
+      ultimo ? `último: ${ultimo.autor||''} — ${(ultimo.texto||'').slice(0,50)}${(ultimo.texto||'').length>50?'…':''}` : '', { onclick:"goPage('comunicados')", valStyle:'font-size:20px' }) +
+    rsCard('Próxima reunião', prox ? `<span style="font-size:15px">${prox.titulo}</span>` : '<span style="font-size:13px;color:var(--muted)">nenhuma agendada</span>',
+      prox ? `${new Date(prox.data+'T12:00:00').toLocaleDateString('pt-BR')}${prox.horario?' às '+prox.horario:''}` : '', { onclick:"goPage('reunioes')" }) +
+    rsCard('Pipeline — chegando', chegando.length ? `${chegando.length} <span style="font-size:12px;color:var(--muted)">pedidos em 7 dias</span>` : '<span style="font-size:13px;color:var(--muted)">nada previsto</span>',
+      chegando.slice(0,2).map(p => `${p.ref||''} · ETA ${fmtD(p.eta)}`).join(' · '), { onclick:"goPage('pipeline')", valStyle:'font-size:20px' });
+
+  // Linha 4 — metas em andamento
+  renderResumoMetas();
+}
+
+async function renderResumoMetas() {
+  const el = document.getElementById('rsMetas');
+  if (!el) return;
+  let lista = [];
+  try {
+    if (db) { const {data} = await db.from('metas').select('*').order('created_at',{ascending:true}); lista = data || []; }
+    else lista = loadLs('hub_metas', []);
+  } catch(e) {}
+  const abertas = lista.filter(m => m.tipo === 'numerica' ? (m.atual||0) < (m.alvo||0) : m.status === 'andamento').slice(0, 6);
+  if (!abertas.length) { el.innerHTML = `<div style="color:var(--muted);font-size:12px;font-family:'IBM Plex Mono',monospace">Nenhuma meta em andamento</div>`; return; }
+  el.innerHTML = abertas.map(m => {
+    if (m.tipo === 'numerica') {
+      const pct = m.alvo ? Math.min(100, (m.atual||0)/m.alvo*100) : 0;
+      return `<div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer" onclick="goPage('metas')">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.nome}</div>
+          <div style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace">${m.empresa||''}${m.categoria?' · '+(typeof META_CATS!=='undefined'?(META_CATS[m.categoria]||m.categoria):m.categoria):''}</div>
+        </div>
+        <div style="width:140px;height:5px;background:var(--border);border-radius:3px"><div style="height:5px;width:${pct.toFixed(0)}%;background:var(--green);border-radius:3px"></div></div>
+        <div style="font-size:11px;font-family:'IBM Plex Mono',monospace;width:44px;text-align:right">${pct.toFixed(0)}%</div>
+      </div>`;
+    }
+    const prazo = m.prazo ? new Date(m.prazo+'T12:00:00').toLocaleDateString('pt-BR') : '';
+    return `<div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer" onclick="goPage('metas')">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.nome}</div>
+        <div style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace">${m.empresa||''}${prazo?' · prazo '+prazo:''}</div>
+      </div>
+      <span class="badge warn">em andamento</span>
+    </div>`;
   }).join('');
 }
 
@@ -2318,7 +2760,7 @@ async function syncDiasMesAtual() {
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), 40000);
       const res = await fetch(`${SUPABASE_URL}/functions/v1/magis5-sync?acao=salvar_dia&dia=${dia}`, {
-        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY },
+        headers: { ...authH() },
         signal: controller.signal
       });
       clearTimeout(timer);
@@ -2339,7 +2781,7 @@ async function loadDiasCacheSupabase(from, to) {
   try {
     const res = await fetch(
       `${SUPABASE_URL}/rest/v1/magis5_cache?select=data,payload&tipo=eq.dia&data=gte.${from}&data=lte.${to}`,
-      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY } }
+      { headers: { ...authH() } }
     );
     if (!res.ok) return;
     const rows = await res.json();
@@ -2377,7 +2819,7 @@ async function initPerf() {
 
     // 2. Atualiza hoje da API em background
     fetch(`${SUPABASE_URL}/functions/v1/magis5-sync?acao=ate_agora`, {
-      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+      headers: { ...authH() }
     }).then(res => res.ok ? res.json() : null).then(data => {
       if (!data) return;
       if (data.hoje) dashCache['dia__' + data.hoje.data] = data.hoje;
@@ -2655,8 +3097,8 @@ function toggleSkuDetalhe(idx, qtdCanais) {
 
 
 // ── COMUNICADOS ──
-const SOCIOS = ['Ale','Marcelo','Wissam','Lucas'];
-const SOCIO_COLORS = {'Ale':'#2563eb','Marcelo':'#10b981','Wissam':'#a855f7','Lucas':'#f59e0b'};
+let SOCIOS = ['Ale','Marcelo','Wissam','Lucas'];
+let SOCIO_COLORS = {'Ale':'#2563eb','Marcelo':'#10b981','Wissam':'#a855f7','Lucas':'#f59e0b'};
 const PRIO_LABELS = {'urgente':'Urgente','importante':'Importante','informativo':'Informativo'};
 const POST_CAT_LABELS = {'geral':'Geral','operacional':'Operacional','financeiro':'Financeiro','marketplace':'Marketplace','importacao':'Importação','rh':'RH'};
 let postFilterMode = 'todos';
@@ -2837,8 +3279,9 @@ async function renderPosts(){
       const initial = s.charAt(0).toUpperCase();
       const color = SOCIO_COLORS[s]||'var(--muted)';
       const borderStyle = isRead ? `border-color:${color};color:${color};background:${color}15` : '';
-      return `<div class="post-avatar ${isRead?'read':'unread'}" title="${s}: ${isRead?'Lido':'Não lido'}"
-        onclick="togglePostRead(${p.id},'${s}')" style="${borderStyle}">${initial}</div>`;
+      const souEu = ME && s === ME.nome;
+      return `<div class="post-avatar ${isRead?'read':'unread'} ${souEu?'':'alheio'}" title="${s}: ${isRead?'Lido':'Não lido'}${souEu?' — clique para marcar':''}"
+        ${souEu?`onclick="togglePostRead(${p.id},'${s}')"`:''} style="${borderStyle}">${initial}</div>`;
     }).join('');
 
     return `<div class="post-item">
@@ -4002,8 +4445,9 @@ function buildReuniaoCard(r, open) {
             const isVisto = (r.vistos||[]).includes(s);
             const color = SOCIO_COLORS[s]||'var(--muted)';
             const borderStyle = isVisto ? `border-color:${color};color:${color};background:${color}15` : '';
-            return `<div class="post-avatar ${isVisto?'read':'unread'}" title="${s}: ${isVisto?'Visto':'Não visto'}"
-              onclick="toggleReuniaoVisto(${r.id},'${s}')" style="${borderStyle}">${s.charAt(0)}</div>`;
+            const souEu = ME && s === ME.nome;
+            return `<div class="post-avatar ${isVisto?'read':'unread'} ${souEu?'':'alheio'}" title="${s}: ${isVisto?'Visto':'Não visto'}${souEu?' — clique para marcar':''}"
+              ${souEu?`onclick="toggleReuniaoVisto(${r.id},'${s}')"`:''} style="${borderStyle}">${s.charAt(0)}</div>`;
           }).join('')}
           <span style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-left:4px">${(r.vistos||[]).length}/${SOCIOS.length}</span>
           <button class="btn btn-ghost" style="margin-left:auto;font-size:11px;padding:5px 12px" onclick="reenviarNotifReuniao(${r.id})">↺ Notificar não vistos</button>
@@ -4081,7 +4525,7 @@ function showSetupBanner() {
 }
 
 // ── INIT ──
-async function initApp() {
+async function initApp(paginaInicial) {
   const now = new Date();
   document.getElementById('sideDate').textContent =
     now.toLocaleDateString('pt-BR',{weekday:'long'}) + '\n' +
@@ -4112,10 +4556,17 @@ async function initApp() {
     showSetupBanner();
   }
 
-  await renderDashboard();
-  // Processa histórico um mês por vez em background (mostra progresso na tela)
-  processarHistoricoSequencial();
-  renderPosts(); renderPlanilhas(); renderMetas(); renderDesempenho(); renderReunioes(); renderPipeline();
+  // Abre na primeira aba liberada para quem está logado
+  goPage(paginaInicial || primeiraAbaPermitida() || 'dashboard');
+  // Sincronização do histórico só para quem vê o dashboard
+  if (podeVer('dashboard')) processarHistoricoSequencial();
+  // Pré-carrega as demais abas liberadas (badges, contadores)
+  if (podeVer('comunicados') && paginaInicial !== 'comunicados') renderPosts();
+  if (podeVer('planilhas')   && paginaInicial !== 'planilhas')   renderPlanilhas();
+  if (podeVer('metas')       && paginaInicial !== 'metas')       renderMetas();
+  if (podeVer('desempenho')  && paginaInicial !== 'desempenho')  renderDesempenho();
+  if (podeVer('reunioes')    && paginaInicial !== 'reunioes')    renderReunioes();
+  if (podeVer('pipeline')    && paginaInicial !== 'pipeline')    renderPipeline();
   await initNotifs();
 }
 
@@ -4144,7 +4595,7 @@ function closeMobileMenu() {
   if (btn) btn.classList.remove('active');
 }
 
-if (sessionStorage.getItem('hubAuth') === '1') initApp();
+verificarSessao();
 
 
 // ═══════════════════════════════════════════════════════════════════
