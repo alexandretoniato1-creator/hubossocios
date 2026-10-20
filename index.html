@@ -1117,6 +1117,33 @@ select.field-input{cursor:pointer}
 .ini-emp{font-size:9px;font-family:'IBM Plex Mono',monospace;color:var(--muted);font-weight:400}
 .ini-vazio{font-size:13px;color:var(--muted);padding:14px 4px}
 @media(max-width:768px){.ini-grid{grid-template-columns:1fr}.ini-saud{font-size:22px}}
+
+/* ── Menu agrupado / sub-abas ── */
+.subtabs{display:flex;gap:4px;border-bottom:1.5px solid var(--border);margin:-12px 0 22px;overflow-x:auto}
+.subtab{background:none;border:none;border-bottom:2.5px solid transparent;padding:10px 16px;font:inherit;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;white-space:nowrap;margin-bottom:-1.5px;display:inline-flex;align-items:center;gap:6px}
+.subtab:hover{color:var(--text)}
+.subtab.on{color:var(--text);border-bottom-color:var(--text)}
+.subtab-count{background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:9px;padding:1px 6px;font-family:'IBM Plex Mono',monospace}
+/* ── Arquivos nas conversas ── */
+.cv-clip{cursor:pointer;font-size:18px;padding:6px 6px;border-radius:6px;user-select:none;align-self:center}
+.cv-clip:hover{background:var(--border)}
+.cv-anexos-fila{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.cv-fila-chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:3px 10px;max-width:280px}
+.cv-fila-chip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cv-fila-chip small{color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:10px}
+.cv-fila-chip a{color:var(--red);text-decoration:none;font-weight:700}
+.cv-anexos{display:flex;flex-direction:column;gap:6px;margin-top:4px;align-items:flex-start}
+.cv-img{cursor:pointer;border-radius:6px;overflow:hidden;border:1px solid var(--border);background:var(--surface2);height:160px;min-width:120px}
+.cv-img img{height:160px;width:auto;max-width:280px;object-fit:cover;display:block}
+.cv-arq{display:flex;align-items:center;gap:10px;border:1.5px solid var(--border);background:var(--surface);border-radius:8px;padding:8px 10px;max-width:420px;width:100%;box-sizing:border-box}
+.cv-arq-ic{font-size:22px}
+.cv-arq-info{flex:1;min-width:0}
+.cv-arq-nome{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cv-arq-info small{font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace}
+.cv-arq .btn{font-size:11px;padding:4px 10px}
+.cv-arq-lista{display:flex;flex-direction:column;gap:6px;max-height:60vh;overflow-y:auto}
+.cv-arq-lista .cv-arq{max-width:none}
+.cv-main.drop-over{outline:3px dashed var(--blue);outline-offset:-8px;background:var(--blue-bg)}
 </style>
 </head>
 <body>
@@ -1152,20 +1179,6 @@ select.field-input{cursor:pointer}
 <div class="sidebar" id="sidebar">
   <div class="sidebar-logo">Hub Os Sócios<span>PAINEL INTERNO</span></div>
   <nav class="nav">
-    <div class="nav-item" data-aba="inicio" onclick="goPage('inicio')"><span class="nav-icon">⌂</span> Início</div>
-    <div class="nav-item" data-aba="dashboard" onclick="goPage('dashboard')"><span class="nav-icon">◈</span> Dashboard</div>
-    <div class="nav-item" data-aba="comunicados" onclick="goPage('comunicados')"><span class="nav-icon">◉</span> Comunicados <span class="nav-count" id="navCount-comunicados" style="display:none"></span></div>
-    <div class="nav-item" data-aba="conversas" onclick="goPage('conversas')"><span class="nav-icon">◍</span> Conversas <span class="nav-count" id="navCount-conversas" style="display:none"></span></div>
-    <div class="nav-item" data-aba="planilhas" onclick="goPage('planilhas')"><span class="nav-icon">◧</span> Planilhas</div>
-    <div class="nav-item" data-aba="documentos" onclick="goPage('documentos')"><span class="nav-icon">▤</span> Documentos</div>
-    <div class="nav-item" data-aba="metas" onclick="goPage('metas')"><span class="nav-icon">◎</span> Metas</div>
-    <div class="nav-item" data-aba="desempenho" onclick="goPage('desempenho')"><span class="nav-icon">◑</span> Desempenho</div>
-    <div class="nav-item" data-aba="reunioes" onclick="goPage('reunioes')"><span class="nav-icon">◷</span> Reuniões <span class="nav-count" id="navCount-reunioes" style="display:none"></span></div>
-    <div class="nav-item" data-aba="decisoes" onclick="goPage('decisoes')"><span class="nav-icon">◆</span> Decisões <span class="nav-count" id="navCount-decisoes" style="display:none"></span></div>
-    <div class="nav-item" data-aba="agenda" onclick="goPage('agenda')"><span class="nav-icon">▦</span> Agenda</div>
-    <div class="nav-item" data-aba="anotacoes" onclick="goPage('anotacoes')"><span class="nav-icon">✎</span> Anotações</div>
-    <div class="nav-item" data-aba="pipeline" onclick="goPage('pipeline')"><span class="nav-icon">◫</span> Pipeline</div>
-    <div class="nav-item hidden" data-aba="usuarios" id="navUsuarios" onclick="goPage('usuarios')"><span class="nav-icon">◐</span> Usuários</div>
   </nav>
   <div style="padding:8px 16px;border-top:1px solid rgba(255,255,255,.08)">
     <button class="notif-btn" id="notifBtn" onclick="toggleNotifPanel()" title="Notificações" style="width:100%;justify-content:flex-start;gap:10px;padding:10px 8px;margin:0;font-size:13px;font-weight:500">
@@ -1194,6 +1207,7 @@ select.field-input{cursor:pointer}
 
 <!-- MAIN -->
 <div class="main">
+  <div id="subTabs" class="subtabs hidden"></div>
 
   <!-- DASHBOARD -->
   <!-- USUÁRIOS (admin) -->
@@ -1412,42 +1426,15 @@ select.field-input{cursor:pointer}
         <div class="cv-compose" id="cvCompose">
           <div class="cv-editbar hidden" id="cvEditBar">✎ Editando mensagem · <a href="#" onclick="event.preventDefault();cvCancelarEdicao()">cancelar</a></div>
           <div class="cv-mention-pop hidden" id="cvMentionPop"></div>
+          <div class="cv-anexos-fila hidden" id="cvAnexosFila"></div>
           <div class="cv-compose-row">
+            <label class="cv-clip" title="Anexar arquivos (até 50 MB cada)">📎<input type="file" id="cvFile" multiple hidden onchange="cvSelecionarArquivos(this.files)"></label>
             <textarea id="cvInput" rows="1" placeholder="Escreva uma mensagem… (@ para mencionar)" onkeydown="cvTecla(event)" oninput="cvDigitando()" onblur="setTimeout(cvFecharMencao,150)"></textarea>
-            <button class="btn btn-primary" onclick="enviarMensagem()">Enviar</button>
+            <button class="btn btn-primary" id="cvBtnEnviar" onclick="enviarMensagem()">Enviar</button>
           </div>
         </div>
       </section>
     </div>
-  </div>
-
-  <!-- DOCUMENTOS -->
-  <div id="page-documentos" class="hidden fade-in">
-    <div class="page-header">
-      <div class="page-title">Documentos</div>
-      <div class="page-sub">contratos, comprovantes, planilhas · até 50 MB por arquivo</div>
-    </div>
-    <div class="box doc-drop" id="docDrop">
-      <div class="doc-drop-msg">⬆ Arraste arquivos aqui ou <label class="doc-pick">escolha do computador<input type="file" id="docFile" multiple hidden onchange="docSelecionados(this.files)"></label></div>
-      <div id="docFilaBox" class="hidden">
-        <div id="docFilaLista" style="margin:12px 0"></div>
-        <div class="doc-fila-grid">
-          <div class="field-group"><span class="field-label">Pasta</span><input class="field-input" id="docPasta" list="docPastasList" placeholder="Geral"></div>
-          <div class="field-group"><span class="field-label">Descrição (opcional)</span><input class="field-input" id="docDesc" placeholder="ex: contrato assinado com o fornecedor X"></div>
-        </div>
-        <div class="para-row"><span class="field-label" style="margin:0">Quem vê</span><div id="docAcessoChips" class="para-chips"></div></div>
-        <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px">
-          <button class="btn btn-ghost" onclick="docCancelarFila()">Cancelar</button>
-          <button class="btn btn-primary" id="docBtnEnviar" onclick="docEnviar()">Enviar</button>
-        </div>
-      </div>
-      <datalist id="docPastasList"></datalist>
-    </div>
-    <div class="doc-toolbar">
-      <input class="field-input" id="docBusca" placeholder="🔍 Buscar por nome, pasta, quem enviou…" oninput="desenharDocs()">
-      <div id="docPastasFiltro" class="para-chips"></div>
-    </div>
-    <div id="docLista"></div>
   </div>
 
   <!-- DECISÕES -->
@@ -1529,8 +1516,8 @@ select.field-input{cursor:pointer}
   <!-- PLANILHAS -->
   <div id="page-planilhas" class="hidden fade-in">
     <div class="page-header">
-      <div class="page-title">Planilhas</div>
-      <div class="page-sub">links e arquivos organizados por empresa</div>
+      <div class="page-title">Links</div>
+      <div class="page-sub">planilhas, sistemas e painéis · organizados por empresa</div>
     </div>
     <div class="box">
       <div class="box-title" style="margin-bottom:14px">Adicionar link</div>
@@ -1546,7 +1533,7 @@ select.field-input{cursor:pointer}
           </select>
         </div>
         <div class="field-group">
-          <span class="field-label">Link (Google Drive, etc.)</span>
+          <span class="field-label">Link (planilha, sistema, painel…)</span>
           <input class="field-input" id="plLink" placeholder="https://...">
         </div>
         <button class="btn btn-primary" onclick="addPlanilha()" style="align-self:end">Salvar</button>
@@ -1988,8 +1975,9 @@ if (CONFIGURED) {
 // ── LOGIN INDIVIDUAL (Supabase Auth) ──
 const LOGIN_DOMINIO = '@hubossocios.app';
 const TODAS_ABAS = [
-  ['dashboard','Dashboard'],['comunicados','Comunicados'],['conversas','Conversas'],['planilhas','Planilhas'],['documentos','Documentos'],
-  ['metas','Metas'],['desempenho','Desempenho'],['reunioes','Reuniões'],['decisoes','Decisões'],['agenda','Agenda'],['anotacoes','Anotações'],['pipeline','Pipeline']
+  ['dashboard','Dashboard'],['conversas','Conversas'],['comunicados','Comunicados'],
+  ['reunioes','Reuniões'],['decisoes','Decisões'],['agenda','Agenda'],['anotacoes','Anotações'],
+  ['metas','Metas'],['desempenho','Desempenho'],['pipeline','Pipeline'],['planilhas','Links']
 ];
 let ME = null;          // perfil do usuário logado
 let USUARIOS = [];      // todos os perfis ativos
@@ -2077,12 +2065,66 @@ function renderParaChips(elId, set, aba, fn) {
     (set.size ? `<span class="para-hint">🔒 só ${esc([...set].join(', '))} e você</span>` : '');
 }
 
+
+// ── MENU AGRUPADO (grupos + sub-abas) ──
+const NAV_GRUPOS = [
+  { id: 'inicio',      nome: 'Início',      icone: '⌂', subs: [['inicio', 'Início']] },
+  { id: 'dashboard',   nome: 'Dashboard',   icone: '◈', subs: [['dashboard', 'Dashboard']] },
+  { id: 'conversas',   nome: 'Conversas',   icone: '◍', subs: [['conversas', 'Conversas']] },
+  { id: 'comunicados', nome: 'Comunicados', icone: '◉', subs: [['comunicados', 'Comunicados']] },
+  { id: 'g-reunioes',  nome: 'Reuniões',    icone: '◷', subs: [['reunioes', 'Reuniões'], ['decisoes', 'Decisões']] },
+  { id: 'g-agenda',    nome: 'Agenda',      icone: '▦', subs: [['agenda', 'Calendário'], ['anotacoes', 'Anotações']] },
+  { id: 'g-operacao',  nome: 'Operação',    icone: '⚙', subs: [['metas', 'Metas'], ['desempenho', 'Desempenho']] },
+  { id: 'pipeline',    nome: 'Pipeline',    icone: '◫', subs: [['pipeline', 'Pipeline']] },
+  { id: 'planilhas',   nome: 'Links',       icone: '🔗', subs: [['planilhas', 'Links']] },
+];
+let NAV_COUNTS = {};
+
+function grupoDe(p) { return NAV_GRUPOS.find(g => g.subs.some(s => s[0] === p)) || null; }
+
+function renderNav() {
+  const nav = document.querySelector('.sidebar .nav');
+  if (!nav || !ME) return;
+  nav.innerHTML = NAV_GRUPOS.map(g => {
+    if (!g.subs.some(s => podeVer(s[0]))) return '';
+    return `<div class="nav-item" data-grupo="${g.id}" onclick="goGrupo('${g.id}')"><span class="nav-icon">${g.icone}</span> ${g.nome} <span class="nav-count" id="navCount-${g.id}" style="display:none"></span></div>`;
+  }).join('') + `<div class="nav-item ${ME.is_admin ? '' : 'hidden'}" data-grupo="usuarios" id="navUsuarios" onclick="goPage('usuarios')"><span class="nav-icon">◐</span> Usuários</div>`;
+  atualizarNavCounts();
+}
+
+function goGrupo(id) {
+  const g = NAV_GRUPOS.find(x => x.id === id); if (!g) return;
+  const subs = g.subs.map(s => s[0]).filter(podeVer);
+  if (!subs.length) return;
+  const ult = loadLs('hub_sub_' + id, null);
+  goPage(subs.includes(ult) ? ult : subs[0]);
+}
+
+function renderSubTabs(p) {
+  const el = document.getElementById('subTabs'); if (!el) return;
+  const g = grupoDe(p);
+  const subs = g ? g.subs.filter(s => podeVer(s[0])) : [];
+  if (subs.length < 2) { el.classList.add('hidden'); el.innerHTML = ''; return; }
+  saveLs('hub_sub_' + g.id, p);
+  el.classList.remove('hidden');
+  el.innerHTML = subs.map(([k, l]) => `<button class="subtab ${k === p ? 'on' : ''}" onclick="goPage('${k}')">${l}${NAV_COUNTS[k] ? ` <span class="subtab-count">${NAV_COUNTS[k]}</span>` : ''}</button>`).join('');
+}
+
+function atualizarNavCounts() {
+  NAV_GRUPOS.forEach(g => {
+    const n = g.subs.reduce((a, s) => a + (podeVer(s[0]) ? (NAV_COUNTS[s[0]] || 0) : 0), 0);
+    const el = document.getElementById('navCount-' + g.id);
+    if (!el) return;
+    el.textContent = n > 99 ? '99+' : n;
+    el.style.display = n ? 'inline-flex' : 'none';
+  });
+  if (typeof curPage !== 'undefined' && !document.getElementById('subTabs')?.classList.contains('hidden')) renderSubTabs(curPage);
+}
+
 // ── Contadores no menu (o que está esperando por mim) ──
 function setNavCount(aba, n) {
-  const el = document.getElementById('navCount-' + aba);
-  if (!el) return;
-  el.textContent = n > 99 ? '99+' : n;
-  el.style.display = n ? 'inline-flex' : 'none';
+  NAV_COUNTS[aba] = n || 0;
+  atualizarNavCounts();
 }
 function atualizarBadgesNav() {
   setNavCount('comunicados', podeVer('comunicados') ? _postsCache.filter(postPendenteMeu).length : 0);
@@ -2103,9 +2145,7 @@ async function carregarPendencias() {
 }
 
 function aplicarPermissoes() {
-  document.querySelectorAll('.nav-item[data-aba]').forEach(el => {
-    el.classList.toggle('hidden', !podeVer(el.dataset.aba));
-  });
+  renderNav();
   document.getElementById('meNome').textContent = ME.nome;
   document.getElementById('meRole').textContent = ME.is_admin ? 'admin' : (ME.tipo === 'socio' ? 'sócio' : 'gerente');
   const av = document.getElementById('meAvatar');
@@ -2612,13 +2652,12 @@ function goPage(p) {
   }
   if (ME && !podeVer(p)) { const alt = primeiraAbaPermitida(); if (!alt || alt === p) return; p = alt; }
   if (window.innerWidth <= 768) closeMobileMenu();
-  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-  document.querySelectorAll('[onclick*="goPage"]').forEach(el => {
-    if(el.getAttribute('onclick').includes("'"+p+"'")) el.classList.add('active');
-  });
+  const gAtivo = grupoDe(p);
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.toggle('active', el.dataset.grupo === (gAtivo ? gAtivo.id : p)));
   document.querySelectorAll('[id^="page-"]').forEach(el => el.classList.add('hidden'));
   document.getElementById('page-'+p).classList.remove('hidden');
   curPage = p;
+  renderSubTabs(p);
   if(p==='dashboard'){renderDashboard()}
   if(p==='comunicados') renderPosts();
   if(p==='planilhas') renderPlanilhas();
@@ -2629,7 +2668,6 @@ function goPage(p) {
   if(p==='usuarios') renderUsuarios();
   if(p==='conversas') renderConversas();
   if(p==='inicio') renderInicio();
-  if(p==='documentos') { docSetupDrop(); renderDocumentos(); }
   if(p==='agenda') renderAgenda();
   if(p==='decisoes') renderDecisoes();
   if(p==='anotacoes') renderAnotacoes();
@@ -3864,6 +3902,7 @@ function cvContadorMenu() {
 
 async function renderConversas() {
   if (!db) { document.getElementById('cvMsgs').innerHTML = emptyHTML('Conversas precisam do Supabase.'); return; }
+  cvSetupDrop();
   await cvCarregarCanais();
   cvRenderSide();
   atualizarBadgesNav();
@@ -3965,6 +4004,7 @@ function cvRenderHead() {
       <div class="cv-head-title">${esc(cvTitulo(c))}</div>
       <div class="cv-head-sub">${sub}</div>
     </div>
+    <button class="btn btn-ghost" style="font-size:11px;padding:5px 10px" onclick="cvAbrirArquivos()" title="Arquivos enviados nesta conversa">📎 Arquivos</button>
     ${podeEditar ? `<button class="btn btn-ghost" style="font-size:11px;padding:5px 10px" onclick="cvAbrirConfig(${c.id})">⚙ Canal</button>` : ''}`;
 }
 
@@ -4012,25 +4052,26 @@ function cvMsgHTML(m, agrupada) {
   const minha = ME && m.autor === ME.nome;
   const reac = Object.entries(m.reacoes || {}).filter(([, l]) => (l || []).length).map(([e, l]) =>
     `<span class="cv-reac ${ME && l.includes(ME.nome) ? 'on' : ''}" title="${esc(l.join(', '))}" onclick="cvReagir(${m.id},'${e}')">${e} ${l.length}</span>`).join('');
+  const temTexto = m.apagada || !!(m.texto || '').trim();
   const corpo = m.apagada
     ? '<span class="cv-apagada">mensagem apagada</span>'
     : `${cvFormatar(m.texto)}${m.editada ? ' <span class="cv-editada">(editada)</span>' : ''}`;
   const acoes = m.apagada ? '' : `<div class="cv-acoes">
       <span class="cv-ac" onclick="cvToggleEmojis(${m.id})" title="Reagir">☺</span>
-      ${minha ? `<span class="cv-ac" onclick="cvEditar(${m.id})" title="Editar">✎</span><span class="cv-ac" onclick="cvApagar(${m.id})" title="Apagar">🗑</span>` : ''}
+      ${minha ? `${(m.texto || '').trim() ? `<span class="cv-ac" onclick="cvEditar(${m.id})" title="Editar">✎</span>` : ''}<span class="cv-ac" onclick="cvApagar(${m.id})" title="Apagar">🗑</span>` : ''}
       <div class="cv-emojis hidden" id="cvEmo-${m.id}">${CV_EMOJIS.map(e => `<span onclick="cvReagir(${m.id},'${e}')">${e}</span>`).join('')}</div>
     </div>`;
   if (agrupada) {
     return `<div class="cv-msg cont ${m.id === cvEditando ? 'editando' : ''}" id="cvm-${m.id}">
       <div class="cv-gutter"><span class="cv-hora-mini">${hora}</span></div>
-      <div class="cv-corpo"><div class="cv-texto">${corpo}</div>${reac ? `<div class="cv-reacs">${reac}</div>` : ''}</div>${acoes}
+      <div class="cv-corpo">${temTexto ? `<div class="cv-texto">${corpo}</div>` : ''}${cvAnexosHTML(m)}${reac ? `<div class="cv-reacs">${reac}</div>` : ''}</div>${acoes}
     </div>`;
   }
   return `<div class="cv-msg ${m.id === cvEditando ? 'editando' : ''}" id="cvm-${m.id}">
     <div class="cv-gutter"><span class="cv-av" style="background:${corDe(m.autor)}">${esc(m.autor.charAt(0).toUpperCase())}</span></div>
     <div class="cv-corpo">
       <div class="cv-meta"><strong style="color:${corDe(m.autor)}">${esc(m.autor)}</strong><span>${hora}</span></div>
-      <div class="cv-texto">${corpo}</div>${reac ? `<div class="cv-reacs">${reac}</div>` : ''}
+      ${temTexto ? `<div class="cv-texto">${corpo}</div>` : ''}${cvAnexosHTML(m)}${reac ? `<div class="cv-reacs">${reac}</div>` : ''}
     </div>${acoes}
   </div>`;
 }
@@ -4055,6 +4096,7 @@ function cvRenderMsgs(rolarFim) {
   });
   box.innerHTML = html;
   if (rolarFim || perto) box.scrollTop = box.scrollHeight;
+  cvCarregarThumbs();
 }
 
 function cvMarcarLido() {
@@ -4080,7 +4122,7 @@ async function enviarMensagem() {
   const inp = document.getElementById('cvInput');
   const texto = inp.value.trim();
   const c = cvCanal(cvAtual);
-  if (!texto || !c) return;
+  if (!c || (!texto && !(cvAnexosFila.length && !cvEditando))) return;
   if (c.arquivado) { alert('Este canal está arquivado.'); return; }
   const mencoes = cvMencoesDoTexto(texto, c);
 
@@ -4097,8 +4139,19 @@ async function enviarMensagem() {
 
   inp.value = ''; cvAutoAltura(); cvFecharMencao();
   const minhaAnterior = [...cvMsgs].reverse().find(m => ME && m.autor === ME.nome);
-  const { data, error } = await db.from('mensagens').insert({ canal_id: c.id, autor: ME.nome, texto, mencoes }).select().single();
-  if (error) { alert('Erro ao enviar: ' + error.message); inp.value = texto; return; }
+  let anexos = [];
+  if (cvAnexosFila.length) {
+    const btn = document.getElementById('cvBtnEnviar'); btn.disabled = true;
+    try { anexos = await cvSubirAnexos(c.id); }
+    catch (e) { btn.disabled = false; btn.textContent = 'Enviar'; alert('Erro ao enviar arquivo: ' + e.message); inp.value = texto; return; }
+    btn.disabled = false;
+    cvAnexosFila = []; cvRenderFila();
+  }
+  const { data, error } = await db.from('mensagens').insert({ canal_id: c.id, autor: ME.nome, texto, mencoes, anexos }).select().single();
+  if (error) {
+    if (anexos.length) await db.storage.from('conversas').remove(anexos.map(a => a.caminho));
+    alert('Erro ao enviar: ' + error.message); inp.value = texto; return;
+  }
   if (!cvMsgs.some(x => x.id === data.id)) cvMsgs.push(data);
   cvRenderMsgs(true);
   cvMarcarLido();
@@ -4106,7 +4159,9 @@ async function enviarMensagem() {
   // Avisos: quem foi mencionado; em conversa direta, a outra pessoa (sem repetir a cada mensagem seguida)
   const aud = cvAudiencia(c);
   const mencionados = semMim(mencoes.includes('todos') ? aud : mencoes.filter(n => aud.includes(n)));
-  const resumo = texto.slice(0, 90) + (texto.length > 90 ? '…' : '');
+  const resumo = texto
+    ? texto.slice(0, 90) + (texto.length > 90 ? '…' : '') + (anexos.length ? ` 📎${anexos.length}` : '')
+    : `📎 ${anexos.length > 1 ? anexos.length + ' arquivos' : anexos[0].nome}`;
   const link = 'conversas:' + c.id;
   if (c.tipo === 'dm') {
     const recente = minhaAnterior && (Date.now() - new Date(minhaAnterior.created_at)) < 3 * 60000;
@@ -4202,9 +4257,12 @@ function cvCancelarEdicao() {
 }
 async function cvApagar(id) {
   if (!confirm('Apagar esta mensagem?')) return;
-  const { error } = await db.from('mensagens').update({ texto: '', mencoes: [], apagada: true }).eq('id', id);
+  const msg = cvMsgs.find(x => x.id === id);
+  const arquivos = (msg && msg.anexos || []).map(a => a.caminho);
+  const { error } = await db.from('mensagens').update({ texto: '', mencoes: [], anexos: [], apagada: true }).eq('id', id);
   if (error) { alert('Erro: ' + error.message); return; }
-  const m = cvMsgs.find(x => x.id === id); if (m) Object.assign(m, { texto: '', apagada: true });
+  if (arquivos.length) await db.storage.from('conversas').remove(arquivos);
+  const m = cvMsgs.find(x => x.id === id); if (m) Object.assign(m, { texto: '', anexos: [], apagada: true });
   cvRenderMsgs(false);
 }
 
@@ -4334,14 +4392,11 @@ document.addEventListener('click', e => {
   if (!e.target.closest('.cv-acoes')) document.querySelectorAll('.cv-emojis').forEach(el => el.classList.add('hidden'));
 });
 
-// ── DOCUMENTOS ──
-const DOC_PASTAS_PADRAO = ['Geral','Contratos','Financeiro','Fiscal','Importação','Marketplace','RH'];
-const DOC_MAX = 50 * 1024 * 1024;
-let docsData = [];
-let docPastaFiltro = '';
-let docFila = [];
-let docAcesso = new Set();
-let docEditAcesso = new Set();
+// ── Arquivos nas conversas ──
+const CV_MAX_ARQ = 50 * 1024 * 1024;
+let cvAnexosFila = [];
+let cvArqMsgs = [];
+const cvUrlCache = {};
 
 function docTamanho(b) {
   if (b < 1024) return b + ' B';
@@ -4349,7 +4404,7 @@ function docTamanho(b) {
   return (b / 1048576).toFixed(1).replace('.', ',') + ' MB';
 }
 function docIcone(nome) {
-  const ext = (nome.split('.').pop() || '').toLowerCase();
+  const ext = (String(nome).split('.').pop() || '').toLowerCase();
   if (['pdf'].includes(ext)) return '📕';
   if (['xls','xlsx','csv','ods'].includes(ext)) return '📗';
   if (['doc','docx','odt','txt','rtf'].includes(ext)) return '📘';
@@ -4359,184 +4414,119 @@ function docIcone(nome) {
   if (['mp4','mov','avi'].includes(ext)) return '🎞';
   return '📄';
 }
-function docAudiencia(d) {
-  const a = d.acesso || [];
-  return a.length ? [...new Set([d.autor, ...a])] : usuariosComAba('documentos');
-}
-function docPastas() {
-  return [...new Set([...DOC_PASTAS_PADRAO, ...docsData.map(d => d.pasta)])].sort((a, b) => a.localeCompare(b));
-}
-
-async function carregarDocs() {
-  const { data, error } = await db.from('documentos').select('*').order('created_at', { ascending: false });
-  if (!error && data) docsData = data;
-}
-
-async function renderDocumentos() {
-  renderParaChips('docAcessoChips', docAcesso, 'documentos', 'docAcessoToggle');
-  const el = document.getElementById('docLista');
-  if (!docsData.length) el.innerHTML = loadingHTML();
-  await carregarDocs();
-  document.getElementById('docPastasList').innerHTML = docPastas().map(p => `<option value="${esc(p)}">`).join('');
-  desenharDocs();
-}
-
-function docFiltrarPasta(p) { docPastaFiltro = p; desenharDocs(); }
-
-function desenharDocs() {
-  const el = document.getElementById('docLista');
-  if (!el) return;
-  const usadas = [...new Set(docsData.map(d => d.pasta))].sort((a, b) => a.localeCompare(b));
-  document.getElementById('docPastasFiltro').innerHTML =
-    `<span class="aba-chip ${docPastaFiltro ? '' : 'on'}" onclick="docFiltrarPasta('')">Todas (${docsData.length})</span>` +
-    usadas.map(p => `<span class="aba-chip ${docPastaFiltro === p ? 'on' : ''}" data-p="${esc(p)}" onclick="docFiltrarPasta(this.dataset.p)">📁 ${esc(p)} (${docsData.filter(d => d.pasta === p).length})</span>`).join('');
-  const q = (document.getElementById('docBusca').value || '').trim().toLowerCase();
-  let lista = docsData.filter(d => (!docPastaFiltro || d.pasta === docPastaFiltro) &&
-    (!q || (d.nome + ' ' + d.descricao + ' ' + d.pasta + ' ' + d.autor).toLowerCase().includes(q)));
-  if (!lista.length) {
-    el.innerHTML = emptyHTML(docsData.length ? 'Nenhum documento neste filtro.' : 'Nenhum documento ainda. Envie o primeiro acima.');
-    return;
-  }
-  el.innerHTML = `<div class="doc-lista">` + lista.map(d => {
-    const podeGerir = ME && (d.autor === ME.nome || ME.is_admin);
-    const restrito = (d.acesso || []).length;
-    const abre = /\.(pdf|png|jpe?g|gif|webp|svg|txt)$/i.test(d.nome);
-    return `<div class="doc-row">
-      <div class="doc-ic">${docIcone(d.nome)}</div>
-      <div class="doc-info">
-        <div class="doc-nome" title="${esc(d.nome)}">${esc(d.nome)}</div>
-        <div class="doc-meta">📁 ${esc(d.pasta)} · ${docTamanho(d.tamanho || 0)} · ${esc(d.autor)} · ${new Date(d.created_at).toLocaleDateString('pt-BR')}${restrito ? ` · <span class="doc-lock" title="Só essas pessoas veem">🔒 ${esc(docAudiencia(d).join(', '))}</span>` : ''}</div>
-        ${d.descricao ? `<div class="doc-desc">${esc(d.descricao)}</div>` : ''}
-      </div>
-      <div class="doc-acts">
-        ${abre ? `<button class="btn btn-ghost" onclick="docAbrir(${d.id},false)">Abrir</button>` : ''}
-        <button class="btn btn-primary" onclick="docAbrir(${d.id},true)">Baixar</button>
-        ${podeGerir ? `<button class="btn btn-ghost" title="Editar" onclick="docEditar(${d.id})">✎</button><button class="btn btn-danger" title="Excluir" onclick="docExcluir(${d.id})">✕</button>` : ''}
-      </div>
-    </div>`;
-  }).join('') + `</div>`;
-}
-
-// ── Envio ──
-function docAcessoToggle(n) {
-  if (!n) docAcesso.clear(); else docAcesso.has(n) ? docAcesso.delete(n) : docAcesso.add(n);
-  renderParaChips('docAcessoChips', docAcesso, 'documentos', 'docAcessoToggle');
-}
-function docSelecionados(files) {
-  const novos = [...files];
-  const grandes = novos.filter(f => f.size > DOC_MAX);
-  if (grandes.length) alert(`Acima de 50 MB (não dá para enviar): ${grandes.map(f => f.name).join(', ')}`);
-  docFila = [...docFila, ...novos.filter(f => f.size <= DOC_MAX)];
-  document.getElementById('docFile').value = '';
-  docRenderFila();
-}
-function docRemoverFila(i) { docFila.splice(i, 1); docRenderFila(); }
-function docRenderFila() {
-  const box = document.getElementById('docFilaBox');
-  box.classList.toggle('hidden', !docFila.length);
-  document.getElementById('docFilaLista').innerHTML = docFila.map((f, i) =>
-    `<div class="doc-fila-item">${docIcone(f.name)} <span>${esc(f.name)}</span><small>${docTamanho(f.size)}</small><a href="#" onclick="event.preventDefault();docRemoverFila(${i})">remover</a></div>`).join('');
-  if (docFila.length && !document.getElementById('docPasta').value) document.getElementById('docPasta').value = docPastaFiltro || 'Geral';
-}
-function docCancelarFila() { docFila = []; docRenderFila(); }
-
 function docNomeSeguro(n) {
   return n.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^\w.\-]+/g, '_').slice(-120);
 }
+function cvEhImagem(nome) { return /\.(png|jpe?g|gif|webp)$/i.test(nome || ''); }
+function cvAbreNoNavegador(nome) { return /\.(pdf|png|jpe?g|gif|webp|svg|txt)$/i.test(nome || ''); }
 
-async function docEnviar() {
-  if (!docFila.length) return;
-  const pasta = (document.getElementById('docPasta').value || 'Geral').trim() || 'Geral';
-  const descricao = document.getElementById('docDesc').value.trim();
-  const acesso = docAcesso.size ? [...new Set([ME.nome, ...docAcesso])] : [];
-  const btn = document.getElementById('docBtnEnviar');
-  btn.disabled = true;
-  const ok = [], falhas = [];
-  for (let i = 0; i < docFila.length; i++) {
-    const f = docFila[i];
-    btn.textContent = `Enviando ${i + 1}/${docFila.length}…`;
-    const caminho = `${ME.id}/${Date.now()}-${docNomeSeguro(f.name)}`;
-    const up = await db.storage.from('documentos').upload(caminho, f, { contentType: f.type || 'application/octet-stream', upsert: false });
-    if (up.error) { falhas.push(f.name + ' (' + up.error.message + ')'); continue; }
-    const { error } = await db.from('documentos').insert({ nome: f.name, pasta, descricao, caminho, tamanho: f.size, tipo_mime: f.type || '', autor: ME.nome, acesso });
-    if (error) { await db.storage.from('documentos').remove([caminho]); falhas.push(f.name + ' (' + error.message + ')'); continue; }
-    ok.push(f.name);
-  }
-  btn.disabled = false; btn.textContent = 'Enviar';
-  if (falhas.length) alert('Não foi possível enviar:\n' + falhas.join('\n'));
-  if (ok.length) {
-    const aud = acesso.length ? acesso : usuariosComAba('documentos');
-    createNotif({ tipo: 'documento', titulo: `📄 ${ME.nome} enviou ${ok.length > 1 ? ok.length + ' arquivos' : 'um arquivo'} em ${pasta}`,
-      corpo: ok.join(', ').slice(0, 100), link_pagina: 'documentos', para: semMim(aud) });
-  }
-  docFila = []; docAcesso.clear(); document.getElementById('docDesc').value = '';
-  docRenderFila();
-  renderDocumentos();
+function cvSelecionarArquivos(files) {
+  const novos = [...files];
+  const grandes = novos.filter(f => f.size > CV_MAX_ARQ);
+  if (grandes.length) alert(`Acima de 50 MB (não dá para enviar): ${grandes.map(f => f.name).join(', ')}`);
+  cvAnexosFila = [...cvAnexosFila, ...novos.filter(f => f.size <= CV_MAX_ARQ)];
+  const inp = document.getElementById('cvFile'); if (inp) inp.value = '';
+  cvRenderFila();
+  document.getElementById('cvInput')?.focus();
+}
+function cvRemoverDaFila(i) { cvAnexosFila.splice(i, 1); cvRenderFila(); }
+function cvRenderFila() {
+  const el = document.getElementById('cvAnexosFila'); if (!el) return;
+  el.classList.toggle('hidden', !cvAnexosFila.length);
+  el.innerHTML = cvAnexosFila.map((f, i) => `<span class="cv-fila-chip">${docIcone(f.name)} <span>${esc(f.name)}</span> <small>${docTamanho(f.size)}</small><a href="#" onclick="event.preventDefault();cvRemoverDaFila(${i})">×</a></span>`).join('');
 }
 
-async function docAbrir(id, baixar) {
-  const d = docsData.find(x => x.id === id); if (!d) return;
+async function cvSubirAnexos(canalId) {
+  const anexos = [];
+  const btn = document.getElementById('cvBtnEnviar');
+  for (let i = 0; i < cvAnexosFila.length; i++) {
+    const f = cvAnexosFila[i];
+    if (btn) btn.textContent = `Enviando ${i + 1}/${cvAnexosFila.length}…`;
+    const caminho = `${canalId}/${ME.id}/${Date.now()}-${docNomeSeguro(f.name)}`;
+    const up = await db.storage.from('conversas').upload(caminho, f, { contentType: f.type || 'application/octet-stream', upsert: false });
+    if (up.error) throw new Error(`${f.name}: ${up.error.message}`);
+    anexos.push({ caminho, nome: f.name, tamanho: f.size, tipo: f.type || '' });
+  }
+  if (btn) btn.textContent = 'Enviar';
+  return anexos;
+}
+
+function cvAnexosHTML(m) {
+  const lista = m.anexos || [];
+  if (!lista.length || m.apagada) return '';
+  return `<div class="cv-anexos">${lista.map((a, i) => cvEhImagem(a.nome)
+    ? `<div class="cv-img" title="${esc(a.nome)}" onclick="cvAbrirAnexo(${m.id},${i},false)"><img data-cam="${esc(a.caminho)}" alt="${esc(a.nome)}"></div>`
+    : `<div class="cv-arq">
+        <span class="cv-arq-ic">${docIcone(a.nome)}</span>
+        <div class="cv-arq-info"><div class="cv-arq-nome" title="${esc(a.nome)}">${esc(a.nome)}</div><small>${docTamanho(a.tamanho || 0)}</small></div>
+        ${cvAbreNoNavegador(a.nome) ? `<button class="btn btn-ghost" onclick="cvAbrirAnexo(${m.id},${i},false)">Abrir</button>` : ''}
+        <button class="btn btn-primary" onclick="cvAbrirAnexo(${m.id},${i},true)">Baixar</button>
+      </div>`).join('')}</div>`;
+}
+
+async function cvCarregarThumbs() {
+  const imgs = [...document.querySelectorAll('#cvMsgs img[data-cam]:not([src])')];
+  if (!imgs.length) return;
+  const agora = Date.now();
+  const faltam = [...new Set(imgs.map(i => i.dataset.cam).filter(c => !(cvUrlCache[c] && cvUrlCache[c].exp > agora)))];
+  if (faltam.length) {
+    const { data } = await db.storage.from('conversas').createSignedUrls(faltam, 3600);
+    (data || []).forEach(d => { if (d.signedUrl) cvUrlCache[d.path] = { url: d.signedUrl, exp: agora + 50 * 60000 }; });
+  }
+  imgs.forEach(img => { const c = cvUrlCache[img.dataset.cam]; if (c) img.src = c.url; });
+}
+
+async function cvAbrirAnexo(msgId, idx, baixar) {
+  const m = cvMsgs.find(x => x.id === msgId) || cvArqMsgs.find(x => x.id === msgId);
+  const a = m && (m.anexos || [])[idx]; if (!a) return;
   const win = baixar ? null : window.open('', '_blank');
-  const { data, error } = await db.storage.from('documentos').createSignedUrl(d.caminho, 300, baixar ? { download: d.nome } : undefined);
+  const { data, error } = await db.storage.from('conversas').createSignedUrl(a.caminho, 300, baixar ? { download: a.nome } : undefined);
   if (error || !data) { if (win) win.close(); alert('Não foi possível abrir: ' + (error ? error.message : '')); return; }
   if (win) { win.location = data.signedUrl; return; }
-  const a = document.createElement('a');
-  a.href = data.signedUrl; a.download = d.nome; document.body.appendChild(a); a.click(); a.remove();
+  const link = document.createElement('a');
+  link.href = data.signedUrl; link.download = a.nome; document.body.appendChild(link); link.click(); link.remove();
 }
 
-async function docExcluir(id) {
-  const d = docsData.find(x => x.id === id); if (!d) return;
-  if (!confirm(`Excluir "${d.nome}"? O arquivo some para todos.`)) return;
-  const { error } = await db.from('documentos').delete().eq('id', id);
+async function cvAbrirArquivos() {
+  const c = cvCanal(cvAtual); if (!c) return;
+  const { data, error } = await db.from('mensagens').select('id,autor,created_at,anexos,apagada').eq('canal_id', c.id).order('created_at', { ascending: false }).limit(1000);
   if (error) { alert('Erro: ' + error.message); return; }
-  await db.storage.from('documentos').remove([d.caminho]);
-  docsData = docsData.filter(x => x.id !== id);
-  desenharDocs();
+  cvArqMsgs = (data || []).filter(m => !m.apagada && (m.anexos || []).length);
+  const old = document.getElementById('modalCvArq'); if (old) old.remove();
+  const md = document.createElement('div');
+  md.className = 'hub-modal'; md.id = 'modalCvArq';
+  md.addEventListener('click', e => { if (e.target === md) md.remove(); });
+  md.innerHTML = `<div class="hub-modal-box" style="max-width:560px">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+      <div class="hub-modal-title">📎 Arquivos em ${esc(cvTitulo(c))}</div>
+      <button class="btn btn-ghost" onclick="document.getElementById('modalCvArq').remove()">Fechar</button>
+    </div>
+    <input class="field-input" id="cvArqBusca" placeholder="🔍 Buscar arquivo…" style="margin:12px 0;width:100%;box-sizing:border-box" oninput="cvDesenharArquivos()">
+    <div id="cvArqLista" class="cv-arq-lista"></div>
+  </div>`;
+  document.body.appendChild(md);
+  cvDesenharArquivos();
+}
+function cvDesenharArquivos() {
+  const el = document.getElementById('cvArqLista'); if (!el) return;
+  const q = (document.getElementById('cvArqBusca').value || '').toLowerCase().trim();
+  const itens = [];
+  cvArqMsgs.forEach(m => (m.anexos || []).forEach((a, i) => { if (!q || a.nome.toLowerCase().includes(q) || m.autor.toLowerCase().includes(q)) itens.push({ m, a, i }); }));
+  el.innerHTML = itens.length ? itens.map(({ m, a, i }) => `<div class="cv-arq">
+      <span class="cv-arq-ic">${docIcone(a.nome)}</span>
+      <div class="cv-arq-info"><div class="cv-arq-nome" title="${esc(a.nome)}">${esc(a.nome)}</div><small>${docTamanho(a.tamanho || 0)} · ${esc(m.autor)} · ${new Date(m.created_at).toLocaleDateString('pt-BR')}</small></div>
+      ${cvAbreNoNavegador(a.nome) ? `<button class="btn btn-ghost" onclick="cvAbrirAnexo(${m.id},${i},false)">Abrir</button>` : ''}
+      <button class="btn btn-primary" onclick="cvAbrirAnexo(${m.id},${i},true)">Baixar</button>
+    </div>`).join('') : `<div style="color:var(--muted);font-size:13px;padding:20px 0;text-align:center">${cvArqMsgs.length ? 'Nada encontrado.' : 'Nenhum arquivo enviado nesta conversa ainda. Use o 📎 ao lado da mensagem.'}</div>`;
 }
 
-function docEditAcessoToggle(n) {
-  if (!n) docEditAcesso.clear(); else docEditAcesso.has(n) ? docEditAcesso.delete(n) : docEditAcesso.add(n);
-  renderParaChips('docEditAcessoChips', docEditAcesso, 'documentos', 'docEditAcessoToggle');
-}
-function docEditar(id) {
-  const d = docsData.find(x => x.id === id); if (!d) return;
-  docEditAcesso = new Set((d.acesso || []).filter(n => n !== ME.nome));
-  const m = document.createElement('div');
-  m.className = 'hub-modal'; m.id = 'modalDoc';
-  m.innerHTML = `<div class="hub-modal-box" style="max-width:460px">
-    <div class="hub-modal-title">Editar documento</div>
-    <div class="field-group" style="margin:14px 0 10px"><span class="field-label">Nome</span><input class="field-input" id="deNome" value="${esc(d.nome)}"></div>
-    <div class="field-group" style="margin-bottom:10px"><span class="field-label">Pasta</span><input class="field-input" id="dePasta" list="docPastasList" value="${esc(d.pasta)}"></div>
-    <div class="field-group" style="margin-bottom:10px"><span class="field-label">Descrição</span><input class="field-input" id="deDesc" value="${esc(d.descricao || '')}"></div>
-    <div class="field-group"><span class="field-label">Quem vê</span><div id="docEditAcessoChips" class="para-chips"></div></div>
-    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px">
-      <button class="btn btn-ghost" onclick="document.getElementById('modalDoc').remove()">Cancelar</button>
-      <button class="btn btn-primary" onclick="docSalvarEdicao(${d.id})">Salvar</button>
-    </div></div>`;
-  document.body.appendChild(m);
-  docEditAcessoToggle(null);
-}
-async function docSalvarEdicao(id) {
-  const d = docsData.find(x => x.id === id); if (!d) return;
-  const campos = {
-    nome: document.getElementById('deNome').value.trim() || d.nome,
-    pasta: document.getElementById('dePasta').value.trim() || 'Geral',
-    descricao: document.getElementById('deDesc').value.trim(),
-    acesso: docEditAcesso.size ? [...new Set([d.autor, ...docEditAcesso])] : []
-  };
-  const { error } = await db.from('documentos').update(campos).eq('id', id);
-  if (error) { alert('Erro: ' + error.message); return; }
-  document.getElementById('modalDoc').remove();
-  renderDocumentos();
-}
-
-function docSetupDrop() {
-  const z = document.getElementById('docDrop');
-  if (!z || z.dataset.ok) return;
-  z.dataset.ok = '1';
-  ['dragenter', 'dragover'].forEach(ev => z.addEventListener(ev, e => { e.preventDefault(); z.classList.add('over'); }));
-  ['dragleave', 'drop'].forEach(ev => z.addEventListener(ev, e => { e.preventDefault(); z.classList.remove('over'); }));
-  z.addEventListener('drop', e => { if (e.dataTransfer.files.length) docSelecionados(e.dataTransfer.files); });
+function cvSetupDrop() {
+  const z = document.querySelector('#page-conversas .cv-main');
+  if (!z || z.dataset.drop) return;
+  z.dataset.drop = '1';
+  ['dragenter', 'dragover'].forEach(ev => z.addEventListener(ev, e => { if (!e.dataTransfer || ![...e.dataTransfer.types].includes('Files')) return; e.preventDefault(); z.classList.add('drop-over'); }));
+  ['dragleave', 'drop'].forEach(ev => z.addEventListener(ev, e => { if (ev === 'dragleave' && z.contains(e.relatedTarget)) return; z.classList.remove('drop-over'); }));
+  z.addEventListener('drop', e => { if (e.dataTransfer && e.dataTransfer.files.length) { e.preventDefault(); if (cvAtual) cvSelecionarArquivos(e.dataTransfer.files); } });
 }
 
 // ── AGENDA (geral dos sócios + pessoal) ──
@@ -5292,7 +5282,7 @@ let _planilhasCache = [];
 
 function renderPlanilhaItems(lista) {
   const el = document.getElementById('planilhasLista');
-  if (!lista.length) { el.innerHTML = emptyHTML('Nenhuma planilha encontrada.'); return; }
+  if (!lista.length) { el.innerHTML = emptyHTML('Nenhum link encontrado.'); return; }
   el.innerHTML = lista.map(p => {
     const dataFmt = new Date(p.created_at).toLocaleDateString('pt-BR');
     return `<div class="planilha-item">
@@ -5329,7 +5319,7 @@ async function renderPlanilhas() {
     lista = loadLs('hub_planilhas', []);
   }
   _planilhasCache = lista;
-  if (!lista.length) { el.innerHTML = emptyHTML('Nenhuma planilha cadastrada.'); return; }
+  if (!lista.length) { el.innerHTML = emptyHTML('Nenhum link cadastrado ainda.'); return; }
   filterPlanilhas();
 }
 
@@ -5679,10 +5669,6 @@ function setupRealtime() {
         }
         atualizarBadgesNav();
       }, 500);
-    })
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'documentos' }, () => {
-      clearTimeout(window._rtDoc);
-      window._rtDoc = setTimeout(() => { if (curPage === 'documentos') renderDocumentos(); }, 500);
     })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'planilhas' }, () => {
       if (curPage === 'planilhas') renderPlanilhas();
@@ -6879,7 +6865,7 @@ const NOTIF_ICONS = {
   desempenho: '📋',
   reuniao: '📅',
   conversa: '💬',
-  documento: '📄',
+  documento: '📎',
   agenda: '🗓',
   nota: '📝',
   decisao: '✅',
