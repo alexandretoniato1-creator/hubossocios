@@ -854,6 +854,45 @@ select.field-input{cursor:pointer}
   .novo-pedido-grid{grid-template-columns:1fr}
   .reuniao-form-grid{grid-template-columns:1fr!important}
 }
+
+/* ── FASE 2: ciência, direcionados, enquete ── */
+.nav-count{margin-left:auto;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;font-family:'IBM Plex Mono',monospace;align-items:center;justify-content:center}
+.para-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0 0}
+.para-row>.field-label{min-width:58px}
+.para-chips{display:flex;flex-wrap:wrap;align-items:center;gap:2px}
+.para-hint{font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-left:6px}
+.aba-chip.on.chip-imp{background:var(--amber);border-color:var(--amber);color:#fff}
+.post-para{font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--blue);background:var(--blue-bg);padding:2px 7px;border-radius:3px}
+.post-item.pendente{border-color:var(--red);box-shadow:0 0 0 3px rgba(192,57,43,.08)}
+.btn-ciente{background:var(--green);color:#fff;border-color:var(--green);font-size:12px;padding:6px 14px;font-weight:600}
+.btn-ciente:hover{opacity:.9}
+.btn-ciente-on{background:var(--green-bg);color:var(--green);border-color:var(--green);font-size:11px;padding:5px 12px;font-weight:600}
+.ciente-ok{font-size:11px;color:var(--green);font-family:'IBM Plex Mono',monospace}
+.ciente-ok a{color:var(--muted);text-decoration:underline;cursor:pointer}
+.reuniao-card.importante{border-left:4px solid var(--amber)}
+.reuniao-card.pendente{border-color:var(--red);box-shadow:0 0 0 3px rgba(192,57,43,.08)}
+.reuniao-card.importante.pendente{border-left-color:var(--amber)}
+.reuniao-imp{background:var(--amber-bg);color:var(--amber);font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px}
+.reuniao-status-enquete{background:#f1e8fb;color:#6b2fa3;font-size:10px;font-weight:600;padding:2px 8px;border-radius:3px}
+.reuniao-data-badge.enq{background:#6b2fa3}
+.reuniao-data-badge.enq .reuniao-data-dia{font-size:16px}
+.reuniao-badges{flex-wrap:wrap;justify-content:flex-end}
+.rf-quando{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.rf-quando>.field-group{min-width:150px}
+.rf-opt{display:flex;gap:8px;align-items:center;margin-bottom:6px}
+.rf-opt .field-input{max-width:180px}
+.rf-opt-n{width:20px;height:20px;border-radius:50%;background:var(--border);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.enq-opt{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1.5px solid var(--border);border-radius:6px;margin-bottom:6px;flex-wrap:wrap}
+.enq-opt.on{border-color:var(--green);background:var(--green-bg)}
+.enq-opt.best .enq-when strong{color:var(--text)}
+.enq-when{min-width:150px;font-size:13px}
+.enq-best{font-size:9px;font-family:'IBM Plex Mono',monospace;background:var(--text);color:var(--bg);padding:1px 6px;border-radius:3px;margin-left:4px;vertical-align:middle}
+.enq-votos{display:flex;align-items:center;gap:4px;flex:1}
+.enq-count{font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-left:4px}
+.enq-acts{display:flex;gap:6px}
+.enq-rodape{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-top:6px}
+.enq-outro{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px;padding-top:10px;border-top:1px dashed var(--border)}
+@media(max-width:600px){.enq-acts{width:100%}.enq-acts .btn{flex:1}.rf-opt .field-input{max-width:none;flex:1}}
 </style>
 </head>
 <body>
@@ -890,11 +929,11 @@ select.field-input{cursor:pointer}
   <div class="sidebar-logo">Hub Os Sócios<span>PAINEL INTERNO</span></div>
   <nav class="nav">
     <div class="nav-item active" data-aba="dashboard" onclick="goPage('dashboard')"><span class="nav-icon">◈</span> Dashboard</div>
-    <div class="nav-item" data-aba="comunicados" onclick="goPage('comunicados')"><span class="nav-icon">◉</span> Comunicados</div>
+    <div class="nav-item" data-aba="comunicados" onclick="goPage('comunicados')"><span class="nav-icon">◉</span> Comunicados <span class="nav-count" id="navCount-comunicados" style="display:none"></span></div>
     <div class="nav-item" data-aba="planilhas" onclick="goPage('planilhas')"><span class="nav-icon">◧</span> Planilhas</div>
     <div class="nav-item" data-aba="metas" onclick="goPage('metas')"><span class="nav-icon">◎</span> Metas</div>
     <div class="nav-item" data-aba="desempenho" onclick="goPage('desempenho')"><span class="nav-icon">◑</span> Desempenho</div>
-    <div class="nav-item" data-aba="reunioes" onclick="goPage('reunioes')"><span class="nav-icon">◷</span> Reuniões</div>
+    <div class="nav-item" data-aba="reunioes" onclick="goPage('reunioes')"><span class="nav-icon">◷</span> Reuniões <span class="nav-count" id="navCount-reunioes" style="display:none"></span></div>
     <div class="nav-item" data-aba="pipeline" onclick="goPage('pipeline')"><span class="nav-icon">◫</span> Pipeline</div>
     <div class="nav-item hidden" data-aba="usuarios" id="navUsuarios" onclick="goPage('usuarios')"><span class="nav-icon">◐</span> Usuários</div>
   </nav>
@@ -1082,11 +1121,11 @@ select.field-input{cursor:pointer}
 
     <!-- FILTROS -->
     <div class="post-filters" id="postFilters">
-      <button class="post-filter-pill active" onclick="filterPosts('todos')">Todos</button>
-      <button class="post-filter-pill" onclick="filterPosts('nao-lidos')">Não lidos</button>
-      <button class="post-filter-pill" onclick="filterPosts('urgente')">Urgentes</button>
-      <button class="post-filter-pill" onclick="filterPosts('importante')">Importantes</button>
-      <button class="post-filter-pill" onclick="filterPosts('informativo')">Informativos</button>
+      <button class="post-filter-pill active" data-f="todos" onclick="filterPosts('todos')">Todos</button>
+      <button class="post-filter-pill" data-f="pendentes" onclick="filterPosts('pendentes')">Aguardando minha ciência</button>
+      <button class="post-filter-pill" data-f="direcionados" onclick="filterPosts('direcionados')">🔒 Direcionados</button>
+      <button class="post-filter-pill" data-f="urgente" onclick="filterPosts('urgente')">Urgentes</button>
+      <button class="post-filter-pill" data-f="importante" onclick="filterPosts('importante')">Importantes</button>
     </div>
 
     <!-- FORMULÁRIO -->
@@ -1094,16 +1133,8 @@ select.field-input{cursor:pointer}
       <div class="box-title" style="margin-bottom:14px">Novo comunicado</div>
       <div class="post-form">
         <textarea class="post-input" id="postTexto" placeholder="Escreva um aviso, resultado, decisão ou atualização..."></textarea>
+        <div class="para-row"><span class="field-label" style="margin:0">Para</span><div id="postParaChips" class="para-chips"></div></div>
         <div class="post-row">
-          <div class="field-group" style="min-width:130px">
-            <span class="field-label">Autor</span>
-            <select class="field-input" id="postAutor" style="font-size:12px;padding:9px 10px">
-              <option value="Ale">Ale</option>
-              <option value="Marcelo">Marcelo</option>
-              <option value="Wissam">Wissam</option>
-              <option value="Lucas">Lucas</option>
-            </select>
-          </div>
           <div class="field-group" style="min-width:140px">
             <span class="field-label">Prioridade</span>
             <select class="field-input" id="postPrioridade" style="font-size:12px;padding:9px 10px">
@@ -1296,7 +1327,7 @@ select.field-input{cursor:pointer}
             </select>
           </div>
         </div>
-        <div class="field-group" style="margin-bottom:10px">
+        <div class="field-group" style="margin-bottom:10px;display:none">
           <span class="field-label">Registrado por</span>
           <input class="field-input" id="dRegistrador" placeholder="Seu nome">
         </div>
@@ -1341,35 +1372,36 @@ select.field-input{cursor:pointer}
   <div id="page-reunioes" class="hidden fade-in">
     <div class="page-header">
       <div class="page-title">Reuniões</div>
-      <div class="page-sub">pauta · decisões · próximos passos</div>
+      <div class="page-sub">presenciais · pauta · enquete de horário · decisões</div>
     </div>
 
     <div class="reuniao-form-box">
       <div class="box-title" style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:16px">Nova reunião</div>
-      <div class="reuniao-form-grid" style="grid-template-columns:2fr 1fr 1fr 1fr auto">
+      <div class="reuniao-form-grid" style="grid-template-columns:2fr 1fr">
         <div class="field-group">
           <label class="field-label">Título</label>
-          <input class="field-input" id="rTitulo" placeholder="ex: Reunião mensal de sócios">
-        </div>
-        <div class="field-group">
-          <label class="field-label">Data</label>
-          <input class="field-input" type="date" id="rData">
-        </div>
-        <div class="field-group">
-          <label class="field-label">Horário</label>
-          <input class="field-input" type="time" id="rHorario">
+          <input class="field-input" id="rTitulo" placeholder="ex: Fechamento do mês">
         </div>
         <div class="field-group">
           <label class="field-label">Mediador</label>
-          <select class="field-input" id="rMediador">
-            <option value="">— Nenhum —</option>
-            <option>Ale</option>
-            <option>Marcelo</option>
-            <option>Wissam</option>
-            <option>Lucas</option>
-          </select>
+          <select class="field-input" id="rMediador"><option value="">— Nenhum —</option></select>
         </div>
-        <button class="btn btn-primary" onclick="addReuniao()">Agendar</button>
+      </div>
+      <div class="para-row"><span class="field-label" style="margin:0">Tipo</span><div id="rTipoChips" class="para-chips"></div></div>
+      <div class="para-row"><span class="field-label" style="margin:0">Quem</span><div id="rParaChips" class="para-chips"></div></div>
+      <div class="para-row"><span class="field-label" style="margin:0">Quando</span><div id="rModoChips" class="para-chips"></div></div>
+      <div id="rQuandoData" class="rf-quando">
+        <div class="field-group"><label class="field-label">Data</label><input class="field-input" type="date" id="rData"></div>
+        <div class="field-group"><label class="field-label">Horário</label><input class="field-input" type="time" id="rHorario"></div>
+      </div>
+      <div id="rQuandoEnquete" class="rf-quando hidden" style="flex-direction:column;align-items:stretch">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:6px">Sugira até 3 opções. Os outros marcam as que podem; você define o horário final quando quiser (antes ou depois dos votos).</div>
+        <div class="rf-opt"><span class="rf-opt-n">1</span><input class="field-input" type="date" id="rOpData0"><input class="field-input" type="time" id="rOpHora0"></div>
+        <div class="rf-opt"><span class="rf-opt-n">2</span><input class="field-input" type="date" id="rOpData1"><input class="field-input" type="time" id="rOpHora1"></div>
+        <div class="rf-opt"><span class="rf-opt-n">3</span><input class="field-input" type="date" id="rOpData2"><input class="field-input" type="time" id="rOpHora2"></div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-top:12px">
+        <button class="btn btn-primary" id="btnAgendar" onclick="addReuniao()">Agendar</button>
       </div>
     </div>
 
@@ -1646,6 +1678,54 @@ function podeVer(aba) {
   return (ME.abas || []).includes(aba);
 }
 
+// ── Helpers de pessoas / audiência ──
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+function usuariosComAba(aba) {
+  return USUARIOS.filter(u => u.ativo && (u.abas || []).includes(aba)).map(u => u.nome);
+}
+function corDe(nome) { return SOCIO_COLORS[nome] || 'var(--muted)'; }
+function semMim(lista) { return (lista || []).filter(n => !ME || n !== ME.nome); }
+// Quem participa de um comunicado: autor + destinatários; sem destinatário = todos com a aba
+function audienciaPost(p) {
+  const d = p.destinatarios || [];
+  return d.length ? [...new Set([p.autor, ...d].filter(Boolean))] : usuariosComAba('comunicados');
+}
+function audienciaReuniao(r) {
+  const d = r.participantes || [];
+  return d.length ? [...new Set([r.criador, ...d].filter(Boolean))] : usuariosComAba('reunioes');
+}
+// Seletor "Para": Todos (vazio) ou pessoas específicas
+function renderParaChips(elId, set, aba, fn) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  const pessoas = semMim(usuariosComAba(aba));
+  el.innerHTML = `<span class="aba-chip ${set.size ? '' : 'on'}" onclick="${fn}('')">Todos</span>` +
+    pessoas.map(n => `<span class="aba-chip ${set.has(n) ? 'on' : ''}" data-n="${esc(n)}" onclick="${fn}(this.dataset.n)">${esc(n)}</span>`).join('') +
+    (set.size ? `<span class="para-hint">🔒 só ${esc([...set].join(', '))} e você</span>` : '');
+}
+
+// ── Contadores no menu (o que está esperando por mim) ──
+function setNavCount(aba, n) {
+  const el = document.getElementById('navCount-' + aba);
+  if (!el) return;
+  el.textContent = n > 99 ? '99+' : n;
+  el.style.display = n ? 'inline-flex' : 'none';
+}
+function atualizarBadgesNav() {
+  setNavCount('comunicados', podeVer('comunicados') ? _postsCache.filter(postPendenteMeu).length : 0);
+  setNavCount('reunioes', podeVer('reunioes') ? reunioesData.filter(reuniaoPendenteMeu).length : 0);
+}
+async function carregarPendencias() {
+  if (!ME) return;
+  const tarefas = [];
+  if (podeVer('comunicados')) tarefas.push(carregarPosts());
+  if (podeVer('reunioes')) tarefas.push(loadReunioes());
+  await Promise.all(tarefas);
+  atualizarBadgesNav();
+}
+
 function aplicarPermissoes() {
   document.querySelectorAll('.nav-item[data-aba]').forEach(el => {
     el.classList.toggle('hidden', !podeVer(el.dataset.aba));
@@ -1655,9 +1735,6 @@ function aplicarPermissoes() {
   const av = document.getElementById('meAvatar');
   av.textContent = ME.nome.charAt(0).toUpperCase();
   av.style.background = ME.cor;
-  // Autor do comunicado = quem está logado
-  const pa = document.getElementById('postAutor');
-  if (pa) { pa.innerHTML = `<option value="${ME.nome}">${ME.nome}</option>`; pa.value = ME.nome; pa.closest('.field-group').style.display = 'none'; }
 }
 
 function primeiraAbaPermitida() {
@@ -2573,16 +2650,18 @@ async function renderResumoAgenda() {
   // Comunicados últimos 7 dias
   let posts = [];
   try {
-    if (db) { const {data} = await db.from('comunicados').select('id,autor,texto,created_at').order('created_at',{ascending:false}).limit(20); posts = data || []; }
+    if (db) { const {data} = await db.from('comunicados').select('*').order('created_at',{ascending:false}).limit(50); posts = data || []; }
     else posts = loadLs('hub_posts', []);
   } catch(e) {}
   const corte7 = new Date(Date.now() - 7*86400000).toISOString();
   const recentes = posts.filter(p => (p.created_at||'') >= corte7);
   const ultimo = posts[0];
+  const aguardandoMim = posts.filter(postPendenteMeu).length;
 
   // Próxima reunião
   try { await loadReunioes(); } catch(e) {}
-  const prox = (reunioesData||[]).filter(r => r.status !== 'realizada' && r.data >= hoje).sort((a,b)=>a.data.localeCompare(b.data))[0];
+  const prox = (reunioesData||[]).filter(r => r.status === 'agendada' && r.data >= hoje).sort((a,b)=>a.data.localeCompare(b.data))[0];
+  const enqMeuVoto = (reunioesData||[]).filter(r => r.status === 'enquete' && reuniaoPendenteMeu(r)).length;
 
   // Pipeline — ETA nos próximos 7 dias
   try { await loadPipeline(); } catch(e) {}
@@ -2593,9 +2672,9 @@ async function renderResumoAgenda() {
 
   el.innerHTML =
     rsCard('Comunicados', recentes.length ? `${recentes.length} <span style="font-size:12px;color:var(--muted)">nos últimos 7 dias</span>` : '<span style="font-size:13px;color:var(--muted)">nenhum recente</span>',
-      ultimo ? `último: ${ultimo.autor||''} — ${(ultimo.texto||'').slice(0,50)}${(ultimo.texto||'').length>50?'…':''}` : '', { onclick:"goPage('comunicados')", valStyle:'font-size:20px' }) +
-    rsCard('Próxima reunião', prox ? `<span style="font-size:15px">${prox.titulo}</span>` : '<span style="font-size:13px;color:var(--muted)">nenhuma agendada</span>',
-      prox ? `${new Date(prox.data+'T12:00:00').toLocaleDateString('pt-BR')}${prox.horario?' às '+prox.horario:''}` : '', { onclick:"goPage('reunioes')" }) +
+      aguardandoMim ? `<span style="color:var(--red);font-weight:600">${aguardandoMim} aguardando sua ciência</span>` : (ultimo ? `último: ${esc(ultimo.autor||'')} — ${esc((ultimo.texto||'').slice(0,50))}${(ultimo.texto||'').length>50?'…':''}` : ''), { onclick:"goPage('comunicados')", valStyle:'font-size:20px' }) +
+    rsCard('Próxima reunião', prox ? `<span style="font-size:15px">${prox.importante?'⭐ ':''}${esc(prox.titulo)}</span>` : '<span style="font-size:13px;color:var(--muted)">nenhuma agendada</span>',
+      (prox ? `${new Date(prox.data+'T12:00:00').toLocaleDateString('pt-BR')}${prox.horario?' às '+prox.horario:''}` : '') + (enqMeuVoto ? `${prox?' · ':''}<span style="color:var(--amber);font-weight:600">🗳 ${enqMeuVoto} enquete${enqMeuVoto>1?'s':''} esperando seu voto</span>` : ''), { onclick:"goPage('reunioes')" }) +
     rsCard('Pipeline — chegando', chegando.length ? `${chegando.length} <span style="font-size:12px;color:var(--muted)">pedidos em 7 dias</span>` : '<span style="font-size:13px;color:var(--muted)">nada previsto</span>',
       chegando.slice(0,2).map(p => `${p.ref||''} · ETA ${fmtD(p.eta)}`).join(' · '), { onclick:"goPage('pipeline')", valStyle:'font-size:20px' });
 
@@ -3102,6 +3181,8 @@ let SOCIO_COLORS = {'Ale':'#2563eb','Marcelo':'#10b981','Wissam':'#a855f7','Luca
 const PRIO_LABELS = {'urgente':'Urgente','importante':'Importante','informativo':'Informativo'};
 const POST_CAT_LABELS = {'geral':'Geral','operacional':'Operacional','financeiro':'Financeiro','marketplace':'Marketplace','importacao':'Importação','rh':'RH'};
 let postFilterMode = 'todos';
+let postPara = new Set();
+let _postsCache = [];
 
 function migratePosts(posts){
   let changed = false;
@@ -3115,193 +3196,221 @@ function migratePosts(posts){
   return posts;
 }
 
-function filterPosts(mode){
-  postFilterMode = mode;
-  document.querySelectorAll('.post-filter-pill').forEach(el=>{
-    const label = el.textContent.trim().toLowerCase();
-    el.classList.toggle('active',
-      (mode==='todos' && label==='todos') ||
-      (mode==='nao-lidos' && label==='não lidos') ||
-      (mode==='urgente' && label==='urgentes') ||
-      (mode==='importante' && label==='importantes') ||
-      (mode==='informativo' && label==='informativos')
-    );
-  });
-  renderPosts();
+function postParaToggle(n){
+  if(!n) postPara.clear(); else postPara.has(n) ? postPara.delete(n) : postPara.add(n);
+  renderParaChips('postParaChips', postPara, 'comunicados', 'postParaToggle');
 }
 
-async function togglePostRead(postId, socio){
+function filterPosts(mode){
+  postFilterMode = mode;
+  document.querySelectorAll('.post-filter-pill').forEach(el=>el.classList.toggle('active', el.dataset.f===mode));
+  desenharPosts();
+}
+
+// Eu preciso dar ciência? (estou na audiência, não sou o autor e ainda não marquei)
+function postPendenteMeu(p){
+  if(!ME) return false;
+  return p.autor!==ME.nome && audienciaPost(p).includes(ME.nome) && !(p.lidos||[]).includes(ME.nome);
+}
+// Quem ainda não deu ciência (fora o autor)
+function postFaltam(p){
+  const l = p.lidos||[];
+  return audienciaPost(p).filter(n=>n!==p.autor && !l.includes(n));
+}
+
+async function marcarCiente(id, ciente){
   if(db){
-    const {data,error} = await db.from('comunicados').select('*').eq('id',postId);
-    if(error||!data||!data.length) return;
-    const p = data[0];
-    if(!p.lidos) p.lidos=[];
-    const idx = p.lidos.indexOf(socio);
-    if(idx>=0) p.lidos.splice(idx,1);
-    else p.lidos.push(socio);
-    await db.from('comunicados').update({lidos: p.lidos}).eq('id',postId);
-  } else {
-    const posts = loadLs('hub_posts',[]);
-    const p = posts.find(x=>x.id===postId);
-    if(!p) return;
-    if(!p.lidos) p.lidos=[];
-    const idx = p.lidos.indexOf(socio);
-    if(idx>=0) p.lidos.splice(idx,1);
-    else p.lidos.push(socio);
-    saveLs('hub_posts',posts);
+    const {error} = await db.rpc('hub_comunicado_ciente',{p_id:id, p_ciente:ciente});
+    if(error){ alert('Erro: '+error.message); return; }
   }
-  renderPosts();
+  const p = _postsCache.find(x=>x.id===id);
+  if(p){
+    const l = new Set(p.lidos||[]);
+    ciente ? l.add(ME.nome) : l.delete(ME.nome);
+    p.lidos = [...l];
+    if(!db) saveLs('hub_posts',_postsCache);
+  }
+  desenharPosts();
+  atualizarBadgesNav();
 }
 
 async function addPost(){
   const texto = document.getElementById('postTexto').value.trim();
-  const autor = document.getElementById('postAutor').value;
+  const autor = ME ? ME.nome : 'Sócio';
   const prioridade = document.getElementById('postPrioridade').value;
   const categoria = document.getElementById('postCategoria').value;
   if(!texto) return;
   const btn = document.getElementById('btnPublicar');
   btn.disabled=true; btn.textContent='...';
 
+  const destinatarios = [...postPara];
   const post = {
     id:Date.now(), texto, autor, prioridade, categoria,
-    lidos:[autor],
+    lidos:[autor], destinatarios,
     created_at:new Date().toISOString()
   };
 
   if(db){
     const {error} = await db.from('comunicados').insert(post);
-    if(error){console.error(error);alert('Erro ao publicar.');}
-    // Notification is triggered via realtime INSERT listener
+    if(error){ console.error(error); alert('Erro ao publicar: '+error.message); btn.disabled=false; btn.textContent='Publicar'; return; }
   } else {
     const posts = loadLs('hub_posts',[]);
     posts.unshift(post);
     saveLs('hub_posts',posts);
-    renderPosts();
-    // Local mode: trigger notification manually
-    createNotif({ tipo:'comunicado', titulo:`Novo comunicado de ${post.autor}`, corpo: post.texto.slice(0,80) + (post.texto.length>80?'…':''), link_pagina:'comunicados' });
   }
+  const pre = prioridade==='urgente' ? '🚨 ' : prioridade==='importante' ? '❗ ' : '📢 ';
+  createNotif({
+    tipo:'comunicado',
+    titulo:`${pre}Comunicado de ${autor}${destinatarios.length?' (para você)':''}`,
+    corpo: texto.slice(0,80) + (texto.length>80?'…':''),
+    link_pagina:'comunicados',
+    para: semMim(audienciaPost(post))
+  });
   document.getElementById('postTexto').value='';
+  postPara.clear(); postParaToggle(null);
+  document.getElementById('postPrioridade').value='informativo';
   btn.disabled=false; btn.textContent='Publicar';
+  renderPosts();
 }
 
 async function reenviarNotifPost(id) {
-  let post = null;
-  if (db) {
-    const { data } = await db.from('comunicados').select('*').eq('id', id);
-    if (data && data[0]) post = data[0];
-  }
+  const post = _postsCache.find(x=>x.id===id);
   if (!post) return;
-  const lidos = post.lidos || [];
-  const naoLeram = SOCIOS.filter(s => !lidos.includes(s));
-  if (!naoLeram.length) { alert('Todos os sócios já leram este comunicado!'); return; }
-  await fetch(`${PUSH_FUNCTION_URL}/test`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      title: `📢 Hub Os Sócios — Comunicado de ${post.autor}`,
-      body: (post.texto||'').slice(0,80) + ((post.texto||'').length > 80 ? '…' : '')
-    })
+  const faltam = semMim(postFaltam(post));
+  if (!faltam.length) { alert('Todo mundo já deu ciência neste comunicado!'); return; }
+  await createNotif({
+    tipo:'comunicado',
+    titulo:`🔔 Lembrete: comunicado de ${post.autor}`,
+    corpo:(post.texto||'').slice(0,80) + ((post.texto||'').length > 80 ? '…' : ''),
+    link_pagina:'comunicados',
+    para: faltam
   });
-  showToast({ tipo:'comunicado', titulo:'Push reenviado!', corpo:`Notificação reenviada · Aguardando: ${naoLeram.join(', ')}` });
+  showToast({ tipo:'comunicado', titulo:'Lembrete enviado', corpo:`Aguardando: ${faltam.join(', ')}` });
 }
 
 async function deletePost(id){
   if(!confirm('Remover este comunicado?')) return;
   if(db){
     const {error} = await db.from('comunicados').delete().eq('id',id);
-    if(error) console.error(error);
+    if(error){ alert('Erro ao remover: '+error.message); return; }
   } else {
-    let posts = loadLs('hub_posts',[]);
-    posts = posts.filter(p=>p.id!==id);
-    saveLs('hub_posts',posts);
-    renderPosts();
+    saveLs('hub_posts', loadLs('hub_posts',[]).filter(p=>p.id!==id));
   }
+  _postsCache = _postsCache.filter(p=>p.id!==id);
+  desenharPosts();
+  atualizarBadgesNav();
 }
 
 function renderPostSummary(posts){
   const el = document.getElementById('postSummary');
+  if(!el) return;
   const total = posts.length;
-  const urgentes = posts.filter(p=>p.prioridade==='urgente').length;
-  const naoLidos = posts.filter(p=>!p.lidos||p.lidos.length<SOCIOS.length).length;
+  const meus = posts.filter(postPendenteMeu).length;
+  const outros = ME ? posts.filter(p=>p.autor===ME.nome && postFaltam(p).length).length : 0;
   const hoje = new Date().toDateString();
   const hojePosts = posts.filter(p=>new Date(p.created_at).toDateString()===hoje).length;
   el.innerHTML = `
     <div class="post-summary-card"><div class="post-summary-val">${total}</div><div class="post-summary-label">Total</div></div>
-    <div class="post-summary-card"><div class="post-summary-val" style="color:var(--red)">${urgentes}</div><div class="post-summary-label">Urgentes</div></div>
-    <div class="post-summary-card"><div class="post-summary-val" style="color:var(--amber)">${naoLidos}</div><div class="post-summary-label">Pendentes leitura</div></div>
+    <div class="post-summary-card"><div class="post-summary-val" style="color:${meus?'var(--red)':'var(--muted)'}">${meus}</div><div class="post-summary-label">Aguardando você</div></div>
+    <div class="post-summary-card"><div class="post-summary-val" style="color:var(--amber)">${outros}</div><div class="post-summary-label">Seus, aguardando outros</div></div>
     <div class="post-summary-card"><div class="post-summary-val" style="color:var(--blue)">${hojePosts}</div><div class="post-summary-label">Hoje</div></div>
   `;
 }
 
-async function renderPosts(){
-  const el = document.getElementById('postsLista');
-  el.innerHTML = loadingHTML();
-  let posts = [];
+async function carregarPosts(){
   if(db){
     const {data,error} = await db.from('comunicados').select('*').order('created_at',{ascending:false});
-    if(!error&&data) posts = data;
+    if(!error&&data) _postsCache = data;
   } else {
-    posts = migratePosts(loadLs('hub_posts',[]));
+    _postsCache = migratePosts(loadLs('hub_posts',[]));
   }
+  return _postsCache;
+}
 
+async function renderPosts(){
+  const el = document.getElementById('postsLista');
+  if(el && !_postsCache.length) el.innerHTML = loadingHTML();
+  renderParaChips('postParaChips', postPara, 'comunicados', 'postParaToggle');
+  await carregarPosts();
+  desenharPosts();
+  atualizarBadgesNav();
+}
+
+function desenharPosts(){
+  const el = document.getElementById('postsLista');
+  if(!el) return;
+  const posts = _postsCache;
   renderPostSummary(posts);
 
-  // Filter
   let filtered = posts;
-  if(postFilterMode==='nao-lidos') filtered = posts.filter(p=>!p.lidos||p.lidos.length<SOCIOS.length);
+  if(postFilterMode==='pendentes') filtered = posts.filter(postPendenteMeu);
+  else if(postFilterMode==='direcionados') filtered = posts.filter(p=>(p.destinatarios||[]).length);
   else if(postFilterMode==='urgente') filtered = posts.filter(p=>p.prioridade==='urgente');
   else if(postFilterMode==='importante') filtered = posts.filter(p=>p.prioridade==='importante');
-  else if(postFilterMode==='informativo') filtered = posts.filter(p=>p.prioridade==='informativo');
 
   if(!filtered.length){
-    el.innerHTML = emptyHTML(postFilterMode==='todos'?'Nenhum comunicado ainda.':'Nenhum comunicado neste filtro.');
+    el.innerHTML = emptyHTML(postFilterMode==='todos'?'Nenhum comunicado ainda.':postFilterMode==='pendentes'?'Nada aguardando sua ciência. ✓':'Nenhum comunicado neste filtro.');
     return;
   }
 
-  // Sort: urgentes first, then by date
-  filtered.sort((a,b)=>{
-    const prioOrder = {urgente:0,importante:1,informativo:2};
-    const pa = prioOrder[a.prioridade]??2, pb = prioOrder[b.prioridade]??2;
-    if(pa!==pb) return pa-pb;
+  // Ordem: aguardando minha ciência → urgente/importante ainda sem ciência de todos → resto (mais recente primeiro)
+  const grupo = p => postPendenteMeu(p) ? 0 : ((p.prioridade==='urgente'||p.prioridade==='importante') && postFaltam(p).length) ? 1 : 2;
+  filtered = [...filtered].sort((a,b)=>{
+    const ga=grupo(a), gb=grupo(b);
+    if(ga!==gb) return ga-gb;
     return new Date(b.created_at)-new Date(a.created_at);
   });
 
   el.innerHTML = filtered.map(p=>{
-    const dataFmt = new Date(p.created_at).toLocaleString('pt-BR');
+    const dataFmt = new Date(p.created_at).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'});
     const prioClass = 'prio-'+(p.prioridade||'informativo');
     const prioLabel = PRIO_LABELS[p.prioridade]||'Informativo';
     const catLabel = POST_CAT_LABELS[p.categoria]||p.categoria||'Geral';
     const lidos = p.lidos||[];
-    const readCount = lidos.length;
+    const aud = audienciaPost(p).filter(n=>n!==p.autor);
+    const cientes = aud.filter(n=>lidos.includes(n)).length;
+    const dest = p.destinatarios||[];
+    const pendente = postPendenteMeu(p);
+    const souAutor = ME && p.autor===ME.nome;
+    const podeGerir = souAutor || (ME && ME.is_admin);
+    const faltam = postFaltam(p);
 
-    const avatarsHTML = SOCIOS.map(s=>{
-      const isRead = lidos.includes(s);
-      const initial = s.charAt(0).toUpperCase();
-      const color = SOCIO_COLORS[s]||'var(--muted)';
-      const borderStyle = isRead ? `border-color:${color};color:${color};background:${color}15` : '';
-      const souEu = ME && s === ME.nome;
-      return `<div class="post-avatar ${isRead?'read':'unread'} ${souEu?'':'alheio'}" title="${s}: ${isRead?'Lido':'Não lido'}${souEu?' — clique para marcar':''}"
-        ${souEu?`onclick="togglePostRead(${p.id},'${s}')"`:''} style="${borderStyle}">${initial}</div>`;
+    const avatarsHTML = aud.map(s=>{
+      const ok = lidos.includes(s);
+      const color = corDe(s);
+      const st = ok ? `border-color:${color};color:${color};background:${color}15` : '';
+      return `<div class="post-avatar ${ok?'read':'unread'} alheio" title="${esc(s)}: ${ok?'ciente':'aguardando'}" style="${st}">${esc(s.charAt(0).toUpperCase())}</div>`;
     }).join('');
 
-    return `<div class="post-item">
+    let meuCiente = '';
+    if(ME && !souAutor && audienciaPost(p).includes(ME.nome)){
+      meuCiente = lidos.includes(ME.nome)
+        ? `<span class="ciente-ok">✓ Você está ciente · <a href="#" onclick="event.preventDefault();marcarCiente(${p.id},false)">desfazer</a></span>`
+        : `<button class="btn btn-ciente" onclick="marcarCiente(${p.id},true)">✓ Estou ciente</button>`;
+    }
+
+    return `<div class="post-item ${pendente?'pendente':''}">
       <div class="post-prio-bar ${prioClass}"></div>
       <div class="post-body">
         <div class="post-meta">
-          <span class="post-autor" style="color:${SOCIO_COLORS[p.autor]||'var(--text)'}">${p.autor}</span>
+          <span class="post-autor" style="color:${corDe(p.autor)}">${esc(p.autor)}</span>
           <span class="post-data">${dataFmt}</span>
           <span class="post-prio-label ${prioClass}">${prioLabel}</span>
-          <span class="post-cat-label">${catLabel}</span>
+          <span class="post-cat-label">${esc(catLabel)}</span>
+          ${dest.length?`<span class="post-para" title="Só essas pessoas veem">🔒 Para: ${esc(dest.join(', '))}</span>`:''}
         </div>
-        <div class="post-texto">${p.texto.replace(/\n/g,'<br>')}</div>
+        <div class="post-texto">${esc(p.texto).replace(/\n/g,'<br>')}</div>
         <div class="post-read-section">
-          <span class="post-read-label">Lido por:</span>
-          ${avatarsHTML}
-          <span class="post-read-count">${readCount}/${SOCIOS.length}</span>
+          <span class="post-read-label">Ciente:</span>
+          ${avatarsHTML || '<span style="font-size:11px;color:var(--muted)">—</span>'}
+          <span class="post-read-count">${cientes}/${aud.length}</span>
         </div>
         <div class="post-actions">
-          <button class="btn btn-ghost" style="font-size:11px;padding:5px 12px" onclick="reenviarNotifPost(${p.id})">↺ Notificar não lidos</button>
-          <button class="btn btn-danger" onclick="deletePost(${p.id})">Remover</button>
+          <div>${meuCiente}</div>
+          <div style="display:flex;gap:6px">
+            ${podeGerir && faltam.length ? `<button class="btn btn-ghost" style="font-size:11px;padding:5px 12px" onclick="reenviarNotifPost(${p.id})">↺ Lembrar quem não viu (${faltam.length})</button>` : ''}
+            ${podeGerir ? `<button class="btn btn-danger" onclick="deletePost(${p.id})">Remover</button>` : ''}
+          </div>
         </div>
       </div>
     </div>`;
@@ -3466,8 +3575,8 @@ async function addMeta(){
     const lista = loadLs('hub_metas',[]);
     lista.push(meta);
     saveLs('hub_metas',lista);
-    createNotif({ tipo:'meta', titulo:`Nova meta criada: ${meta.nome}`, corpo:`${meta.empresa} · ${META_CATS[meta.categoria]||meta.categoria}`, link_pagina:'metas' });
   }
+  createNotif({ tipo:'meta', titulo:`🎯 Nova meta: ${meta.nome}`, corpo:`${meta.empresa} · ${META_CATS[meta.categoria]||meta.categoria}${ME?' · por '+ME.nome:''}`, link_pagina:'metas', para: semMim(usuariosComAba('metas')) });
   document.getElementById('metaNome').value='';
   document.getElementById('metaAlvo').value='';
   document.getElementById('metaAtual').value='';
@@ -3705,7 +3814,16 @@ function setupRealtime() {
   if (!db) return;
   db.channel('hub-changes')
     .on('postgres_changes', { event: '*', schema: 'public', table: 'comunicados' }, () => {
-      if (curPage === 'comunicados') renderPosts();
+      clearTimeout(window._rtPosts);
+      window._rtPosts = setTimeout(() => { if (curPage === 'comunicados') renderPosts(); else carregarPosts().then(atualizarBadgesNav); }, 400);
+    })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'reunioes' }, () => {
+      clearTimeout(window._rtReu);
+      window._rtReu = setTimeout(() => {
+        const a = document.activeElement;
+        const digitando = a && a.closest && a.closest('#listaReunioes') && a.value;
+        if (curPage === 'reunioes' && !digitando) renderReunioes(); else loadReunioes().then(atualizarBadgesNav);
+      }, 400);
     })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'planilhas' }, () => {
       if (curPage === 'planilhas') renderPlanilhas();
@@ -3736,7 +3854,7 @@ async function addDesempenho() {
   const tipo = document.getElementById('dTipo').value;
   const categoria = document.getElementById('dCategoria').value;
   const descricao = document.getElementById('dDescricao').value.trim();
-  const registrado_por = document.getElementById('dRegistrador').value.trim() || 'Sócio';
+  const registrado_por = ME ? ME.nome : (document.getElementById('dRegistrador').value.trim() || 'Sócio');
   if (!func || !descricao) { alert('Preencha o nome do funcionário e a descrição.'); return; }
 
   const btn = document.getElementById('btnAddDesemp');
@@ -3744,14 +3862,13 @@ async function addDesempenho() {
 
   if (db) {
     const { error } = await db.from('desempenho').insert({ func, empresa, tipo, categoria, descricao, registrado_por });
-    if (error) { console.error(error); alert('Erro ao salvar. Tente novamente.'); }
-    // Notification triggered via realtime listener
+    if (error) { console.error(error); alert('Erro ao salvar. Tente novamente.'); btn.disabled = false; btn.textContent = 'Registrar'; return; }
   } else {
     const lista = loadLs('hub_desempenho', []);
     lista.unshift({ id: Date.now(), func, empresa, tipo, categoria, descricao, registrado_por, created_at: new Date().toISOString() });
     saveLs('hub_desempenho', lista);
-    createNotif({ tipo:'desempenho', titulo:`Registro de desempenho: ${func} — ${tipo==='acerto'?'✓ Acerto':'✗ Erro'}`, corpo: descricao.slice(0,80), link_pagina:'desempenho' });
   }
+  createNotif({ tipo:'desempenho', titulo:`📋 ${func} — ${tipo==='acerto'?'✓ Acerto':'✗ Erro'}`, corpo: `${descricao.slice(0,70)} · por ${registrado_por}`, link_pagina:'desempenho', para: semMim(usuariosComAba('desempenho')) });
   document.getElementById('dFunc').value = '';
   document.getElementById('dDescricao').value = '';
   btn.disabled = false; btn.textContent = 'Registrar';
@@ -4189,6 +4306,16 @@ async function renderPipeline() {
 
 // ── REUNIÕES ──
 let reunioesData = [];
+let rPara = new Set();
+let rImportante = false;
+let rModo = 'data';   // 'data' | 'enquete'
+
+function isoHoje() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function fmtDataBR(d) { return d ? d.split('-').reverse().join('/') : ''; }
+function diaSemana(d) { return d ? new Date(d + 'T12:00:00').toLocaleDateString('pt-BR', { weekday: 'short' }).replace('.', '') : ''; }
 
 async function loadReunioes() {
   if (db) {
@@ -4198,7 +4325,9 @@ async function loadReunioes() {
         ...r,
         pauta: r.pauta || [],
         decisoes: r.decisoes || [],
-        passoss: r.passoss || []
+        passoss: r.passoss || [],
+        vistos: r.vistos || [],
+        participantes: r.participantes || []
       }));
       return;
     }
@@ -4206,46 +4335,115 @@ async function loadReunioes() {
   reunioesData = loadLs('hub_reunioes', []);
 }
 
-async function saveReuniao(r) {
+// Atualiza só os campos informados (não sobrescreve votos/ciência de outras pessoas)
+async function atualizarReuniao(id, campos) {
+  const r = reunioesData.find(x => x.id === id);
+  if (r) Object.assign(r, campos);
   if (db) {
     showSync(true);
-    const { error } = await db.from('reunioes').upsert(r, { onConflict: 'id' });
-    if (error) console.error('Erro ao salvar reunião:', error);
+    const { error } = await db.from('reunioes').update(campos).eq('id', id);
     showSync(false);
+    if (error) { console.error('Erro ao salvar reunião:', error); alert('Erro ao salvar: ' + error.message); return false; }
   } else {
     saveLs('hub_reunioes', reunioesData);
   }
+  return true;
+}
+
+// Lê o valor mais recente de um campo de lista antes de alterar (evita apagar o que outro sócio acabou de adicionar)
+async function campoFresco(id, campo) {
+  const r = reunioesData.find(x => x.id === id);
+  if (db) {
+    const { data } = await db.from('reunioes').select(campo).eq('id', id).maybeSingle();
+    if (data && r) r[campo] = data[campo] || [];
+  }
+  return r ? (r[campo] || []) : [];
+}
+
+function reuniaoPendenteMeu(r) {
+  if (!ME || !audienciaReuniao(r).includes(ME.nome)) return false;
+  if (r.status === 'enquete') return !((r.enquete?.opcoes) || []).some(o => (o.votos || []).includes(ME.nome));
+  if (r.status === 'realizada') return false;
+  return (r.data || '') >= isoHoje() && !(r.vistos || []).includes(ME.nome);
+}
+
+// ── Formulário ──
+function rParaToggle(n) {
+  if (!n) rPara.clear(); else rPara.has(n) ? rPara.delete(n) : rPara.add(n);
+  reuniaoFormChips();
+}
+function rSetImportante(v) { rImportante = v; reuniaoFormChips(); }
+function rSetModo(m) { rModo = m; reuniaoFormChips(); }
+
+function reuniaoFormChips() {
+  const tipo = document.getElementById('rTipoChips');
+  if (!tipo) return;
+  tipo.innerHTML =
+    `<span class="aba-chip ${rImportante ? '' : 'on'}" onclick="rSetImportante(false)">Normal</span>` +
+    `<span class="aba-chip ${rImportante ? 'on chip-imp' : ''}" onclick="rSetImportante(true)">⭐ Importante</span>`;
+  renderParaChips('rParaChips', rPara, 'reunioes', 'rParaToggle');
+  document.getElementById('rModoChips').innerHTML =
+    `<span class="aba-chip ${rModo === 'data' ? 'on' : ''}" onclick="rSetModo('data')">📅 Data definida</span>` +
+    `<span class="aba-chip ${rModo === 'enquete' ? 'on' : ''}" onclick="rSetModo('enquete')">🗳 Enquete de horários</span>`;
+  document.getElementById('rQuandoData').classList.toggle('hidden', rModo !== 'data');
+  document.getElementById('rQuandoEnquete').classList.toggle('hidden', rModo !== 'enquete');
+  document.getElementById('btnAgendar').textContent = rModo === 'enquete' ? 'Abrir enquete' : 'Agendar';
+  const sel = document.getElementById('rMediador');
+  const v = sel.value;
+  sel.innerHTML = '<option value="">— Nenhum —</option>' +
+    usuariosComAba('reunioes').map(n => `<option value="${esc(n)}">${esc(n)}</option>`).join('');
+  sel.value = v;
 }
 
 async function addReuniao() {
   const titulo = document.getElementById('rTitulo').value.trim();
-  const data = document.getElementById('rData').value;
-  const horario = document.getElementById('rHorario').value;
   const mediador = document.getElementById('rMediador').value;
-  if (!titulo || !data) { alert('Preencha o título e a data.'); return; }
+  if (!titulo) { alert('Preencha o título.'); return; }
   const r = {
-    id: Date.now(), titulo, data,
-    horario: horario || '', mediador: mediador || '',
-    status: 'agendada',
-    pauta: [], decisoes: [], passoss: [],
+    id: Date.now(), titulo, data: '', horario: '', mediador: mediador || '',
+    status: 'agendada', pauta: [], decisoes: [], passoss: [],
+    vistos: [ME.nome], participantes: [...rPara], importante: rImportante,
+    criador: ME.nome, enquete: null,
     created_at: new Date().toISOString()
   };
+  if (rModo === 'data') {
+    r.data = document.getElementById('rData').value;
+    r.horario = document.getElementById('rHorario').value || '';
+    if (!r.data) { alert('Preencha a data.'); return; }
+  } else {
+    const opcoes = [0, 1, 2].map(i => ({
+      data: document.getElementById('rOpData' + i).value,
+      horario: document.getElementById('rOpHora' + i).value || '',
+      votos: [ME.nome]
+    })).filter(o => o.data);
+    if (opcoes.length < 2) { alert('Coloque pelo menos 2 opções de dia para a enquete.'); return; }
+    r.status = 'enquete';
+    r.data = opcoes.map(o => o.data).sort()[0];
+    r.enquete = { opcoes, aberta: true };
+  }
+  const btn = document.getElementById('btnAgendar');
+  btn.disabled = true;
   if (db) {
     showSync(true);
     const { error } = await db.from('reunioes').insert(r);
-    if (error) { alert('Erro ao agendar.'); showSync(false); return; }
     showSync(false);
-    // Notification triggered via realtime listener
+    if (error) { alert('Erro ao agendar: ' + error.message); btn.disabled = false; return; }
   } else {
     reunioesData.unshift(r);
     saveLs('hub_reunioes', reunioesData);
-    const dataFmt = new Date(r.data + 'T12:00:00').toLocaleDateString('pt-BR');
-    createNotif({ tipo:'reuniao', titulo:`Nova reunião: ${r.titulo}`, corpo:`${dataFmt}${r.horario ? ' às ' + r.horario : ''}`, link_pagina:'reunioes' });
   }
-  document.getElementById('rTitulo').value = '';
-  document.getElementById('rData').value = '';
-  document.getElementById('rHorario').value = '';
-  document.getElementById('rMediador').value = '';
+  const para = semMim(audienciaReuniao(r));
+  if (r.status === 'enquete') {
+    createNotif({ tipo: 'reuniao', titulo: `🗳 Vote nos horários: ${titulo}`,
+      corpo: `${ME.nome} sugeriu ${r.enquete.opcoes.length} opções — marque as que você pode`, link_pagina: 'reunioes', para });
+  } else {
+    createNotif({ tipo: 'reuniao', titulo: `${r.importante ? '⭐ Reunião importante' : '📅 Nova reunião'}: ${titulo}`,
+      corpo: `${diaSemana(r.data)} ${fmtDataBR(r.data)}${r.horario ? ' às ' + r.horario : ''} · marcada por ${ME.nome}`, link_pagina: 'reunioes', para });
+  }
+  ['rTitulo', 'rData', 'rHorario', 'rMediador', 'rOpData0', 'rOpHora0', 'rOpData1', 'rOpHora1', 'rOpData2', 'rOpHora2']
+    .forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  rPara.clear(); rImportante = false; rModo = 'data';
+  btn.disabled = false;
   renderReunioes();
 }
 
@@ -4257,250 +4455,390 @@ function toggleReuniao(id) {
   toggle.classList.toggle('open', !isOpen);
 }
 
+// ── Pauta / decisões ──
 async function addPauta(id) {
   const input = document.getElementById('rPautaInput-' + id);
   const texto = input.value.trim();
   if (!texto) return;
-  const r = reunioesData.find(x => x.id === id);
-  if (!r) return;
-  r.pauta.push(texto);
-  await saveReuniao(r);
-  input.value = '';
+  const pauta = [...await campoFresco(id, 'pauta'), texto];
+  if (await atualizarReuniao(id, { pauta })) input.value = '';
   rerenderCard(id);
 }
 async function removePauta(id, idx) {
   const r = reunioesData.find(x => x.id === id);
   if (!r) return;
-  r.pauta.splice(idx, 1);
-  await saveReuniao(r);
+  const alvo = r.pauta[idx];
+  const atual = await campoFresco(id, 'pauta');
+  const i = atual.indexOf(alvo);
+  if (i >= 0) atual.splice(i, 1);
+  await atualizarReuniao(id, { pauta: atual });
   rerenderCard(id);
 }
-
 async function addDecisao(id) {
   const input = document.getElementById('rDecisaoInput-' + id);
   const texto = input.value.trim();
   if (!texto) return;
-  const r = reunioesData.find(x => x.id === id);
-  if (!r) return;
-  r.decisoes.push(texto);
-  await saveReuniao(r);
-  input.value = '';
+  const decisoes = [...await campoFresco(id, 'decisoes'), texto];
+  if (await atualizarReuniao(id, { decisoes })) input.value = '';
   rerenderCard(id);
 }
 async function removeDecisao(id, idx) {
   const r = reunioesData.find(x => x.id === id);
   if (!r) return;
-  r.decisoes.splice(idx, 1);
-  await saveReuniao(r);
+  if (!confirm('Remover esta decisão do registro?')) return;
+  const alvo = r.decisoes[idx];
+  const atual = await campoFresco(id, 'decisoes');
+  const i = atual.indexOf(alvo);
+  if (i >= 0) atual.splice(i, 1);
+  await atualizarReuniao(id, { decisoes: atual });
   rerenderCard(id);
 }
-
-async function addPasso(id) {
-  const textoEl = document.getElementById('rPassoTexto-' + id);
-  const respEl  = document.getElementById('rPassoResp-' + id);
-  const prazoEl = document.getElementById('rPassoPrazo-' + id);
-  const texto = textoEl.value.trim();
-  if (!texto) return;
-  const r = reunioesData.find(x => x.id === id);
-  if (!r) return;
-  if (!r.passoss) r.passoss = [];
-  r.passoss.push({ texto, responsavel: respEl.value.trim(), prazo: prazoEl.value, feito: false });
-  await saveReuniao(r);
-  textoEl.value = ''; respEl.value = ''; prazoEl.value = '';
-  rerenderCard(id);
-}
+// Próximos passos antigos (só registro — não se cria mais tarefa entre sócios)
 async function togglePasso(id, idx) {
   const r = reunioesData.find(x => x.id === id);
   if (!r || !r.passoss[idx]) return;
   r.passoss[idx].feito = !r.passoss[idx].feito;
-  await saveReuniao(r);
+  await atualizarReuniao(id, { passoss: r.passoss });
   rerenderCard(id);
 }
 async function removePasso(id, idx) {
   const r = reunioesData.find(x => x.id === id);
   if (!r) return;
   r.passoss.splice(idx, 1);
-  await saveReuniao(r);
+  await atualizarReuniao(id, { passoss: r.passoss });
   rerenderCard(id);
 }
 
-async function marcarRealizada(id) {
+// ── Enquete de horários ──
+async function votarEnquete(id, idx, pode) {
   const r = reunioesData.find(x => x.id === id);
   if (!r) return;
-  r.status = r.status === 'realizada' ? 'agendada' : 'realizada';
-  await saveReuniao(r);
-  rerenderCard(id);
-}
-async function deleteReuniao(id) {
-  if (!confirm('Remover esta reunião?')) return;
-  reunioesData = reunioesData.filter(x => x.id !== id);
   if (db) {
-    showSync(true);
-    await db.from('reunioes').delete().eq('id', id);
-    showSync(false);
+    const { data, error } = await db.rpc('hub_reuniao_votar', { p_id: id, p_opcao: idx, p_pode: pode });
+    if (error) { alert(error.message); await loadReunioes(); rerenderCard(id); return; }
+    r.enquete = data;
   } else {
+    const v = new Set(r.enquete.opcoes[idx].votos || []);
+    pode ? v.add(ME.nome) : v.delete(ME.nome);
+    r.enquete.opcoes[idx].votos = [...v];
     saveLs('hub_reunioes', reunioesData);
   }
+  rerenderCard(id, true);
+  atualizarBadgesNav();
+}
+
+// Criador define o dia/horário (opção da enquete, ou outro dia qualquer; também usado para remarcar)
+async function definirHorario(id, idx) {
+  const r = reunioesData.find(x => x.id === id);
+  if (!r) return;
+  let data, horario;
+  if (idx >= 0) {
+    const o = r.enquete.opcoes[idx];
+    data = o.data; horario = o.horario || '';
+  } else {
+    data = document.getElementById('rDefData-' + id)?.value;
+    horario = document.getElementById('rDefHora-' + id)?.value || '';
+    if (!data) { alert('Escolha a data.'); return; }
+  }
+  const remarcando = r.status !== 'enquete';
+  if (!confirm(`${remarcando ? 'Remarcar' : 'Marcar'} "${r.titulo}" para ${diaSemana(data)} ${fmtDataBR(data)}${horario ? ' às ' + horario : ''}?`)) return;
+  const campos = { status: 'agendada', data, horario, vistos: [ME.nome] };
+  if (r.enquete) campos.enquete = Object.assign({}, r.enquete, { aberta: false, definida: { data, horario } });
+  if (!await atualizarReuniao(id, campos)) return;
+  createNotif({
+    tipo: 'reuniao',
+    titulo: `${remarcando ? '🔁 Reunião remarcada' : '📅 Reunião marcada'}: ${r.titulo}`,
+    corpo: `${diaSemana(data)} ${fmtDataBR(data)}${horario ? ' às ' + horario : ''} · confirme que está ciente`,
+    link_pagina: 'reunioes',
+    para: semMim(audienciaReuniao(r))
+  });
   renderReunioes();
 }
 
-async function rerenderCard(id) {
-  const r = reunioesData.find(x => x.id === id);
-  const container = document.getElementById('rcard-' + id);
-  if (!r || !container) { renderReunioes(); return; }
-  const wasOpen = document.getElementById('rbody-' + id)?.classList.contains('open');
-  container.outerHTML = buildReuniaoCard(r, wasOpen);
+function toggleRemarcar(id) {
+  document.getElementById('rRemarcar-' + id)?.classList.toggle('hidden');
 }
 
-function buildReuniaoCard(r, open) {
-  open = open || false;
-  const dt = new Date(r.data + 'T12:00:00');
-  const dia = dt.getDate().toString().padStart(2, '0');
-  const mes = dt.toLocaleDateString('pt-BR', { month: 'short' }).replace('.', '');
-  const dataFmt = r.data ? r.data.split('-').reverse().join('/') : '';
-  const horaStr = r.horario ? ' · ' + r.horario : '';
-  const pendentes = (r.passoss || []).filter(p => !p.feito).length;
-  const statusClass = r.status === 'realizada' ? 'reuniao-status-realizada' : 'reuniao-status-agendada';
-  const statusLabel = r.status === 'realizada' ? '✓ Realizada' : '● Agendada';
-
-  const pautaHTML = (r.pauta || []).length
-    ? (r.pauta || []).map((p, i) => `<div class="pauta-item">
-        <span class="pauta-num">${i+1}.</span>
-        <span class="pauta-texto">${p}</span>
-        <button class="btn btn-danger" style="padding:2px 8px;font-size:10px" onclick="removePauta(${r.id},${i})">×</button>
-      </div>`).join('')
-    : '<div style="font-size:12px;color:var(--muted);padding:6px 0">Nenhum item na pauta ainda.</div>';
-
-  const decisoesHTML = (r.decisoes || []).length
-    ? (r.decisoes || []).map((d, i) => `<div class="decisao-item">
-        <span class="decisao-dot"></span>
-        <span style="flex:1">${d}</span>
-        <button class="btn btn-danger" style="padding:2px 8px;font-size:10px" onclick="removeDecisao(${r.id},${i})">×</button>
-      </div>`).join('')
-    : '<div style="font-size:12px;color:var(--muted);padding:6px 0">Nenhuma decisão registrada ainda.</div>';
-
-  const passosHTML = (r.passoss || []).length
-    ? (r.passoss || []).map((p, i) => `<div class="passo-item">
-        <div class="passo-check ${p.feito ? 'done' : ''}" onclick="togglePasso(${r.id},${i})">${p.feito ? '✓' : ''}</div>
-        <div class="passo-info">
-          <div class="passo-texto ${p.feito ? 'done' : ''}">${p.texto}</div>
-          <div class="passo-meta">${p.responsavel || '—'}${p.prazo ? ' · até ' + new Date(p.prazo+'T12:00:00').toLocaleDateString('pt-BR') : ''}</div>
-        </div>
-        <button class="btn btn-danger" style="padding:2px 8px;font-size:10px" onclick="removePasso(${r.id},${i})">×</button>
-      </div>`).join('')
-    : '<div style="font-size:12px;color:var(--muted);padding:6px 0">Nenhuma ação pendente.</div>';
-
-  return `<div class="reuniao-card" id="rcard-${r.id}">
-    <div class="reuniao-header" onclick="toggleReuniao(${r.id})">
-      <div class="reuniao-data-badge">
-        <div class="reuniao-data-dia">${dia}</div>
-        <div class="reuniao-data-mes">${mes}</div>
-      </div>
-      <div class="reuniao-info">
-        <div class="reuniao-titulo">${r.titulo}</div>
-        <div class="reuniao-hora">${dataFmt}${horaStr}${r.mediador ? ' · <span style="color:var(--text);font-weight:600">⚑ ' + r.mediador + '</span>' : ''}</div>
-      </div>
-      <div class="reuniao-badges">
-        <span class="${statusClass}">${statusLabel}</span>
-        ${pendentes > 0 ? `<span class="reuniao-pendentes">${pendentes} pendente${pendentes > 1 ? 's' : ''}</span>` : ''}
-      </div>
-      <span class="reuniao-toggle ${open ? 'open' : ''}" id="rtoggle-${r.id}">▾</span>
-    </div>
-    <div class="reuniao-body ${open ? 'open' : ''}" id="rbody-${r.id}">
-
-      <div class="reuniao-section">
-        <div class="reuniao-section-title">Pauta</div>
-        ${pautaHTML}
-        <div class="add-item-row">
-          <input class="add-item-input" id="rPautaInput-${r.id}" placeholder="Adicionar item à pauta…" onkeydown="if(event.key==='Enter')addPauta(${r.id})">
-          <button class="btn btn-ghost" onclick="addPauta(${r.id})">Adicionar</button>
-        </div>
-      </div>
-
-      <div class="reuniao-section">
-        <div class="reuniao-section-title">Decisões</div>
-        ${decisoesHTML}
-        <div class="add-item-row">
-          <input class="add-item-input" id="rDecisaoInput-${r.id}" placeholder="Registrar decisão tomada…" onkeydown="if(event.key==='Enter')addDecisao(${r.id})">
-          <button class="btn btn-ghost" onclick="addDecisao(${r.id})">Registrar</button>
-        </div>
-      </div>
-
-      <div class="reuniao-section">
-        <div class="reuniao-section-title">Próximos Passos</div>
-        ${passosHTML}
-        <div class="passo-form-grid" style="margin-top:10px">
-          <input class="field-input" id="rPassoTexto-${r.id}" placeholder="Ação a executar…">
-          <input class="field-input" id="rPassoResp-${r.id}" placeholder="Responsável">
-          <input class="field-input" type="date" id="rPassoPrazo-${r.id}">
-          <button class="btn btn-ghost" onclick="addPasso(${r.id})">Adicionar</button>
-        </div>
-      </div>
-
-      <!-- VISTOS POR -->
-      <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
-        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:10px;font-family:'IBM Plex Mono',monospace">Visto por</div>
-        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
-          ${SOCIOS.map(s => {
-            const isVisto = (r.vistos||[]).includes(s);
-            const color = SOCIO_COLORS[s]||'var(--muted)';
-            const borderStyle = isVisto ? `border-color:${color};color:${color};background:${color}15` : '';
-            const souEu = ME && s === ME.nome;
-            return `<div class="post-avatar ${isVisto?'read':'unread'} ${souEu?'':'alheio'}" title="${s}: ${isVisto?'Visto':'Não visto'}${souEu?' — clique para marcar':''}"
-              ${souEu?`onclick="toggleReuniaoVisto(${r.id},'${s}')"`:''} style="${borderStyle}">${s.charAt(0)}</div>`;
-          }).join('')}
-          <span style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-left:4px">${(r.vistos||[]).length}/${SOCIOS.length}</span>
-          <button class="btn btn-ghost" style="margin-left:auto;font-size:11px;padding:5px 12px" onclick="reenviarNotifReuniao(${r.id})">↺ Notificar não vistos</button>
-        </div>
-      </div>
-
-      <div class="reuniao-footer">
-        <button class="btn btn-ghost" onclick="marcarRealizada(${r.id})">${r.status === 'realizada' ? '↺ Reabrir reunião' : '✓ Marcar como realizada'}</button>
-        <button class="btn btn-danger" onclick="deleteReuniao(${r.id})">Remover reunião</button>
-      </div>
-    </div>
-  </div>`;
-}
-
-async function toggleReuniaoVisto(id, socio) {
+// ── Ciência ──
+async function reuniaoCiente(id, ciente) {
   const r = reunioesData.find(x => x.id === id);
   if (!r) return;
-  if (!r.vistos) r.vistos = [];
-  const idx = r.vistos.indexOf(socio);
-  if (idx >= 0) r.vistos.splice(idx, 1);
-  else r.vistos.push(socio);
-  await saveReuniao(r);
-  rerenderCard(id);
+  if (db) {
+    const { error } = await db.rpc('hub_reuniao_ciente', { p_id: id, p_ciente: ciente });
+    if (error) { alert('Erro: ' + error.message); return; }
+  }
+  const v = new Set(r.vistos || []);
+  ciente ? v.add(ME.nome) : v.delete(ME.nome);
+  r.vistos = [...v];
+  if (!db) saveLs('hub_reunioes', reunioesData);
+  rerenderCard(id, true);
+  atualizarBadgesNav();
 }
 
 async function reenviarNotifReuniao(id) {
   const r = reunioesData.find(x => x.id === id);
   if (!r) return;
-  const naoViram = SOCIOS.filter(s => !(r.vistos||[]).includes(s));
-  if (!naoViram.length) { alert('Todos os sócios já viram esta reunião!'); return; }
-  await fetch(`${PUSH_FUNCTION_URL}/test`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      title: `🔔 Hub Os Sócios — Reunião: ${r.titulo}`,
-      body: `${r.data.split('-').reverse().join('/')}${r.horario ? ' às ' + r.horario : ''} · Aguardando confirmação de: ${naoViram.join(', ')}`
-    })
+  const enq = r.status === 'enquete';
+  const opcoes = r.enquete?.opcoes || [];
+  const faltam = semMim(audienciaReuniao(r).filter(n =>
+    enq ? !opcoes.some(o => (o.votos || []).includes(n)) : !(r.vistos || []).includes(n)));
+  if (!faltam.length) { alert(enq ? 'Todo mundo já votou!' : 'Todo mundo já está ciente!'); return; }
+  await createNotif({
+    tipo: 'reuniao',
+    titulo: `🔔 Lembrete: ${r.titulo}`,
+    corpo: enq ? 'Falta seu voto na enquete de horários' : `${diaSemana(r.data)} ${fmtDataBR(r.data)}${r.horario ? ' às ' + r.horario : ''} · confirme que está ciente`,
+    link_pagina: 'reunioes',
+    para: faltam
   });
-  showToast({ tipo:'reuniao', titulo:'Push reenviado!', corpo:`Notificação enviada para os sócios que ainda não confirmaram.` });
+  showToast({ tipo: 'reuniao', titulo: 'Lembrete enviado', corpo: `Para: ${faltam.join(', ')}` });
+}
+
+async function marcarRealizada(id) {
+  const r = reunioesData.find(x => x.id === id);
+  if (!r) return;
+  await atualizarReuniao(id, { status: r.status === 'realizada' ? 'agendada' : 'realizada' });
+  rerenderCard(id, true);
+  atualizarBadgesNav();
+}
+async function deleteReuniao(id) {
+  if (!confirm('Remover esta reunião? Pauta e decisões somem junto.')) return;
+  if (db) {
+    showSync(true);
+    const { error } = await db.from('reunioes').delete().eq('id', id);
+    showSync(false);
+    if (error) { alert('Erro ao remover: ' + error.message); return; }
+  }
+  reunioesData = reunioesData.filter(x => x.id !== id);
+  if (!db) saveLs('hub_reunioes', reunioesData);
+  renderReunioes();
+}
+
+function rerenderCard(id, keepOpen) {
+  const r = reunioesData.find(x => x.id === id);
+  const container = document.getElementById('rcard-' + id);
+  if (!r || !container) { renderReunioes(); return; }
+  const wasOpen = keepOpen || document.getElementById('rbody-' + id)?.classList.contains('open');
+  container.outerHTML = buildReuniaoCard(r, wasOpen);
+}
+
+function avatarMini(n, on) {
+  const c = corDe(n);
+  const st = on ? `border-color:${c};color:${c};background:${c}15` : '';
+  return `<div class="post-avatar ${on ? 'read' : 'unread'} alheio" title="${esc(n)}" style="${st}">${esc(n.charAt(0).toUpperCase())}</div>`;
+}
+
+function buildReuniaoCard(r, open) {
+  open = open || false;
+  const enq = r.status === 'enquete';
+  const aud = audienciaReuniao(r);
+  const eu = ME ? ME.nome : '';
+  const souAud = aud.includes(eu);
+  const souCriador = !!r.criador && r.criador === eu;
+  const podeGerir = souCriador || (ME && ME.is_admin);
+  const podeRemover = !r.criador || podeGerir;
+  const vistos = r.vistos || [];
+  const opcoes = r.enquete?.opcoes || [];
+  const pendente = reuniaoPendenteMeu(r);
+  const dataFmt = fmtDataBR(r.data);
+  const horaStr = r.horario ? ' · ' + r.horario : '';
+
+  let badgeData;
+  if (enq) {
+    badgeData = `<div class="reuniao-data-badge enq"><div class="reuniao-data-dia">🗳</div><div class="reuniao-data-mes">votação</div></div>`;
+  } else {
+    const dt = new Date(r.data + 'T12:00:00');
+    const dia = dt.getDate().toString().padStart(2, '0');
+    const mes = dt.toLocaleDateString('pt-BR', { month: 'short' }).replace('.', '');
+    badgeData = `<div class="reuniao-data-badge"><div class="reuniao-data-dia">${dia}</div><div class="reuniao-data-mes">${mes}</div></div>`;
+  }
+
+  const statusBadge = enq
+    ? '<span class="reuniao-status-enquete">🗳 Enquete</span>'
+    : r.status === 'realizada'
+      ? '<span class="reuniao-status-realizada">✓ Realizada</span>'
+      : '<span class="reuniao-status-agendada">● Agendada</span>';
+
+  const linhaQuando = enq
+    ? `${opcoes.length} opções de horário · votação aberta`
+    : `${diaSemana(r.data)} ${dataFmt}${horaStr}`;
+  const linhaQuem = [
+    r.criador ? 'criada por ' + esc(r.criador) : '',
+    (r.participantes || []).length ? '🔒 ' + esc(aud.join(', ')) : 'todos',
+    r.mediador ? `<span style="color:var(--text);font-weight:600">⚑ ${esc(r.mediador)}</span>` : ''
+  ].filter(Boolean).join(' · ');
+
+  // Enquete
+  let enqueteHTML = '';
+  if (enq) {
+    const maxV = Math.max(0, ...opcoes.map(o => (o.votos || []).length));
+    const naoVotaram = aud.filter(n => !opcoes.some(o => (o.votos || []).includes(n)));
+    enqueteHTML = `<div class="reuniao-section">
+      <div class="reuniao-section-title">Enquete de horários — marque todos que você pode</div>
+      ${opcoes.map((o, i) => {
+        const votos = o.votos || [];
+        const pode = votos.includes(eu);
+        const best = maxV > 0 && votos.length === maxV;
+        return `<div class="enq-opt ${pode ? 'on' : ''} ${best ? 'best' : ''}">
+          <div class="enq-when"><strong>${diaSemana(o.data)} ${fmtDataBR(o.data)}</strong>${o.horario ? ' · ' + o.horario : ''}${best ? ' <span class="enq-best">mais votado</span>' : ''}</div>
+          <div class="enq-votos">${votos.map(n => avatarMini(n, true)).join('')}<span class="enq-count">${votos.length}/${aud.length}</span></div>
+          <div class="enq-acts">
+            ${souAud ? `<button class="btn ${pode ? 'btn-ciente-on' : 'btn-ghost'}" onclick="votarEnquete(${r.id},${i},${!pode})">${pode ? '✓ Posso' : 'Posso'}</button>` : ''}
+            ${souCriador ? `<button class="btn btn-primary" style="font-size:11px;padding:5px 10px" onclick="definirHorario(${r.id},${i})">Definir este</button>` : ''}
+          </div>
+        </div>`;
+      }).join('')}
+      <div class="enq-rodape">
+        <span>${naoVotaram.length ? 'Ainda não votaram: ' + esc(naoVotaram.join(', ')) : '✓ Todo mundo votou'}</span>
+        ${podeGerir && semMim(naoVotaram).length ? `<button class="btn btn-ghost" style="font-size:11px;padding:5px 12px" onclick="reenviarNotifReuniao(${r.id})">↺ Lembrar quem não votou</button>` : ''}
+      </div>
+      ${souCriador ? `<div class="enq-outro">
+        <span class="field-label" style="margin:0">Ou definir outro dia:</span>
+        <input class="field-input" type="date" id="rDefData-${r.id}" style="padding:6px 8px;font-size:12px">
+        <input class="field-input" type="time" id="rDefHora-${r.id}" style="padding:6px 8px;font-size:12px">
+        <button class="btn btn-ghost" style="font-size:11px" onclick="definirHorario(${r.id},-1)">Definir</button>
+      </div>` : `<div style="font-size:11px;color:var(--muted);margin-top:8px">${esc(r.criador || 'Quem criou')} define o horário final.</div>`}
+    </div>`;
+  }
+
+  const pautaHTML = (r.pauta || []).length
+    ? (r.pauta || []).map((p, i) => `<div class="pauta-item">
+        <span class="pauta-num">${i+1}.</span>
+        <span class="pauta-texto">${esc(p)}</span>
+        <button class="btn btn-danger" style="padding:2px 8px;font-size:10px" onclick="removePauta(${r.id},${i})">×</button>
+      </div>`).join('')
+    : '<div style="font-size:12px;color:var(--muted);padding:6px 0">Nenhum item na pauta ainda. Qualquer participante pode sugerir.</div>';
+
+  const decisoesHTML = (r.decisoes || []).length
+    ? (r.decisoes || []).map((d, i) => `<div class="decisao-item">
+        <span class="decisao-dot"></span>
+        <span style="flex:1">${esc(d)}</span>
+        <button class="btn btn-danger" style="padding:2px 8px;font-size:10px" onclick="removeDecisao(${r.id},${i})">×</button>
+      </div>`).join('')
+    : '<div style="font-size:12px;color:var(--muted);padding:6px 0">Nenhuma decisão registrada ainda.</div>';
+
+  const passosAntigos = (r.passoss || []).length ? `<div class="reuniao-section">
+      <div class="reuniao-section-title">Próximos passos (registro antigo)</div>
+      ${(r.passoss || []).map((p, i) => `<div class="passo-item">
+        <div class="passo-check ${p.feito ? 'done' : ''}" onclick="togglePasso(${r.id},${i})">${p.feito ? '✓' : ''}</div>
+        <div class="passo-info">
+          <div class="passo-texto ${p.feito ? 'done' : ''}">${esc(p.texto)}</div>
+          <div class="passo-meta">${esc(p.responsavel || '—')}${p.prazo ? ' · até ' + fmtDataBR(p.prazo) : ''}</div>
+        </div>
+        <button class="btn btn-danger" style="padding:2px 8px;font-size:10px" onclick="removePasso(${r.id},${i})">×</button>
+      </div>`).join('')}
+    </div>` : '';
+
+  // Ciência (só depois que o horário está definido)
+  let cienteHTML = '';
+  if (!enq) {
+    const faltam = semMim(aud.filter(n => !vistos.includes(n)));
+    let meu = '';
+    const futura = (r.data || '') >= isoHoje() && r.status !== 'realizada';
+    if (souAud && !souCriador && (futura || vistos.includes(eu))) {
+      meu = vistos.includes(eu)
+        ? `<span class="ciente-ok">✓ Você está ciente · <a href="#" onclick="event.preventDefault();reuniaoCiente(${r.id},false)">desfazer</a></span>`
+        : `<button class="btn btn-ciente" onclick="reuniaoCiente(${r.id},true)">✓ Estou ciente</button>`;
+    }
+    cienteHTML = `<div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
+      <div class="reuniao-section-title" style="margin-bottom:10px">Ciente</div>
+      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+        ${aud.map(n => avatarMini(n, vistos.includes(n))).join('')}
+        <span style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-left:4px">${aud.filter(n => vistos.includes(n)).length}/${aud.length}</span>
+        <span style="margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          ${meu}
+          ${podeGerir && faltam.length && r.status !== 'realizada' ? `<button class="btn btn-ghost" style="font-size:11px;padding:5px 12px" onclick="reenviarNotifReuniao(${r.id})">↺ Lembrar quem não confirmou</button>` : ''}
+        </span>
+      </div>
+    </div>`;
+  }
+
+  const remarcarHTML = (souCriador && !enq && r.status !== 'realizada') ? `<div class="enq-outro hidden" id="rRemarcar-${r.id}">
+      <span class="field-label" style="margin:0">Nova data:</span>
+      <input class="field-input" type="date" id="rDefData-${r.id}" style="padding:6px 8px;font-size:12px" value="${esc(r.data || '')}">
+      <input class="field-input" type="time" id="rDefHora-${r.id}" style="padding:6px 8px;font-size:12px" value="${esc(r.horario || '')}">
+      <button class="btn btn-primary" style="font-size:11px" onclick="definirHorario(${r.id},-1)">Salvar e avisar</button>
+    </div>` : '';
+
+  return `<div class="reuniao-card ${r.importante ? 'importante' : ''} ${pendente ? 'pendente' : ''}" id="rcard-${r.id}">
+    <div class="reuniao-header" onclick="toggleReuniao(${r.id})">
+      ${badgeData}
+      <div class="reuniao-info">
+        <div class="reuniao-titulo">${esc(r.titulo)}</div>
+        <div class="reuniao-hora">${linhaQuando}</div>
+        <div class="reuniao-hora" style="margin-top:2px">${linhaQuem}</div>
+      </div>
+      <div class="reuniao-badges">
+        ${r.importante ? '<span class="reuniao-imp">⭐ Importante</span>' : ''}
+        ${statusBadge}
+        ${pendente ? `<span class="reuniao-pendentes">${enq ? 'falta seu voto' : 'confirme ciência'}</span>` : ''}
+      </div>
+      <span class="reuniao-toggle ${open ? 'open' : ''}" id="rtoggle-${r.id}">▾</span>
+    </div>
+    <div class="reuniao-body ${open ? 'open' : ''}" id="rbody-${r.id}">
+      ${enqueteHTML}
+
+      <div class="reuniao-section">
+        <div class="reuniao-section-title">Pauta</div>
+        ${pautaHTML}
+        <div class="add-item-row">
+          <input class="add-item-input" id="rPautaInput-${r.id}" placeholder="Sugerir item para a pauta…" onkeydown="if(event.key==='Enter')addPauta(${r.id})">
+          <button class="btn btn-ghost" onclick="addPauta(${r.id})">Adicionar</button>
+        </div>
+      </div>
+
+      <div class="reuniao-section">
+        <div class="reuniao-section-title">Decisões (ata)</div>
+        ${decisoesHTML}
+        <div class="add-item-row">
+          <input class="add-item-input" id="rDecisaoInput-${r.id}" placeholder="Registrar o que foi decidido em conjunto…" onkeydown="if(event.key==='Enter')addDecisao(${r.id})">
+          <button class="btn btn-ghost" onclick="addDecisao(${r.id})">Registrar</button>
+        </div>
+      </div>
+
+      ${passosAntigos}
+      ${cienteHTML}
+      ${remarcarHTML}
+
+      ${((souAud && !enq) || podeRemover) ? `<div class="reuniao-footer">
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          ${souAud && !enq ? `<button class="btn btn-ghost" onclick="marcarRealizada(${r.id})">${r.status === 'realizada' ? '↺ Reabrir reunião' : '✓ Marcar como realizada'}</button>` : ''}
+          ${souCriador && !enq && r.status !== 'realizada' ? `<button class="btn btn-ghost" onclick="toggleRemarcar(${r.id})">🔁 Remarcar</button>` : ''}
+        </div>
+        ${podeRemover ? `<button class="btn btn-danger" onclick="deleteReuniao(${r.id})">Remover reunião</button>` : ''}
+      </div>` : ''}
+    </div>
+  </div>`;
 }
 
 async function renderReunioes() {
+  reuniaoFormChips();
   await loadReunioes();
+  atualizarBadgesNav();
   const el = document.getElementById('listaReunioes');
   if (!el) return;
-  const agendadas = reunioesData.filter(r => r.status !== 'realizada').sort((a, b) => a.data.localeCompare(b.data));
-  const realizadas = reunioesData.filter(r => r.status === 'realizada').sort((a, b) => b.data.localeCompare(a.data));
-  const sorted = [...agendadas, ...realizadas];
+  const hoje = isoHoje();
+  const grupo = r => {
+    if (reuniaoPendenteMeu(r)) return 0;
+    if (r.status === 'enquete') return 1;
+    if (r.status === 'realizada') return 4;
+    return (r.data || '') >= hoje ? 2 : 3;
+  };
+  const sorted = [...reunioesData].sort((a, b) => {
+    const ga = grupo(a), gb = grupo(b);
+    if (ga !== gb) return ga - gb;
+    if (ga <= 2) {
+      if (!!b.importante !== !!a.importante && (a.data || '') === (b.data || '')) return b.importante ? 1 : -1;
+      return (a.data || '').localeCompare(b.data || '') || (a.horario || '').localeCompare(b.horario || '');
+    }
+    return (b.data || '').localeCompare(a.data || '');
+  });
   if (!sorted.length) {
-    el.innerHTML = emptyHTML('Nenhuma reunião agendada ainda. Crie a primeira acima.');
+    el.innerHTML = emptyHTML('Nenhuma reunião ainda. Crie a primeira acima.');
     return;
   }
-  el.innerHTML = sorted.map(r => buildReuniaoCard(r)).join('');
+  // Mantém abertos os cards que estavam abertos
+  const abertos = new Set([...el.querySelectorAll('.reuniao-body.open')].map(b => b.id.replace('rbody-', '')));
+  el.innerHTML = sorted.map(r => buildReuniaoCard(r, abertos.has(String(r.id)))).join('');
 }
 
 // ── BANNER DE CONFIGURAÇÃO ──
@@ -4615,11 +4953,25 @@ let _notifCache = [];
 let _notifTabFilter = 'todas';
 let _toastTimer = null;
 
+// Notificação é minha? (direcionada a mim, ou legado sem destinatário de uma aba que eu vejo)
+function notifMinha(n) {
+  if (!ME) return true;
+  if ((n.ocultas_por || []).includes(ME.nome)) return false;
+  const para = n.para || [];
+  if (para.length) return para.includes(ME.nome);
+  return !n.link_pagina || podeVer(n.link_pagina);
+}
+// Lida por mim? (cada pessoa tem a sua leitura; legado usa o campo antigo "lida")
+function notifLida(n) {
+  if (ME && (n.lidas_por || []).includes(ME.nome)) return true;
+  return !(n.para || []).length && !!n.lida;
+}
+
 // ── Carregar / salvar notificações ──
 async function loadNotifs() {
   if (db) {
-    const { data, error } = await db.from('notificacoes').select('*').order('created_at', { ascending: false }).limit(80);
-    if (!error && data) { _notifCache = data; return data; }
+    const { data, error } = await db.from('notificacoes').select('*').order('created_at', { ascending: false }).limit(150);
+    if (!error && data) { _notifCache = data.filter(notifMinha).slice(0, 80); return _notifCache; }
   }
   _notifCache = loadLs('hub_notifs', []);
   return _notifCache;
@@ -4636,34 +4988,44 @@ async function saveNotifToDB(notif) {
   }
 }
 
-// ── Criar notificação ──
-async function createNotif({ tipo, titulo, corpo, link_pagina }) {
+function addNotifLocal(n) {
+  if (_notifCache.some(x => x.id === n.id)) return false;
+  _notifCache.unshift(n);
+  updateNotifBadge();
+  if (document.getElementById('notifDropdown')?.classList.contains('open')) renderNotifList();
+  return true;
+}
+
+// ── Criar notificação (sempre para pessoas específicas: "para" = lista de nomes) ──
+async function createNotif({ tipo, titulo, corpo, link_pagina, para }) {
+  para = [...new Set((para || []).filter(Boolean))];
+  if (!para.length) return;
   const notif = {
-    id: Date.now(),
+    id: Date.now() * 1000 + Math.floor(Math.random() * 1000),
     tipo,
     titulo,
-    corpo,
+    corpo: corpo || '',
     link_pagina: link_pagina || null,
     lida: false,
+    para,
+    lidas_por: [],
+    ocultas_por: [],
     created_at: new Date().toISOString()
   };
   await saveNotifToDB(notif);
-  _notifCache.unshift(notif);
-  updateNotifBadge();
-  showToast(notif);
+  if (ME && para.includes(ME.nome) && addNotifLocal(notif)) showToast(notif);
   sendPushNotification(notif);
 }
 
 // ── Badge no sino ──
 function updateNotifBadge() {
-  const unread = _notifCache.filter(n => !n.lida).length;
+  const unread = _notifCache.filter(n => !notifLida(n)).length;
   const badge = document.getElementById('notifBadge');
   if (!badge) return;
   badge.textContent = unread > 99 ? '99+' : unread;
   if (unread > 0) {
     badge.classList.add('visible');
     badge.classList.remove('pulse');
-    // Trigger reflow to restart animation
     void badge.offsetWidth;
     badge.classList.add('pulse');
   } else {
@@ -4698,7 +5060,7 @@ function notifTab(btn, filter) {
 function renderNotifList() {
   const el = document.getElementById('notifList');
   let list = _notifCache;
-  if (_notifTabFilter === 'nao-lidas') list = list.filter(n => !n.lida);
+  if (_notifTabFilter === 'nao-lidas') list = list.filter(n => !notifLida(n));
   else if (_notifTabFilter !== 'todas') list = list.filter(n => n.tipo === _notifTabFilter);
 
   if (!list.length) {
@@ -4712,12 +5074,12 @@ function renderNotifList() {
   el.innerHTML = list.map(n => {
     const icon = NOTIF_ICONS[n.tipo] || '🔔';
     const timeStr = formatNotifTime(n.created_at);
-    const unreadClass = n.lida ? '' : 'unread';
-    const corpus = n.corpo ? `<div class="notif-item-body">${n.corpo}</div>` : '';
+    const unreadClass = notifLida(n) ? '' : 'unread';
+    const corpus = n.corpo ? `<div class="notif-item-body">${esc(n.corpo)}</div>` : '';
     return `<div class="notif-item ${unreadClass}" onclick="openNotif(${n.id})">
       <div class="notif-icon ${n.tipo}"><span>${icon}</span></div>
       <div class="notif-content">
-        <div class="notif-item-title">${n.titulo}</div>
+        <div class="notif-item-title">${esc(n.titulo)}</div>
         ${corpus}
         <div class="notif-item-time">${timeStr}</div>
       </div>
@@ -4736,19 +5098,27 @@ function formatNotifTime(iso) {
   return d.toLocaleDateString('pt-BR', { day:'2-digit', month:'short' });
 }
 
-async function openNotif(id) {
-  const notif = _notifCache.find(n => n.id === id);
-  if (!notif) return;
-  // Mark as read
-  notif.lida = true;
+async function marcarNotifs(ids, ocultar) {
+  if (!ids.length) return;
+  _notifCache.forEach(n => {
+    if (!ids.includes(n.id)) return;
+    n.lidas_por = [...new Set([...(n.lidas_por || []), ME.nome])];
+    if (ocultar) n.ocultas_por = [...new Set([...(n.ocultas_por || []), ME.nome])];
+  });
   if (db) {
-    await db.from('notificacoes').update({ lida: true }).eq('id', id);
+    const { error } = await db.rpc('hub_notif_marcar', { p_ids: ids, p_ocultar: !!ocultar });
+    if (error) console.error('Erro ao marcar notificações:', error);
   } else {
     saveLs('hub_notifs', _notifCache);
   }
+}
+
+async function openNotif(id) {
+  const notif = _notifCache.find(n => n.id === id);
+  if (!notif) return;
+  if (!notifLida(notif)) await marcarNotifs([id], false);
   updateNotifBadge();
   renderNotifList();
-  // Navigate to relevant page
   if (notif.link_pagina) {
     closeNotifPanel();
     goPage(notif.link_pagina);
@@ -4756,25 +5126,19 @@ async function openNotif(id) {
 }
 
 async function markAllRead() {
-  _notifCache.forEach(n => n.lida = true);
-  if (db) {
-    await db.from('notificacoes').update({ lida: true }).eq('lida', false);
-  } else {
-    saveLs('hub_notifs', _notifCache);
-  }
+  const ids = _notifCache.filter(n => !notifLida(n)).map(n => n.id);
+  await marcarNotifs(ids, false);
   updateNotifBadge();
   renderNotifList();
 }
 
+// Limpa só para mim (as outras pessoas continuam vendo as delas)
 async function clearAllNotifs() {
-  if (!confirm('Limpar todas as notificações?')) return;
+  if (!_notifCache.length) return;
+  if (!confirm('Limpar suas notificações? (some só para você)')) return;
+  const ids = _notifCache.map(n => n.id);
+  await marcarNotifs(ids, true);
   _notifCache = [];
-  if (db) {
-    // Delete all for cleanup - using a dummy condition to delete all
-    await db.from('notificacoes').delete().gte('id', 0);
-  } else {
-    saveLs('hub_notifs', []);
-  }
   updateNotifBadge();
   renderNotifList();
 }
@@ -4863,7 +5227,7 @@ async function savePushSubscriptionToDB(sub) {
   await fetch(PUSH_FUNCTION_URL + '/subscribe', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ endpoint: sub.endpoint, keys: { p256dh, auth: authStr } })
+    body: JSON.stringify({ endpoint: sub.endpoint, keys: { p256dh, auth: authStr }, usuario: ME ? ME.nome : null })
   });
 }
 
@@ -4883,6 +5247,8 @@ async function updatePushBtn() {
   if (!btn) return;
   const sub = await getPushSubscription();
   if (sub && Notification.permission === 'granted') {
+    // Vincula este aparelho ao usuário logado (1x por sessão) para o push ir só para quem deve
+    if (ME && !window._pushVinculado) { window._pushVinculado = true; savePushSubscriptionToDB(sub).catch(() => {}); }
     btn.classList.add('active');
     btn.textContent = '✓ Ativo';
     saveLs('hub_push_enabled', true);
@@ -4892,15 +5258,18 @@ async function updatePushBtn() {
   }
 }
 
-// Envia push via Edge Function /test (dispara para todos os devices registrados)
+// Envia push via Edge Function /test — só para os aparelhos das pessoas em notif.para
 async function sendPushNotification(notif) {
+  if (!(notif.para || []).length) return;
   try {
     await fetch(PUSH_FUNCTION_URL + '/test', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        title: `Hub Os Sócios — ${notif.titulo}`,
-        body: notif.corpo || ''
+        title: notif.titulo,
+        body: notif.corpo || '',
+        para: notif.para,
+        url: notif.link_pagina ? '/' + notif.link_pagina : '/'
       })
     });
   } catch(e) { console.log('Push remoto não disponível:', e); }
@@ -4922,10 +5291,10 @@ async function checkMetasPrazos() {
       const alreadyNotified = loadLs(notifKey, false);
       if (alreadyNotified) continue;
       if (diffDays < 0) {
-        await createNotif({ tipo:'prazo', titulo:'Meta vencida: ' + meta.nome, corpo:`Prazo era ${new Date(meta.prazo+'T12:00:00').toLocaleDateString('pt-BR')} — ${meta.empresa}`, link_pagina:'metas' });
+        await createNotif({ tipo:'prazo', titulo:'Meta vencida: ' + meta.nome, corpo:`Prazo era ${new Date(meta.prazo+'T12:00:00').toLocaleDateString('pt-BR')} — ${meta.empresa}`, link_pagina:'metas', para:[ME.nome] });
         saveLs(notifKey, true);
       } else if (diffDays <= 3) {
-        await createNotif({ tipo:'meta', titulo:'Meta próxima do prazo: ' + meta.nome, corpo:`Faltam ${diffDays} dia${diffDays!==1?'s':''} — ${meta.empresa}`, link_pagina:'metas' });
+        await createNotif({ tipo:'meta', titulo:'Meta próxima do prazo: ' + meta.nome, corpo:`Faltam ${diffDays} dia${diffDays!==1?'s':''} — ${meta.empresa}`, link_pagina:'metas', para:[ME.nome] });
         saveLs(notifKey, true);
       }
     }
@@ -4937,36 +5306,13 @@ async function initNotifs() {
   await loadNotifs();
   updateNotifBadge();
   await updatePushBtn();
-  // Listen for realtime inserts to generate notifications
+  // Notificações novas direcionadas a mim chegam em tempo real (cada uma é criada uma única vez por quem fez a ação)
   if (db) {
-    db.channel('hub-notif-triggers')
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'comunicados' }, async (payload) => {
-        const p = payload.new;
-        await createNotif({
-          tipo: 'comunicado',
-          titulo: `Novo comunicado de ${p.autor}`,
-          corpo: (p.texto || '').slice(0, 80) + ((p.texto||'').length > 80 ? '…' : ''),
-          link_pagina: 'comunicados'
-        });
-      })
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'desempenho' }, async (payload) => {
-        const d = payload.new;
-        await createNotif({
-          tipo: 'desempenho',
-          titulo: `Novo registro: ${d.func} — ${d.tipo === 'acerto' ? '✓ Acerto' : '✗ Erro'}`,
-          corpo: (d.descricao || '').slice(0, 80),
-          link_pagina: 'desempenho'
-        });
-      })
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'reunioes' }, async (payload) => {
-        const r = payload.new;
-        const dataFmt = r.data ? new Date(r.data + 'T12:00:00').toLocaleDateString('pt-BR') : '';
-        await createNotif({
-          tipo: 'reuniao',
-          titulo: `Nova reunião agendada: ${r.titulo}`,
-          corpo: dataFmt ? `${dataFmt}${r.horario ? ' às ' + r.horario : ''}` : '',
-          link_pagina: 'reunioes'
-        });
+    db.channel('hub-notif-' + (ME ? ME.id : 'anon'))
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'notificacoes' }, (payload) => {
+        const n = payload.new;
+        if (!(n.para || []).length || !notifMinha(n)) return;
+        if (addNotifLocal(n)) showToast(n);
       })
       .subscribe();
     // Check meta deadlines once on init, then every 30 min
