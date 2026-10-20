@@ -1051,6 +1051,51 @@ select.field-input{cursor:pointer}
   .ag-mes{min-width:0;font-size:15px}
   .nota-acts{opacity:1}
 }
+
+/* ── Mural de decisões ── */
+.dec-mes{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:20px 0 8px;font-family:'IBM Plex Mono',monospace;display:flex;align-items:center;gap:10px}
+.dec-mes::after{content:'';flex:1;height:1px;background:var(--border)}
+.dec-card{background:var(--surface);border:1.5px solid var(--border);border-left:4px solid var(--green);border-radius:6px;padding:14px 16px;margin-bottom:10px}
+.dec-card.pendente{border-color:var(--red);border-left-color:var(--red);box-shadow:0 0 0 3px rgba(192,57,43,.08)}
+.dec-card.revista{border-left-color:var(--border2);opacity:.75}
+.dec-card.revista .dec-texto{text-decoration:line-through;text-decoration-color:rgba(0,0,0,.35)}
+.dec-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.dec-data{font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace}
+.dec-origem{font-size:11px;color:var(--blue);cursor:pointer}
+.dec-origem:hover{text-decoration:underline}
+.dec-badge-rev{font-size:10px;font-family:'IBM Plex Mono',monospace;background:var(--border);color:var(--muted);padding:1px 6px;border-radius:3px}
+.dec-texto{font-size:15px;line-height:1.5;font-weight:500}
+.dec-ctx{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.5}
+.dec-rev{font-size:12px;margin-top:8px;padding:8px 10px;background:var(--amber-bg);color:var(--amber);border-radius:4px}
+.dec-rodape{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.dec-quem{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:11px;color:var(--muted)}
+.dec-cientes{display:inline-flex;align-items:center;gap:3px}
+.dec-cientes .post-avatar{width:20px;height:20px;font-size:9px}
+.dec-cientes small{font-family:'IBM Plex Mono',monospace;font-size:10px;margin-left:3px}
+.dec-acts{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.dec-acts .btn{font-size:11px;padding:5px 10px}
+.decisao-item.revista span{text-decoration:line-through;color:var(--muted)}
+
+/* ── Pipeline sincronizado ── */
+.pipeline-toolbar{flex-wrap:wrap;align-items:center}
+.pl-sync-info{font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-left:auto}
+.pl-sinc{font-size:11px}
+.pl-sinc.manual{font-size:9px;font-family:'IBM Plex Mono',monospace;color:var(--muted);border:1px solid var(--border);border-radius:3px;padding:0 4px}
+.pl-chips{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:4px}
+.pl-chip{font-size:10px;font-family:'IBM Plex Mono',monospace;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:1px 7px;white-space:nowrap}
+.pl-chip.urg-atraso{background:#fbe3e3;color:#b83232;border-color:#f0b8b8}
+.pl-chip.urg-perto{background:#fde8e1;color:#b8461f;border-color:#f3c3b0}
+.pl-chip.urg-medio{background:var(--amber-bg);color:var(--amber);border-color:#ecd59a}
+.pl-chip.urg-longe{background:var(--green-bg);color:var(--green);border-color:#b9dfc8}
+.pl-chip.urg-sem{color:var(--muted)}
+.pl-agente{font-size:10px;color:var(--muted);margin-top:2px}
+.pl-pendente{font-size:10px;color:var(--amber);background:var(--amber-bg);border-radius:3px;padding:2px 6px;margin-top:6px;display:inline-block}
+.pipeline-card.concluido{opacity:.7}
+.pipeline-card.concluido .pipeline-card-top{padding-bottom:8px}
+.pl-origem-nota{font-size:12px;background:var(--blue-bg);color:var(--blue);border-radius:6px;padding:10px 12px;margin-bottom:14px;line-height:1.5}
+.pl-origem-dados{margin-top:4px;color:var(--text)}
+.pl-sku-ro{display:flex;justify-content:space-between;font-size:12px;font-family:'IBM Plex Mono',monospace;padding:4px 0;border-bottom:1px solid var(--border)}
+.pl-sku-ro.tot{border-bottom:none;color:var(--muted);padding-top:6px}
 </style>
 </head>
 <body>
@@ -1094,6 +1139,7 @@ select.field-input{cursor:pointer}
     <div class="nav-item" data-aba="metas" onclick="goPage('metas')"><span class="nav-icon">◎</span> Metas</div>
     <div class="nav-item" data-aba="desempenho" onclick="goPage('desempenho')"><span class="nav-icon">◑</span> Desempenho</div>
     <div class="nav-item" data-aba="reunioes" onclick="goPage('reunioes')"><span class="nav-icon">◷</span> Reuniões <span class="nav-count" id="navCount-reunioes" style="display:none"></span></div>
+    <div class="nav-item" data-aba="decisoes" onclick="goPage('decisoes')"><span class="nav-icon">◆</span> Decisões <span class="nav-count" id="navCount-decisoes" style="display:none"></span></div>
     <div class="nav-item" data-aba="agenda" onclick="goPage('agenda')"><span class="nav-icon">▦</span> Agenda</div>
     <div class="nav-item" data-aba="anotacoes" onclick="goPage('anotacoes')"><span class="nav-icon">✎</span> Anotações</div>
     <div class="nav-item" data-aba="pipeline" onclick="goPage('pipeline')"><span class="nav-icon">◫</span> Pipeline</div>
@@ -1375,6 +1421,36 @@ select.field-input{cursor:pointer}
       <div id="docPastasFiltro" class="para-chips"></div>
     </div>
     <div id="docLista"></div>
+  </div>
+
+  <!-- DECISÕES -->
+  <div id="page-decisoes" class="hidden fade-in">
+    <div class="page-header">
+      <div class="page-title">Mural de decisões</div>
+      <div class="page-sub">o que decidimos juntos · nas reuniões ou fora delas · com histórico</div>
+    </div>
+    <div class="post-summary" id="decResumo"></div>
+    <div class="box">
+      <div class="box-title" style="margin-bottom:12px">Registrar decisão</div>
+      <textarea class="post-input" id="decTexto" placeholder="O que ficou decidido? ex: A partir de novembro, margem mínima de 12% nos kits da Shopee"></textarea>
+      <input class="field-input" id="decContexto" style="margin-top:8px;width:100%;box-sizing:border-box" placeholder="Contexto / por quê (opcional) — ex: conversa no #marketplace, custo do frete subiu">
+      <div class="para-row"><span class="field-label" style="margin:0">Quem</span><div id="decParaChips" class="para-chips"></div></div>
+      <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-top:12px">
+        <div class="field-group" style="min-width:150px"><span class="field-label">Área</span>
+          <select class="field-input" id="decCategoria" style="font-size:12px;padding:9px 10px">
+            <option value="geral">Geral</option><option value="operacional">Operacional</option><option value="financeiro">Financeiro</option>
+            <option value="marketplace">Marketplace</option><option value="importacao">Importação</option><option value="rh">RH</option>
+          </select></div>
+        <div class="field-group"><span class="field-label">Decidido em</span><input class="field-input" type="date" id="decData" style="font-size:12px;padding:8px 10px"></div>
+        <button class="btn btn-primary" id="decBtn" style="margin-left:auto" onclick="decRegistrar()">Registrar</button>
+      </div>
+    </div>
+    <div class="post-filters" id="decFiltros"></div>
+    <div class="doc-toolbar" style="margin-top:4px">
+      <input class="field-input" id="decBusca" placeholder="🔍 Buscar decisão, reunião, pessoa…" oninput="desenharDecisoes()">
+      <div id="decCats" class="para-chips"></div>
+    </div>
+    <div id="decLista"></div>
   </div>
 
   <!-- AGENDA -->
@@ -1674,7 +1750,7 @@ select.field-input{cursor:pointer}
   <div id="page-pipeline" class="hidden fade-in">
     <div class="page-header">
       <div class="page-title">Pipeline de Importação</div>
-      <div class="page-sub">do fornecedor ao armazém · acompanhe cada pedido</div>
+      <div class="page-sub">espelho do "Status dos Contêineres" do Hub Importação · atualiza sozinho a cada 15 min</div>
     </div>
 
     <!-- Gerenciar etapas (colapsável) -->
@@ -1691,7 +1767,10 @@ select.field-input{cursor:pointer}
     <!-- Toolbar -->
     <div class="pipeline-toolbar">
       <button class="btn btn-ghost" onclick="toggleEtapaManager()">⚙ Gerenciar etapas</button>
-      <button class="btn btn-primary" onclick="toggleNovoPedido()">+ Novo pedido</button>
+      <button class="btn btn-ghost" onclick="toggleNovoPedido()">+ Pedido manual</button>
+      <input class="field-input" id="plBusca" placeholder="🔍 Contêiner ou SKU…" oninput="desenharPipeline()" style="max-width:220px;padding:7px 10px;font-size:12px">
+      <span class="pl-sync-info" id="plSyncInfo"></span>
+      <button class="btn btn-primary" id="plBtnSync" onclick="sincronizarImportacao()">↻ Atualizar agora</button>
     </div>
 
     <!-- Form novo pedido -->
@@ -1758,6 +1837,7 @@ select.field-input{cursor:pointer}
           <button class="pl-modal-close" onclick="closePlModal()">×</button>
         </div>
         <div class="pl-modal-body">
+          <div class="pl-origem-nota hidden" id="plOrigemNota"></div>
 
           <div class="pl-modal-section">
             <div class="pl-modal-section-title">Datas</div>
@@ -1776,7 +1856,7 @@ select.field-input{cursor:pointer}
           <div class="pl-modal-section">
             <div class="pl-modal-section-title">SKUs no container</div>
             <div class="pl-sku-list" id="plSkuList"></div>
-            <button class="btn btn-ghost" style="font-size:11px;padding:5px 12px" onclick="addPlSkuRow()">+ Adicionar SKU</button>
+            <button class="btn btn-ghost" id="plAddSkuBtn" style="font-size:11px;padding:5px 12px" onclick="addPlSkuRow()">+ Adicionar SKU</button>
           </div>
 
           <div class="pl-modal-section" style="margin-bottom:0">
@@ -1882,7 +1962,7 @@ if (CONFIGURED) {
 const LOGIN_DOMINIO = '@hubossocios.app';
 const TODAS_ABAS = [
   ['dashboard','Dashboard'],['comunicados','Comunicados'],['conversas','Conversas'],['planilhas','Planilhas'],['documentos','Documentos'],
-  ['metas','Metas'],['desempenho','Desempenho'],['reunioes','Reuniões'],['agenda','Agenda'],['anotacoes','Anotações'],['pipeline','Pipeline']
+  ['metas','Metas'],['desempenho','Desempenho'],['reunioes','Reuniões'],['decisoes','Decisões'],['agenda','Agenda'],['anotacoes','Anotações'],['pipeline','Pipeline']
 ];
 let ME = null;          // perfil do usuário logado
 let USUARIOS = [];      // todos os perfis ativos
@@ -1980,6 +2060,7 @@ function atualizarBadgesNav() {
   setNavCount('comunicados', podeVer('comunicados') ? _postsCache.filter(postPendenteMeu).length : 0);
   setNavCount('reunioes', podeVer('reunioes') ? reunioesData.filter(reuniaoPendenteMeu).length : 0);
   setNavCount('conversas', podeVer('conversas') ? cvContadorMenu() : 0);
+  setNavCount('decisoes', podeVer('decisoes') ? decisoesData.filter(decPendenteMinha).length : 0);
 }
 async function carregarPendencias() {
   if (!ME) return;
@@ -1987,6 +2068,7 @@ async function carregarPendencias() {
   if (podeVer('comunicados')) tarefas.push(carregarPosts());
   if (podeVer('reunioes')) tarefas.push(loadReunioes());
   if (podeVer('conversas')) tarefas.push(cvCarregarCanais());
+  if (podeVer('decisoes')) tarefas.push(carregarDecisoes());
   await Promise.all(tarefas);
   atualizarBadgesNav();
 }
@@ -2519,6 +2601,7 @@ function goPage(p) {
   if(p==='conversas') renderConversas();
   if(p==='documentos') { docSetupDrop(); renderDocumentos(); }
   if(p==='agenda') renderAgenda();
+  if(p==='decisoes') renderDecisoes();
   if(p==='anotacoes') renderAnotacoes();
 }
 
@@ -4768,6 +4851,254 @@ async function notaSalvarEdicao(id) {
   await notaAtualizar(id, campos);
 }
 
+// ── MURAL DE DECISÕES ──
+let decisoesData = [];
+let decFiltro = 'vigente';   // vigente | pendentes | revista | todas
+let decFiltroCat = '';
+let decPara = new Set();
+
+function decAudiencia(d) {
+  const p = d.participantes || [];
+  return p.length ? [...new Set([d.autor, ...p].filter(Boolean))] : usuariosComAba('decisoes');
+}
+function decPendenteMinha(d) {
+  return !!ME && d.status === 'vigente' && d.autor !== ME.nome && decAudiencia(d).includes(ME.nome) && !(d.cientes || []).includes(ME.nome);
+}
+function decPodeGerir(d) { return !!ME && (!!ME.is_admin || (!!d.autor && d.autor === ME.nome)); }
+function decCatLabel(c) { return POST_CAT_LABELS[c] || c || 'Geral'; }
+
+async function carregarDecisoes() {
+  if (!db) return;
+  const { data, error } = await db.from('decisoes').select('*').order('data', { ascending: false }).order('id', { ascending: false });
+  if (!error && data) decisoesData = data.sort((x, y) => (y.data || '').localeCompare(x.data || '') || y.id - x.id);
+}
+
+function decParaToggle(n) {
+  if (!n) decPara.clear(); else decPara.has(n) ? decPara.delete(n) : decPara.add(n);
+  renderParaChips('decParaChips', decPara, 'decisoes', 'decParaToggle');
+}
+
+async function renderDecisoes() {
+  renderParaChips('decParaChips', decPara, 'decisoes', 'decParaToggle');
+  const dt = document.getElementById('decData'); if (dt && !dt.value) dt.value = isoHoje();
+  const lista = document.getElementById('decLista');
+  if (lista && !decisoesData.length) lista.innerHTML = loadingHTML();
+  await Promise.all([carregarDecisoes(), podeVer('reunioes') ? loadReunioes() : Promise.resolve()]);
+  desenharDecisoes();
+  atualizarBadgesNav();
+}
+
+function decSetFiltro(f) { decFiltro = f; desenharDecisoes(); }
+function decSetCat(c) { decFiltroCat = c; desenharDecisoes(); }
+
+function desenharDecisoes() {
+  const el = document.getElementById('decLista');
+  if (!el) return;
+  const todas = decisoesData;
+  const mesAtual = isoHoje().slice(0, 7);
+  const pend = todas.filter(decPendenteMinha).length;
+  document.getElementById('decResumo').innerHTML = `
+    <div class="post-summary-card"><div class="post-summary-val" style="color:var(--green)">${todas.filter(d => d.status === 'vigente').length}</div><div class="post-summary-label">Vigentes</div></div>
+    <div class="post-summary-card"><div class="post-summary-val" style="color:${pend ? 'var(--red)' : 'var(--muted)'}">${pend}</div><div class="post-summary-label">Aguardando sua ciência</div></div>
+    <div class="post-summary-card"><div class="post-summary-val" style="color:var(--blue)">${todas.filter(d => (d.data || '').slice(0, 7) === mesAtual).length}</div><div class="post-summary-label">Este mês</div></div>
+    <div class="post-summary-card"><div class="post-summary-val" style="color:var(--muted)">${todas.filter(d => d.status === 'revista').length}</div><div class="post-summary-label">Revistas</div></div>`;
+  document.getElementById('decFiltros').innerHTML = [['vigente', 'Vigentes'], ['pendentes', `Aguardando minha ciência${pend ? ' (' + pend + ')' : ''}`], ['revista', 'Revistas'], ['todas', 'Todas']]
+    .map(([k, l]) => `<button class="post-filter-pill ${decFiltro === k ? 'active' : ''}" onclick="decSetFiltro('${k}')">${l}</button>`).join('');
+  const cats = [...new Set(todas.map(d => d.categoria || 'geral'))];
+  document.getElementById('decCats').innerHTML = cats.length > 1
+    ? `<span class="aba-chip ${decFiltroCat ? '' : 'on'}" onclick="decSetCat('')">Todas as áreas</span>` +
+      cats.map(c => `<span class="aba-chip ${decFiltroCat === c ? 'on' : ''}" onclick="decSetCat('${esc(c)}')">${esc(decCatLabel(c))}</span>`).join('')
+    : '';
+
+  const q = (document.getElementById('decBusca').value || '').trim().toLowerCase();
+  const nomeReu = id => { const r = reunioesData.find(x => x.id === id); return r ? r.titulo : ''; };
+  let lista = todas.filter(d =>
+    (decFiltro === 'todas' || (decFiltro === 'pendentes' ? decPendenteMinha(d) : d.status === decFiltro)) &&
+    (!decFiltroCat || (d.categoria || 'geral') === decFiltroCat) &&
+    (!q || (d.texto + ' ' + d.contexto + ' ' + (d.autor || '') + ' ' + nomeReu(d.reuniao_id)).toLowerCase().includes(q)));
+
+  if (!lista.length) {
+    el.innerHTML = emptyHTML(decFiltro === 'pendentes' ? 'Nada aguardando sua ciência. ✓' : todas.length ? 'Nenhuma decisão neste filtro.' : 'Nenhuma decisão registrada ainda.');
+    return;
+  }
+  let html = '', mes = '';
+  lista.forEach(d => {
+    const m = (d.data || '').slice(0, 7);
+    if (m !== mes) {
+      mes = m;
+      const t = new Date(m + '-15T12:00:00').toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+      html += `<div class="dec-mes">${t.charAt(0).toUpperCase() + t.slice(1)}</div>`;
+    }
+    html += decCardHTML(d, nomeReu(d.reuniao_id));
+  });
+  el.innerHTML = html;
+}
+
+function decCardHTML(d, tituloReuniao) {
+  const aud = decAudiencia(d).filter(n => n !== d.autor);
+  const cientes = d.cientes || [];
+  const revista = d.status === 'revista';
+  const pend = decPendenteMinha(d);
+  const souAud = ME && decAudiencia(d).includes(ME.nome);
+  const origem = d.reuniao_id
+    ? `<span class="dec-origem" onclick="goPage('reunioes')" title="Abrir reuniões">📅 ${esc(tituloReuniao || 'Reunião')}</span>`
+    : '';
+  let meu = '';
+  if (!revista && ME && souAud && d.autor !== ME.nome) {
+    meu = cientes.includes(ME.nome)
+      ? `<span class="ciente-ok">✓ Ciente · <a href="#" onclick="event.preventDefault();decCiente(${d.id},false)">desfazer</a></span>`
+      : `<button class="btn btn-ciente" onclick="decCiente(${d.id},true)">✓ Estou ciente</button>`;
+  }
+  return `<div class="dec-card ${revista ? 'revista' : ''} ${pend ? 'pendente' : ''}">
+    <div class="dec-top">
+      <span class="post-cat-label">${esc(decCatLabel(d.categoria))}</span>
+      <span class="dec-data">${fmtDataBR(d.data)}</span>
+      ${origem}
+      ${(d.participantes || []).length ? `<span class="post-para">🔒 ${esc(decAudiencia(d).join(', '))}</span>` : ''}
+      ${revista ? '<span class="dec-badge-rev">↺ revista</span>' : ''}
+    </div>
+    <div class="dec-texto">${esc(d.texto).replace(/\n/g, '<br>')}</div>
+    ${d.contexto ? `<div class="dec-ctx">${esc(d.contexto).replace(/\n/g, '<br>')}</div>` : ''}
+    ${revista ? `<div class="dec-rev">Revista por <strong>${esc(d.revista_por || '')}</strong>${d.revista_em ? ' em ' + new Date(d.revista_em).toLocaleDateString('pt-BR') : ''}: ${esc(d.revista_motivo || '')}</div>` : ''}
+    <div class="dec-rodape">
+      <div class="dec-quem">
+        <span>${d.autor ? 'registrada por ' + esc(d.autor) : 'registro antigo'}</span>
+        ${!revista && aud.length ? `<span class="dec-cientes">· ciente: ${aud.map(n => avatarMini(n, cientes.includes(n))).join('')}<small>${aud.filter(n => cientes.includes(n)).length}/${aud.length}</small></span>` : ''}
+      </div>
+      <div class="dec-acts">
+        ${meu}
+        ${souAud ? (revista
+          ? `<button class="btn btn-ghost" onclick="decReativar(${d.id})">Reativar</button>`
+          : `<button class="btn btn-ghost" title="Marcar que essa decisão mudou (fica no histórico)" onclick="decRever(${d.id})">↺ Rever</button>`) : ''}
+        ${decPodeGerir(d) ? `<button class="btn btn-ghost" title="Editar" onclick="decEditar(${d.id})">✎</button><button class="btn btn-danger" title="Excluir" onclick="decExcluir(${d.id})">✕</button>` : ''}
+      </div>
+    </div>
+  </div>`;
+}
+
+async function decRegistrar() {
+  const texto = document.getElementById('decTexto').value.trim();
+  if (!texto) { alert('Escreva a decisão.'); return; }
+  const contexto = document.getElementById('decContexto').value.trim();
+  const categoria = document.getElementById('decCategoria').value;
+  const data = document.getElementById('decData').value || isoHoje();
+  const participantes = decPara.size ? [...new Set([ME.nome, ...decPara])] : [];
+  const btn = document.getElementById('decBtn'); btn.disabled = true;
+  const { data: nova, error } = await db.from('decisoes').insert({ texto, contexto, categoria, data, autor: ME.nome, participantes, cientes: [ME.nome], status: 'vigente' }).select().single();
+  btn.disabled = false;
+  if (error) { alert('Erro: ' + error.message); return; }
+  decisoesData.unshift(nova);
+  createNotif({ tipo: 'decisao', titulo: `✅ Decisão registrada por ${ME.nome}`, corpo: texto.slice(0, 90) + (texto.length > 90 ? '…' : ''), link_pagina: 'decisoes', para: semMim(decAudiencia(nova)) });
+  document.getElementById('decTexto').value = ''; document.getElementById('decContexto').value = '';
+  document.getElementById('decData').value = isoHoje();
+  decPara.clear(); decParaToggle(null);
+  decFiltro = 'vigente';
+  renderDecisoes();
+}
+
+async function decCiente(id, ciente) {
+  const { data, error } = await db.rpc('hub_decisao_ciente', { p_id: id, p_ciente: ciente });
+  if (error) { alert('Erro: ' + error.message); return; }
+  const d = decisoesData.find(x => x.id === id); if (d) d.cientes = data || [];
+  desenharDecisoes(); atualizarBadgesNav();
+}
+
+async function decRever(id) {
+  const d = decisoesData.find(x => x.id === id); if (!d) return;
+  const motivo = prompt('O que mudou? (fica registrado no histórico da decisão)');
+  if (motivo === null) return;
+  if (motivo.trim().length < 3) { alert('Escreva o motivo da revisão.'); return; }
+  const { error } = await db.rpc('hub_decisao_rever', { p_id: id, p_motivo: motivo.trim(), p_reativar: false });
+  if (error) { alert('Erro: ' + error.message); return; }
+  Object.assign(d, { status: 'revista', revista_por: ME.nome, revista_em: new Date().toISOString(), revista_motivo: motivo.trim() });
+  createNotif({ tipo: 'decisao', titulo: `↺ Decisão revista por ${ME.nome}`, corpo: `${d.texto.slice(0, 60)}${d.texto.length > 60 ? '…' : ''} — ${motivo.trim().slice(0, 60)}`, link_pagina: 'decisoes', para: semMim(decAudiencia(d)) });
+  desenharDecisoes(); atualizarBadgesNav();
+  if (curPage === 'reunioes') renderReunioes();
+}
+async function decReativar(id) {
+  if (!confirm('Voltar esta decisão para vigente?')) return;
+  const { error } = await db.rpc('hub_decisao_rever', { p_id: id, p_motivo: '', p_reativar: true });
+  if (error) { alert('Erro: ' + error.message); return; }
+  const d = decisoesData.find(x => x.id === id); if (d) Object.assign(d, { status: 'vigente', revista_por: null, revista_em: null, revista_motivo: '' });
+  desenharDecisoes(); atualizarBadgesNav();
+}
+
+async function decExcluir(id) {
+  if (!confirm('Excluir esta decisão do mural? (Se ela só mudou, use "Rever" — assim fica o histórico.)')) return;
+  const { error } = await db.from('decisoes').delete().eq('id', id);
+  if (error) { alert('Erro: ' + error.message); return; }
+  decisoesData = decisoesData.filter(x => x.id !== id);
+  if (curPage === 'reunioes') renderReunioes(); else desenharDecisoes();
+  atualizarBadgesNav();
+}
+
+function decEditar(id) {
+  const d = decisoesData.find(x => x.id === id); if (!d) return;
+  const m = document.createElement('div');
+  m.className = 'hub-modal'; m.id = 'modalDec';
+  m.innerHTML = `<div class="hub-modal-box" style="max-width:500px">
+    <div class="hub-modal-title">Editar decisão</div>
+    <div class="field-group" style="margin:14px 0 10px"><span class="field-label">Decisão</span><textarea class="field-input" id="deTexto" rows="3" style="resize:vertical">${esc(d.texto)}</textarea></div>
+    <div class="field-group" style="margin-bottom:10px"><span class="field-label">Contexto / motivo</span><textarea class="field-input" id="deCtx" rows="2" style="resize:vertical">${esc(d.contexto || '')}</textarea></div>
+    <div class="ag-form-grid">
+      <div class="field-group"><span class="field-label">Área</span><select class="field-input" id="deCat">${Object.entries(POST_CAT_LABELS).map(([k, l]) => `<option value="${k}" ${d.categoria === k ? 'selected' : ''}>${l}</option>`).join('')}</select></div>
+      <div class="field-group"><span class="field-label">Data</span><input class="field-input" type="date" id="deData" value="${esc(d.data || '')}"></div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:16px">
+      <button class="btn btn-ghost" onclick="document.getElementById('modalDec').remove()">Cancelar</button>
+      <button class="btn btn-primary" onclick="decSalvarEdicao(${d.id})">Salvar</button>
+    </div></div>`;
+  document.body.appendChild(m);
+}
+async function decSalvarEdicao(id) {
+  const campos = {
+    texto: document.getElementById('deTexto').value.trim(),
+    contexto: document.getElementById('deCtx').value.trim(),
+    categoria: document.getElementById('deCat').value,
+    data: document.getElementById('deData').value || isoHoje()
+  };
+  if (!campos.texto) { alert('A decisão não pode ficar vazia.'); return; }
+  const { error } = await db.from('decisoes').update(campos).eq('id', id);
+  if (error) { alert('Erro: ' + error.message); return; }
+  const d = decisoesData.find(x => x.id === id); if (d) Object.assign(d, campos);
+  document.getElementById('modalDec').remove();
+  if (curPage === 'reunioes') renderReunioes(); else desenharDecisoes();
+}
+
+// ── Decisões dentro da reunião (ata) ──
+function decisoesDaReuniao(id) { return decisoesData.filter(d => d.reuniao_id === id).sort((a, b) => a.id - b.id); }
+
+async function addDecisao(id) {
+  const r = reunioesData.find(x => x.id === id); if (!r) return;
+  const input = document.getElementById('rDecisaoInput-' + id);
+  const texto = input.value.trim();
+  if (!texto) return;
+  const participantes = (r.participantes || []).length ? [...new Set([r.criador, ...r.participantes].filter(Boolean))] : [];
+  const data = /^\d{4}-\d{2}-\d{2}$/.test(r.data || '') ? r.data : isoHoje();
+  const { data: nova, error } = await db.from('decisoes').insert({ texto, data, reuniao_id: id, autor: ME.nome, participantes, cientes: [ME.nome], categoria: 'geral', status: 'vigente' }).select().single();
+  if (error) { alert('Erro ao registrar: ' + error.message); return; }
+  decisoesData.unshift(nova);
+  input.value = '';
+  rerenderCard(id, true);
+  atualizarBadgesNav();
+}
+async function removeDecisao(reuniaoId, decId) {
+  if (!confirm('Remover esta decisão da ata e do mural?')) return;
+  const { error } = await db.from('decisoes').delete().eq('id', decId);
+  if (error) { alert('Erro: ' + error.message); return; }
+  decisoesData = decisoesData.filter(x => x.id !== decId);
+  rerenderCard(reuniaoId, true);
+  atualizarBadgesNav();
+}
+async function avisarAta(id) {
+  const r = reunioesData.find(x => x.id === id); if (!r) return;
+  const decs = decisoesDaReuniao(id).filter(d => d.status === 'vigente');
+  const para = semMim(audienciaReuniao(r));
+  if (!decs.length || !para.length) return;
+  await createNotif({ tipo: 'decisao', titulo: `📝 Ata: ${r.titulo}`, corpo: `${decs.length} decis${decs.length > 1 ? 'ões registradas' : 'ão registrada'} — confirme ciência no Mural de decisões`, link_pagina: 'decisoes', para });
+  showToast({ tipo: 'decisao', titulo: 'Ata enviada', corpo: `Avisados: ${para.join(', ')}` });
+}
+
 // ── PLANILHAS ──
 async function addPlanilha() {
   const nome = document.getElementById('plNome').value.trim();
@@ -5180,6 +5511,18 @@ function setupRealtime() {
       clearTimeout(window._rtAg);
       window._rtAg = setTimeout(() => { if (curPage === 'agenda' && !document.getElementById('modalAgenda')) renderAgenda(); }, 500);
     })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'decisoes' }, () => {
+      clearTimeout(window._rtDec);
+      window._rtDec = setTimeout(async () => {
+        await carregarDecisoes();
+        if (curPage === 'decisoes') desenharDecisoes();
+        if (curPage === 'reunioes') {
+          const a = document.activeElement;
+          if (!(a && a.closest && a.closest('#listaReunioes') && a.value)) renderReunioes();
+        }
+        atualizarBadgesNav();
+      }, 500);
+    })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'documentos' }, () => {
       clearTimeout(window._rtDoc);
       window._rtDoc = setTimeout(() => { if (curPage === 'documentos') renderDocumentos(); }, 500);
@@ -5197,7 +5540,8 @@ function setupRealtime() {
       if (curPage === 'pipeline') renderPipeline();
     })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'pedidos' }, () => {
-      if (curPage === 'pipeline') renderPipeline();
+      clearTimeout(window._rtPl);
+      window._rtPl = setTimeout(() => { if (curPage === 'pipeline' && document.getElementById('plModalOverlay').classList.contains('hidden')) renderPipeline(); }, 1500);
     })
     .subscribe(status => {
       if (status === 'SUBSCRIBED') setSyncStatus('online');
@@ -5500,10 +5844,26 @@ function openPlModal(id) {
   document.getElementById('plEditEmbarque').value = p.embarque || '';
   document.getElementById('plEditEta').value = p.eta || '';
   document.getElementById('plEditObs').value = p.obs || '';
-  document.getElementById('plBtnL').disabled = ei <= 0;
-  document.getElementById('plBtnR').disabled = ei >= etapasData.length - 1;
+  const sinc = p.origem === 'hub_importacao';
+  document.getElementById('plBtnL').disabled = sinc || ei <= 0;
+  document.getElementById('plBtnR').disabled = sinc || ei >= etapasData.length - 1;
+  ['plEditEmbarque', 'plEditEta'].forEach(i => { document.getElementById(i).disabled = sinc; });
+  document.getElementById('plDeleteBtn').classList.toggle('hidden', sinc);
+  document.getElementById('plAddSkuBtn').classList.toggle('hidden', sinc);
+  ['plBtnL', 'plBtnR'].forEach(i => document.getElementById(i).classList.toggle('hidden', sinc));
+  const nota = document.getElementById('plOrigemNota');
+  nota.classList.toggle('hidden', !sinc);
+  if (sinc) nota.innerHTML = `🔗 Vem do <strong>Hub Importação</strong> e atualiza sozinho (etapa, datas e SKUs). Aqui você só edita a observação.
+    <div class="pl-origem-dados">${p.eta_galpao ? `🏭 Estim. galpão: <strong>${fmtDataBR(p.eta_galpao)}</strong>` : ''}${p.agente ? ` · 🚚 ${esc(p.agente)}` : ''}${p.valor ? ` · US$ ${Number(p.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : ''}</div>`;
   // Render SKU list
-  renderPlSkuList(p.skus || []);
+  if (sinc) {
+    const tot = (p.skus || []).reduce((a, s) => a + (Number(s.qty) || 0), 0);
+    document.getElementById('plSkuList').innerHTML = (p.skus || []).length
+      ? (p.skus || []).map(s => `<div class="pl-sku-ro"><span>${esc(s.nome)}</span><strong>${(Number(s.qty) || 0).toLocaleString('pt-BR')}</strong></div>`).join('') + `<div class="pl-sku-ro tot"><span>${p.skus.length} SKUs</span><strong>${tot.toLocaleString('pt-BR')} un.</strong></div>`
+      : '<div style="font-size:12px;color:var(--muted);padding:4px 0">Lista de produtos ainda pendente no Hub Importação.</div>';
+  } else {
+    renderPlSkuList(p.skus || []);
+  }
   document.getElementById('plModalOverlay').classList.remove('hidden');
 }
 
@@ -5546,6 +5906,15 @@ function removePlSkuRow(idx) {
 async function savePlModal() {
   const p = pedidosData.find(x => x.id === plModalId);
   if (!p) return;
+  if (p.origem === 'hub_importacao') {
+    p.obs = document.getElementById('plEditObs').value.trim();
+    const { error } = await db.from('pedidos').update({ obs: p.obs }).eq('id', p.id);
+    if (error) { alert('Erro: ' + error.message); return; }
+    document.getElementById('plModalOverlay').classList.add('hidden');
+    plModalId = null;
+    desenharPipeline();
+    return;
+  }
   p.embarque = document.getElementById('plEditEmbarque').value;
   p.eta = document.getElementById('plEditEta').value;
   p.obs = document.getElementById('plEditObs').value.trim();
@@ -5599,26 +5968,44 @@ function fmtDatePl(d) {
   return new Date(d + 'T12:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
 }
 
+function plUrgencia(eta) {
+  if (!eta) return null;
+  const dias = Math.round((new Date(eta + 'T12:00:00') - new Date(isoHoje() + 'T12:00:00')) / 86400000);
+  const cls = dias < 0 ? 'atraso' : dias <= 7 ? 'perto' : dias <= 15 ? 'medio' : 'longe';
+  const label = dias < 0 ? `${-dias}d atrás` : dias === 0 ? 'hoje' : `${dias}d`;
+  return { dias, cls, label };
+}
+
 function buildPedidoCard(p, etapa) {
-  const sym = p.moeda === 'USD' ? '$ ' : 'R$ ';
-  const valStr = p.valor ? sym + p.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : null;
-  const empColor = CANAL_CORES[p.empresa] || 'var(--muted)';
+  const sym = p.moeda === 'USD' ? 'US$ ' : 'R$ ';
+  const valStr = p.valor ? sym + Number(p.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : null;
+  const sinc = p.origem === 'hub_importacao';
+  const empColor = CANAL_CORES[p.empresa] || (p.empresa === 'MTI' ? '#8a5e00' : 'var(--blue)');
   const skus = p.skus || [];
+  const concluido = p.status_origem === 'chegou' || (etapa && etapa.chave === 'chegou');
+  const urg = concluido || p.status_origem === 'desembaraco' ? null : plUrgencia(p.eta);
+  const totUn = skus.reduce((a, s) => a + (Number(s.qty) || 0), 0);
   const skuPreview = skus.length
-    ? skus.map(s => `📦 ${s.nome}${s.qty ? ' <strong>×' + s.qty + '</strong>' : ''}`).join('<br>')
-    : (p.obs ? '' : '');
-  return `<div class="pipeline-card" onclick="openPlModal(${p.id})">
+    ? skus.slice(0, 4).map(s => `📦 ${esc(s.nome)}${s.qty ? ' <strong>×' + Number(s.qty).toLocaleString('pt-BR') + '</strong>' : ''}`).join('<br>') + (skus.length > 4 ? `<br><span style="opacity:.7">+${skus.length - 4} SKUs · ${totUn.toLocaleString('pt-BR')} un.</span>` : '')
+    : '';
+  return `<div class="pipeline-card ${concluido ? 'concluido' : ''}" onclick="openPlModal(${p.id})">
     <div class="pipeline-card-top">
-      <div class="pipeline-card-empresa" style="color:${empColor}">${p.empresa || ''}</div>
-      <div class="pipeline-card-ref">${p.ref}</div>
-      ${valStr ? `<div style="font-size:12px;font-weight:700;font-family:'IBM Plex Mono',monospace;margin-bottom:8px;color:${p.moeda==='USD'?'var(--blue)':'var(--green)'}">${valStr}</div>` : ''}
-      <div class="pipeline-card-dates">
-        <div class="pipeline-card-date"><span>embarque</span><strong>${fmtDatePl(p.embarque)}</strong></div>
-        <div class="pipeline-card-date"><span>ETA</span><strong>${fmtDatePl(p.eta)}</strong></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:6px">
+        <div class="pipeline-card-empresa" style="color:${empColor}">${esc(p.empresa || '')}</div>
+        ${sinc ? '<span class="pl-sinc" title="Sincronizado do Hub Importação">🔗</span>' : '<span class="pl-sinc manual" title="Pedido manual">manual</span>'}
       </div>
-      ${p.obs ? `<div style="font-size:10px;color:var(--muted);font-style:italic;margin-top:2px;line-height:1.4">${p.obs}</div>` : ''}
+      <div class="pipeline-card-ref">${esc(p.ref)}</div>
+      <div class="pl-chips">
+        <span class="pl-chip">📅 ETA ${p.eta ? fmtDatePl(p.eta) : '—'}</span>
+        ${urg ? `<span class="pl-chip urg-${urg.cls}">⏳ ${urg.label}</span>` : (!p.eta && !concluido ? '<span class="pl-chip urg-sem">sem ETA</span>' : '')}
+      </div>
+      ${p.eta_galpao && !concluido ? `<div class="pl-chips"><span class="pl-chip">🏭 Galpão ${fmtDatePl(p.eta_galpao)}</span></div>` : ''}
+      ${p.agente && !concluido ? `<div class="pl-agente">🚚 ${esc(p.agente)}</div>` : ''}
+      ${valStr ? `<div style="font-size:11px;font-weight:700;font-family:'IBM Plex Mono',monospace;margin-top:6px;color:${p.moeda==='USD'?'var(--blue)':'var(--green)'}">${valStr}</div>` : ''}
+      ${p.obs ? `<div style="font-size:10px;color:var(--muted);font-style:italic;margin-top:4px;line-height:1.4">${esc(p.obs)}</div>` : ''}
+      ${sinc && !skus.length && !concluido ? '<div class="pl-pendente">📝 Lista de produtos pendente</div>' : ''}
     </div>
-    ${skuPreview ? `<div class="pipeline-card-skus-preview">${skuPreview}</div>` : ''}
+    ${skuPreview && !concluido ? `<div class="pipeline-card-skus-preview">${skuPreview}</div>` : ''}
   </div>`;
 }
 
@@ -5648,19 +6035,58 @@ async function renderPipeline() {
     updateEtapaSelect();
     return;
   }
+  desenharPipeline();
+  updateEtapaSelect();
+}
+
+let _plConcluidosTodos = false;
+function desenharPipeline() {
+  const board = document.getElementById('pipelineBoard');
+  if (!board || !etapasData.length) return;
+  const q = (document.getElementById('plBusca')?.value || '').trim().toLowerCase();
+  const visiveis = pedidosData.filter(p => !q || (p.ref || '').toLowerCase().includes(q) || (p.skus || []).some(s => (s.nome || '').toLowerCase().includes(q)));
+  const ultima = pedidosData.map(p => p.sincronizado_em).filter(Boolean).sort().pop();
+  const info = document.getElementById('plSyncInfo');
+  if (info) {
+    const semData = pedidosData.filter(p => p.origem === 'hub_importacao' && p.status_origem !== 'chegou' && (!p.eta || !p.embarque)).length;
+    info.innerHTML = (ultima ? `🔗 Hub Importação · atualizado ${formatNotifTime(ultima)}` : '🔗 ainda não sincronizado') +
+      (semData ? ` · <span style="color:var(--amber)">⚠ ${semData} sem ETD ou ETA</span>` : '');
+  }
   board.innerHTML = etapasData.map((etapa, ei) => {
-    const cards = pedidosData.filter(p => p.etapaId === etapa.id);
+    let cards = visiveis.filter(p => p.etapaId === etapa.id);
+    const ehConcluido = etapa.chave === 'chegou';
+    cards.sort((a, b) => ehConcluido
+      ? (b.eta || '').localeCompare(a.eta || '')
+      : ((a.eta || '9999').localeCompare(b.eta || '9999') || (a.ref || '').localeCompare(b.ref || '')));
+    const total = cards.length;
+    let mais = '';
+    if (ehConcluido && !q && !_plConcluidosTodos && cards.length > 8) {
+      mais = `<button class="btn btn-ghost" style="font-size:11px;width:100%" onclick="_plConcluidosTodos=true;desenharPipeline()">ver mais ${cards.length - 8}</button>`;
+      cards = cards.slice(0, 8);
+    }
     return `<div class="pipeline-col">
       <div class="pipeline-col-header" style="background:${etapa.cor}18">
         <span class="pipeline-col-name" style="color:${etapa.cor}">${etapa.nome}</span>
-        <span class="pipeline-col-count" style="color:${etapa.cor};background:${etapa.cor}20">${cards.length}</span>
+        <span class="pipeline-col-count" style="color:${etapa.cor};background:${etapa.cor}20">${total}</span>
       </div>
       <div class="pipeline-col-body">
         ${cards.length ? cards.map(p => buildPedidoCard(p, etapa)).join('') : '<div class="pipeline-empty">vazio</div>'}
+        ${mais}
       </div>
     </div>`;
   }).join('');
-  updateEtapaSelect();
+}
+
+async function sincronizarImportacao() {
+  const btn = document.getElementById('plBtnSync');
+  btn.disabled = true; btn.textContent = 'Atualizando…';
+  try {
+    const r = await fetch(`${SUPABASE_URL}/functions/v1/imp-sync`, { method: 'POST', headers: authH({ 'Content-Type': 'application/json' }), body: '{}' });
+    const j = await r.json().catch(() => ({}));
+    if (!j.ok) alert('Não foi possível atualizar agora: ' + (j.erro || r.status));
+  } catch (e) { alert('Não foi possível atualizar agora: ' + e.message); }
+  btn.disabled = false; btn.textContent = '↻ Atualizar agora';
+  renderPipeline();
 }
 
 // ── REUNIÕES ──
@@ -5831,25 +6257,6 @@ async function removePauta(id, idx) {
   const i = atual.indexOf(alvo);
   if (i >= 0) atual.splice(i, 1);
   await atualizarReuniao(id, { pauta: atual });
-  rerenderCard(id);
-}
-async function addDecisao(id) {
-  const input = document.getElementById('rDecisaoInput-' + id);
-  const texto = input.value.trim();
-  if (!texto) return;
-  const decisoes = [...await campoFresco(id, 'decisoes'), texto];
-  if (await atualizarReuniao(id, { decisoes })) input.value = '';
-  rerenderCard(id);
-}
-async function removeDecisao(id, idx) {
-  const r = reunioesData.find(x => x.id === id);
-  if (!r) return;
-  if (!confirm('Remover esta decisão do registro?')) return;
-  const alvo = r.decisoes[idx];
-  const atual = await campoFresco(id, 'decisoes');
-  const i = atual.indexOf(alvo);
-  if (i >= 0) atual.splice(i, 1);
-  await atualizarReuniao(id, { decisoes: atual });
   rerenderCard(id);
 }
 // Próximos passos antigos (só registro — não se cria mais tarefa entre sócios)
@@ -6067,13 +6474,19 @@ function buildReuniaoCard(r, open) {
       </div>`).join('')
     : '<div style="font-size:12px;color:var(--muted);padding:6px 0">Nenhum item na pauta ainda. Qualquer participante pode sugerir.</div>';
 
-  const decisoesHTML = (r.decisoes || []).length
-    ? (r.decisoes || []).map((d, i) => `<div class="decisao-item">
+  const decsReu = decisoesDaReuniao(r.id);
+  const legado = (r.decisoes || []).map(d => `<div class="decisao-item"><span class="decisao-dot"></span><span style="flex:1">${esc(d)}</span></div>`).join('');
+  const decisoesHTML = (decsReu.length || legado)
+    ? decsReu.map(d => `<div class="decisao-item ${d.status === 'revista' ? 'revista' : ''}">
         <span class="decisao-dot"></span>
-        <span style="flex:1">${esc(d)}</span>
-        <button class="btn btn-danger" style="padding:2px 8px;font-size:10px" onclick="removeDecisao(${r.id},${i})">×</button>
-      </div>`).join('')
-    : '<div style="font-size:12px;color:var(--muted);padding:6px 0">Nenhuma decisão registrada ainda.</div>';
+        <span style="flex:1">${esc(d.texto)}${d.status === 'revista' ? ` <small class="dec-badge-rev" title="${esc(d.revista_motivo || '')}">↺ revista</small>` : ''}</span>
+        ${decPodeGerir(d) ? `<button class="btn btn-danger" style="padding:2px 8px;font-size:10px" onclick="removeDecisao(${r.id},${d.id})">×</button>` : ''}
+      </div>`).join('') + legado +
+      `<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap">
+        <a href="#" style="font-size:11px;color:var(--muted)" onclick="event.preventDefault();goPage('decisoes')">ver no mural de decisões →</a>
+        ${souAud && decsReu.some(d => d.status === 'vigente') ? `<button class="btn btn-ghost" style="font-size:11px;padding:4px 10px" onclick="avisarAta(${r.id})">📨 Avisar todos sobre a ata</button>` : ''}
+      </div>`
+    : '<div style="font-size:12px;color:var(--muted);padding:6px 0">Nenhuma decisão registrada ainda. Elas também aparecem no Mural de decisões.</div>';
 
   const passosAntigos = (r.passoss || []).length ? `<div class="reuniao-section">
       <div class="reuniao-section-title">Próximos passos (registro antigo)</div>
@@ -6171,7 +6584,7 @@ function buildReuniaoCard(r, open) {
 
 async function renderReunioes() {
   reuniaoFormChips();
-  await loadReunioes();
+  await Promise.all([loadReunioes(), podeVer('decisoes') || podeVer('reunioes') ? carregarDecisoes() : Promise.resolve()]);
   atualizarBadgesNav();
   const el = document.getElementById('listaReunioes');
   if (!el) return;
@@ -6266,6 +6679,7 @@ async function initApp(paginaInicial) {
   if (podeVer('pipeline')    && paginaInicial !== 'pipeline')    renderPipeline();
   if (podeVer('conversas')   && paginaInicial !== 'conversas')   { cvCarregarCanais().then(atualizarBadgesNav); }
   setupConversasRT();
+  if (podeVer('decisoes') && paginaInicial !== 'decisoes') carregarDecisoes().then(atualizarBadgesNav);
   await initNotifs();
 }
 
@@ -6311,6 +6725,7 @@ const NOTIF_ICONS = {
   documento: '📄',
   agenda: '🗓',
   nota: '📝',
+  decisao: '✅',
   prazo: '⚠️'
 };
 
