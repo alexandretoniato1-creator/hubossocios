@@ -970,6 +970,87 @@ select.field-input{cursor:pointer}
   .cv-acoes{top:auto;bottom:-8px}
   .cv-msg:active .cv-acoes{display:flex}
 }
+
+/* ── FASE 4: documentos ── */
+.doc-drop{border:2px dashed var(--border2,#c9c3b6);text-align:center;transition:all .15s}
+.doc-drop.over{border-color:var(--text);background:var(--blue-bg)}
+.doc-drop-msg{font-size:13px;color:var(--muted);padding:6px 0}
+.doc-pick{color:var(--text);text-decoration:underline;cursor:pointer;font-weight:600}
+#docFilaBox{text-align:left}
+.doc-fila-item{display:flex;align-items:center;gap:8px;font-size:13px;padding:4px 0;border-bottom:1px solid var(--border)}
+.doc-fila-item span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.doc-fila-item small{color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:10px}
+.doc-fila-item a{font-size:11px;color:var(--red)}
+.doc-fila-grid{display:grid;grid-template-columns:1fr 2fr;gap:10px}
+.doc-toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:16px 0 12px}
+.doc-toolbar>.field-input{max-width:320px;flex:1;min-width:200px}
+.doc-lista{background:var(--surface);border:1.5px solid var(--border);border-radius:6px}
+.doc-row{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border)}
+.doc-row:last-child{border-bottom:none}
+.doc-row:hover{background:rgba(0,0,0,.02)}
+.doc-ic{font-size:22px;width:28px;text-align:center}
+.doc-info{flex:1;min-width:0}
+.doc-nome{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.doc-meta{font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-top:2px}
+.doc-lock{color:var(--blue)}
+.doc-desc{font-size:12px;color:var(--muted);margin-top:3px}
+.doc-acts{display:flex;gap:6px;flex-shrink:0}
+.doc-acts .btn{font-size:11px;padding:5px 10px}
+/* ── FASE 5: agenda ── */
+.ag-toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.ag-mes{font-size:17px;font-weight:700;min-width:170px;text-align:center}
+.ag-grid{display:grid;grid-template-columns:repeat(7,1fr);background:var(--border);gap:1px;border:1.5px solid var(--border);border-radius:6px;overflow:hidden}
+.ag-dow{background:var(--bg);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:6px 8px;font-family:'IBM Plex Mono',monospace}
+.ag-cell{background:var(--surface);min-height:96px;padding:4px 5px;cursor:pointer;min-width:0}
+.ag-cell:hover{background:#fbfaf6}
+.ag-cell.fora{background:var(--bg);opacity:.55}
+.ag-num{display:inline-block;font-size:11px;font-family:'IBM Plex Mono',monospace;padding:1px 5px;border-radius:9px;margin-bottom:2px}
+.ag-cell.hoje .ag-num{background:var(--text);color:var(--bg);font-weight:700}
+.ag-pill{font-size:11px;padding:2px 6px;border-radius:3px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:var(--blue-bg);color:var(--blue);border-left:3px solid var(--blue)}
+.ag-pill.cat-feira{background:#fdeee0;color:#a04c00;border-left-color:#d9822b}
+.ag-pill.cat-viagem{background:#e6f4f1;color:#0d6b5c;border-left-color:#14967f}
+.ag-pill.cat-externa{background:#f1e8fb;color:#6b2fa3;border-left-color:#8e4fcf}
+.ag-pill.pessoal{background:#efeee9;color:var(--text);border-left-color:var(--muted);border-left-style:dashed}
+.ag-mais{font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;padding-left:4px}
+.ag-linha{display:flex;align-items:center;gap:12px;padding:9px 4px;border-bottom:1px solid var(--border);cursor:pointer}
+.ag-linha:hover{background:rgba(0,0,0,.02)}
+.ag-linha:last-child{border-bottom:none}
+.ag-linha-data{width:110px;flex-shrink:0;font-size:11px;font-family:'IBM Plex Mono',monospace;color:var(--muted)}
+.ag-linha-tit{font-size:14px;font-weight:600}
+.ag-linha-sub{font-size:11px;color:var(--muted)}
+.ag-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ag-det-cat{font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace}
+.ag-det-linha{font-size:13px;margin-top:6px}
+.ag-det-desc{font-size:13px;margin-top:10px;padding:10px;background:var(--surface);border-radius:4px;line-height:1.5}
+.ag-det-vou{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
+/* ── FASE 5: anotações ── */
+.nota-nova{background:var(--surface);border:1.5px solid var(--border);border-radius:8px;padding:14px 16px;max-width:620px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.nota-in-tit{width:100%;border:none;background:transparent;font:inherit;font-size:15px;font-weight:700;padding:4px 0;color:var(--text)}
+.nota-in-txt{width:100%;border:none;background:transparent;font:inherit;font-size:14px;resize:vertical;padding:4px 0 8px;color:var(--text);line-height:1.5}
+.nota-in-tit:focus,.nota-in-txt:focus{outline:none}
+.nota-cor{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--border);cursor:pointer;display:inline-block}
+.nota-cor.on{border-color:var(--text);box-shadow:0 0 0 2px var(--bg),0 0 0 3px var(--text)}
+.notas-grid{columns:260px;column-gap:12px}
+.nota-card{break-inside:avoid;border:1.5px solid var(--border);border-radius:8px;padding:12px 14px 8px;margin-bottom:12px;cursor:pointer;position:relative;transition:box-shadow .15s}
+.nota-card:hover{box-shadow:0 2px 10px rgba(0,0,0,.08)}
+.nota-pin{position:absolute;top:8px;right:10px;font-size:12px}
+.nota-tit{font-weight:700;font-size:14px;margin-bottom:4px;padding-right:18px}
+.nota-txt{font-size:13px;line-height:1.5;max-height:260px;overflow:hidden;word-wrap:break-word}
+.nota-lem{font-size:10px;font-family:'IBM Plex Mono',monospace;margin-top:8px;color:var(--blue)}
+.nota-lem.passou{color:var(--muted)}
+.nota-acts{display:flex;gap:10px;margin-top:8px;opacity:0;transition:opacity .15s;font-size:13px}
+.nota-card:hover .nota-acts{opacity:1}
+.nota-acts span{cursor:pointer}
+@media(max-width:768px){
+  .doc-fila-grid,.ag-form-grid{grid-template-columns:1fr}
+  .doc-row{flex-wrap:wrap}
+  .doc-acts{width:100%;justify-content:flex-end}
+  .ag-cell{min-height:58px;padding:2px}
+  .ag-pill{font-size:9px;padding:1px 3px;border-left-width:2px}
+  .ag-dow{padding:4px 2px;text-align:center}
+  .ag-mes{min-width:0;font-size:15px}
+  .nota-acts{opacity:1}
+}
 </style>
 </head>
 <body>
@@ -1009,9 +1090,12 @@ select.field-input{cursor:pointer}
     <div class="nav-item" data-aba="comunicados" onclick="goPage('comunicados')"><span class="nav-icon">◉</span> Comunicados <span class="nav-count" id="navCount-comunicados" style="display:none"></span></div>
     <div class="nav-item" data-aba="conversas" onclick="goPage('conversas')"><span class="nav-icon">◍</span> Conversas <span class="nav-count" id="navCount-conversas" style="display:none"></span></div>
     <div class="nav-item" data-aba="planilhas" onclick="goPage('planilhas')"><span class="nav-icon">◧</span> Planilhas</div>
+    <div class="nav-item" data-aba="documentos" onclick="goPage('documentos')"><span class="nav-icon">▤</span> Documentos</div>
     <div class="nav-item" data-aba="metas" onclick="goPage('metas')"><span class="nav-icon">◎</span> Metas</div>
     <div class="nav-item" data-aba="desempenho" onclick="goPage('desempenho')"><span class="nav-icon">◑</span> Desempenho</div>
     <div class="nav-item" data-aba="reunioes" onclick="goPage('reunioes')"><span class="nav-icon">◷</span> Reuniões <span class="nav-count" id="navCount-reunioes" style="display:none"></span></div>
+    <div class="nav-item" data-aba="agenda" onclick="goPage('agenda')"><span class="nav-icon">▦</span> Agenda</div>
+    <div class="nav-item" data-aba="anotacoes" onclick="goPage('anotacoes')"><span class="nav-icon">✎</span> Anotações</div>
     <div class="nav-item" data-aba="pipeline" onclick="goPage('pipeline')"><span class="nav-icon">◫</span> Pipeline</div>
     <div class="nav-item hidden" data-aba="usuarios" id="navUsuarios" onclick="goPage('usuarios')"><span class="nav-icon">◐</span> Usuários</div>
   </nav>
@@ -1262,6 +1346,81 @@ select.field-input{cursor:pointer}
         </div>
       </section>
     </div>
+  </div>
+
+  <!-- DOCUMENTOS -->
+  <div id="page-documentos" class="hidden fade-in">
+    <div class="page-header">
+      <div class="page-title">Documentos</div>
+      <div class="page-sub">contratos, comprovantes, planilhas · até 50 MB por arquivo</div>
+    </div>
+    <div class="box doc-drop" id="docDrop">
+      <div class="doc-drop-msg">⬆ Arraste arquivos aqui ou <label class="doc-pick">escolha do computador<input type="file" id="docFile" multiple hidden onchange="docSelecionados(this.files)"></label></div>
+      <div id="docFilaBox" class="hidden">
+        <div id="docFilaLista" style="margin:12px 0"></div>
+        <div class="doc-fila-grid">
+          <div class="field-group"><span class="field-label">Pasta</span><input class="field-input" id="docPasta" list="docPastasList" placeholder="Geral"></div>
+          <div class="field-group"><span class="field-label">Descrição (opcional)</span><input class="field-input" id="docDesc" placeholder="ex: contrato assinado com o fornecedor X"></div>
+        </div>
+        <div class="para-row"><span class="field-label" style="margin:0">Quem vê</span><div id="docAcessoChips" class="para-chips"></div></div>
+        <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px">
+          <button class="btn btn-ghost" onclick="docCancelarFila()">Cancelar</button>
+          <button class="btn btn-primary" id="docBtnEnviar" onclick="docEnviar()">Enviar</button>
+        </div>
+      </div>
+      <datalist id="docPastasList"></datalist>
+    </div>
+    <div class="doc-toolbar">
+      <input class="field-input" id="docBusca" placeholder="🔍 Buscar por nome, pasta, quem enviou…" oninput="desenharDocs()">
+      <div id="docPastasFiltro" class="para-chips"></div>
+    </div>
+    <div id="docLista"></div>
+  </div>
+
+  <!-- AGENDA -->
+  <div id="page-agenda" class="hidden fade-in">
+    <div class="page-header">
+      <div class="page-title">Agenda</div>
+      <div class="page-sub">feiras e eventos dos sócios · seus compromissos privados (🔒)</div>
+    </div>
+    <div class="ag-toolbar">
+      <div style="display:flex;align-items:center;gap:6px">
+        <button class="btn btn-ghost" onclick="agMudarMes(-1)">‹</button>
+        <div class="ag-mes" id="agMesTitulo"></div>
+        <button class="btn btn-ghost" onclick="agMudarMes(1)">›</button>
+        <button class="btn btn-ghost" style="font-size:11px" onclick="agIrHoje()">Hoje</button>
+      </div>
+      <div id="agFiltros" class="para-chips"></div>
+      <button class="btn btn-primary" onclick="agNovo(null)">+ Evento</button>
+    </div>
+    <div class="ag-grid" id="agGrid"></div>
+    <div class="box" style="margin-top:16px">
+      <div class="box-title" style="margin-bottom:8px">Próximos 60 dias</div>
+      <div id="agProximos"></div>
+    </div>
+  </div>
+
+  <!-- ANOTAÇÕES -->
+  <div id="page-anotacoes" class="hidden fade-in">
+    <div class="page-header">
+      <div class="page-title">Anotações</div>
+      <div class="page-sub">🔒 só você vê — nem o administrador tem acesso</div>
+    </div>
+    <div class="nota-nova" id="notaNovaBox">
+      <input class="nota-in-tit" id="notaTit" placeholder="Título">
+      <textarea class="nota-in-txt" id="notaTxt" rows="3" placeholder="Anote uma ideia, um número, um lembrete…"></textarea>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <span class="field-label" style="margin:0">⏰ Lembrar em</span>
+        <input class="field-input" type="datetime-local" id="notaLem" style="padding:6px 8px;font-size:12px;max-width:210px">
+        <div id="notaCores" style="display:flex;gap:4px"></div>
+        <button class="btn btn-primary" style="margin-left:auto" onclick="notaSalvarNova()">Salvar</button>
+      </div>
+    </div>
+    <div class="doc-toolbar">
+      <input class="field-input" id="notaBusca" placeholder="🔍 Buscar nas anotações…" oninput="desenharNotas()">
+      <button class="btn btn-ghost" id="notaBtnArq" style="font-size:11px" onclick="notaToggleArquivadas()">Arquivadas</button>
+    </div>
+    <div class="notas-grid" id="notasLista"></div>
   </div>
 
   <!-- PLANILHAS -->
@@ -1722,8 +1881,8 @@ if (CONFIGURED) {
 // ── LOGIN INDIVIDUAL (Supabase Auth) ──
 const LOGIN_DOMINIO = '@hubossocios.app';
 const TODAS_ABAS = [
-  ['dashboard','Dashboard'],['comunicados','Comunicados'],['conversas','Conversas'],['planilhas','Planilhas'],
-  ['metas','Metas'],['desempenho','Desempenho'],['reunioes','Reuniões'],['pipeline','Pipeline']
+  ['dashboard','Dashboard'],['comunicados','Comunicados'],['conversas','Conversas'],['planilhas','Planilhas'],['documentos','Documentos'],
+  ['metas','Metas'],['desempenho','Desempenho'],['reunioes','Reuniões'],['agenda','Agenda'],['anotacoes','Anotações'],['pipeline','Pipeline']
 ];
 let ME = null;          // perfil do usuário logado
 let USUARIOS = [];      // todos os perfis ativos
@@ -2358,6 +2517,9 @@ function goPage(p) {
   if(p==='pipeline') renderPipeline();
   if(p==='usuarios') renderUsuarios();
   if(p==='conversas') renderConversas();
+  if(p==='documentos') { docSetupDrop(); renderDocumentos(); }
+  if(p==='agenda') renderAgenda();
+  if(p==='anotacoes') renderAnotacoes();
 }
 
 function dTab(btn, id) {
@@ -2790,6 +2952,16 @@ async function renderResumoAgenda() {
       (prox ? `${new Date(prox.data+'T12:00:00').toLocaleDateString('pt-BR')}${prox.horario?' às '+prox.horario:''}` : '') + (enqMeuVoto ? `${prox?' · ':''}<span style="color:var(--amber);font-weight:600">🗳 ${enqMeuVoto} enquete${enqMeuVoto>1?'s':''} esperando seu voto</span>` : ''), { onclick:"goPage('reunioes')" }) +
     rsCard('Pipeline — chegando', chegando.length ? `${chegando.length} <span style="font-size:12px;color:var(--muted)">pedidos em 7 dias</span>` : '<span style="font-size:13px;color:var(--muted)">nada previsto</span>',
       chegando.slice(0,2).map(p => `${p.ref||''} · ETA ${fmtD(p.eta)}`).join(' · '), { onclick:"goPage('pipeline')", valStyle:'font-size:20px' });
+
+  // Agenda — próximo evento (dos sócios ou meu)
+  if (podeVer('agenda') && db) {
+    try {
+      const { data: evs } = await db.from('eventos').select('*').gte('data', diaOffset(hoje, -30)).order('data', { ascending: true }).limit(60);
+      const proxEv = (evs || []).filter(e => (e.data_fim || e.data) >= hoje).sort((a, b) => a.data.localeCompare(b.data) || (a.horario || '').localeCompare(b.horario || ''))[0];
+      el.innerHTML += rsCard('Agenda', proxEv ? `<span style="font-size:15px">${proxEv.escopo === 'pessoal' ? '🔒 ' : ''}${esc(proxEv.titulo)}</span>` : '<span style="font-size:13px;color:var(--muted)">nada marcado</span>',
+        proxEv ? `${new Date(proxEv.data + 'T12:00:00').toLocaleDateString('pt-BR')}${proxEv.horario ? ' às ' + proxEv.horario : ''}${proxEv.local ? ' · ' + esc(proxEv.local) : ''}` : '', { onclick: "goPage('agenda')" });
+    } catch (e) {}
+  }
 
   // Linha 4 — metas em andamento
   renderResumoMetas();
@@ -4049,6 +4221,553 @@ document.addEventListener('click', e => {
   if (!e.target.closest('.cv-acoes')) document.querySelectorAll('.cv-emojis').forEach(el => el.classList.add('hidden'));
 });
 
+// ── DOCUMENTOS ──
+const DOC_PASTAS_PADRAO = ['Geral','Contratos','Financeiro','Fiscal','Importação','Marketplace','RH'];
+const DOC_MAX = 50 * 1024 * 1024;
+let docsData = [];
+let docPastaFiltro = '';
+let docFila = [];
+let docAcesso = new Set();
+let docEditAcesso = new Set();
+
+function docTamanho(b) {
+  if (b < 1024) return b + ' B';
+  if (b < 1048576) return (b / 1024).toFixed(0) + ' KB';
+  return (b / 1048576).toFixed(1).replace('.', ',') + ' MB';
+}
+function docIcone(nome) {
+  const ext = (nome.split('.').pop() || '').toLowerCase();
+  if (['pdf'].includes(ext)) return '📕';
+  if (['xls','xlsx','csv','ods'].includes(ext)) return '📗';
+  if (['doc','docx','odt','txt','rtf'].includes(ext)) return '📘';
+  if (['png','jpg','jpeg','gif','webp','heic','svg'].includes(ext)) return '🖼';
+  if (['zip','rar','7z'].includes(ext)) return '🗜';
+  if (['ppt','pptx','key'].includes(ext)) return '📙';
+  if (['mp4','mov','avi'].includes(ext)) return '🎞';
+  return '📄';
+}
+function docAudiencia(d) {
+  const a = d.acesso || [];
+  return a.length ? [...new Set([d.autor, ...a])] : usuariosComAba('documentos');
+}
+function docPastas() {
+  return [...new Set([...DOC_PASTAS_PADRAO, ...docsData.map(d => d.pasta)])].sort((a, b) => a.localeCompare(b));
+}
+
+async function carregarDocs() {
+  const { data, error } = await db.from('documentos').select('*').order('created_at', { ascending: false });
+  if (!error && data) docsData = data;
+}
+
+async function renderDocumentos() {
+  renderParaChips('docAcessoChips', docAcesso, 'documentos', 'docAcessoToggle');
+  const el = document.getElementById('docLista');
+  if (!docsData.length) el.innerHTML = loadingHTML();
+  await carregarDocs();
+  document.getElementById('docPastasList').innerHTML = docPastas().map(p => `<option value="${esc(p)}">`).join('');
+  desenharDocs();
+}
+
+function docFiltrarPasta(p) { docPastaFiltro = p; desenharDocs(); }
+
+function desenharDocs() {
+  const el = document.getElementById('docLista');
+  if (!el) return;
+  const usadas = [...new Set(docsData.map(d => d.pasta))].sort((a, b) => a.localeCompare(b));
+  document.getElementById('docPastasFiltro').innerHTML =
+    `<span class="aba-chip ${docPastaFiltro ? '' : 'on'}" onclick="docFiltrarPasta('')">Todas (${docsData.length})</span>` +
+    usadas.map(p => `<span class="aba-chip ${docPastaFiltro === p ? 'on' : ''}" data-p="${esc(p)}" onclick="docFiltrarPasta(this.dataset.p)">📁 ${esc(p)} (${docsData.filter(d => d.pasta === p).length})</span>`).join('');
+  const q = (document.getElementById('docBusca').value || '').trim().toLowerCase();
+  let lista = docsData.filter(d => (!docPastaFiltro || d.pasta === docPastaFiltro) &&
+    (!q || (d.nome + ' ' + d.descricao + ' ' + d.pasta + ' ' + d.autor).toLowerCase().includes(q)));
+  if (!lista.length) {
+    el.innerHTML = emptyHTML(docsData.length ? 'Nenhum documento neste filtro.' : 'Nenhum documento ainda. Envie o primeiro acima.');
+    return;
+  }
+  el.innerHTML = `<div class="doc-lista">` + lista.map(d => {
+    const podeGerir = ME && (d.autor === ME.nome || ME.is_admin);
+    const restrito = (d.acesso || []).length;
+    const abre = /\.(pdf|png|jpe?g|gif|webp|svg|txt)$/i.test(d.nome);
+    return `<div class="doc-row">
+      <div class="doc-ic">${docIcone(d.nome)}</div>
+      <div class="doc-info">
+        <div class="doc-nome" title="${esc(d.nome)}">${esc(d.nome)}</div>
+        <div class="doc-meta">📁 ${esc(d.pasta)} · ${docTamanho(d.tamanho || 0)} · ${esc(d.autor)} · ${new Date(d.created_at).toLocaleDateString('pt-BR')}${restrito ? ` · <span class="doc-lock" title="Só essas pessoas veem">🔒 ${esc(docAudiencia(d).join(', '))}</span>` : ''}</div>
+        ${d.descricao ? `<div class="doc-desc">${esc(d.descricao)}</div>` : ''}
+      </div>
+      <div class="doc-acts">
+        ${abre ? `<button class="btn btn-ghost" onclick="docAbrir(${d.id},false)">Abrir</button>` : ''}
+        <button class="btn btn-primary" onclick="docAbrir(${d.id},true)">Baixar</button>
+        ${podeGerir ? `<button class="btn btn-ghost" title="Editar" onclick="docEditar(${d.id})">✎</button><button class="btn btn-danger" title="Excluir" onclick="docExcluir(${d.id})">✕</button>` : ''}
+      </div>
+    </div>`;
+  }).join('') + `</div>`;
+}
+
+// ── Envio ──
+function docAcessoToggle(n) {
+  if (!n) docAcesso.clear(); else docAcesso.has(n) ? docAcesso.delete(n) : docAcesso.add(n);
+  renderParaChips('docAcessoChips', docAcesso, 'documentos', 'docAcessoToggle');
+}
+function docSelecionados(files) {
+  const novos = [...files];
+  const grandes = novos.filter(f => f.size > DOC_MAX);
+  if (grandes.length) alert(`Acima de 50 MB (não dá para enviar): ${grandes.map(f => f.name).join(', ')}`);
+  docFila = [...docFila, ...novos.filter(f => f.size <= DOC_MAX)];
+  document.getElementById('docFile').value = '';
+  docRenderFila();
+}
+function docRemoverFila(i) { docFila.splice(i, 1); docRenderFila(); }
+function docRenderFila() {
+  const box = document.getElementById('docFilaBox');
+  box.classList.toggle('hidden', !docFila.length);
+  document.getElementById('docFilaLista').innerHTML = docFila.map((f, i) =>
+    `<div class="doc-fila-item">${docIcone(f.name)} <span>${esc(f.name)}</span><small>${docTamanho(f.size)}</small><a href="#" onclick="event.preventDefault();docRemoverFila(${i})">remover</a></div>`).join('');
+  if (docFila.length && !document.getElementById('docPasta').value) document.getElementById('docPasta').value = docPastaFiltro || 'Geral';
+}
+function docCancelarFila() { docFila = []; docRenderFila(); }
+
+function docNomeSeguro(n) {
+  return n.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^\w.\-]+/g, '_').slice(-120);
+}
+
+async function docEnviar() {
+  if (!docFila.length) return;
+  const pasta = (document.getElementById('docPasta').value || 'Geral').trim() || 'Geral';
+  const descricao = document.getElementById('docDesc').value.trim();
+  const acesso = docAcesso.size ? [...new Set([ME.nome, ...docAcesso])] : [];
+  const btn = document.getElementById('docBtnEnviar');
+  btn.disabled = true;
+  const ok = [], falhas = [];
+  for (let i = 0; i < docFila.length; i++) {
+    const f = docFila[i];
+    btn.textContent = `Enviando ${i + 1}/${docFila.length}…`;
+    const caminho = `${ME.id}/${Date.now()}-${docNomeSeguro(f.name)}`;
+    const up = await db.storage.from('documentos').upload(caminho, f, { contentType: f.type || 'application/octet-stream', upsert: false });
+    if (up.error) { falhas.push(f.name + ' (' + up.error.message + ')'); continue; }
+    const { error } = await db.from('documentos').insert({ nome: f.name, pasta, descricao, caminho, tamanho: f.size, tipo_mime: f.type || '', autor: ME.nome, acesso });
+    if (error) { await db.storage.from('documentos').remove([caminho]); falhas.push(f.name + ' (' + error.message + ')'); continue; }
+    ok.push(f.name);
+  }
+  btn.disabled = false; btn.textContent = 'Enviar';
+  if (falhas.length) alert('Não foi possível enviar:\n' + falhas.join('\n'));
+  if (ok.length) {
+    const aud = acesso.length ? acesso : usuariosComAba('documentos');
+    createNotif({ tipo: 'documento', titulo: `📄 ${ME.nome} enviou ${ok.length > 1 ? ok.length + ' arquivos' : 'um arquivo'} em ${pasta}`,
+      corpo: ok.join(', ').slice(0, 100), link_pagina: 'documentos', para: semMim(aud) });
+  }
+  docFila = []; docAcesso.clear(); document.getElementById('docDesc').value = '';
+  docRenderFila();
+  renderDocumentos();
+}
+
+async function docAbrir(id, baixar) {
+  const d = docsData.find(x => x.id === id); if (!d) return;
+  const win = baixar ? null : window.open('', '_blank');
+  const { data, error } = await db.storage.from('documentos').createSignedUrl(d.caminho, 300, baixar ? { download: d.nome } : undefined);
+  if (error || !data) { if (win) win.close(); alert('Não foi possível abrir: ' + (error ? error.message : '')); return; }
+  if (win) { win.location = data.signedUrl; return; }
+  const a = document.createElement('a');
+  a.href = data.signedUrl; a.download = d.nome; document.body.appendChild(a); a.click(); a.remove();
+}
+
+async function docExcluir(id) {
+  const d = docsData.find(x => x.id === id); if (!d) return;
+  if (!confirm(`Excluir "${d.nome}"? O arquivo some para todos.`)) return;
+  const { error } = await db.from('documentos').delete().eq('id', id);
+  if (error) { alert('Erro: ' + error.message); return; }
+  await db.storage.from('documentos').remove([d.caminho]);
+  docsData = docsData.filter(x => x.id !== id);
+  desenharDocs();
+}
+
+function docEditAcessoToggle(n) {
+  if (!n) docEditAcesso.clear(); else docEditAcesso.has(n) ? docEditAcesso.delete(n) : docEditAcesso.add(n);
+  renderParaChips('docEditAcessoChips', docEditAcesso, 'documentos', 'docEditAcessoToggle');
+}
+function docEditar(id) {
+  const d = docsData.find(x => x.id === id); if (!d) return;
+  docEditAcesso = new Set((d.acesso || []).filter(n => n !== ME.nome));
+  const m = document.createElement('div');
+  m.className = 'hub-modal'; m.id = 'modalDoc';
+  m.innerHTML = `<div class="hub-modal-box" style="max-width:460px">
+    <div class="hub-modal-title">Editar documento</div>
+    <div class="field-group" style="margin:14px 0 10px"><span class="field-label">Nome</span><input class="field-input" id="deNome" value="${esc(d.nome)}"></div>
+    <div class="field-group" style="margin-bottom:10px"><span class="field-label">Pasta</span><input class="field-input" id="dePasta" list="docPastasList" value="${esc(d.pasta)}"></div>
+    <div class="field-group" style="margin-bottom:10px"><span class="field-label">Descrição</span><input class="field-input" id="deDesc" value="${esc(d.descricao || '')}"></div>
+    <div class="field-group"><span class="field-label">Quem vê</span><div id="docEditAcessoChips" class="para-chips"></div></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px">
+      <button class="btn btn-ghost" onclick="document.getElementById('modalDoc').remove()">Cancelar</button>
+      <button class="btn btn-primary" onclick="docSalvarEdicao(${d.id})">Salvar</button>
+    </div></div>`;
+  document.body.appendChild(m);
+  docEditAcessoToggle(null);
+}
+async function docSalvarEdicao(id) {
+  const d = docsData.find(x => x.id === id); if (!d) return;
+  const campos = {
+    nome: document.getElementById('deNome').value.trim() || d.nome,
+    pasta: document.getElementById('dePasta').value.trim() || 'Geral',
+    descricao: document.getElementById('deDesc').value.trim(),
+    acesso: docEditAcesso.size ? [...new Set([d.autor, ...docEditAcesso])] : []
+  };
+  const { error } = await db.from('documentos').update(campos).eq('id', id);
+  if (error) { alert('Erro: ' + error.message); return; }
+  document.getElementById('modalDoc').remove();
+  renderDocumentos();
+}
+
+function docSetupDrop() {
+  const z = document.getElementById('docDrop');
+  if (!z || z.dataset.ok) return;
+  z.dataset.ok = '1';
+  ['dragenter', 'dragover'].forEach(ev => z.addEventListener(ev, e => { e.preventDefault(); z.classList.add('over'); }));
+  ['dragleave', 'drop'].forEach(ev => z.addEventListener(ev, e => { e.preventDefault(); z.classList.remove('over'); }));
+  z.addEventListener('drop', e => { if (e.dataTransfer.files.length) docSelecionados(e.dataTransfer.files); });
+}
+
+// ── AGENDA (geral dos sócios + pessoal) ──
+const AG_CATS = { feira: '🏬 Feira', evento: '🎤 Evento', viagem: '✈️ Viagem', externa: '🤝 Reunião externa', compromisso: '📌 Compromisso', lembrete: '🔔 Lembrete' };
+const AG_LEMBRETES = [['', 'Sem lembrete'], ['0', 'Na hora (dia todo: 8h)'], ['15', '15 min antes'], ['60', '1 hora antes'], ['1440', '1 dia antes']];
+let eventosData = [];
+let agMes = null;          // 'YYYY-MM'
+let agFiltro = 'tudo';     // tudo | geral | meu
+let agEscopoNovo = 'geral';
+
+function agHoje() { return isoHoje(); }
+function agFmt(d) { return d ? d.split('-').reverse().join('/') : ''; }
+function agAddDias(d, n) { const x = new Date(d + 'T12:00:00'); x.setDate(x.getDate() + n); return x.toISOString().slice(0, 10); }
+
+async function carregarEventos() {
+  const { data, error } = await db.from('eventos').select('*').order('data', { ascending: true });
+  if (!error && data) eventosData = data;
+}
+
+function agVisiveis() {
+  return eventosData.filter(e => agFiltro === 'tudo' || (agFiltro === 'geral' ? e.escopo === 'geral' : e.escopo === 'pessoal'));
+}
+
+async function renderAgenda() {
+  if (!agMes) agMes = agHoje().slice(0, 7);
+  await carregarEventos();
+  desenharAgenda();
+}
+
+function agMudarMes(n) {
+  const [y, m] = agMes.split('-').map(Number);
+  const d = new Date(y, m - 1 + n, 1);
+  agMes = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+  desenharAgenda();
+}
+function agIrHoje() { agMes = agHoje().slice(0, 7); desenharAgenda(); }
+function agSetFiltro(f) { agFiltro = f; desenharAgenda(); }
+
+function desenharAgenda() {
+  const grid = document.getElementById('agGrid');
+  if (!grid) return;
+  const [y, m] = agMes.split('-').map(Number);
+  const tit = new Date(y, m - 1, 1).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+  document.getElementById('agMesTitulo').textContent = tit.charAt(0).toUpperCase() + tit.slice(1);
+  document.getElementById('agFiltros').innerHTML = [['tudo', 'Tudo'], ['geral', '👥 Sócios'], ['meu', '🔒 Só minha']]
+    .map(([k, l]) => `<span class="aba-chip ${agFiltro === k ? 'on' : ''}" onclick="agSetFiltro('${k}')">${l}</span>`).join('');
+
+  const evs = agVisiveis();
+  const primeiro = new Date(y, m - 1, 1);
+  const inicio = new Date(primeiro); inicio.setDate(1 - primeiro.getDay());
+  const hoje = agHoje();
+  let html = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map(d => `<div class="ag-dow">${d}</div>`).join('');
+  for (let i = 0; i < 42; i++) {
+    const dt = new Date(inicio); dt.setDate(inicio.getDate() + i);
+    const iso = `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-${String(dt.getDate()).padStart(2, '0')}`;
+    if (i === 35 && dt.getMonth() !== m - 1) break;
+    const doDia = evs.filter(e => e.data <= iso && (e.data_fim || e.data) >= iso)
+      .sort((a, b) => (a.horario || '').localeCompare(b.horario || ''));
+    html += `<div class="ag-cell ${dt.getMonth() !== m - 1 ? 'fora' : ''} ${iso === hoje ? 'hoje' : ''}" onclick="if(event.target===this||event.target.classList.contains('ag-num'))agNovo('${iso}')">
+      <span class="ag-num">${dt.getDate()}</span>
+      ${doDia.slice(0, 3).map(e => `<div class="ag-pill ${e.escopo === 'pessoal' ? 'pessoal' : ''} cat-${esc(e.categoria)}" title="${esc(e.titulo)}" onclick="agDetalhe(${e.id})">${e.horario && e.data === iso ? e.horario + ' ' : ''}${esc(e.titulo)}</div>`).join('')}
+      ${doDia.length > 3 ? `<div class="ag-mais" onclick="agDetalheDia('${iso}')">+${doDia.length - 3}</div>` : ''}
+    </div>`;
+  }
+  grid.innerHTML = html;
+
+  // Próximos 60 dias
+  const fim = agAddDias(hoje, 60);
+  const prox = evs.filter(e => (e.data_fim || e.data) >= hoje && e.data <= fim)
+    .sort((a, b) => a.data.localeCompare(b.data) || (a.horario || '').localeCompare(b.horario || ''));
+  document.getElementById('agProximos').innerHTML = prox.length ? prox.map(agLinhaHTML).join('')
+    : '<div style="color:var(--muted);font-size:13px;padding:8px 0">Nada nos próximos 60 dias.</div>';
+}
+
+function agLinhaHTML(e) {
+  const vou = e.participantes || [];
+  const periodo = e.data_fim && e.data_fim !== e.data ? `${agFmt(e.data)} → ${agFmt(e.data_fim)}` : `${diaSemana(e.data)} ${agFmt(e.data)}`;
+  return `<div class="ag-linha" onclick="agDetalhe(${e.id})">
+    <div class="ag-linha-data">${periodo}${e.horario ? '<br>' + e.horario : ''}</div>
+    <div style="flex:1;min-width:0">
+      <div class="ag-linha-tit">${e.escopo === 'pessoal' ? '🔒 ' : ''}${esc(e.titulo)}</div>
+      <div class="ag-linha-sub">${AG_CATS[e.categoria] || esc(e.categoria)}${e.local ? ' · 📍 ' + esc(e.local) : ''}${e.escopo === 'geral' && vou.length ? ' · vão: ' + esc(vou.join(', ')) : ''}${e.escopo === 'geral' ? ' · por ' + esc(e.dono) : ''}</div>
+    </div>
+    ${e.lembrete_min != null ? '<span title="Com lembrete">⏰</span>' : ''}
+  </div>`;
+}
+
+function agDetalheDia(iso) {
+  const evs = agVisiveis().filter(e => e.data <= iso && (e.data_fim || e.data) >= iso);
+  agModal(`<div class="hub-modal-title">${diaSemana(iso)} ${agFmt(iso)}</div>
+    <div style="margin-top:12px">${evs.map(agLinhaHTML).join('')}</div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px">
+      <button class="btn btn-ghost" onclick="agFechar()">Fechar</button>
+      <button class="btn btn-primary" onclick="agNovo('${iso}')">+ Evento neste dia</button>
+    </div>`);
+}
+
+function agModal(inner) {
+  agFechar();
+  const m = document.createElement('div');
+  m.className = 'hub-modal'; m.id = 'modalAgenda';
+  m.innerHTML = `<div class="hub-modal-box" style="max-width:480px">${inner}</div>`;
+  m.addEventListener('click', e => { if (e.target === m) agFechar(); });
+  document.body.appendChild(m);
+}
+function agFechar() { document.getElementById('modalAgenda')?.remove(); }
+
+function agDetalhe(id) {
+  const e = eventosData.find(x => x.id === id); if (!e) return;
+  const podeEditar = ME && (e.dono === ME.nome || (e.escopo === 'geral' && ME.is_admin));
+  const vou = e.participantes || [];
+  const euVou = ME && vou.includes(ME.nome);
+  const periodo = e.data_fim && e.data_fim !== e.data ? `${diaSemana(e.data)} ${agFmt(e.data)} até ${diaSemana(e.data_fim)} ${agFmt(e.data_fim)}` : `${diaSemana(e.data)} ${agFmt(e.data)}`;
+  const lem = AG_LEMBRETES.find(l => l[0] === (e.lembrete_min == null ? '' : String(e.lembrete_min)));
+  agModal(`
+    <div class="ag-det-cat">${AG_CATS[e.categoria] || esc(e.categoria)} · ${e.escopo === 'pessoal' ? '🔒 só você vê' : '👥 agenda dos sócios'}</div>
+    <div class="hub-modal-title" style="margin-top:4px">${esc(e.titulo)}</div>
+    <div class="ag-det-linha">📅 ${periodo}${e.horario ? ' · ' + e.horario : ' · dia todo'}</div>
+    ${e.local ? `<div class="ag-det-linha">📍 ${esc(e.local)}</div>` : ''}
+    ${e.lembrete_min != null ? `<div class="ag-det-linha">⏰ ${lem ? lem[1] : ''}</div>` : ''}
+    ${e.descricao ? `<div class="ag-det-desc">${esc(e.descricao).replace(/\n/g, '<br>')}</div>` : ''}
+    ${e.escopo === 'geral' ? `<div class="ag-det-vou">
+        <div style="font-size:12px;color:var(--muted)">Quem vai: ${vou.length ? vou.map(n => `<strong style="color:${corDe(n)}">${esc(n)}</strong>`).join(', ') : 'ninguém marcou ainda'}</div>
+        <button class="btn ${euVou ? 'btn-ciente-on' : 'btn-ciente'}" onclick="agVou(${e.id},${!euVou})">${euVou ? '✓ Eu vou (desmarcar)' : 'Eu vou'}</button>
+      </div>
+      <div style="font-size:11px;color:var(--muted);margin-top:6px">Criado por ${esc(e.dono)}. ${vou.length ? 'O lembrete vai para quem marcou que vai.' : 'Sem confirmações, o lembrete vai para todos.'}</div>` : ''}
+    <div style="display:flex;justify-content:space-between;gap:8px;margin-top:16px;flex-wrap:wrap">
+      <div>${podeEditar ? `<button class="btn btn-danger" onclick="agExcluir(${e.id})">Excluir</button>` : ''}</div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-ghost" onclick="agFechar()">Fechar</button>
+        ${podeEditar ? `<button class="btn btn-primary" onclick="agNovo(null,${e.id})">Editar</button>` : ''}
+      </div>
+    </div>`);
+}
+
+async function agVou(id, vou) {
+  const { data, error } = await db.rpc('hub_evento_vou', { p_id: id, p_vou: vou });
+  if (error) { alert('Erro: ' + error.message); return; }
+  const e = eventosData.find(x => x.id === id); if (e) e.participantes = data || [];
+  desenharAgenda();
+  agDetalhe(id);
+}
+
+function agSetEscopo(s) {
+  agEscopoNovo = s;
+  document.getElementById('agEscopoChips').innerHTML =
+    `<span class="aba-chip ${s === 'geral' ? 'on' : ''}" onclick="agSetEscopo('geral')">👥 Agenda dos sócios</span>` +
+    `<span class="aba-chip ${s === 'pessoal' ? 'on' : ''}" onclick="agSetEscopo('pessoal')">🔒 Só eu vejo</span>`;
+}
+
+function agNovo(dataIso, id) {
+  const e = id ? eventosData.find(x => x.id === id) : null;
+  agEscopoNovo = e ? e.escopo : (agFiltro === 'meu' ? 'pessoal' : 'geral');
+  agModal(`
+    <div class="hub-modal-title">${e ? 'Editar evento' : 'Novo na agenda'}</div>
+    <div class="para-chips" id="agEscopoChips" style="margin:12px 0 10px"></div>
+    <div class="field-group" style="margin-bottom:10px"><span class="field-label">Título</span><input class="field-input" id="agTit" placeholder="ex: Feira de Cantão" value="${e ? esc(e.titulo) : ''}"></div>
+    <div class="ag-form-grid">
+      <div class="field-group"><span class="field-label">Tipo</span><select class="field-input" id="agCat">${Object.entries(AG_CATS).map(([k, l]) => `<option value="${k}" ${e && e.categoria === k ? 'selected' : ''}>${l}</option>`).join('')}</select></div>
+      <div class="field-group"><span class="field-label">Horário (opcional)</span><input class="field-input" type="time" id="agHora" value="${e ? esc(e.horario || '') : ''}"></div>
+      <div class="field-group"><span class="field-label">Data</span><input class="field-input" type="date" id="agData" value="${e ? e.data : (dataIso || agHoje())}"></div>
+      <div class="field-group"><span class="field-label">Até (vários dias)</span><input class="field-input" type="date" id="agFim" value="${e && e.data_fim ? e.data_fim : ''}"></div>
+    </div>
+    <div class="field-group" style="margin:10px 0"><span class="field-label">Local</span><input class="field-input" id="agLocal" placeholder="ex: São Paulo Expo" value="${e ? esc(e.local || '') : ''}"></div>
+    <div class="field-group" style="margin-bottom:10px"><span class="field-label">Detalhes</span><textarea class="field-input" id="agDesc" rows="3" style="resize:vertical">${e ? esc(e.descricao || '') : ''}</textarea></div>
+    <div class="field-group"><span class="field-label">Lembrete por notificação</span><select class="field-input" id="agLem">${AG_LEMBRETES.map(([v, l]) => `<option value="${v}" ${(e ? (e.lembrete_min == null ? '' : String(e.lembrete_min)) : '1440') === v ? 'selected' : ''}>${l}</option>`).join('')}</select></div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:16px">
+      <button class="btn btn-ghost" onclick="agFechar()">Cancelar</button>
+      <button class="btn btn-primary" id="agBtnSalvar" onclick="agSalvar(${e ? e.id : 'null'})">Salvar</button>
+    </div>`);
+  agSetEscopo(agEscopoNovo);
+  setTimeout(() => document.getElementById('agTit')?.focus(), 50);
+}
+
+async function agSalvar(id) {
+  const titulo = document.getElementById('agTit').value.trim();
+  const data = document.getElementById('agData').value;
+  let data_fim = document.getElementById('agFim').value || null;
+  if (!titulo || !data) { alert('Preencha título e data.'); return; }
+  if (data_fim && data_fim < data) { alert('A data final é antes da inicial.'); return; }
+  if (data_fim === data) data_fim = null;
+  const lem = document.getElementById('agLem').value;
+  const campos = {
+    titulo, data, data_fim,
+    horario: document.getElementById('agHora').value || '',
+    local: document.getElementById('agLocal').value.trim(),
+    descricao: document.getElementById('agDesc').value.trim(),
+    categoria: document.getElementById('agCat').value,
+    escopo: agEscopoNovo,
+    lembrete_min: lem === '' ? null : Number(lem)
+  };
+  document.getElementById('agBtnSalvar').disabled = true;
+  if (id) {
+    const antes = eventosData.find(x => x.id === id);
+    if (antes && (antes.data !== campos.data || antes.horario !== campos.horario || antes.lembrete_min !== campos.lembrete_min)) campos.avisos_enviados = [];
+    const { error } = await db.from('eventos').update(campos).eq('id', id);
+    if (error) { alert('Erro: ' + error.message); document.getElementById('agBtnSalvar').disabled = false; return; }
+    if (antes && campos.escopo === 'geral' && (antes.data !== campos.data || antes.horario !== campos.horario)) {
+      createNotif({ tipo: 'agenda', titulo: `🗓 Mudou na agenda: ${titulo}`, corpo: `${agFmt(data)}${campos.horario ? ' às ' + campos.horario : ''}${campos.local ? ' · ' + campos.local : ''}`, link_pagina: 'agenda', para: semMim(usuariosComAba('agenda')) });
+    }
+  } else {
+    const { error } = await db.from('eventos').insert({ ...campos, dono: ME.nome, participantes: [] });
+    if (error) { alert('Erro: ' + error.message); document.getElementById('agBtnSalvar').disabled = false; return; }
+    if (campos.escopo === 'geral') {
+      createNotif({ tipo: 'agenda', titulo: `🗓 Novo na agenda: ${titulo}`, corpo: `${agFmt(data)}${data_fim ? ' a ' + agFmt(data_fim) : ''}${campos.horario ? ' às ' + campos.horario : ''}${campos.local ? ' · ' + campos.local : ''} · por ${ME.nome}`, link_pagina: 'agenda', para: semMim(usuariosComAba('agenda')) });
+    }
+  }
+  agFechar();
+  agMes = data.slice(0, 7);
+  renderAgenda();
+}
+
+async function agExcluir(id) {
+  const e = eventosData.find(x => x.id === id); if (!e) return;
+  if (!confirm(`Excluir "${e.titulo}" da agenda?`)) return;
+  const { error } = await db.from('eventos').delete().eq('id', id);
+  if (error) { alert('Erro: ' + error.message); return; }
+  agFechar();
+  eventosData = eventosData.filter(x => x.id !== id);
+  desenharAgenda();
+}
+
+// ── ANOTAÇÕES (privadas) ──
+const NOTA_CORES = ['', '#fff4c2', '#dff3e4', '#e3ecfb', '#fbe3e3', '#ece6fb'];
+let notasData = [];
+let notaVerArquivadas = false;
+let notaCorNova = '';
+
+async function renderAnotacoes() {
+  notaCorNovaRender();
+  const { data, error } = await db.from('notas').select('*').order('updated_at', { ascending: false });
+  if (!error && data) notasData = data;
+  desenharNotas();
+}
+
+function notaCorNovaRender() {
+  const el = document.getElementById('notaCores'); if (!el) return;
+  el.innerHTML = NOTA_CORES.map(c => `<span class="nota-cor ${c === notaCorNova ? 'on' : ''}" style="background:${c || 'var(--surface)'}" onclick="notaCorNova='${c}';notaCorNovaRender()"></span>`).join('');
+  document.getElementById('notaNovaBox').style.background = notaCorNova || 'var(--surface)';
+}
+
+function notaToggleArquivadas() { notaVerArquivadas = !notaVerArquivadas; desenharNotas(); }
+
+function notaLembreteFmt(n) {
+  if (!n.lembrete_em) return '';
+  const d = new Date(n.lembrete_em);
+  const passou = d < new Date();
+  return `<div class="nota-lem ${passou ? 'passou' : ''}">⏰ ${d.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}${passou ? ' (já passou)' : ''}</div>`;
+}
+
+function desenharNotas() {
+  const el = document.getElementById('notasLista'); if (!el) return;
+  const q = (document.getElementById('notaBusca').value || '').toLowerCase().trim();
+  document.getElementById('notaBtnArq').textContent = notaVerArquivadas ? '← Voltar às anotações' : `Arquivadas (${notasData.filter(n => n.arquivada).length})`;
+  const lista = notasData.filter(n => !!n.arquivada === notaVerArquivadas && (!q || (n.titulo + ' ' + n.texto).toLowerCase().includes(q)))
+    .sort((a, b) => (b.fixada - a.fixada) || new Date(b.updated_at) - new Date(a.updated_at));
+  if (!lista.length) { el.innerHTML = `<div style="color:var(--muted);font-size:13px;padding:24px 0;text-align:center">${notaVerArquivadas ? 'Nada arquivado.' : q ? 'Nada encontrado.' : 'Nenhuma anotação ainda.'}</div>`; return; }
+  el.innerHTML = lista.map(n => `<div class="nota-card" style="background:${n.cor || 'var(--surface)'}" onclick="notaEditar(${n.id})">
+    ${n.fixada ? '<span class="nota-pin">📌</span>' : ''}
+    ${n.titulo ? `<div class="nota-tit">${esc(n.titulo)}</div>` : ''}
+    <div class="nota-txt">${esc(n.texto).replace(/\n/g, '<br>')}</div>
+    ${notaLembreteFmt(n)}
+    <div class="nota-acts" onclick="event.stopPropagation()">
+      <span title="${n.fixada ? 'Desafixar' : 'Fixar no topo'}" onclick="notaAtualizar(${n.id},{fixada:${!n.fixada}})">📌</span>
+      <span title="${n.arquivada ? 'Desarquivar' : 'Arquivar'}" onclick="notaAtualizar(${n.id},{arquivada:${!n.arquivada}})">${n.arquivada ? '↩' : '🗄'}</span>
+      <span title="Excluir" onclick="notaExcluir(${n.id})">🗑</span>
+    </div>
+  </div>`).join('');
+}
+
+function notaLembreteISO(v) { return v ? new Date(v).toISOString() : null; }
+function notaLocalInput(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+}
+
+async function notaSalvarNova() {
+  const titulo = document.getElementById('notaTit').value.trim();
+  const texto = document.getElementById('notaTxt').value.trim();
+  if (!titulo && !texto) return;
+  const lembrete_em = notaLembreteISO(document.getElementById('notaLem').value);
+  const { error } = await db.from('notas').insert({ dono: ME.nome, titulo, texto, cor: notaCorNova, lembrete_em });
+  if (error) { alert('Erro: ' + error.message); return; }
+  document.getElementById('notaTit').value = ''; document.getElementById('notaTxt').value = ''; document.getElementById('notaLem').value = '';
+  notaCorNova = '';
+  renderAnotacoes();
+}
+
+async function notaAtualizar(id, campos) {
+  campos.updated_at = new Date().toISOString();
+  const { error } = await db.from('notas').update(campos).eq('id', id);
+  if (error) { alert('Erro: ' + error.message); return; }
+  const n = notasData.find(x => x.id === id); if (n) Object.assign(n, campos);
+  desenharNotas();
+}
+
+async function notaExcluir(id) {
+  if (!confirm('Excluir esta anotação?')) return;
+  const { error } = await db.from('notas').delete().eq('id', id);
+  if (error) { alert('Erro: ' + error.message); return; }
+  notasData = notasData.filter(x => x.id !== id);
+  document.getElementById('modalNota')?.remove();
+  desenharNotas();
+}
+
+let notaCorEdit = '';
+function notaEditar(id) {
+  const n = notasData.find(x => x.id === id); if (!n) return;
+  notaCorEdit = n.cor || '';
+  const m = document.createElement('div');
+  m.className = 'hub-modal'; m.id = 'modalNota';
+  m.innerHTML = `<div class="hub-modal-box" id="notaEditBox" style="max-width:520px;background:${notaCorEdit || 'var(--bg)'}">
+    <input class="nota-in-tit" id="neTit" placeholder="Título" value="${esc(n.titulo)}">
+    <textarea class="nota-in-txt" id="neTxt" rows="8" placeholder="Anotação">${esc(n.texto)}</textarea>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:8px">
+      <span class="field-label" style="margin:0">⏰ Lembrar em</span>
+      <input class="field-input" type="datetime-local" id="neLem" style="padding:6px 8px;font-size:12px;max-width:210px" value="${notaLocalInput(n.lembrete_em)}">
+      <div id="neCores" style="display:flex;gap:4px"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;gap:8px;margin-top:16px">
+      <button class="btn btn-danger" onclick="notaExcluir(${n.id})">Excluir</button>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-ghost" onclick="document.getElementById('modalNota').remove()">Cancelar</button>
+        <button class="btn btn-primary" onclick="notaSalvarEdicao(${n.id})">Salvar</button>
+      </div>
+    </div></div>`;
+  document.body.appendChild(m);
+  notaCoresEdit();
+}
+function notaCoresEdit() {
+  document.getElementById('neCores').innerHTML = NOTA_CORES.map(c => `<span class="nota-cor ${c === notaCorEdit ? 'on' : ''}" style="background:${c || 'var(--surface)'}" onclick="notaCorEdit='${c}';notaCoresEdit()"></span>`).join('');
+  document.getElementById('notaEditBox').style.background = notaCorEdit || 'var(--bg)';
+}
+async function notaSalvarEdicao(id) {
+  const n = notasData.find(x => x.id === id); if (!n) return;
+  const lembrete_em = notaLembreteISO(document.getElementById('neLem').value);
+  const campos = { titulo: document.getElementById('neTit').value.trim(), texto: document.getElementById('neTxt').value.trim(), cor: notaCorEdit, lembrete_em };
+  const t = v => v ? new Date(v).getTime() : 0;
+  if (t(lembrete_em) !== t(n.lembrete_em)) campos.lembrete_enviado = false;
+  document.getElementById('modalNota').remove();
+  await notaAtualizar(id, campos);
+}
+
 // ── PLANILHAS ──
 async function addPlanilha() {
   const nome = document.getElementById('plNome').value.trim();
@@ -4456,6 +5175,14 @@ function setupRealtime() {
         const digitando = a && a.closest && a.closest('#listaReunioes') && a.value;
         if (curPage === 'reunioes' && !digitando) renderReunioes(); else loadReunioes().then(atualizarBadgesNav);
       }, 400);
+    })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'eventos' }, () => {
+      clearTimeout(window._rtAg);
+      window._rtAg = setTimeout(() => { if (curPage === 'agenda' && !document.getElementById('modalAgenda')) renderAgenda(); }, 500);
+    })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'documentos' }, () => {
+      clearTimeout(window._rtDoc);
+      window._rtDoc = setTimeout(() => { if (curPage === 'documentos') renderDocumentos(); }, 500);
     })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'planilhas' }, () => {
       if (curPage === 'planilhas') renderPlanilhas();
@@ -5581,6 +6308,9 @@ const NOTIF_ICONS = {
   desempenho: '📋',
   reuniao: '📅',
   conversa: '💬',
+  documento: '📄',
+  agenda: '🗓',
+  nota: '📝',
   prazo: '⚠️'
 };
 
