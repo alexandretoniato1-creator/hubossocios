@@ -1096,6 +1096,27 @@ select.field-input{cursor:pointer}
 .pl-origem-dados{margin-top:4px;color:var(--text)}
 .pl-sku-ro{display:flex;justify-content:space-between;font-size:12px;font-family:'IBM Plex Mono',monospace;padding:4px 0;border-bottom:1px solid var(--border)}
 .pl-sku-ro.tot{border-bottom:none;color:var(--muted);padding-top:6px}
+
+/* ── Início ── */
+.ini-hero{margin-bottom:22px}
+.ini-saud{font-size:28px;font-weight:700;letter-spacing:-.02em}
+.ini-resumo{font-size:13px;color:var(--muted);margin-top:4px}
+.ini-resumo strong{color:var(--red)}
+.ini-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:16px;align-items:start}
+.ini-box{margin-bottom:0}
+.ini-box-tit{margin-bottom:8px}
+.ini-item{display:flex;align-items:center;gap:12px;padding:10px 6px;border-bottom:1px solid var(--border);cursor:pointer;border-radius:4px}
+.ini-item:last-child{border-bottom:none}
+.ini-item:hover{background:rgba(0,0,0,.025)}
+.ini-ic{font-size:18px;width:24px;text-align:center;flex-shrink:0}
+.ini-txt{flex:1;min-width:0}
+.ini-tit{font-size:14px;font-weight:600;line-height:1.35}
+.ini-sub{font-size:12px;color:var(--muted);margin-top:2px;line-height:1.4;overflow:hidden;text-overflow:ellipsis}
+.ini-seta{color:var(--muted);font-size:18px}
+.ini-btn{font-size:11px;padding:5px 10px;flex-shrink:0}
+.ini-emp{font-size:9px;font-family:'IBM Plex Mono',monospace;color:var(--muted);font-weight:400}
+.ini-vazio{font-size:13px;color:var(--muted);padding:14px 4px}
+@media(max-width:768px){.ini-grid{grid-template-columns:1fr}.ini-saud{font-size:22px}}
 </style>
 </head>
 <body>
@@ -1131,7 +1152,8 @@ select.field-input{cursor:pointer}
 <div class="sidebar" id="sidebar">
   <div class="sidebar-logo">Hub Os Sócios<span>PAINEL INTERNO</span></div>
   <nav class="nav">
-    <div class="nav-item active" data-aba="dashboard" onclick="goPage('dashboard')"><span class="nav-icon">◈</span> Dashboard</div>
+    <div class="nav-item" data-aba="inicio" onclick="goPage('inicio')"><span class="nav-icon">⌂</span> Início</div>
+    <div class="nav-item" data-aba="dashboard" onclick="goPage('dashboard')"><span class="nav-icon">◈</span> Dashboard</div>
     <div class="nav-item" data-aba="comunicados" onclick="goPage('comunicados')"><span class="nav-icon">◉</span> Comunicados <span class="nav-count" id="navCount-comunicados" style="display:none"></span></div>
     <div class="nav-item" data-aba="conversas" onclick="goPage('conversas')"><span class="nav-icon">◍</span> Conversas <span class="nav-count" id="navCount-conversas" style="display:none"></span></div>
     <div class="nav-item" data-aba="planilhas" onclick="goPage('planilhas')"><span class="nav-icon">◧</span> Planilhas</div>
@@ -1316,6 +1338,11 @@ select.field-input{cursor:pointer}
     </div>
   </div>
 
+
+  <!-- INÍCIO -->
+  <div id="page-inicio" class="hidden fade-in">
+    <div id="inicioConteudo"></div>
+  </div>
 
   <!-- COMUNICADOS -->
   <div id="page-comunicados" class="hidden fade-in">
@@ -2018,6 +2045,7 @@ async function carregarUsuarios() {
 function podeVer(aba) {
   if (!ME) return false;
   if (aba === 'usuarios') return ME.is_admin;
+  if (aba === 'inicio') return true;
   return (ME.abas || []).includes(aba);
 }
 
@@ -2061,6 +2089,7 @@ function atualizarBadgesNav() {
   setNavCount('reunioes', podeVer('reunioes') ? reunioesData.filter(reuniaoPendenteMeu).length : 0);
   setNavCount('conversas', podeVer('conversas') ? cvContadorMenu() : 0);
   setNavCount('decisoes', podeVer('decisoes') ? decisoesData.filter(decPendenteMinha).length : 0);
+  if (typeof agendarDesenhoInicio === 'function') agendarDesenhoInicio();
 }
 async function carregarPendencias() {
   if (!ME) return;
@@ -2085,7 +2114,7 @@ function aplicarPermissoes() {
 }
 
 function primeiraAbaPermitida() {
-  const ordem = TODAS_ABAS.map(a => a[0]).concat(['usuarios']);
+  const ordem = ['inicio'].concat(TODAS_ABAS.map(a => a[0]), ['usuarios']);
   return ordem.find(a => podeVer(a)) || null;
 }
 
@@ -2599,6 +2628,7 @@ function goPage(p) {
   if(p==='pipeline') renderPipeline();
   if(p==='usuarios') renderUsuarios();
   if(p==='conversas') renderConversas();
+  if(p==='inicio') renderInicio();
   if(p==='documentos') { docSetupDrop(); renderDocumentos(); }
   if(p==='agenda') renderAgenda();
   if(p==='decisoes') renderDecisoes();
@@ -5097,6 +5127,133 @@ async function avisarAta(id) {
   if (!decs.length || !para.length) return;
   await createNotif({ tipo: 'decisao', titulo: `📝 Ata: ${r.titulo}`, corpo: `${decs.length} decis${decs.length > 1 ? 'ões registradas' : 'ão registrada'} — confirme ciência no Mural de decisões`, link_pagina: 'decisoes', para });
   showToast({ tipo: 'decisao', titulo: 'Ata enviada', corpo: `Avisados: ${para.join(', ')}` });
+}
+
+// ── INÍCIO (meu dia) ──
+let _inicioTimer = null;
+
+async function renderInicio() {
+  const el = document.getElementById('inicioConteudo');
+  if (el && !el.dataset.ok) el.innerHTML = loadingHTML();
+  const tarefas = [carregarPendencias()];
+  if (podeVer('agenda')) tarefas.push(carregarEventos().catch(() => {}));
+  if (podeVer('pipeline')) tarefas.push(loadPipeline().catch(() => {}));
+  await Promise.all(tarefas);
+  if (el) el.dataset.ok = '1';
+  desenharInicio();
+}
+
+function agendarDesenhoInicio() {
+  if (curPage !== 'inicio') return;
+  clearTimeout(_inicioTimer);
+  _inicioTimer = setTimeout(desenharInicio, 300);
+}
+
+function inicioItem(icone, titulo, sub, acao, extra) {
+  return `<div class="ini-item" onclick="${acao}">
+    <span class="ini-ic">${icone}</span>
+    <div class="ini-txt"><div class="ini-tit">${titulo}</div>${sub ? `<div class="ini-sub">${sub}</div>` : ''}</div>
+    ${extra || '<span class="ini-seta">›</span>'}
+  </div>`;
+}
+
+function desenharInicio() {
+  const el = document.getElementById('inicioConteudo');
+  if (!el || !ME) return;
+  const agora = new Date();
+  const h = agora.getHours();
+  const saud = h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite';
+  const hoje = isoHoje();
+  const fim7 = agAddDias(hoje, 7);
+  const fim15 = agAddDias(hoje, 15);
+  const pend = [];
+
+  // ── Esperando por você ──
+  if (podeVer('comunicados')) {
+    _postsCache.filter(postPendenteMeu).slice(0, 5).forEach(p => pend.push(inicioItem(
+      p.prioridade === 'urgente' ? '🚨' : p.prioridade === 'importante' ? '❗' : '📢',
+      `Comunicado de ${esc(p.autor)}`, esc((p.texto || '').slice(0, 90)) + ((p.texto || '').length > 90 ? '…' : ''),
+      "goPage('comunicados')",
+      `<button class="btn btn-ciente ini-btn" onclick="event.stopPropagation();marcarCiente(${p.id},true).then(desenharInicio)">✓ Ciente</button>`)));
+  }
+  if (podeVer('reunioes')) {
+    reunioesData.filter(reuniaoPendenteMeu).forEach(r => pend.push(inicioItem(
+      r.status === 'enquete' ? '🗳' : (r.importante ? '⭐' : '📅'),
+      r.status === 'enquete' ? `Vote no horário: ${esc(r.titulo)}` : `Confirme a reunião: ${esc(r.titulo)}`,
+      r.status === 'enquete' ? `sugerida por ${esc(r.criador || '')}` : `${diaSemana(r.data)} ${fmtDataBR(r.data)}${r.horario ? ' às ' + r.horario : ''}`,
+      "goPage('reunioes')")));
+  }
+  if (podeVer('conversas')) {
+    cvCanais.forEach(c => {
+      const r = cvResumo[c.id]; if (!r) return;
+      const n = c.tipo === 'dm' ? r.nao_lidas : r.mencoes;
+      if (!n) return;
+      pend.push(inicioItem('💬',
+        c.tipo === 'dm' ? `${n} mensage${n > 1 ? 'ns' : 'm'} de ${esc(cvOutro(c))}` : `${n} menç${n > 1 ? 'ões' : 'ão'} em #${esc(c.nome)}`,
+        '', `goPage('conversas:${c.id}')`));
+    });
+  }
+  if (podeVer('decisoes')) {
+    const decs = decisoesData.filter(decPendenteMinha);
+    if (decs.length) pend.push(inicioItem('✅',
+      `${decs.length} decis${decs.length > 1 ? 'ões' : 'ão'} para dar ciência`,
+      esc(decs.slice(0, 2).map(d => d.texto.slice(0, 50)).join(' · ')), "decFiltro='pendentes';goPage('decisoes')"));
+  }
+
+  // ── Próximos 7 dias (agenda + reuniões) ──
+  const prox = [];
+  if (podeVer('agenda')) {
+    eventosData.filter(e => (e.data_fim || e.data) >= hoje && e.data <= fim7).forEach(e => prox.push({
+      data: e.data < hoje ? hoje : e.data, hora: e.horario || '', ic: e.escopo === 'pessoal' ? '🔒' : '🗓',
+      tit: esc(e.titulo), sub: (AG_CATS[e.categoria] || '') + (e.local ? ' · ' + esc(e.local) : '') + (e.data_fim && e.data_fim !== e.data ? ` · até ${fmtDataBR(e.data_fim)}` : ''),
+      acao: `goPage('agenda')` }));
+  }
+  if (podeVer('reunioes')) {
+    reunioesData.filter(r => r.status === 'agendada' && r.data >= hoje && r.data <= fim7 && audienciaReuniao(r).includes(ME.nome)).forEach(r => prox.push({
+      data: r.data, hora: r.horario || '', ic: r.importante ? '⭐' : '📅', tit: esc(r.titulo), sub: 'reunião', acao: "goPage('reunioes')" }));
+  }
+  prox.sort((a, b) => a.data.localeCompare(b.data) || a.hora.localeCompare(b.hora));
+
+  // ── Contêineres chegando ──
+  let cont = [];
+  if (podeVer('pipeline')) {
+    cont = pedidosData.filter(p => p.status_origem !== 'chegou' && (p.eta_galpao || p.eta) && (p.eta_galpao || p.eta) <= fim15 && (p.eta_galpao || p.eta) >= agAddDias(hoje, -10))
+      .sort((a, b) => (a.eta_galpao || a.eta).localeCompare(b.eta_galpao || b.eta));
+  }
+
+  // ── Últimas decisões ──
+  const ultDec = podeVer('decisoes') ? decisoesData.filter(d => d.status === 'vigente').slice(0, 4) : [];
+
+  const nPend = pend.length;
+  el.innerHTML = `
+    <div class="ini-hero">
+      <div class="ini-saud">${saud}, ${esc(ME.nome)}</div>
+      <div class="ini-resumo">${agora.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' })} · ${nPend ? `<strong>${nPend} coisa${nPend > 1 ? 's' : ''} esperando por você</strong>` : 'tudo em dia ✓'}</div>
+    </div>
+    <div class="ini-grid">
+      <div class="box ini-box">
+        <div class="box-title ini-box-tit">Esperando por você</div>
+        ${nPend ? pend.join('') : '<div class="ini-vazio">Nada pendente. Bom trabalho! ✓</div>'}
+      </div>
+      ${(podeVer('agenda') || podeVer('reunioes')) ? `<div class="box ini-box">
+        <div class="box-title ini-box-tit">Próximos 7 dias</div>
+        ${prox.length ? prox.map(p => inicioItem(p.ic, p.tit, `${p.data === hoje ? '<strong>hoje</strong>' : diaSemana(p.data) + ' ' + fmtDataBR(p.data)}${p.hora ? ' · ' + p.hora : ''}${p.sub ? ' · ' + p.sub : ''}`, p.acao)).join('') : '<div class="ini-vazio">Agenda livre nos próximos 7 dias.</div>'}
+      </div>` : ''}
+      ${podeVer('pipeline') ? `<div class="box ini-box">
+        <div class="box-title ini-box-tit">Contêineres chegando (15 dias)</div>
+        ${cont.length ? cont.map(p => {
+          const d = p.eta_galpao || p.eta;
+          const u = plUrgencia(d);
+          return inicioItem('🚢', `${esc(p.ref)} <small class="ini-emp">${esc(p.empresa || '')}</small>`,
+            `${p.eta_galpao ? 'galpão' : 'ETA'} ${fmtDataBR(d)} · ${esc((etapasData.find(e => e.id === p.etapaId) || {}).nome || '')}${(p.skus || []).length ? ' · ' + p.skus.length + ' SKUs' : ''}`,
+            "goPage('pipeline')", u ? `<span class="pl-chip urg-${u.cls}">${u.label}</span>` : '');
+        }).join('') : '<div class="ini-vazio">Nenhum contêiner previsto para os próximos 15 dias.</div>'}
+      </div>` : ''}
+      ${ultDec.length ? `<div class="box ini-box">
+        <div class="box-title ini-box-tit">Últimas decisões</div>
+        ${ultDec.map(d => inicioItem('◆', esc(d.texto.slice(0, 110)) + (d.texto.length > 110 ? '…' : ''), `${fmtDataBR(d.data)} · ${esc(decCatLabel(d.categoria))}`, "goPage('decisoes')")).join('')}
+      </div>` : ''}
+    </div>`;
 }
 
 // ── PLANILHAS ──
