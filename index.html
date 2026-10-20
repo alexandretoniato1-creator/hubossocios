@@ -893,6 +893,83 @@ select.field-input{cursor:pointer}
 .enq-rodape{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-top:6px}
 .enq-outro{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px;padding-top:10px;border-top:1px dashed var(--border)}
 @media(max-width:600px){.enq-acts{width:100%}.enq-acts .btn{flex:1}.rf-opt .field-input{max-width:none;flex:1}}
+
+/* ── FASE 3: conversas ── */
+.cv-wrap{display:flex;height:calc(100vh - 72px);min-height:460px;background:var(--surface);border:1.5px solid var(--border);border-radius:6px;overflow:hidden}
+.cv-side{width:230px;flex-shrink:0;border-right:1.5px solid var(--border);overflow-y:auto;padding:12px 0;background:var(--bg)}
+.cv-side-head{display:flex;justify-content:space-between;align-items:center;padding:0 14px 10px;font-weight:700;font-size:15px}
+.cv-sec{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:12px 14px 4px;font-family:'IBM Plex Mono',monospace}
+.cv-item{display:flex;align-items:center;gap:7px;padding:6px 14px;font-size:13px;color:var(--muted);cursor:pointer;user-select:none}
+.cv-item:hover{background:rgba(0,0,0,.04);color:var(--text)}
+.cv-item.on{background:var(--text);color:var(--bg)}
+.cv-item.unread .cv-nome{color:var(--text);font-weight:700}
+.cv-item.on.unread .cv-nome{color:var(--bg)}
+.cv-item.arq{opacity:.45}
+.cv-hash{font-family:'IBM Plex Mono',monospace;opacity:.6;width:12px}
+.cv-nome{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cv-lock{font-size:10px}
+.cv-dot{width:18px;height:18px;border-radius:50%;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cv-badge{background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:9px;padding:1px 6px;font-family:'IBM Plex Mono',monospace}
+.cv-badge.leve{background:var(--border);color:var(--text)}
+.cv-vazio{font-size:11px;color:var(--muted);padding:4px 14px}
+.cv-main{flex:1;display:flex;flex-direction:column;min-width:0}
+.cv-head{display:flex;align-items:center;gap:10px;padding:12px 18px;border-bottom:1.5px solid var(--border);min-height:58px}
+.cv-head-title{font-weight:700;font-size:15px}
+.cv-head-sub{font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cv-back{display:none;background:none;border:none;font-size:26px;line-height:1;cursor:pointer;color:var(--text);padding:0 6px 0 0}
+.cv-msgs{flex:1;overflow-y:auto;padding:14px 8px 8px}
+.cv-empty{color:var(--muted);font-size:13px;text-align:center;padding:60px 20px}
+.cv-dia{display:flex;align-items:center;gap:10px;margin:14px 10px 8px;font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.cv-dia::before,.cv-dia::after{content:'';flex:1;height:1px;background:var(--border)}
+.cv-msg{display:flex;gap:10px;padding:5px 10px;border-radius:4px;position:relative;margin-top:6px}
+.cv-msg.cont{margin-top:0;padding-top:1px;padding-bottom:1px}
+.cv-msg:hover{background:rgba(0,0,0,.03)}
+.cv-msg.editando{background:var(--amber-bg)}
+.cv-gutter{width:32px;flex-shrink:0;display:flex;justify-content:center}
+.cv-av{width:32px;height:32px;border-radius:50%;color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.cv-hora-mini{font-size:9px;color:var(--muted);font-family:'IBM Plex Mono',monospace;opacity:0;padding-top:4px}
+.cv-msg.cont:hover .cv-hora-mini{opacity:1}
+.cv-corpo{flex:1;min-width:0}
+.cv-meta{display:flex;gap:8px;align-items:baseline;font-size:13px}
+.cv-meta span{font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace}
+.cv-texto{font-size:14px;line-height:1.5;word-wrap:break-word;overflow-wrap:anywhere}
+.cv-texto a{color:var(--blue)}
+.cv-mencao{background:var(--blue-bg);color:var(--blue);border-radius:3px;padding:0 2px;font-weight:600}
+.cv-mencao.eu{background:var(--amber-bg);color:var(--amber)}
+.cv-editada{font-size:10px;color:var(--muted)}
+.cv-apagada{font-style:italic;color:var(--muted);font-size:12px}
+.cv-reacs{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}
+.cv-reac{font-size:12px;border:1.5px solid var(--border);border-radius:10px;padding:0 7px;cursor:pointer;background:var(--bg)}
+.cv-reac.on{border-color:var(--blue);background:var(--blue-bg)}
+.cv-acoes{position:absolute;right:10px;top:-10px;display:none;gap:2px;background:var(--surface);border:1.5px solid var(--border);border-radius:5px;padding:2px 4px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.cv-msg:hover .cv-acoes{display:flex}
+.cv-ac{cursor:pointer;padding:2px 5px;font-size:13px;color:var(--muted)}
+.cv-ac:hover{color:var(--text)}
+.cv-emojis{position:absolute;right:0;top:28px;background:var(--surface);border:1.5px solid var(--border);border-radius:6px;padding:4px;display:flex;gap:2px;z-index:5;box-shadow:0 4px 14px rgba(0,0,0,.12)}
+.cv-emojis.hidden{display:none!important}
+.cv-emojis span{cursor:pointer;font-size:18px;padding:2px 4px;border-radius:4px}
+.cv-emojis span:hover{background:var(--border)}
+.cv-compose{border-top:1.5px solid var(--border);padding:10px 14px;position:relative}
+.cv-compose-row{display:flex;gap:8px;align-items:flex-end}
+.cv-compose textarea{flex:1;resize:none;border:1.5px solid var(--border);border-radius:6px;padding:9px 12px;font:inherit;font-size:14px;background:var(--bg);color:var(--text);max-height:160px;line-height:1.4}
+.cv-compose textarea:focus{outline:none;border-color:var(--text)}
+.cv-editbar{font-size:11px;color:var(--amber);margin-bottom:6px;font-family:'IBM Plex Mono',monospace}
+.cv-editbar a{color:var(--muted)}
+.cv-mention-pop{position:absolute;bottom:100%;left:14px;background:var(--surface);border:1.5px solid var(--border);border-radius:6px;box-shadow:0 4px 16px rgba(0,0,0,.12);min-width:200px;padding:4px;z-index:10}
+.cv-mp-item{padding:6px 10px;font-size:13px;cursor:pointer;border-radius:4px}
+.cv-mp-item span{font-size:10px;color:var(--muted)}
+.cv-mp-item.sel,.cv-mp-item:hover{background:var(--text);color:var(--bg)}
+.cv-mp-item.sel span{color:var(--bg);opacity:.7}
+@media(max-width:768px){
+  .cv-wrap{height:calc(100vh - 90px);border-radius:0;margin:0 -16px}
+  .cv-side{width:100%;border-right:none}
+  .cv-main{display:none}
+  .cv-wrap.chat-open .cv-side{display:none}
+  .cv-wrap.chat-open .cv-main{display:flex}
+  .cv-back{display:block}
+  .cv-acoes{top:auto;bottom:-8px}
+  .cv-msg:active .cv-acoes{display:flex}
+}
 </style>
 </head>
 <body>
@@ -930,6 +1007,7 @@ select.field-input{cursor:pointer}
   <nav class="nav">
     <div class="nav-item active" data-aba="dashboard" onclick="goPage('dashboard')"><span class="nav-icon">◈</span> Dashboard</div>
     <div class="nav-item" data-aba="comunicados" onclick="goPage('comunicados')"><span class="nav-icon">◉</span> Comunicados <span class="nav-count" id="navCount-comunicados" style="display:none"></span></div>
+    <div class="nav-item" data-aba="conversas" onclick="goPage('conversas')"><span class="nav-icon">◍</span> Conversas <span class="nav-count" id="navCount-conversas" style="display:none"></span></div>
     <div class="nav-item" data-aba="planilhas" onclick="goPage('planilhas')"><span class="nav-icon">◧</span> Planilhas</div>
     <div class="nav-item" data-aba="metas" onclick="goPage('metas')"><span class="nav-icon">◎</span> Metas</div>
     <div class="nav-item" data-aba="desempenho" onclick="goPage('desempenho')"><span class="nav-icon">◑</span> Desempenho</div>
@@ -1159,6 +1237,31 @@ select.field-input{cursor:pointer}
       </div>
     </div>
     <div id="postsLista"></div>
+  </div>
+
+  <!-- CONVERSAS -->
+  <div id="page-conversas" class="hidden fade-in">
+    <div class="cv-wrap" id="cvWrap">
+      <aside class="cv-side">
+        <div class="cv-side-head"><span>Conversas</span><button class="btn btn-ghost hidden" id="cvBtnNovo" style="font-size:11px;padding:4px 10px" onclick="cvAbrirConfig(null)">+ Canal</button></div>
+        <div class="cv-sec">Canais</div>
+        <div id="cvCanais"></div>
+        <div class="cv-sec">Mensagens diretas</div>
+        <div id="cvDms"></div>
+      </aside>
+      <section class="cv-main">
+        <div class="cv-head" id="cvHead"></div>
+        <div class="cv-msgs" id="cvMsgs"></div>
+        <div class="cv-compose" id="cvCompose">
+          <div class="cv-editbar hidden" id="cvEditBar">✎ Editando mensagem · <a href="#" onclick="event.preventDefault();cvCancelarEdicao()">cancelar</a></div>
+          <div class="cv-mention-pop hidden" id="cvMentionPop"></div>
+          <div class="cv-compose-row">
+            <textarea id="cvInput" rows="1" placeholder="Escreva uma mensagem… (@ para mencionar)" onkeydown="cvTecla(event)" oninput="cvDigitando()" onblur="setTimeout(cvFecharMencao,150)"></textarea>
+            <button class="btn btn-primary" onclick="enviarMensagem()">Enviar</button>
+          </div>
+        </div>
+      </section>
+    </div>
   </div>
 
   <!-- PLANILHAS -->
@@ -1558,8 +1661,9 @@ select.field-input{cursor:pointer}
     <div class="notif-tabs">
       <button class="notif-tab active" onclick="notifTab(this,'todas')">Todas</button>
       <button class="notif-tab" onclick="notifTab(this,'nao-lidas')">Não lidas</button>
+      <button class="notif-tab" onclick="notifTab(this,'conversa')">Conversas</button>
       <button class="notif-tab" onclick="notifTab(this,'comunicado')">Comunicados</button>
-      <button class="notif-tab" onclick="notifTab(this,'meta')">Metas</button>
+      <button class="notif-tab" onclick="notifTab(this,'reuniao')">Reuniões</button>
     </div>
     <div class="notif-list" id="notifList"></div>
     <div class="notif-footer">
@@ -1618,7 +1722,7 @@ if (CONFIGURED) {
 // ── LOGIN INDIVIDUAL (Supabase Auth) ──
 const LOGIN_DOMINIO = '@hubossocios.app';
 const TODAS_ABAS = [
-  ['dashboard','Dashboard'],['comunicados','Comunicados'],['planilhas','Planilhas'],
+  ['dashboard','Dashboard'],['comunicados','Comunicados'],['conversas','Conversas'],['planilhas','Planilhas'],
   ['metas','Metas'],['desempenho','Desempenho'],['reunioes','Reuniões'],['pipeline','Pipeline']
 ];
 let ME = null;          // perfil do usuário logado
@@ -1716,12 +1820,14 @@ function setNavCount(aba, n) {
 function atualizarBadgesNav() {
   setNavCount('comunicados', podeVer('comunicados') ? _postsCache.filter(postPendenteMeu).length : 0);
   setNavCount('reunioes', podeVer('reunioes') ? reunioesData.filter(reuniaoPendenteMeu).length : 0);
+  setNavCount('conversas', podeVer('conversas') ? cvContadorMenu() : 0);
 }
 async function carregarPendencias() {
   if (!ME) return;
   const tarefas = [];
   if (podeVer('comunicados')) tarefas.push(carregarPosts());
   if (podeVer('reunioes')) tarefas.push(loadReunioes());
+  if (podeVer('conversas')) tarefas.push(cvCarregarCanais());
   await Promise.all(tarefas);
   atualizarBadgesNav();
 }
@@ -2228,6 +2334,12 @@ const charts = {};
 let chartSkuEmp = null;
 
 function goPage(p) {
+  // "conversas:123" abre direto um canal/conversa (links de notificação)
+  if (typeof p === 'string' && p.includes(':')) {
+    const [pg, arg] = p.split(':');
+    if (pg === 'conversas' && arg) { cvPendente = Number(arg); if (curPage === 'conversas' && podeVer('conversas')) { cvAbrir(cvPendente); cvPendente = null; return; } }
+    p = pg;
+  }
   if (ME && !podeVer(p)) { const alt = primeiraAbaPermitida(); if (!alt || alt === p) return; p = alt; }
   if (window.innerWidth <= 768) closeMobileMenu();
   document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
@@ -2245,6 +2357,7 @@ function goPage(p) {
   if(p==='reunioes') renderReunioes();
   if(p==='pipeline') renderPipeline();
   if(p==='usuarios') renderUsuarios();
+  if(p==='conversas') renderConversas();
 }
 
 function dTab(btn, id) {
@@ -3416,6 +3529,525 @@ function desenharPosts(){
     </div>`;
   }).join('');
 }
+
+// ── CONVERSAS (canais por tema + mensagens diretas) ──
+const CV_EMOJIS = ['👍','✅','👀','😂','❤️','🙏'];
+const CV_PAGE = 100;
+let cvCanais = [];          // canais e DMs que eu vejo
+let cvResumo = {};          // canal_id -> { nao_lidas, mencoes }
+let cvAtual = null;         // id do canal aberto
+let cvPendente = null;      // canal a abrir quando a página carregar (vindo de notificação)
+let cvMsgs = [];            // mensagens do canal aberto
+let cvTemMais = false;      // há mensagens mais antigas
+let cvEditando = null;      // id da mensagem em edição
+let cvNovoMembros = new Set();
+let cvMencaoSel = 0;
+let _cvLidoTimer = null;
+
+function cvPodeCriarCanal() { return ME && (ME.tipo === 'socio' || ME.is_admin); }
+function cvCanal(id) { return cvCanais.find(c => c.id === id); }
+function cvOutro(c) { return (c.membros || []).find(n => n !== (ME && ME.nome)) || c.nome; }
+function cvTitulo(c) { return c.tipo === 'dm' ? cvOutro(c) : '# ' + c.nome; }
+function cvAudiencia(c) {
+  const m = c.membros || [];
+  return m.length ? [...new Set([c.criador, ...m].filter(Boolean))] : usuariosComAba('conversas');
+}
+
+async function cvCarregarCanais() {
+  if (!db) return;
+  const [cRes, rRes] = await Promise.all([
+    db.from('canais').select('*').order('ultima_msg_at', { ascending: false }),
+    db.rpc('hub_conversas_resumo')
+  ]);
+  if (!cRes.error && cRes.data) cvCanais = cRes.data;
+  if (!rRes.error && rRes.data) {
+    cvResumo = {};
+    rRes.data.forEach(r => { cvResumo[r.canal_id] = { nao_lidas: r.nao_lidas, mencoes: r.mencoes }; });
+  }
+  if (cvAtual && cvResumo[cvAtual] && curPage === 'conversas' && !document.hidden) cvResumo[cvAtual] = { nao_lidas: 0, mencoes: 0 };
+}
+
+// Contador do menu: mensagens diretas não lidas + menções a mim
+function cvContadorMenu() {
+  let n = 0;
+  cvCanais.forEach(c => {
+    const r = cvResumo[c.id]; if (!r) return;
+    n += c.tipo === 'dm' ? r.nao_lidas : r.mencoes;
+  });
+  return n;
+}
+
+async function renderConversas() {
+  if (!db) { document.getElementById('cvMsgs').innerHTML = emptyHTML('Conversas precisam do Supabase.'); return; }
+  await cvCarregarCanais();
+  cvRenderSide();
+  atualizarBadgesNav();
+  const veioDeLink = !!cvPendente;
+  let alvo = cvPendente || cvAtual || Number(loadLs('hub_cv_ultimo', 0)) || null;
+  cvPendente = null;
+  // No celular abre na lista de conversas (a menos que tenha vindo de uma notificação)
+  if (window.innerWidth <= 768 && !veioDeLink) { document.getElementById('cvWrap').classList.remove('chat-open'); cvAtual = null; cvRenderSide(); return; }
+  if (!alvo || !cvCanal(alvo)) alvo = (cvCanais.find(c => c.tipo === 'canal' && c.nome === 'geral' && !c.arquivado) || cvCanais.find(c => c.tipo === 'canal' && !c.arquivado) || {}).id || null;
+  if (alvo) await cvAbrir(alvo, alvo !== cvAtual);
+  else cvRenderVazio();
+}
+
+function cvRenderVazio() {
+  document.getElementById('cvHead').innerHTML = '';
+  document.getElementById('cvMsgs').innerHTML = `<div class="cv-empty">Nenhum canal ainda.${cvPodeCriarCanal() ? ' Crie o primeiro em “+ Canal”.' : ''}</div>`;
+  document.getElementById('cvCompose').classList.add('hidden');
+}
+
+function cvBadge(c) {
+  const r = cvResumo[c.id] || { nao_lidas: 0, mencoes: 0 };
+  if (c.id === cvAtual) return '';
+  if (c.tipo === 'dm') return r.nao_lidas ? `<span class="cv-badge">${r.nao_lidas}</span>` : '';
+  if (r.mencoes) return `<span class="cv-badge">@${r.mencoes}</span>`;
+  return r.nao_lidas ? `<span class="cv-badge leve">${r.nao_lidas}</span>` : '';
+}
+
+function cvRenderSide() {
+  const elC = document.getElementById('cvCanais'), elD = document.getElementById('cvDms');
+  if (!elC) return;
+  document.getElementById('cvBtnNovo').classList.toggle('hidden', !cvPodeCriarCanal());
+  const canais = cvCanais.filter(c => c.tipo === 'canal')
+    .sort((a, b) => (a.arquivado - b.arquivado) || a.nome.localeCompare(b.nome));
+  elC.innerHTML = canais.length ? canais.map(c => {
+    const r = cvResumo[c.id] || {};
+    const naoLido = c.id !== cvAtual && r.nao_lidas;
+    return `<div class="cv-item ${c.id === cvAtual ? 'on' : ''} ${naoLido ? 'unread' : ''} ${c.arquivado ? 'arq' : ''}" onclick="cvAbrir(${c.id})">
+      <span class="cv-hash">#</span><span class="cv-nome">${esc(c.nome)}</span>${(c.membros || []).length ? '<span class="cv-lock">🔒</span>' : ''}${cvBadge(c)}
+    </div>`;
+  }).join('') : '<div class="cv-vazio">nenhum canal</div>';
+
+  const pessoas = semMim(usuariosComAba('conversas'));
+  elD.innerHTML = pessoas.length ? pessoas.map(n => {
+    const dm = cvCanais.find(c => c.tipo === 'dm' && (c.membros || []).includes(n) && (c.membros || []).length === 2);
+    const r = dm ? (cvResumo[dm.id] || {}) : {};
+    const on = dm && dm.id === cvAtual;
+    return `<div class="cv-item ${on ? 'on' : ''} ${dm && !on && r.nao_lidas ? 'unread' : ''}" data-n="${esc(n)}" onclick="cvAbrirDm(this.dataset.n)">
+      <span class="cv-dot" style="background:${corDe(n)}">${esc(n.charAt(0).toUpperCase())}</span><span class="cv-nome">${esc(n)}</span>${dm ? cvBadge(dm) : ''}
+    </div>`;
+  }).join('') : '<div class="cv-vazio">ninguém mais com acesso</div>';
+}
+
+async function cvAbrirDm(nome) {
+  let dm = cvCanais.find(c => c.tipo === 'dm' && (c.membros || []).includes(nome) && (c.membros || []).length === 2);
+  if (!dm) {
+    const { data, error } = await db.rpc('hub_abrir_dm', { p_outro: nome });
+    if (error) { alert('Erro: ' + error.message); return; }
+    await cvCarregarCanais();
+    dm = cvCanal(data);
+    if (!dm) return;
+  }
+  cvAbrir(dm.id);
+}
+
+async function cvAbrir(id, recarregar) {
+  const c = cvCanal(id);
+  if (!c) return;
+  const mudou = id !== cvAtual;
+  cvAtual = id; cvEditando = null;
+  saveLs('hub_cv_ultimo', id);
+  document.getElementById('cvWrap').classList.add('chat-open');
+  document.getElementById('cvCompose').classList.remove('hidden');
+  cvRenderHead();
+  if (mudou || recarregar) {
+    document.getElementById('cvMsgs').innerHTML = loadingHTML();
+    const inp = document.getElementById('cvInput'); inp.value = ''; cvAutoAltura();
+    await cvCarregarMsgs();
+  }
+  cvRenderMsgs(true);
+  cvMarcarLido();
+  cvRenderSide();
+  if (window.innerWidth > 768) document.getElementById('cvInput').focus();
+}
+
+function cvVoltar() {
+  document.getElementById('cvWrap').classList.remove('chat-open');
+}
+
+function cvRenderHead() {
+  const c = cvCanal(cvAtual); if (!c) return;
+  const podeEditar = c.tipo === 'canal' && ME && (c.criador === ME.nome || ME.is_admin);
+  const aud = cvAudiencia(c);
+  const sub = c.tipo === 'dm'
+    ? 'conversa direta · só vocês dois veem'
+    : `${esc(c.descricao || '')}${c.descricao ? ' · ' : ''}${(c.membros || []).length ? '🔒 ' + esc(aud.join(', ')) : 'aberto a todos'}${c.arquivado ? ' · <strong>arquivado</strong>' : ''}`;
+  document.getElementById('cvHead').innerHTML = `
+    <button class="cv-back" onclick="cvVoltar()">‹</button>
+    <div style="flex:1;min-width:0">
+      <div class="cv-head-title">${esc(cvTitulo(c))}</div>
+      <div class="cv-head-sub">${sub}</div>
+    </div>
+    ${podeEditar ? `<button class="btn btn-ghost" style="font-size:11px;padding:5px 10px" onclick="cvAbrirConfig(${c.id})">⚙ Canal</button>` : ''}`;
+}
+
+async function cvCarregarMsgs(antesDe) {
+  let q = db.from('mensagens').select('*').eq('canal_id', cvAtual).order('created_at', { ascending: false }).limit(CV_PAGE);
+  if (antesDe) q = q.lt('created_at', antesDe);
+  const { data, error } = await q;
+  if (error) { console.error(error); return; }
+  const lote = (data || []).reverse();
+  cvTemMais = (data || []).length === CV_PAGE;
+  cvMsgs = antesDe ? [...lote, ...cvMsgs] : lote;
+}
+
+async function cvMaisAntigas() {
+  if (!cvMsgs.length) return;
+  const box = document.getElementById('cvMsgs');
+  const alturaAntes = box.scrollHeight;
+  await cvCarregarMsgs(cvMsgs[0].created_at);
+  cvRenderMsgs(false);
+  box.scrollTop = box.scrollHeight - alturaAntes;
+}
+
+function cvFormatar(texto) {
+  let t = esc(texto);
+  t = t.replace(/(https?:\/\/[^\s<]+)/g, u => `<a href="${u}" target="_blank" rel="noopener">${u}</a>`);
+  const nomes = [...usuariosComAba('conversas'), 'todos'].sort((a, b) => b.length - a.length);
+  nomes.forEach(n => {
+    const re = new RegExp('@' + esc(n).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?![\\wÀ-ÿ])', 'gi');
+    const eu = ME && (n === ME.nome || n === 'todos');
+    t = t.replace(re, m => `<span class="cv-mencao ${eu ? 'eu' : ''}">${m}</span>`);
+  });
+  return t.replace(/\n/g, '<br>');
+}
+
+function cvDiaLabel(iso) {
+  const d = new Date(iso), hoje = new Date();
+  const ontem = new Date(); ontem.setDate(hoje.getDate() - 1);
+  if (d.toDateString() === hoje.toDateString()) return 'Hoje';
+  if (d.toDateString() === ontem.toDateString()) return 'Ontem';
+  return d.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' });
+}
+
+function cvMsgHTML(m, agrupada) {
+  const hora = new Date(m.created_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  const minha = ME && m.autor === ME.nome;
+  const reac = Object.entries(m.reacoes || {}).filter(([, l]) => (l || []).length).map(([e, l]) =>
+    `<span class="cv-reac ${ME && l.includes(ME.nome) ? 'on' : ''}" title="${esc(l.join(', '))}" onclick="cvReagir(${m.id},'${e}')">${e} ${l.length}</span>`).join('');
+  const corpo = m.apagada
+    ? '<span class="cv-apagada">mensagem apagada</span>'
+    : `${cvFormatar(m.texto)}${m.editada ? ' <span class="cv-editada">(editada)</span>' : ''}`;
+  const acoes = m.apagada ? '' : `<div class="cv-acoes">
+      <span class="cv-ac" onclick="cvToggleEmojis(${m.id})" title="Reagir">☺</span>
+      ${minha ? `<span class="cv-ac" onclick="cvEditar(${m.id})" title="Editar">✎</span><span class="cv-ac" onclick="cvApagar(${m.id})" title="Apagar">🗑</span>` : ''}
+      <div class="cv-emojis hidden" id="cvEmo-${m.id}">${CV_EMOJIS.map(e => `<span onclick="cvReagir(${m.id},'${e}')">${e}</span>`).join('')}</div>
+    </div>`;
+  if (agrupada) {
+    return `<div class="cv-msg cont ${m.id === cvEditando ? 'editando' : ''}" id="cvm-${m.id}">
+      <div class="cv-gutter"><span class="cv-hora-mini">${hora}</span></div>
+      <div class="cv-corpo"><div class="cv-texto">${corpo}</div>${reac ? `<div class="cv-reacs">${reac}</div>` : ''}</div>${acoes}
+    </div>`;
+  }
+  return `<div class="cv-msg ${m.id === cvEditando ? 'editando' : ''}" id="cvm-${m.id}">
+    <div class="cv-gutter"><span class="cv-av" style="background:${corDe(m.autor)}">${esc(m.autor.charAt(0).toUpperCase())}</span></div>
+    <div class="cv-corpo">
+      <div class="cv-meta"><strong style="color:${corDe(m.autor)}">${esc(m.autor)}</strong><span>${hora}</span></div>
+      <div class="cv-texto">${corpo}</div>${reac ? `<div class="cv-reacs">${reac}</div>` : ''}
+    </div>${acoes}
+  </div>`;
+}
+
+function cvRenderMsgs(rolarFim) {
+  const box = document.getElementById('cvMsgs');
+  if (!box) return;
+  const perto = box.scrollHeight - box.scrollTop - box.clientHeight < 120;
+  if (!cvMsgs.length) {
+    const c = cvCanal(cvAtual);
+    box.innerHTML = `<div class="cv-empty">${c && c.tipo === 'dm' ? 'Comece a conversa com ' + esc(cvOutro(c)) + '.' : 'Nenhuma mensagem ainda. Puxe o assunto!'}</div>`;
+    return;
+  }
+  let html = cvTemMais ? '<div style="text-align:center;margin:6px 0 12px"><button class="btn btn-ghost" style="font-size:11px" onclick="cvMaisAntigas()">Carregar mensagens anteriores</button></div>' : '';
+  let dia = '', ant = null;
+  cvMsgs.forEach(m => {
+    const d = new Date(m.created_at).toDateString();
+    if (d !== dia) { dia = d; ant = null; html += `<div class="cv-dia"><span>${cvDiaLabel(m.created_at)}</span></div>`; }
+    const agrupada = ant && ant.autor === m.autor && !ant.apagada && (new Date(m.created_at) - new Date(ant.created_at)) < 5 * 60000;
+    html += cvMsgHTML(m, agrupada);
+    ant = m;
+  });
+  box.innerHTML = html;
+  if (rolarFim || perto) box.scrollTop = box.scrollHeight;
+}
+
+function cvMarcarLido() {
+  if (!cvAtual || curPage !== 'conversas' || document.hidden) return;
+  cvResumo[cvAtual] = { nao_lidas: 0, mencoes: 0 };
+  atualizarBadgesNav();
+  clearTimeout(_cvLidoTimer);
+  const id = cvAtual;
+  _cvLidoTimer = setTimeout(() => db.rpc('hub_marcar_canal_lido', { p_canal: id }), 600);
+}
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden && curPage === 'conversas' && cvAtual) { cvMarcarLido(); cvRenderSide(); }
+});
+
+function cvMencoesDoTexto(texto, c) {
+  const low = texto.toLowerCase();
+  const res = cvAudiencia(c).filter(n => low.includes('@' + n.toLowerCase()));
+  if (/@todos(?![\wÀ-ÿ])/i.test(texto)) res.push('todos');
+  return [...new Set(res)];
+}
+
+async function enviarMensagem() {
+  const inp = document.getElementById('cvInput');
+  const texto = inp.value.trim();
+  const c = cvCanal(cvAtual);
+  if (!texto || !c) return;
+  if (c.arquivado) { alert('Este canal está arquivado.'); return; }
+  const mencoes = cvMencoesDoTexto(texto, c);
+
+  if (cvEditando) {
+    const id = cvEditando;
+    const { error } = await db.from('mensagens').update({ texto, mencoes, editada: true }).eq('id', id);
+    if (error) { alert('Erro ao editar: ' + error.message); return; }
+    const m = cvMsgs.find(x => x.id === id); if (m) Object.assign(m, { texto, mencoes, editada: true });
+    cvEditando = null; inp.value = ''; cvAutoAltura();
+    document.getElementById('cvEditBar').classList.add('hidden');
+    cvRenderMsgs(false);
+    return;
+  }
+
+  inp.value = ''; cvAutoAltura(); cvFecharMencao();
+  const minhaAnterior = [...cvMsgs].reverse().find(m => ME && m.autor === ME.nome);
+  const { data, error } = await db.from('mensagens').insert({ canal_id: c.id, autor: ME.nome, texto, mencoes }).select().single();
+  if (error) { alert('Erro ao enviar: ' + error.message); inp.value = texto; return; }
+  if (!cvMsgs.some(x => x.id === data.id)) cvMsgs.push(data);
+  cvRenderMsgs(true);
+  cvMarcarLido();
+
+  // Avisos: quem foi mencionado; em conversa direta, a outra pessoa (sem repetir a cada mensagem seguida)
+  const aud = cvAudiencia(c);
+  const mencionados = semMim(mencoes.includes('todos') ? aud : mencoes.filter(n => aud.includes(n)));
+  const resumo = texto.slice(0, 90) + (texto.length > 90 ? '…' : '');
+  const link = 'conversas:' + c.id;
+  if (c.tipo === 'dm') {
+    const recente = minhaAnterior && (Date.now() - new Date(minhaAnterior.created_at)) < 3 * 60000;
+    if (!recente) createNotif({ tipo: 'conversa', titulo: `💬 ${ME.nome}`, corpo: resumo, link_pagina: link, para: semMim(c.membros) });
+  } else if (mencionados.length) {
+    createNotif({ tipo: 'conversa', titulo: `💬 ${ME.nome} mencionou ${mencoes.includes('todos') ? 'todos' : 'você'} em #${c.nome}`, corpo: resumo, link_pagina: link, para: mencionados });
+  }
+}
+
+function cvTecla(e) {
+  const pop = document.getElementById('cvMentionPop');
+  const aberto = !pop.classList.contains('hidden');
+  if (aberto && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) {
+    e.preventDefault();
+    const n = pop.querySelectorAll('.cv-mp-item').length;
+    cvMencaoSel = (cvMencaoSel + (e.key === 'ArrowDown' ? 1 : n - 1)) % n;
+    cvAtualizarMencao(); return;
+  }
+  if (aberto && (e.key === 'Enter' || e.key === 'Tab')) {
+    e.preventDefault();
+    const it = pop.querySelectorAll('.cv-mp-item')[cvMencaoSel];
+    if (it) cvInserirMencao(it.dataset.n);
+    return;
+  }
+  if (aberto && e.key === 'Escape') { cvFecharMencao(); return; }
+  if (e.key === 'Escape' && cvEditando) { cvCancelarEdicao(); return; }
+  if (e.key === 'Enter' && !e.shiftKey && window.innerWidth > 768) { e.preventDefault(); enviarMensagem(); }
+}
+
+function cvAutoAltura() {
+  const inp = document.getElementById('cvInput');
+  if (!inp) return;
+  inp.style.height = 'auto';
+  inp.style.height = Math.min(inp.scrollHeight, 160) + 'px';
+}
+
+function cvDigitando() {
+  cvAutoAltura();
+  const inp = document.getElementById('cvInput');
+  const antes = inp.value.slice(0, inp.selectionStart);
+  const m = antes.match(/(^|\s)@([\wÀ-ÿ]*)$/);
+  const c = cvCanal(cvAtual);
+  if (!m || !c) { cvFecharMencao(); return; }
+  const q = m[2].toLowerCase();
+  const opcoes = [...semMim(cvAudiencia(c)), 'todos'].filter(n => n.toLowerCase().startsWith(q));
+  if (!opcoes.length) { cvFecharMencao(); return; }
+  const pop = document.getElementById('cvMentionPop');
+  if (cvMencaoSel >= opcoes.length) cvMencaoSel = 0;
+  pop.innerHTML = opcoes.map((n, i) => `<div class="cv-mp-item ${i === cvMencaoSel ? 'sel' : ''}" data-n="${esc(n)}" onmousedown="event.preventDefault();cvInserirMencao(this.dataset.n)">@${esc(n)}${n === 'todos' ? ' <span>avisa todo mundo do canal</span>' : ''}</div>`).join('');
+  pop.classList.remove('hidden');
+}
+function cvAtualizarMencao() {
+  document.querySelectorAll('#cvMentionPop .cv-mp-item').forEach((el, i) => el.classList.toggle('sel', i === cvMencaoSel));
+}
+function cvFecharMencao() {
+  const pop = document.getElementById('cvMentionPop');
+  if (pop) pop.classList.add('hidden');
+  cvMencaoSel = 0;
+}
+function cvInserirMencao(nome) {
+  const inp = document.getElementById('cvInput');
+  const pos = inp.selectionStart;
+  const antes = inp.value.slice(0, pos).replace(/@([\wÀ-ÿ]*)$/, '@' + nome + ' ');
+  inp.value = antes + inp.value.slice(pos);
+  inp.selectionStart = inp.selectionEnd = antes.length;
+  cvFecharMencao();
+  inp.focus();
+}
+
+function cvToggleEmojis(id) {
+  document.querySelectorAll('.cv-emojis').forEach(el => { if (el.id !== 'cvEmo-' + id) el.classList.add('hidden'); });
+  document.getElementById('cvEmo-' + id)?.classList.toggle('hidden');
+}
+async function cvReagir(id, emoji) {
+  const { data, error } = await db.rpc('hub_reagir', { p_msg: id, p_emoji: emoji });
+  if (error) { alert('Erro: ' + error.message); return; }
+  const m = cvMsgs.find(x => x.id === id); if (m) m.reacoes = data || {};
+  cvRenderMsgs(false);
+}
+function cvEditar(id) {
+  const m = cvMsgs.find(x => x.id === id); if (!m) return;
+  cvEditando = id;
+  const inp = document.getElementById('cvInput');
+  inp.value = m.texto; cvAutoAltura(); inp.focus();
+  document.getElementById('cvEditBar').classList.remove('hidden');
+  cvRenderMsgs(false);
+}
+function cvCancelarEdicao() {
+  cvEditando = null;
+  document.getElementById('cvInput').value = ''; cvAutoAltura();
+  document.getElementById('cvEditBar').classList.add('hidden');
+  cvRenderMsgs(false);
+}
+async function cvApagar(id) {
+  if (!confirm('Apagar esta mensagem?')) return;
+  const { error } = await db.from('mensagens').update({ texto: '', mencoes: [], apagada: true }).eq('id', id);
+  if (error) { alert('Erro: ' + error.message); return; }
+  const m = cvMsgs.find(x => x.id === id); if (m) Object.assign(m, { texto: '', apagada: true });
+  cvRenderMsgs(false);
+}
+
+// ── Criar / configurar canal ──
+function cvMembrosToggle(n) {
+  if (!n) cvNovoMembros.clear(); else cvNovoMembros.has(n) ? cvNovoMembros.delete(n) : cvNovoMembros.add(n);
+  renderParaChips('cvMembrosChips', cvNovoMembros, 'conversas', 'cvMembrosToggle');
+}
+function cvSlug(s) {
+  return s.trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40);
+}
+
+function cvAbrirConfig(id) {
+  const c = id ? cvCanal(id) : null;
+  cvNovoMembros = new Set(c ? (c.membros || []).filter(n => n !== ME.nome) : []);
+  const old = document.getElementById('modalCanal'); if (old) old.remove();
+  const m = document.createElement('div');
+  m.className = 'hub-modal'; m.id = 'modalCanal';
+  m.innerHTML = `<div class="hub-modal-box" style="max-width:480px">
+    <div class="hub-modal-title">${c ? 'Configurar canal' : 'Novo canal'}</div>
+    <div class="hub-modal-sub">Um canal por tema (ex: importação, marketplace, financeiro). Todos os participantes têm a mesma voz.</div>
+    <div class="field-group" style="margin-bottom:10px"><span class="field-label">Nome</span><input class="field-input" id="cvcNome" placeholder="ex: importacao" value="${c ? esc(c.nome) : ''}"></div>
+    <div class="field-group" style="margin-bottom:10px"><span class="field-label">Sobre o que é (opcional)</span><input class="field-input" id="cvcDesc" placeholder="ex: fornecedores, frete, desembaraço" value="${c ? esc(c.descricao || '') : ''}"></div>
+    <div class="field-group"><span class="field-label">Quem participa</span><div id="cvMembrosChips" class="para-chips"></div></div>
+    <div id="cvcMsg" style="font-size:12px;color:var(--red);font-family:'IBM Plex Mono',monospace;min-height:18px;margin-top:8px"></div>
+    <div style="display:flex;gap:8px;justify-content:space-between;align-items:center;margin-top:8px;flex-wrap:wrap">
+      <div style="display:flex;gap:6px">
+        ${c ? `<button class="btn btn-ghost" style="font-size:11px" onclick="cvArquivar(${c.id},${!c.arquivado})">${c.arquivado ? 'Desarquivar' : 'Arquivar'}</button>
+        <button class="btn btn-danger" style="font-size:11px" onclick="cvExcluir(${c.id})">Excluir</button>` : ''}
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-ghost" onclick="document.getElementById('modalCanal').remove()">Cancelar</button>
+        <button class="btn btn-primary" id="cvcBtn" onclick="cvSalvarCanal(${c ? c.id : 'null'})">${c ? 'Salvar' : 'Criar canal'}</button>
+      </div>
+    </div>
+  </div>`;
+  document.body.appendChild(m);
+  cvMembrosToggle(null);
+  setTimeout(() => document.getElementById('cvcNome')?.focus(), 50);
+}
+
+async function cvSalvarCanal(id) {
+  const msg = document.getElementById('cvcMsg');
+  const nome = cvSlug(document.getElementById('cvcNome').value);
+  const descricao = document.getElementById('cvcDesc').value.trim();
+  if (!nome) { msg.textContent = 'Dê um nome ao canal.'; return; }
+  if (cvCanais.some(c => c.tipo === 'canal' && c.nome === nome && c.id !== id)) { msg.textContent = 'Já existe um canal com esse nome.'; return; }
+  const membros = cvNovoMembros.size ? [...new Set([ME.nome, ...cvNovoMembros])] : [];
+  document.getElementById('cvcBtn').disabled = true;
+  if (id) {
+    const c = cvCanal(id);
+    const { error } = await db.from('canais').update({ nome, descricao, membros }).eq('id', id);
+    if (error) { msg.textContent = error.message; document.getElementById('cvcBtn').disabled = false; return; }
+    const antes = cvAudiencia(c);
+    Object.assign(c, { nome, descricao, membros });
+    const novos = semMim(cvAudiencia(c).filter(n => !antes.includes(n)));
+    if (novos.length) createNotif({ tipo: 'conversa', titulo: `💬 ${ME.nome} incluiu você em #${nome}`, corpo: descricao, link_pagina: 'conversas:' + id, para: novos });
+    document.getElementById('modalCanal').remove();
+    await cvCarregarCanais(); cvRenderSide(); cvRenderHead();
+    return;
+  }
+  const { data, error } = await db.from('canais').insert({ nome, descricao, tipo: 'canal', membros, criador: ME.nome }).select().single();
+  if (error) { msg.textContent = error.message; document.getElementById('cvcBtn').disabled = false; return; }
+  createNotif({ tipo: 'conversa', titulo: `💬 Novo canal #${nome}`, corpo: `${ME.nome} criou${descricao ? ' · ' + descricao : ''}`, link_pagina: 'conversas:' + data.id, para: semMim(cvAudiencia(data)) });
+  document.getElementById('modalCanal').remove();
+  await cvCarregarCanais();
+  cvRenderSide();
+  cvAbrir(data.id);
+}
+
+async function cvArquivar(id, arquivado) {
+  const { error } = await db.from('canais').update({ arquivado }).eq('id', id);
+  if (error) { alert(error.message); return; }
+  document.getElementById('modalCanal')?.remove();
+  await cvCarregarCanais(); cvRenderSide(); cvRenderHead();
+}
+async function cvExcluir(id) {
+  const c = cvCanal(id);
+  if (!confirm(`Excluir #${c.nome} e TODAS as mensagens dele? Não dá para desfazer. (Arquivar guarda o histórico.)`)) return;
+  const { error } = await db.from('canais').delete().eq('id', id);
+  if (error) { alert(error.message); return; }
+  document.getElementById('modalCanal')?.remove();
+  cvAtual = null; saveLs('hub_cv_ultimo', 0);
+  renderConversas();
+}
+
+// ── Tempo real ──
+let _cvCanaisTimer = null;
+function cvAgendarRecarga() {
+  clearTimeout(_cvCanaisTimer);
+  _cvCanaisTimer = setTimeout(async () => {
+    await cvCarregarCanais();
+    if (cvAtual && !cvCanal(cvAtual)) { cvAtual = null; if (curPage === 'conversas') { renderConversas(); return; } }
+    if (curPage === 'conversas') { cvRenderSide(); cvRenderHead(); }
+    atualizarBadgesNav();
+  }, 500);
+}
+
+function setupConversasRT() {
+  if (!db || !podeVer('conversas')) return;
+  db.channel('hub-conversas-' + ME.id)
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'mensagens' }, (payload) => {
+      const m = payload.new;
+      if (m.canal_id === cvAtual && curPage === 'conversas') {
+        if (!cvMsgs.some(x => x.id === m.id)) { cvMsgs.push(m); cvRenderMsgs(false); }
+        if (!document.hidden) { cvMarcarLido(); return; }
+      }
+      if (ME && m.autor === ME.nome) return;
+      const r = cvResumo[m.canal_id] || (cvResumo[m.canal_id] = { nao_lidas: 0, mencoes: 0 });
+      r.nao_lidas++;
+      if ((m.mencoes || []).includes(ME.nome) || (m.mencoes || []).includes('todos')) r.mencoes++;
+      if (!cvCanal(m.canal_id)) cvAgendarRecarga();
+      if (curPage === 'conversas') cvRenderSide();
+      atualizarBadgesNav();
+    })
+    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'mensagens' }, (payload) => {
+      const m = payload.new;
+      if (m.canal_id !== cvAtual) return;
+      const i = cvMsgs.findIndex(x => x.id === m.id);
+      if (i >= 0) { cvMsgs[i] = m; if (curPage === 'conversas') cvRenderMsgs(false); }
+    })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'canais' }, () => cvAgendarRecarga())
+    .subscribe();
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.cv-acoes')) document.querySelectorAll('.cv-emojis').forEach(el => el.classList.add('hidden'));
+});
 
 // ── PLANILHAS ──
 async function addPlanilha() {
@@ -4905,6 +5537,8 @@ async function initApp(paginaInicial) {
   if (podeVer('desempenho')  && paginaInicial !== 'desempenho')  renderDesempenho();
   if (podeVer('reunioes')    && paginaInicial !== 'reunioes')    renderReunioes();
   if (podeVer('pipeline')    && paginaInicial !== 'pipeline')    renderPipeline();
+  if (podeVer('conversas')   && paginaInicial !== 'conversas')   { cvCarregarCanais().then(atualizarBadgesNav); }
+  setupConversasRT();
   await initNotifs();
 }
 
@@ -4946,6 +5580,7 @@ const NOTIF_ICONS = {
   meta: '🎯',
   desempenho: '📋',
   reuniao: '📅',
+  conversa: '💬',
   prazo: '⚠️'
 };
 
@@ -5332,7 +5967,7 @@ if ('serviceWorker' in navigator) {
   // Navega para a página certa ao clicar na notificação push (com app fechado)
   navigator.serviceWorker.addEventListener('message', e => {
     if (e.data?.type === 'NOTIF_CLICK' && e.data.url) {
-      const page = e.data.url.replace('/', '').trim() || 'dashboard';
+      const page = decodeURIComponent(e.data.url.replace(/^.*\//, '')).trim() || 'dashboard';
       if (document.getElementById('app').style.display !== 'none') {
         goPage(page);
       }
