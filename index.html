@@ -1144,6 +1144,26 @@ select.field-input{cursor:pointer}
 .cv-arq-lista{display:flex;flex-direction:column;gap:6px;max-height:60vh;overflow-y:auto}
 .cv-arq-lista .cv-arq{max-width:none}
 .cv-main.drop-over{outline:3px dashed var(--blue);outline-offset:-8px;background:var(--blue-bg)}
+
+/* ── Dashboard: comparações, curva hora a hora, SKUs ── */
+.month-nav{display:none!important}
+.perf-periodos{overflow-x:auto;max-width:100%;scrollbar-width:none}
+#page-dashboard{max-width:100%;overflow-x:hidden}
+.dash-atualizado{font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace;white-space:nowrap}
+.dash-atualizado.velho{color:var(--amber)}
+.perf-delta{font-size:11px;font-family:'IBM Plex Mono',monospace;margin-top:4px}
+.perf-delta.up{color:var(--green)}
+.perf-delta.down{color:var(--red)}
+.perf-delta.neutro,.perf-delta.novo{color:var(--muted)}
+.perf-delta.peq{font-size:10px;margin-top:2px}
+.perf-info{font-size:11px;color:var(--muted);margin:0 0 16px;font-family:'IBM Plex Mono',monospace}
+.perf-sub{font-size:10px;color:var(--muted);margin-top:1px}
+.perf-hora-toggle{display:flex;gap:2px;background:var(--surface2);border:1.5px solid var(--border);border-radius:6px;padding:2px}
+.perf-hora-modo{background:none;border:none;font:inherit;font-size:11px;font-weight:600;color:var(--muted);padding:4px 10px;border-radius:4px;cursor:pointer}
+.perf-hora-modo.active{background:var(--text);color:var(--bg)}
+.mono-cell{font-family:'IBM Plex Mono',monospace;font-size:12px}
+.mono-cell.muted{color:var(--muted)}
+.badge-atacado{display:inline-block;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;background:#f1e8fb;color:#6b2fa3;border-radius:3px;padding:1px 5px;margin-left:4px;font-family:'Instrument Sans',sans-serif}
 </style>
 </head>
 <body>
@@ -1247,13 +1267,14 @@ select.field-input{cursor:pointer}
   </div>
 
   <div id="page-dashboard" class="fade-in">
-    <div class="page-header" style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px">
+    <div class="page-header" style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px">
       <div>
         <div class="page-title">Dashboard</div>
-        <div class="page-sub">publicidade · ADS · margens</div>
+        <div class="page-sub">faturamento e produtos vendidos · dados da Magis5</div>
       </div>
       <div style="display:flex;gap:8px;align-items:center;margin-top:4px">
-        <button id="refreshBtn" class="btn btn-ghost" onclick="refreshDashboard()" title="Recarregar dados do Magis5">↺ Atualizar</button>
+        <span id="dashAtualizado" class="dash-atualizado"></span>
+        <button id="refreshBtn" class="btn btn-ghost" onclick="refreshDashboard()" title="Buscar os pedidos mais recentes na Magis5">↺ Atualizar</button>
       </div>
     </div>
 
@@ -1293,7 +1314,7 @@ select.field-input{cursor:pointer}
     <div id="dPerf" class="hidden">
       <!-- Filtros de período e canal -->
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap">
-        <div style="display:flex;gap:4px;background:var(--surface2);border:1.5px solid var(--border);border-radius:6px;padding:3px">
+        <div class="perf-periodos" style="display:flex;gap:4px;background:var(--surface2);border:1.5px solid var(--border);border-radius:6px;padding:3px">
           <button class="perf-period active" onclick="setPerfPeriod(this,'hoje')">Hoje</button>
           <button class="perf-period" onclick="setPerfPeriod(this,'ontem')">Ontem</button>
           <button class="perf-period" onclick="setPerfPeriod(this,'7d')">7 dias</button>
@@ -1320,13 +1341,27 @@ select.field-input{cursor:pointer}
       <div id="perfComparacao" style="display:none;margin-bottom:12px;padding:10px 16px;background:var(--surface2);border:1.5px solid var(--border);border-radius:6px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);display:none;align-items:center;gap:16px;flex-wrap:wrap"></div>
 
       <!-- Cards de performance -->
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:20px" id="perfCards"></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:10px" id="perfCards"></div>
+      <div id="perfInfoCancel" class="perf-info" style="display:none"></div>
 
       <!-- Gráfico de barras diário -->
-      <div class="box" style="margin-bottom:16px">
+      <div class="box" style="margin-bottom:16px" id="perfBoxDia">
         <div class="box-header"><div class="box-title" id="perfChartTitle">Faturamento por dia</div></div>
         <div id="perfSyncMsg" style="display:none;font-size:11px;font-family:'IBM Plex Mono',monospace;color:var(--muted);padding:0 0 10px;text-align:center"></div>
         <div class="chart-wrap" style="height:240px"><canvas id="cPerf"></canvas></div>
+      </div>
+
+      <!-- Curva hora a hora -->
+      <div class="box" style="margin-bottom:16px" id="perfBoxHora">
+        <div class="box-header">
+          <div class="box-title" id="perfHoraTitulo">Curva hora a hora</div>
+          <div class="perf-hora-toggle">
+            <button class="perf-hora-modo active" data-m="acum" onclick="setPerfHoraModo('acum')">Acumulado</button>
+            <button class="perf-hora-modo" data-m="hora" onclick="setPerfHoraModo('hora')">Por hora</button>
+          </div>
+        </div>
+        <div id="perfHoraNota" class="perf-info" style="display:none;margin-bottom:8px"></div>
+        <div class="chart-wrap" style="height:240px"><canvas id="cHora"></canvas></div>
       </div>
 
       <!-- Canais no período -->
@@ -1341,11 +1376,14 @@ select.field-input{cursor:pointer}
           <div class="box-title">SKUs do período</div>
           <select id="sortPerfSku" class="field-input" style="padding:5px 8px;font-size:11px" onchange="renderPerfSkus()">
             <option value="fat">Faturamento</option>
-            <option value="qtd">Quantidade</option>
+            <option value="qtd">Unidades</option>
+            <option value="ped">Pedidos</option>
+            <option value="max">Maior pedido</option>
           </select>
         </div>
-        <table style="min-width:420px"><thead><tr>
-          <th>SKU</th><th>Canais</th><th>Qtd</th><th>Faturamento</th><th>Ticket Médio</th>
+        <div id="perfSkuAviso" class="perf-info" style="display:none;margin-bottom:8px"></div>
+        <table style="min-width:640px"><thead><tr>
+          <th>SKU</th><th>Canais</th><th>Pedidos</th><th>Unidades</th><th>Maior pedido</th><th>Faturamento</th><th>Preço médio/un.</th>
         </tr></thead>
         <tbody id="tbPerfSkus"></tbody></table>
       </div>
@@ -2336,7 +2374,7 @@ const MONTH_LABELS = {
   '2026-07':'Julho 2026','2026-08':'Agosto 2026','2026-09':'Setembro 2026',
   '2026-10':'Outubro 2026','2026-11':'Novembro 2026','2026-12':'Dezembro 2026'
 };
-let currentDashMonth = '2026-06';
+let currentDashMonth = new Date(Date.now() - 3 * 3600e3).toISOString().slice(0, 7);
 
 // ── CACHE DE DADOS DA API ──
 const dashCache = {};
@@ -2584,35 +2622,20 @@ function setDashLoading(loading) {
 }
 
 async function renderDashboard() {
-  const i = MONTHS_ORDER.indexOf(currentDashMonth);
-  document.getElementById('dashMonthLabel').textContent = MONTH_LABELS[currentDashMonth];
-  document.getElementById('dashPrev').disabled = i === 0;
-  document.getElementById('dashNext').disabled = i === MONTHS_ORDER.length - 1;
-
   setDashLoading(true);
-
-  // Buscar mês atual e anterior (para deltas)
-  const [curr, prev] = await Promise.all([
-    fetchDashData(currentDashMonth),
-    i > 0 ? fetchDashData(MONTHS_ORDER[i-1]) : Promise.resolve(null)
-  ]);
-
-  // Aba ativa decide o que renderizar
   const perfVisivel = !document.getElementById('dPerf')?.classList.contains('hidden');
-  if (perfVisivel) initPerf(); else renderResumo();
-  // Esconde navegação de mês na aba Visão Geral (padrão ao carregar)
-  const monthNav = document.querySelector('.month-nav');
-  if (monthNav) monthNav.style.display = 'none';
+  try { if (perfVisivel) await initPerf(); else await renderResumo(); } finally { setDashLoading(false); }
+  atualizarSeloDash();
 }
 
 async function refreshDashboard() {
-  // Força rebusca deletando cache em memória e zerando TTL do dia
-  delete dashCache[currentDashMonth];
-  delete dashCache['dia__' + brtHoje()];
-  perfComparacaoData = null;
-  localStorage.removeItem(HOJE_LS_KEY);
   const btn = document.getElementById('refreshBtn');
   if (btn) { btn.disabled = true; btn.textContent = '↻ Atualizando…'; }
+  try {
+    const r = await fetch(`${SUPABASE_URL}/functions/v1/magis5-sync?acao=hoje`, { headers: { ...authH() } });
+    if (r.ok) { const d = await r.json(); if (d && d.totais) { const { ok, data, pedidos, ...pl } = d; dashCache['dia__' + brtHoje()] = pl; } }
+  } catch (e) { console.log('atualizar:', e); }
+  perfComparacaoData = null;
   await renderDashboard();
   if (btn) { btn.disabled = false; btn.textContent = '↺ Atualizar'; }
 }
@@ -2711,7 +2734,7 @@ function renderCharts(data){
 
 // Logos por canal
 const CANAL_LOGOS = {
-  ML:     `<svg viewBox="0 0 56 22" height="20"><rect width="56" height="22" rx="4" fill="#FFE600"/><text x="28" y="15" text-anchor="middle" font-family="Arial" font-weight="900" font-size="11" fill="#333333">Mercado Livre</text></svg>`,
+  ML:     `<svg viewBox="0 0 84 22" height="20"><rect width="84" height="22" rx="4" fill="#FFE600"/><text x="42" y="15" text-anchor="middle" font-family="Arial" font-weight="900" font-size="11" fill="#333333">Mercado Livre</text></svg>`,
   Shopee: `<svg viewBox="0 0 52 22" height="20"><rect width="52" height="22" rx="4" fill="#EE4D2D"/><text x="26" y="15" text-anchor="middle" font-family="Arial" font-weight="700" font-size="11" fill="white">Shopee</text></svg>`,
   TikTok: `<svg viewBox="0 0 48 22" height="20"><rect width="48" height="22" rx="4" fill="#010101"/><text x="24" y="15" text-anchor="middle" font-family="Arial" font-weight="700" font-size="11" fill="white">TikTok</text></svg>`,
   Amazon: `<svg viewBox="0 0 52 22" height="20"><rect width="52" height="22" rx="4" fill="#232F3E"/><text x="26" y="15" text-anchor="middle" font-family="Arial" font-weight="700" font-size="11" fill="#FF9900">amazon</text></svg>`,
@@ -3215,43 +3238,6 @@ function getDiasRange(from, to) {
 }
 
 // Agrega dados de vários dias do cache, filtrando por canal(is)
-function agregaPeriodo(dias, canaisFiltro) {
-  // canaisFiltro pode ser 'todos', string simples, ou Set
-  const isAll = canaisFiltro === 'todos' || (canaisFiltro instanceof Set && canaisFiltro.has('todos'));
-  const canaisSet = canaisFiltro instanceof Set ? canaisFiltro : (canaisFiltro === 'todos' ? null : new Set([canaisFiltro]));
-
-  const totais   = { faturamento:0, qtdPedidos:0 };
-  const porCanal = {};
-  const skuMap   = {};
-  const fatPorDia = {};
-
-  for (const dia of dias) {
-    const payload = dashCache['dia__' + dia];
-    if (!payload) continue;
-    let fatDia = 0;
-    for (const [canal, cd] of Object.entries(payload.porCanal || {})) {
-      if (!isAll && !canaisSet.has(canal)) continue;
-      const c = cd;
-      fatDia += c.faturamento || 0;
-      totais.faturamento += c.faturamento || 0;
-      totais.qtdPedidos  += c.qtdPedidos  || 0;
-      if (!porCanal[canal]) porCanal[canal] = { faturamento:0, qtdPedidos:0 };
-      porCanal[canal].faturamento += c.faturamento || 0;
-      porCanal[canal].qtdPedidos  += c.qtdPedidos  || 0;
-    }
-    fatPorDia[dia] = (fatPorDia[dia] || 0) + fatDia;
-    for (const s of (payload.topSkus || [])) {
-      if (!isAll && !canaisSet.has(s.canal)) continue;
-      const key = s.canal + '__' + s.sku;
-      if (!skuMap[key]) skuMap[key] = { sku:s.sku, canal:s.canal, qtd:0, faturamento:0 };
-      skuMap[key].qtd         += s.qtd || 0;
-      skuMap[key].faturamento += s.faturamento || 0;
-    }
-  }
-  const topSkus = Object.values(skuMap).sort((a,b) => b.faturamento - a.faturamento).slice(0,50);
-  return { totais, porCanal, fatPorDia, topSkus };
-}
-
 // Busca dias que faltam no cache e salva
 async function syncDiasMesAtual() {
   const hoje = new Date();
@@ -3304,297 +3290,377 @@ async function loadDiasCacheSupabase(from, to) {
   } catch(e) { console.log('Erro ao carregar dias cache:', e); }
 }
 
-async function initPerf() {
-  perfComparacaoData = null;
-  const { from, to } = getPerfRange();
+// ── PERFORMANCE: comparação com o período anterior, curva hora a hora e pedidos por SKU ──
+let chartHora = null;
+let perfHoraModo = 'acum';   // 'acum' | 'hora'
+const MESES_PT = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
 
-  if (perfPeriodo === 'hoje') {
-    const agora = new Date();
-    const brt   = new Date(agora.getTime() - 3*60*60*1000);
-    const hoje  = brt.toISOString().slice(0,10);
-    const ontem = new Date(brt.getTime() - 86400000).toISOString().slice(0,10);
+function brtMinutosDeTs(ts) { const d = new Date(ts * 1000 - 3 * 3600e3); return d.getUTCHours() * 60 + d.getUTCMinutes(); }
+function fmtHM(min) { return String(Math.floor(min / 60)).padStart(2, '0') + ':' + String(min % 60).padStart(2, '0'); }
+function ddmm(d) { return d.slice(8, 10) + '/' + d.slice(5, 7); }
 
-    // 1. Mostra cache imediatamente se tiver
-    await loadDiasCacheSupabase(hoje, hoje);
-    await loadDiasCacheSupabase(ontem, ontem);
-    if (dashCache['dia__' + hoje] || dashCache['dia__' + ontem]) {
-      // Monta comparação a partir do cache para exibir rápido
-      const cacheHoje  = dashCache['dia__' + hoje];
-      const cacheOntem = dashCache['dia__' + ontem];
-      if (cacheHoje || cacheOntem) {
-        const horarioRef = brt.toTimeString().slice(0,5);
-        perfComparacaoData = {
-          hoje:  { data: hoje,  horarioRef, ...cacheHoje  },
-          ontem: { data: ontem, horarioRef, ...cacheOntem },
-          _fromCache: true
-        };
-        renderPerf();
-      }
+// Minuto até onde o dia de hoje já foi lido (para comparar com o mesmo horário do período anterior)
+function minutoCorteHoje() {
+  const p = dashCache['dia__' + brtHoje()];
+  if (p && p.ate) return brtMinutosDeTs(p.ate);
+  const d = new Date(Date.now() - 3 * 3600e3); return d.getUTCHours() * 60 + d.getUTCMinutes();
+}
+
+// Período anterior equivalente
+function getPrevRange(from, to) {
+  const hoje = brtHoje();
+  if (perfPeriodo === 'mes') {
+    const [a, m] = from.split('-').map(Number);
+    const pa = m === 1 ? a - 1 : a, pm = m === 1 ? 12 : m - 1;
+    const ultimo = new Date(pa, pm, 0).getDate();
+    const dia = Math.min(parseInt(to.slice(8)), ultimo);
+    const pfx = `${pa}-${String(pm).padStart(2, '0')}-`;
+    return { from: pfx + '01', to: pfx + String(dia).padStart(2, '0'), label: `vs mesmo período de ${MESES_PT[pm - 1]}` };
+  }
+  if (perfPeriodo === 'mes_ant') {
+    const [a, m] = from.split('-').map(Number);
+    const pa = m === 1 ? a - 1 : a, pm = m === 1 ? 12 : m - 1;
+    const pfx = `${pa}-${String(pm).padStart(2, '0')}-`;
+    return { from: pfx + '01', to: pfx + String(new Date(pa, pm, 0).getDate()).padStart(2, '0'), label: `vs ${MESES_PT[pm - 1]}` };
+  }
+  const n = getDiasRange(from, to).length;
+  const pFrom = diaOffset(from, -n), pTo = diaOffset(to, -n);
+  let label = 'vs período anterior';
+  if (perfPeriodo === 'hoje') label = 'vs ontem';
+  else if (perfPeriodo === 'ontem') label = 'vs anteontem';
+  else if (perfPeriodo === '7d') label = 'vs 7 dias anteriores';
+  else if (n === 1) label = `vs ${ddmm(pFrom)}`;
+  else label = `vs ${ddmm(pFrom)}–${ddmm(pTo)}`;
+  return { from: pFrom, to: pTo, label };
+}
+
+// Parte de um dia até um horário (usa os blocos de 15 min)
+function diaAteMinuto(p, minutos) {
+  if (!p || !p.porQuarto) return { p, aproximado: true };
+  const cheio = Math.floor(minutos / 15), frac = (minutos % 15) / 15;
+  const porQuarto = p.porQuarto.map((x, i) => i < cheio ? x : i === cheio ? [x[0] * frac, x[1] * frac] : [0, 0]);
+  const fat = porQuarto.reduce((a, x) => a + x[0], 0), ped = porQuarto.reduce((a, x) => a + x[1], 0);
+  const fr = p.totais?.faturamento ? fat / p.totais.faturamento : 0;
+  const porCanal = {};
+  for (const [c, v] of Object.entries(p.porCanal || {})) porCanal[c] = { faturamento: (v.faturamento || 0) * fr, qtdPedidos: (v.qtdPedidos || 0) * fr };
+  const topSkus = (p.topSkus || []).map(s => ({ ...s, qtd: s.qtd * fr, faturamento: s.faturamento * fr, pedidos: s.pedidos != null ? s.pedidos * fr : undefined }));
+  return { p: { ...p, totais: { ...p.totais, faturamento: fat, qtdPedidos: Math.round(ped) }, porCanal, porQuarto, topSkus }, aproximado: false };
+}
+
+// Soma um conjunto de dias (com corte opcional no último dia)
+function agregaPeriodo(dias, canaisFiltro, corteUltimoDia) {
+  const isAll = canaisFiltro === 'todos' || (canaisFiltro instanceof Set && canaisFiltro.has('todos'));
+  const canaisSet = canaisFiltro instanceof Set ? canaisFiltro : (canaisFiltro === 'todos' ? null : new Set([canaisFiltro]));
+  const totais = { faturamento: 0, qtdPedidos: 0, cancelados: 0, valorCancelado: 0, semValor: 0 };
+  const porCanal = {}, skuMap = {}, fatPorDia = {};
+  const porHora = Array.from({ length: 24 }, () => [0, 0]);
+  let diasSemCurva = 0, diasSemDetalhe = 0, diasComDados = 0;
+
+  dias.forEach((dia, idx) => {
+    let payload = dashCache['dia__' + dia];
+    if (!payload) return;
+    if (corteUltimoDia != null && idx === dias.length - 1) payload = diaAteMinuto(payload, corteUltimoDia).p;
+    diasComDados++;
+    let fatDia = 0;
+    const fatTotDia = Object.values(payload.porCanal || {}).reduce((a, c) => a + (c.faturamento || 0), 0);
+    let fatFiltrado = 0;
+    for (const [canal, c] of Object.entries(payload.porCanal || {})) {
+      if (!isAll && !canaisSet.has(canal)) continue;
+      fatDia += c.faturamento || 0;
+      totais.faturamento += c.faturamento || 0;
+      totais.qtdPedidos += c.qtdPedidos || 0;
+      if (!porCanal[canal]) porCanal[canal] = { faturamento: 0, qtdPedidos: 0 };
+      porCanal[canal].faturamento += c.faturamento || 0;
+      porCanal[canal].qtdPedidos += c.qtdPedidos || 0;
+      fatFiltrado += c.faturamento || 0;
     }
+    if (isAll) { totais.cancelados += payload.totais?.cancelados || 0; totais.valorCancelado += payload.totais?.valorCancelado || 0; totais.semValor += payload.totais?.semValor || 0; }
+    fatPorDia[dia] = (fatPorDia[dia] || 0) + fatDia;
+    // curva por hora (com filtro de canal, proporcional ao canal no dia)
+    if (payload.porQuarto) {
+      const fr = isAll ? 1 : (fatTotDia ? fatFiltrado / fatTotDia : 0);
+      payload.porQuarto.forEach((x, i) => { porHora[Math.floor(i / 4)][0] += (x[0] || 0) * fr; porHora[Math.floor(i / 4)][1] += (x[1] || 0) * fr; });
+    } else diasSemCurva++;
+    let semDetalhe = false;
+    for (const s of (payload.topSkus || [])) {
+      if (!isAll && !canaisSet.has(s.canal)) continue;
+      const key = s.canal + '__' + s.sku;
+      if (!skuMap[key]) skuMap[key] = { sku: s.sku, canal: s.canal, qtd: 0, faturamento: 0, pedidos: 0, maxQtd: 0 };
+      skuMap[key].qtd += s.qtd || 0;
+      skuMap[key].faturamento += s.faturamento || 0;
+      if (s.pedidos == null) semDetalhe = true;
+      skuMap[key].pedidos += s.pedidos || 0;
+      skuMap[key].maxQtd = Math.max(skuMap[key].maxQtd, s.maxQtd || 0);
+    }
+    if (semDetalhe || payload.versao !== 2) diasSemDetalhe++;
+  });
+  const topSkus = Object.values(skuMap).sort((a, b) => b.faturamento - a.faturamento);
+  return { totais, porCanal, fatPorDia, topSkus, porHora, diasSemCurva, diasSemDetalhe, diasComDados };
+}
 
-    // 2. Atualiza hoje da API em background
-    fetch(`${SUPABASE_URL}/functions/v1/magis5-sync?acao=ate_agora`, {
-      headers: { ...authH() }
-    }).then(res => res.ok ? res.json() : null).then(data => {
-      if (!data) return;
-      if (data.hoje) dashCache['dia__' + data.hoje.data] = data.hoje;
-      perfComparacaoData = data;
-      renderPerf(); // atualiza silenciosamente com dados frescos
-    }).catch(e => console.log('Erro background ate_agora:', e));
-    return;
-  }
-
-  await loadDiasCacheSupabase(from, to);
+async function initPerf() {
+  const { from, to } = getPerfRange();
+  const prev = getPrevRange(from, to);
+  const hoje = brtHoje();
+  await loadDiasCacheSupabase(prev.from < from ? prev.from : from, to > prev.to ? to : prev.to);
+  if (perfPeriodo === 'hoje') await loadDiasCacheSupabase(diaOffset(hoje, -1), diaOffset(hoje, -1));
   renderPerf();
-  if (perfPeriodo === 'mes' || perfPeriodo === '7d') syncDiasMesAtual();
-  else if (perfPeriodo === 'ontem') {
-    const brt   = new Date(new Date().getTime() - 3*60*60*1000);
-    const ontem = new Date(brt.getTime() - 86400000).toISOString().slice(0,10);
-    if (!dashCache['dia__' + ontem]) syncDiasMesAtual();
+  atualizarSeloDash();
+  if (to === hoje) {
+    try {
+      const r = await fetch(`${SUPABASE_URL}/functions/v1/magis5-sync?acao=ate_agora`, { headers: { ...authH() } });
+      if (r.ok) {
+        const data = await r.json();
+        if (data.hoje) { const { horarioRef, data: _d, pedidos, ...pl } = data.hoje; dashCache['dia__' + hoje] = pl; }
+        perfComparacaoData = data;
+        renderPerf();
+        atualizarSeloDash();
+      }
+    } catch (e) { console.log('ate_agora:', e); }
   }
+}
+
+function deltaHTML(atual, anterior, label, pequeno) {
+  if (!anterior) return label ? `<div class="perf-delta neutro">sem dado ${label.replace(/^vs /, 'de ')}</div>` : '';
+  const d = (atual - anterior) / anterior * 100;
+  return `<div class="perf-delta ${d >= 0 ? 'up' : 'down'}${pequeno ? ' peq' : ''}">${d >= 0 ? '↑' : '↓'} ${Math.abs(d).toFixed(1).replace('.', ',')}%${label ? ' ' + label : ''}</div>`;
 }
 
 function renderPerf() {
   const { from, to } = getPerfRange();
+  const prev = getPrevRange(from, to);
+  const hoje = brtHoje();
   const dias = getDiasRange(from, to);
-  const { totais, porCanal, fatPorDia, topSkus } = agregaPeriodo(dias, perfCanais);
-
-  // Cards de métricas com comparação
-  const melhorDia = Object.entries(fatPorDia).sort((a,b)=>b[1]-a[1])[0];
-  const ticket    = totais.qtdPedidos > 0 ? totais.faturamento / totais.qtdPedidos : 0;
-
-  // Dados de comparação (ontem até mesmo horário — só para "hoje")
-  const comp = perfComparacaoData;
-  const ontemTot = comp?.ontem?.totais || null;
-  const horarioRef = comp?.hoje?.horarioRef || null;
-
-  function compTag(atual, anterior) {
-    if (!anterior || anterior === 0) return '';
-    const delta = (atual - anterior) / anterior * 100;
-    const cor = delta >= 0 ? 'var(--green)' : 'var(--red)';
-    return `<div style="font-size:10px;color:${cor};font-family:'IBM Plex Mono',monospace;margin-top:2px">${delta>=0?'↑':'↓'} ${Math.abs(delta).toFixed(1)}% vs ontem${horarioRef?' até '+horarioRef:''}</div>`;
-  }
+  const diasPrev = getDiasRange(prev.from, prev.to);
+  const inclHoje = to === hoje;
+  const corte = inclHoje ? minutoCorteHoje() : null;
+  const atual = agregaPeriodo(dias, perfCanais);
+  const anterior = agregaPeriodo(diasPrev, perfCanais, corte);
+  const labelComp = prev.label + (inclHoje && dias.length === 1 ? ' até ' + fmtHM(corte) : '');
+  const { totais, porCanal, fatPorDia, topSkus } = atual;
+  const ticket = totais.qtdPedidos ? totais.faturamento / totais.qtdPedidos : 0;
+  const tPrev = anterior.totais;
+  const ticketPrev = tPrev.qtdPedidos ? tPrev.faturamento / tPrev.qtdPedidos : 0;
+  const temPrev = anterior.diasComDados > 0;
 
   const cards = document.getElementById('perfCards');
   if (cards) cards.innerHTML = `
     <div class="metric-card">
       <div class="metric-label">Faturamento</div>
       <div class="metric-val val-green">${totais.faturamento > 0 ? fmt(totais.faturamento) : '—'}</div>
-      ${ontemTot ? compTag(totais.faturamento, ontemTot.faturamento) : ''}
+      ${temPrev ? deltaHTML(totais.faturamento, tPrev.faturamento, labelComp) : ''}
     </div>
     <div class="metric-card">
-      <div class="metric-label">Qtd Pedidos</div>
-      <div class="metric-val">${totais.qtdPedidos > 0 ? totais.qtdPedidos.toLocaleString('pt-BR') : '—'}</div>
-      ${ontemTot ? compTag(totais.qtdPedidos, ontemTot.qtdPedidos) : ''}
+      <div class="metric-label">Pedidos</div>
+      <div class="metric-val">${totais.qtdPedidos > 0 ? Math.round(totais.qtdPedidos).toLocaleString('pt-BR') : '—'}</div>
+      ${temPrev ? deltaHTML(totais.qtdPedidos, tPrev.qtdPedidos, labelComp) : ''}
     </div>
     <div class="metric-card">
-      <div class="metric-label">Ticket Médio</div>
+      <div class="metric-label">Ticket médio</div>
       <div class="metric-val">${ticket > 0 ? fmt(ticket) : '—'}</div>
-      ${ontemTot && ontemTot.qtdPedidos > 0 ? compTag(ticket, ontemTot.faturamento/ontemTot.qtdPedidos) : ''}
+      ${temPrev ? deltaHTML(ticket, ticketPrev, labelComp) : ''}
     </div>
     <div class="metric-card">
-      <div class="metric-label">${perfPeriodo === 'hoje' ? 'Ontem mesmo horário' : 'Melhor dia'}</div>
-      ${perfPeriodo === 'hoje' && ontemTot
-        ? `<div class="metric-val" style="font-size:16px">${fmt(ontemTot.faturamento)}</div>
-           <div class="metric-sub" style="font-family:'IBM Plex Mono',monospace;font-size:10px">${ontemTot.qtdPedidos} pedidos</div>`
-        : `<div class="metric-val" style="font-size:16px">${melhorDia ? fmt(melhorDia[1]) : '—'}</div>
-           <div class="metric-sub" style="font-family:'IBM Plex Mono',monospace;font-size:10px">${melhorDia ? melhorDia[0].split('-').reverse().join('/') : ''}</div>`
-      }
+      <div class="metric-label">Período anterior</div>
+      <div class="metric-val" style="font-size:16px">${temPrev && tPrev.faturamento ? fmt(tPrev.faturamento) : '—'}</div>
+      <div class="metric-sub" style="font-family:'IBM Plex Mono',monospace;font-size:10px">${diasPrev.length === 1 ? ddmm(prev.from) : ddmm(prev.from) + ' a ' + ddmm(prev.to)}${inclHoje ? (dias.length === 1 ? ' · até ' : ' · último dia até ') + fmtHM(corte) : ''}${temPrev ? ' · ' + Math.round(tPrev.qtdPedidos).toLocaleString('pt-BR') + ' pedidos' : ''}</div>
     </div>`;
 
-  // Gráfico de barras por dia
-  const hoje = new Date(new Date().getTime()-3*60*60*1000).toISOString().slice(0,10);
-  const labels = dias.map(d => d.slice(8));
-  const values = dias.map(d => fatPorDia[d] || 0);
-  const primaryColor = perfCanais.size === 1 && !perfCanais.has('todos')
-    ? (CANAL_CORES[[...perfCanais][0]] || '#f59e0b')
-    : '#f59e0b';
-  const bgs = values.map((v, i) => dias[i] === hoje ? '#1a6b3c' : primaryColor);
-
-  if (chartPerf) chartPerf.destroy();
-  const ctx = document.getElementById('cPerf');
-  if (ctx) {
-    chartPerf = new Chart(ctx, {
-      type: 'bar',
-      data: { labels, datasets:[{ data:values, backgroundColor:bgs, borderRadius:4, borderSkipped:false }] },
-      options: {
-        responsive:true, maintainAspectRatio:false,
-        plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: ctx => 'R$ ' + Math.round(ctx.raw).toLocaleString('pt-BR') } } },
-        scales:{
-          y:{ ticks:{color:'#8a8479', callback:v=>'R$'+(v>=1000000?(v/1000000).toFixed(1)+'M':Math.round(v/1000)+'k'), font:{size:10}}, grid:{color:'rgba(0,0,0,.06)'}, border:{display:false} },
-          x:{ ticks:{color:'#8a8479', font:{size:10}}, grid:{display:false}, border:{display:false} }
-        },
-        onClick: (e, elements) => {
-          if (!elements.length) return;
-          const idx = elements[0].index;
-          const diaClicado = dias[idx];
-          if (!diaClicado) return;
-          // Seta filtro para dia específico
-          perfPeriodo = 'custom';
-          document.querySelectorAll('.perf-period').forEach(b => b.classList.remove('active'));
-          document.querySelector('.perf-period[onclick*="custom"]')?.classList.add('active');
-          const customRange = document.getElementById('perfCustomRange');
-          if (customRange) customRange.style.display = 'flex';
-          const df = document.getElementById('perfDateFrom');
-          const dt = document.getElementById('perfDateTo');
-          if (df) df.value = diaClicado;
-          if (dt) dt.value = diaClicado;
-          initPerf();
-        }
-      }
-    });
+  // Cancelados (só informativo)
+  const info = document.getElementById('perfInfoCancel');
+  if (info) {
+    const partes = [];
+    if (totais.cancelados) partes.push(`${totais.cancelados.toLocaleString('pt-BR')} cancelado${totais.cancelados > 1 ? 's' : ''} (${fmt(totais.valorCancelado)}) fora da conta`);
+    if (totais.semValor) partes.push(`${totais.semValor.toLocaleString('pt-BR')} pedido${totais.semValor > 1 ? 's' : ''} Amazon sem valor na Magis5`);
+    info.innerHTML = partes.length ? 'ⓘ ' + partes.join(' · ') : '';
+    info.style.display = partes.length ? '' : 'none';
   }
 
-  // Cards por canal — clicáveis para filtrar SKUs
+  // Gráfico por dia (só faz sentido com mais de 1 dia)
+  const boxDia = document.getElementById('perfBoxDia');
+  if (boxDia) boxDia.style.display = dias.length > 1 ? '' : 'none';
+  if (dias.length > 1) {
+    const labels = dias.map(d => d.slice(8) + '/' + d.slice(5, 7));
+    const values = dias.map(d => fatPorDia[d] || 0);
+    const valuesPrev = diasPrev.map(d => anterior.fatPorDia[d] || 0);
+    const primaryColor = perfCanais.size === 1 && !perfCanais.has('todos') ? (CANAL_CORES[[...perfCanais][0]] || '#f59e0b') : '#f59e0b';
+    const bgs = dias.map(d => d === hoje ? '#1a6b3c' : primaryColor);
+    if (chartPerf) chartPerf.destroy();
+    const ctx = document.getElementById('cPerf');
+    if (ctx) {
+      chartPerf = new Chart(ctx, {
+        data: { labels, datasets: [
+          { type: 'bar', label: 'Período', data: values, backgroundColor: bgs, borderRadius: 4, borderSkipped: false, order: 2 },
+          { type: 'line', label: 'Período anterior', data: valuesPrev, borderColor: 'rgba(80,80,80,.55)', borderDash: [5, 4], borderWidth: 1.5, pointRadius: 0, tension: .25, order: 1 }
+        ] },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: true, labels: { boxWidth: 12, font: { size: 11 }, color: '#8a8479' } },
+            tooltip: { callbacks: {
+              title: items => items[0].datasetIndex === 1 ? (diasPrev[items[0].dataIndex] ? ddmm(diasPrev[items[0].dataIndex]) : '') : labels[items[0].dataIndex],
+              label: c => (c.datasetIndex === 1 ? 'Anterior: ' : '') + 'R$ ' + Math.round(c.raw).toLocaleString('pt-BR') } } },
+          scales: {
+            y: { ticks: { color: '#8a8479', callback: v => 'R$' + (v >= 1000000 ? (v / 1000000).toFixed(1) + 'M' : Math.round(v / 1000) + 'k'), font: { size: 10 } }, grid: { color: 'rgba(0,0,0,.06)' }, border: { display: false } },
+            x: { ticks: { color: '#8a8479', font: { size: 10 } }, grid: { display: false }, border: { display: false } }
+          },
+          onClick: (e, els) => {
+            if (!els.length || els[0].datasetIndex !== 0) return;
+            const diaClicado = dias[els[0].index]; if (!diaClicado) return;
+            perfPeriodo = 'custom';
+            document.querySelectorAll('.perf-period').forEach(b => b.classList.remove('active'));
+            document.querySelector('.perf-period[onclick*="custom"]')?.classList.add('active');
+            const cr = document.getElementById('perfCustomRange'); if (cr) cr.style.display = 'flex';
+            const df = document.getElementById('perfDateFrom'), dt = document.getElementById('perfDateTo');
+            if (df) df.value = diaClicado; if (dt) dt.value = diaClicado;
+            initPerf();
+          }
+        }
+      });
+    }
+  }
+
+  renderHoraChart(atual, anterior, dias, diasPrev, inclHoje, corte);
+
+  // Canais
   const canalCards = document.getElementById('perfCanalCards');
   if (canalCards) {
-    const ontemPorCanal = perfComparacaoData?.ontem?.porCanal || {};
-    const canaisAtivos = Object.entries(porCanal)
-      .filter(([,d]) => d.faturamento > 0)
-      .sort((a,b)=>b[1].faturamento-a[1].faturamento);
+    const canaisAtivos = Object.entries(porCanal).filter(([, d]) => d.faturamento > 0).sort((a, b) => b[1].faturamento - a[1].faturamento);
     canalCards.innerHTML = canaisAtivos.map(([c, d]) => {
-      const cor     = CANAL_CORES[c] || '#8a8479';
-      const tk      = d.qtdPedidos > 0 ? Math.round(d.faturamento / d.qtdPedidos) : 0;
+      const cor = CANAL_CORES[c] || '#8a8479';
+      const tk = d.qtdPedidos > 0 ? Math.round(d.faturamento / d.qtdPedidos) : 0;
       const isActive = perfCanais.has('todos') || perfCanais.has(c);
-      const border  = isActive ? `border:1.5px solid ${cor};` : 'border:1.5px solid var(--border);opacity:.5;';
-
-      // Delta vs ontem mesmo canal
-      let deltaHtml = '';
-      const ontemCanal = ontemPorCanal[c];
-      if (ontemCanal && ontemCanal.faturamento > 0 && d.faturamento > 0) {
-        const delta = (d.faturamento - ontemCanal.faturamento) / ontemCanal.faturamento * 100;
-        const cor2  = delta >= 0 ? 'var(--green)' : 'var(--red)';
-        const ref   = perfComparacaoData?.hoje?.horarioRef;
-        deltaHtml = `<div style="font-size:10px;color:${cor2};font-family:'IBM Plex Mono',monospace;margin-top:4px">
-          ${delta>=0?'↑':'↓'} ${Math.abs(delta).toFixed(1)}% vs ontem${ref?' até '+ref:''}
-        </div>`;
-      }
-
+      const border = isActive ? `border:1.5px solid ${cor};` : 'border:1.5px solid var(--border);opacity:.5;';
+      const share = totais.faturamento ? d.faturamento / totais.faturamento * 100 : 0;
+      const ant = anterior.porCanal[c];
       return `<div onclick="togglePerfCanal(document.querySelector('#perfCanalPills .hoje-canal-pill[onclick*=\\'${c}\\']'),'${c}')"
         style="background:var(--surface2);${border}border-top:3px solid ${cor};border-radius:6px;padding:14px 16px;cursor:pointer;transition:all .15s">
-        <div style="margin-bottom:8px">${CANAL_LOGOS[c]||c}</div>
+        <div style="margin-bottom:8px;display:flex;justify-content:space-between;align-items:center">${CANAL_LOGOS[c] || c}<span style="font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace">${share.toFixed(0)}%</span></div>
         <div style="font-size:18px;font-weight:700;font-family:'IBM Plex Mono',monospace">${fmt(d.faturamento)}</div>
-        <div style="font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-top:3px">${d.qtdPedidos.toLocaleString('pt-BR')} pedidos${tk?' · Ticket: '+fmt(tk):''}</div>
-        ${deltaHtml}
+        <div style="font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-top:3px">${Math.round(d.qtdPedidos).toLocaleString('pt-BR')} pedidos${tk ? ' · ticket ' + fmt(tk) : ''}</div>
+        ${temPrev && ant ? deltaHTML(d.faturamento, ant.faturamento, '', true) : ''}
       </div>`;
     }).join('') || '<div style="color:var(--muted);font-size:12px;padding:16px;font-family:\'IBM Plex Mono\',monospace">Sem dados para o período</div>';
   }
 
+  window._perfAnterior = perfPeriodo === 'hoje' ? null : anterior;
+  window._perfDetalheIncompleto = atual.diasSemDetalhe > 0;
   renderPerfSkus(topSkus);
 }
 
+function setPerfHoraModo(m) { perfHoraModo = m; renderPerf(); }
+
+function renderHoraChart(atual, anterior, dias, diasPrev, inclHoje, corte) {
+  const box = document.getElementById('perfBoxHora');
+  if (!box) return;
+  const nota = document.getElementById('perfHoraNota');
+  document.querySelectorAll('.perf-hora-modo').forEach(b => b.classList.toggle('active', b.dataset.m === perfHoraModo));
+  const ehHoje = perfPeriodo === 'hoje';
+  // Para "hoje", a linha de comparação é o dia de ontem inteiro (para ver onde ontem terminou)
+  const comp = ehHoje ? agregaPeriodo(diasPrev, perfCanais) : anterior;
+  const horaAgora = inclHoje ? Math.floor(corte / 60) : 23;
+  const atualH = atual.porHora.map((x, h) => (inclHoje && dias.length === 1 && h > horaAgora) ? null : x[0]);
+  const compH = comp.porHora.map(x => x[0]);
+  let serieA = atualH, serieB = compH;
+  if (perfHoraModo === 'acum') {
+    let s = 0; serieA = atualH.map(v => v == null ? null : (s += v));
+    let t = 0; serieB = compH.map(v => (t += v));
+  }
+  const titulo = document.getElementById('perfHoraTitulo');
+  if (titulo) titulo.textContent = dias.length === 1 ? 'Curva hora a hora' : 'Curva hora a hora (soma do período)';
+  const faltam = atual.diasSemCurva + comp.diasSemCurva;
+  if (nota) { nota.style.display = faltam ? '' : 'none'; nota.textContent = faltam ? `⏳ ${faltam} dia(s) deste período ainda estão sendo reprocessados — a curva fica completa nas próximas horas.` : ''; }
+  const labels = Array.from({ length: 24 }, (_, h) => String(h).padStart(2, '0') + 'h');
+  const nomeA = dias.length === 1 ? (ehHoje ? 'Hoje' : ddmm(dias[0])) : 'Período';
+  const nomeB = ehHoje ? 'Ontem (dia inteiro)' : (diasPrev.length === 1 ? ddmm(diasPrev[0]) : 'Período anterior');
+  if (chartHora) chartHora.destroy();
+  const ctx = document.getElementById('cHora');
+  if (!ctx) return;
+  const tipoA = perfHoraModo === 'acum' ? 'line' : 'bar';
+  chartHora = new Chart(ctx, {
+    data: { labels, datasets: [
+      { type: tipoA, label: nomeA, data: serieA, borderColor: '#1a6b3c', backgroundColor: perfHoraModo === 'acum' ? 'rgba(26,107,60,.08)' : '#f59e0b', fill: perfHoraModo === 'acum', borderWidth: 2.5, pointRadius: 0, tension: .25, borderRadius: 3, order: 2, spanGaps: false },
+      { type: 'line', label: nomeB, data: serieB, borderColor: 'rgba(80,80,80,.55)', borderDash: [5, 4], borderWidth: 1.5, pointRadius: 0, tension: .25, order: 1 }
+    ] },
+    options: {
+      responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { display: true, labels: { boxWidth: 12, font: { size: 11 }, color: '#8a8479' } },
+        tooltip: { callbacks: { label: c => c.raw == null ? null : `${c.dataset.label}: R$ ${Math.round(c.raw).toLocaleString('pt-BR')}` } } },
+      scales: {
+        y: { ticks: { color: '#8a8479', callback: v => 'R$' + (v >= 1000000 ? (v / 1000000).toFixed(1) + 'M' : Math.round(v / 1000) + 'k'), font: { size: 10 } }, grid: { color: 'rgba(0,0,0,.06)' }, border: { display: false } },
+        x: { ticks: { color: '#8a8479', font: { size: 10 }, maxRotation: 0, autoSkip: true, autoSkipPadding: 6 }, grid: { display: false }, border: { display: false } }
+      }
+    }
+  });
+}
+
 function renderPerfSkus(topSkusParam) {
-  const sort  = document.getElementById('sortPerfSku')?.value || 'fat';
-  const tb    = document.getElementById('tbPerfSkus');
+  const sort = document.getElementById('sortPerfSku')?.value || 'fat';
+  const tb = document.getElementById('tbPerfSkus');
   if (!tb) return;
-
-  const isTodos    = perfCanais.has('todos');
-  const canalUnico = !isTodos && perfCanais.size === 1 ? [...perfCanais][0] : null;
-
-  // Dados de ontem para comparação
-  const ontemTopSkus = perfComparacaoData?.ontem?.topSkus || [];
-  const ontemSkuMap = {};
-  for (const s of ontemTopSkus) {
-    if (!ontemSkuMap['_'+s.sku]) ontemSkuMap['_'+s.sku] = { qtd:0, faturamento:0 };
-    ontemSkuMap['_'+s.sku].qtd         += s.qtd||0;
-    ontemSkuMap['_'+s.sku].faturamento += s.faturamento||0;
-    ontemSkuMap[s.canal+'__'+s.sku] = s;
+  const anterior = window._perfAnterior;
+  const skuAnt = {};
+  for (const s of (anterior?.topSkus || [])) {
+    if (!skuAnt[s.sku]) skuAnt[s.sku] = 0;
+    skuAnt[s.sku] += s.faturamento || 0;
   }
-
-  // Agrupa SKUs de hoje
-  let skusFonte = topSkusParam || [];
-  if (!skusFonte.length) {
-    const { from, to } = getPerfRange();
-    skusFonte = agregaPeriodo(getDiasRange(from, to), perfCanais).topSkus;
+  let fonte = topSkusParam;
+  if (!fonte) { const { from, to } = getPerfRange(); fonte = agregaPeriodo(getDiasRange(from, to), perfCanais).topSkus; }
+  const cons = {}, porCanal = {};
+  for (const s of fonte) {
+    if (!cons[s.sku]) { cons[s.sku] = { sku: s.sku, qtd: 0, faturamento: 0, pedidos: 0, maxQtd: 0 }; porCanal[s.sku] = []; }
+    const c = cons[s.sku];
+    c.qtd += s.qtd || 0; c.faturamento += s.faturamento || 0; c.pedidos += s.pedidos || 0; c.maxQtd = Math.max(c.maxQtd, s.maxQtd || 0);
+    porCanal[s.sku].push(s);
   }
-
-  const skuConsolidado = {};
-  const skuPorCanal    = {};
-
-  for (const s of skusFonte) {
-    if (!skuConsolidado[s.sku]) {
-      skuConsolidado[s.sku] = { sku: s.sku, qtd:0, faturamento:0 };
-      skuPorCanal[s.sku]    = [];
-    }
-    skuConsolidado[s.sku].qtd         += s.qtd||0;
-    skuConsolidado[s.sku].faturamento += s.faturamento||0;
-    skuPorCanal[s.sku].push({ canal:s.canal, qtd:s.qtd, faturamento:s.faturamento });
-  }
-
-  let skus = Object.values(skuConsolidado);
-  if (sort === 'qtd') skus.sort((a,b) => b.qtd - a.qtd);
-  else skus.sort((a,b) => b.faturamento - a.faturamento);
-
-  if (!skus.length) {
-    tb.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:12px">Sem dados para o período selecionado</td></tr>`;
-    return;
-  }
-
-  function deltaTag(hojeVal, ontemVal) {
-    if (!ontemVal || ontemVal === 0) return '';
-    const delta = (hojeVal - ontemVal) / ontemVal * 100;
-    const cor   = delta >= 0 ? 'var(--green)' : 'var(--red)';
-    const ref   = perfComparacaoData?.hoje?.horarioRef;
-    return `<div style="font-size:10px;color:${cor};font-family:'IBM Plex Mono',monospace;margin-top:1px">
-      ${delta>=0?'↑':'↓'} ${Math.abs(delta).toFixed(1)}%${ref?' até '+ref:''}
-    </div>`;
-  }
-
+  let skus = Object.values(cons);
+  const ord = { fat: (a, b) => b.faturamento - a.faturamento, qtd: (a, b) => b.qtd - a.qtd, ped: (a, b) => b.pedidos - a.pedidos, max: (a, b) => b.maxQtd - a.maxQtd };
+  skus.sort(ord[sort] || ord.fat);
+  const incompleto = window._perfDetalheIncompleto;
+  const aviso = document.getElementById('perfSkuAviso');
+  if (aviso) { aviso.style.display = incompleto ? '' : 'none'; aviso.textContent = incompleto ? '⏳ Pedidos e maior pedido por SKU ainda estão sendo reprocessados para parte deste período (completa nas próximas horas).' : ''; }
+  if (!skus.length) { tb.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--muted);font-size:12px">Sem vendas no período selecionado</td></tr>`; return; }
+  const num = v => Math.round(v).toLocaleString('pt-BR');
   tb.innerHTML = skus.map((s, idx) => {
-    const ticket   = s.qtd > 0 ? s.faturamento / s.qtd : 0;
-    const canais   = skuPorCanal[s.sku] || [];
-    const multiCanal = canais.length > 1;
-
-    // Badges de canais
-    const canalBadges = canais.map(c => {
+    const canais = porCanal[s.sku] || [];
+    const multi = canais.length > 1;
+    const media = s.pedidos ? s.qtd / s.pedidos : 0;
+    const atacado = s.maxQtd >= 10 && media > 0 && s.maxQtd >= media * 3;
+    const badges = canais.map(c => { const cor = CANAL_CORES[c.canal] || '#8a8479'; return `<span style="background:${cor}18;color:${cor};padding:1px 6px;border-radius:8px;font-size:10px;font-weight:600;margin-right:3px">${c.canal}</span>`; }).join('');
+    const delta = anterior ? (skuAnt[s.sku] ? deltaHTML(s.faturamento, skuAnt[s.sku], '', true) : '<div class="perf-delta novo peq">novo no período</div>') : '';
+    const det = canais.map(c => {
       const cor = CANAL_CORES[c.canal] || '#8a8479';
-      return `<span style="background:${cor}18;color:${cor};padding:1px 6px;border-radius:8px;font-size:10px;font-weight:600;margin-right:3px">${c.canal}</span>`;
-    }).join('');
-
-    // Delta: consolidado se todos, por canal se filtro único
-    let deltaHtml = '';
-    if (canalUnico) {
-      // Canal único — compara só nesse canal
-      const ontemCanal = ontemSkuMap[canalUnico + '__' + s.sku];
-      if (ontemCanal) deltaHtml = deltaTag(s.faturamento, ontemCanal.faturamento);
-    } else {
-      // Consolidado — compara total do SKU
-      const ontemConsolidado = ontemSkuMap['_' + s.sku];
-      if (ontemConsolidado) deltaHtml = deltaTag(s.faturamento, ontemConsolidado.faturamento);
-    }
-
-    // Linhas de detalhe por canal (expandíveis)
-    const detalheRows = canais.map(c => {
-      const cor  = CANAL_CORES[c.canal] || '#8a8479';
-      const tk   = c.qtd > 0 ? c.faturamento / c.qtd : 0;
-      const ontemC = ontemSkuMap[c.canal + '__' + s.sku];
-      const dtagC  = ontemC ? deltaTag(c.faturamento, ontemC.faturamento) : '';
       return `<tr id="detail-${idx}-${c.canal}" style="background:var(--surface2);display:none">
-        <td style="padding-left:32px;color:${cor};font-size:11px;font-weight:600">↳ ${c.canal}</td>
-        <td></td>
-        <td style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted)">${c.qtd.toLocaleString('pt-BR')}</td>
-        <td style="font-family:'IBM Plex Mono',monospace;font-size:12px">
-          ${fmt(c.faturamento)}
-          ${dtagC}
-        </td>
-        <td style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted)">${tk>0?fmt(tk):'—'}</td>
+        <td style="padding-left:32px;color:${cor};font-size:11px;font-weight:600">↳ ${c.canal}</td><td></td>
+        <td class="mono-cell">${c.pedidos ? num(c.pedidos) : '—'}</td>
+        <td class="mono-cell">${num(c.qtd)}</td>
+        <td class="mono-cell">${c.maxQtd ? num(c.maxQtd) : '—'}</td>
+        <td class="mono-cell">${fmt(c.faturamento)}</td>
+        <td class="mono-cell muted">${c.qtd ? fmt(c.faturamento / c.qtd) : '—'}</td>
       </tr>`;
     }).join('');
-
-    return `<tr style="cursor:${multiCanal?'pointer':'default'}" onclick="${multiCanal?`toggleSkuDetalhe(${idx},${canais.length})`:''}">
-      <td style="font-weight:600;font-family:'IBM Plex Mono',monospace">
-        ${multiCanal?`<span style="font-size:10px;color:var(--muted);margin-right:4px" id="chevron-${idx}">▶</span>`:''}${s.sku}
-      </td>
-      <td>${canalBadges}</td>
-      <td style="font-family:'IBM Plex Mono',monospace">${s.qtd.toLocaleString('pt-BR')}</td>
-      <td style="font-family:'IBM Plex Mono',monospace">
-        ${fmt(s.faturamento)}
-        ${deltaHtml}
-      </td>
-      <td style="font-family:'IBM Plex Mono',monospace;color:var(--muted)">${ticket>0?fmt(ticket):'—'}</td>
-    </tr>${detalheRows}`;
+    return `<tr style="cursor:${multi ? 'pointer' : 'default'}" onclick="${multi ? `toggleSkuDetalhe(${idx},${canais.length})` : ''}">
+      <td style="font-weight:600;font-family:'IBM Plex Mono',monospace">${multi ? `<span style="font-size:10px;color:var(--muted);margin-right:4px" id="chevron-${idx}">▶</span>` : ''}${esc(s.sku)}</td>
+      <td>${badges}</td>
+      <td class="mono-cell">${s.pedidos ? num(s.pedidos) : '—'}</td>
+      <td class="mono-cell">${num(s.qtd)}${s.pedidos && media >= 1.05 ? `<div class="perf-sub">${media.toFixed(1).replace('.', ',')} un/pedido</div>` : ''}</td>
+      <td class="mono-cell">${s.maxQtd ? num(s.maxQtd) + ' un.' : '—'}${atacado ? ' <span class="badge-atacado" title="Algum pedido bem acima do normal para este SKU">atacado</span>' : ''}</td>
+      <td class="mono-cell">${fmt(s.faturamento)}${delta}</td>
+      <td class="mono-cell muted">${s.qtd ? fmt(s.faturamento / s.qtd) : '—'}</td>
+    </tr>${det}`;
   }).join('');
 }
+
+// Selo "atualizado às HH:MM"
+function atualizarSeloDash() {
+  const el = document.getElementById('dashAtualizado'); if (!el) return;
+  const p = dashCache['dia__' + brtHoje()];
+  if (!p || !p.ate) { el.textContent = ''; return; }
+  const min = Math.max(0, Math.round((Date.now() / 1000 - p.ate) / 60));
+  el.textContent = `atualizado às ${fmtHM(brtMinutosDeTs(p.ate))}${min >= 1 ? ' · há ' + min + ' min' : ' · agora'}`;
+  el.classList.toggle('velho', min > 25);
+}
+setInterval(() => { if (curPage === 'dashboard') atualizarSeloDash(); }, 60000);
+
 
 function toggleSkuDetalhe(idx, qtdCanais) {
   let algumAberto = false;
@@ -6812,7 +6878,7 @@ async function initApp(paginaInicial) {
   // Abre na primeira aba liberada para quem está logado
   goPage(paginaInicial || primeiraAbaPermitida() || 'dashboard');
   // Sincronização do histórico só para quem vê o dashboard
-  if (podeVer('dashboard')) processarHistoricoSequencial();
+  // Histórico da Magis5 agora é salvo pelo servidor (agendamento a cada 10 min + revisão noturna)
   // Pré-carrega as demais abas liberadas (badges, contadores)
   if (podeVer('comunicados') && paginaInicial !== 'comunicados') renderPosts();
   if (podeVer('planilhas')   && paginaInicial !== 'planilhas')   renderPlanilhas();
