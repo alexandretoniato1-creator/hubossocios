@@ -1143,6 +1143,44 @@ select.field-input{cursor:pointer}
 .cv-arq .btn{font-size:11px;padding:4px 10px}
 .cv-arq-lista{display:flex;flex-direction:column;gap:6px;max-height:60vh;overflow-y:auto}
 .cv-arq-lista .cv-arq{max-width:none}
+/* ── Gestão: reuniões e metas ── */
+.reu-sec{display:flex;align-items:baseline;gap:8px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:22px 0 10px}
+.reu-sec small{font-weight:400;text-transform:none;letter-spacing:0;font-family:'IBM Plex Mono',monospace;font-size:10px}
+.reu-sec-tog{cursor:pointer;user-select:none}
+.reu-sec-tog:hover{color:var(--text)}
+.reu-vazio{color:var(--muted);font-size:13px;padding:4px 2px 8px}
+.reu-busca{width:100%;box-sizing:border-box;margin-bottom:10px;font-size:13px}
+.reu-aconteceu{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;background:var(--amber-bg);border-top:1px solid var(--border);padding:10px 16px;font-size:13px}
+.reu-aconteceu .btn{font-size:11px;padding:5px 12px}
+.reuniao-status-cancelada{font-size:10px;font-weight:700;padding:3px 8px;border-radius:10px;background:var(--surface2);color:var(--muted);font-family:'IBM Plex Mono',monospace;text-decoration:line-through}
+.reuniao-status-confirmar{font-size:10px;font-weight:700;padding:3px 8px;border-radius:10px;background:var(--amber-bg);color:var(--amber);font-family:'IBM Plex Mono',monospace}
+.reu-lembrete{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;margin-top:12px}
+.reu-lembrete .field-input{width:auto;font-size:12px;padding:5px 8px}
+.reu-lembrete small{color:var(--muted);font-size:10px;font-family:'IBM Plex Mono',monospace}
+.rf-dica{font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace}
+.ag-pill.reuniao{background:var(--text);color:var(--bg);border-color:var(--text)}
+.ag-linha-reu .ag-linha-tit{font-weight:700}
+.meta-fat-info{font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-top:6px}
+.meta-fat-rodape{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:12px;color:var(--muted);margin-top:6px}
+.meta-fat-rodape strong{color:var(--text)}
+.meta-fat-dica{font-size:11px;color:var(--muted);margin:-2px 0 4px;font-family:'IBM Plex Mono',monospace}
+.meta-tipo-badge.auto{background:var(--green-bg);color:var(--green);border-color:var(--green)}
+.meta-ultima{font-size:11px;color:var(--muted);margin-top:6px;font-family:'IBM Plex Mono',monospace}
+.cat-operacao{background:rgba(26,63,122,.1);color:#1a3f7a}
+.cat-equipe{background:rgba(168,85,247,.1);color:#7e3fbf}
+.cat-outros{background:var(--surface2);color:var(--muted)}
+.ini-meta{padding:8px 4px;border-bottom:1px solid var(--border);cursor:pointer}
+.ini-meta:last-child{border-bottom:none}
+.ini-meta-top{display:flex;justify-content:space-between;gap:8px;font-size:13px}
+.ini-meta-nome{font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ini-meta-top strong{font-family:'IBM Plex Mono',monospace}
+.ini-meta-sub{font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace}
+@media(max-width:768px){
+  #metaFieldsFat{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important}
+  #metaFieldsFat .field-input{min-width:0;width:100%;box-sizing:border-box}
+  .meta-header{flex-wrap:wrap;gap:8px}
+  .reu-aconteceu{padding:10px 12px}
+}
 /* ── Comunicados v2 ── */
 .com-tools{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:8px}
 .com-tool{display:inline-flex;align-items:center;gap:4px;font-size:12px;border:1.5px solid var(--border);border-radius:5px;padding:4px 10px;cursor:pointer;user-select:none;background:var(--surface)}
@@ -1820,64 +1858,59 @@ select.field-input{cursor:pointer}
     <div class="meta-summary" id="metaSummary"></div>
 
     <!-- FILTROS -->
-    <div class="meta-filters" id="metaFilters">
-      <button class="meta-cat-pill active" onclick="filterMetas('todas')">Todas</button>
-      <button class="meta-cat-pill" onclick="filterMetas('vendas')">Vendas</button>
-      <button class="meta-cat-pill" onclick="filterMetas('administrativo')">Administrativo</button>
-      <button class="meta-cat-pill" onclick="filterMetas('pos-venda')">Pós-venda</button>
-      <button class="meta-cat-pill" onclick="filterMetas('marketing')">Marketing</button>
-      <button class="meta-cat-pill" onclick="filterMetas('importacao')">Importação</button>
-      <button class="meta-cat-pill" onclick="filterMetas('financeiro')">Financeiro</button>
-      <button class="meta-cat-pill" onclick="filterMetas('rh')">RH</button>
-    </div>
+    <div class="meta-filters" id="metaFilters"></div>
 
     <!-- FORMULÁRIO -->
     <div class="box">
       <div class="box-title" style="margin-bottom:14px">Nova meta</div>
       <div class="meta-form-grid">
-        <div class="field-group"><span class="field-label">Descrição</span><input class="field-input" id="metaNome" placeholder="ex: Faturamento Março"></div>
-        <div class="field-group"><span class="field-label">Empresa</span>
-          <select class="field-input" id="metaEmpresa">
-            <option>FASTWEB</option><option>BTMX</option><option>FALCOM</option><option>OCTO</option><option>LOGBOX</option><option>Geral</option>
+        <div class="field-group"><span class="field-label">Tipo</span>
+          <select class="field-input" id="metaTipo" onchange="toggleMetaFormFields()">
+            <option value="faturamento">⚡ Faturamento (automático)</option>
+            <option value="qualitativa">Qualitativa (status e prazo)</option>
+            <option value="numerica">Numérica (atualizada à mão)</option>
           </select>
         </div>
+        <div class="field-group"><span class="field-label">Descrição</span><input class="field-input" id="metaNome" placeholder="opcional — ex: Faturamento Shopee novembro"></div>
         <div class="field-group"><span class="field-label">Categoria</span>
           <select class="field-input" id="metaCategoria">
             <option value="vendas">Vendas</option>
-            <option value="administrativo">Administrativo</option>
-            <option value="pos-venda">Pós-venda</option>
-            <option value="marketing">Marketing</option>
+            <option value="operacao">Operação</option>
             <option value="importacao">Importação</option>
             <option value="financeiro">Financeiro</option>
-            <option value="rh">RH</option>
+            <option value="equipe">Equipe</option>
+            <option value="outros">Outros</option>
           </select>
         </div>
       </div>
-      <div class="meta-form-grid" style="grid-template-columns:1fr 2fr;">
-        <div class="field-group"><span class="field-label">Tipo</span>
-          <select class="field-input" id="metaTipo" onchange="toggleMetaFormFields()">
-            <option value="numerica">Numérica (valor + progresso)</option>
-            <option value="qualitativa">Qualitativa (status)</option>
+      <div id="metaFieldsFat" class="meta-form-grid" style="grid-template-columns:1fr 1fr 1fr auto;align-items:end">
+        <div class="field-group"><span class="field-label">Canal</span>
+          <select class="field-input" id="metaCanal">
+            <option value="todos">Todos os canais</option><option value="ML">Mercado Livre</option><option value="Shopee">Shopee</option><option value="TikTok">TikTok</option><option value="Amazon">Amazon</option><option value="Magalu">Magalu</option>
           </select>
         </div>
-        <div id="metaFieldsNum" style="display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end">
-          <div class="field-group"><span class="field-label">Meta (R$)</span><input class="field-input" id="metaAlvo" type="number" placeholder="ex: 300000"></div>
-          <div class="field-group"><span class="field-label">Realizado (R$)</span><input class="field-input" id="metaAtual" type="number" placeholder="ex: 180000"></div>
-          <button class="btn btn-primary" onclick="addMeta()" style="align-self:end">Salvar</button>
+        <div class="field-group"><span class="field-label">Mês</span><input class="field-input" type="month" id="metaMes"></div>
+        <div class="field-group"><span class="field-label">Meta (R$)</span><input class="field-input" id="metaFatAlvo" type="number" placeholder="ex: 1500000"></div>
+        <button class="btn btn-primary" onclick="addMeta()" style="align-self:end">Salvar</button>
+      </div>
+      <div class="meta-fat-dica" id="metaFatDica">O realizado vem sozinho das vendas do Magis5 (o mesmo número do Dashboard). Ninguém precisa atualizar.</div>
+      <div id="metaFieldsNum" style="display:none;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end">
+        <div class="field-group"><span class="field-label">Meta</span><input class="field-input" id="metaAlvo" type="number" placeholder="ex: 300000"></div>
+        <div class="field-group"><span class="field-label">Realizado hoje</span><input class="field-input" id="metaAtual" type="number" placeholder="ex: 180000"></div>
+        <button class="btn btn-primary" onclick="addMeta()" style="align-self:end">Salvar</button>
+      </div>
+      <div id="metaFieldsQual" style="display:none;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end">
+        <div class="field-group"><span class="field-label">Status inicial</span>
+          <select class="field-input" id="metaStatus">
+            <option value="andamento">Em andamento</option>
+            <option value="concluida">Concluída</option>
+            <option value="pausada">Pausada</option>
+          </select>
         </div>
-        <div id="metaFieldsQual" style="display:none;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end">
-          <div class="field-group"><span class="field-label">Status inicial</span>
-            <select class="field-input" id="metaStatus">
-              <option value="andamento">Em andamento</option>
-              <option value="concluida">Concluída</option>
-              <option value="pausada">Pausada</option>
-            </select>
-          </div>
-          <div class="field-group"><span class="field-label">Prazo</span>
-            <input class="field-input" type="date" id="metaPrazo">
-          </div>
-          <button class="btn btn-primary" onclick="addMeta()" style="align-self:end">Salvar</button>
+        <div class="field-group"><span class="field-label">Prazo (aviso 3 dias antes e no dia)</span>
+          <input class="field-input" type="date" id="metaPrazo">
         </div>
+        <button class="btn btn-primary" onclick="addMeta()" style="align-self:end">Salvar</button>
       </div>
     </div>
     <div id="metasLista"></div>
@@ -2000,6 +2033,15 @@ select.field-input{cursor:pointer}
       <div id="rQuandoData" class="rf-quando">
         <div class="field-group"><label class="field-label">Data</label><input class="field-input" type="date" id="rData"></div>
         <div class="field-group"><label class="field-label">Horário</label><input class="field-input" type="time" id="rHorario"></div>
+      </div>
+      <div class="para-row"><span class="field-label" style="margin:0">Lembrete</span>
+        <select class="field-input" id="rLembrete" style="width:auto;font-size:12px;padding:6px 10px">
+          <option value="">Só o aviso do dia, às 9h</option>
+          <option value="15">+ 15 min antes</option>
+          <option value="60">+ 1 hora antes</option>
+          <option value="1440">+ 1 dia antes</option>
+        </select>
+        <span class="rf-dica">no dia da reunião todos recebem aviso às 9h (7h se for antes das 9h30)</span>
       </div>
       <div id="rQuandoEnquete" class="rf-quando hidden" style="flex-direction:column;align-items:stretch">
         <div style="font-size:11px;color:var(--muted);margin-bottom:6px">Sugira até 3 opções. Os outros marcam as que podem; você define o horário final quando quiser (antes ou depois dos votos).</div>
@@ -2333,10 +2375,10 @@ const NAV_GRUPOS = [
   { id: 'dashboard',   nome: 'Dashboard',   icone: '◈', subs: [['dashboard', 'Dashboard']] },
   { id: 'conversas',   nome: 'Conversas',   icone: '◍', subs: [['conversas', 'Conversas']] },
   { id: 'comunicados', nome: 'Comunicados', icone: '◉', subs: [['comunicados', 'Comunicados']] },
-  { id: 'g-reunioes',  nome: 'Reuniões',    icone: '◷', subs: [['reunioes', 'Reuniões'], ['decisoes', 'Decisões']] },
+  { id: 'g-reunioes',  nome: 'Gestão',      icone: '◷', subs: [['reunioes', 'Reuniões'], ['decisoes', 'Decisões'], ['metas', 'Metas']] },
   { id: 'g-agenda',    nome: 'Agenda',      icone: '▦', subs: [['agenda', 'Calendário'], ['anotacoes', 'Anotações']] },
-  { id: 'g-operacao',  nome: 'Operação',    icone: '⚙', subs: [['metas', 'Metas'], ['desempenho', 'Desempenho']] },
   { id: 'pipeline',    nome: 'Pipeline',    icone: '◫', subs: [['pipeline', 'Pipeline']] },
+  { id: 'desempenho',  nome: 'Desempenho',  icone: '◑', subs: [['desempenho', 'Desempenho']] },
   { id: 'planilhas',   nome: 'Links',       icone: '🔗', subs: [['planilhas', 'Links']] },
 ];
 let NAV_COUNTS = {};
@@ -2895,6 +2937,10 @@ function goPage(p) {
   if (typeof p === 'string' && p.includes(':')) {
     const [pg, arg] = p.split(':');
     if (pg === 'conversas' && arg) { cvPendente = Number(arg); if (curPage === 'conversas' && podeVer('conversas')) { cvAbrir(cvPendente); cvPendente = null; return; } }
+    if (pg === 'reunioes' && arg) {
+      reuDestacar = Number(arg);
+      if (curPage === 'reunioes' && podeVer('reunioes')) { desenharReunioes(); return; }
+    }
     if (pg === 'comunicados' && arg) {
       comDestacar = Number(arg);
       if (curPage === 'comunicados' && podeVer('comunicados')) { desenharPosts(); return; }
@@ -2912,7 +2958,7 @@ function goPage(p) {
   if(p==='dashboard'){renderDashboard()}
   if(p==='comunicados') renderPosts();
   if(p==='planilhas') renderPlanilhas();
-  if(p==='metas') renderMetas();
+  if(p==='metas') { toggleMetaFormFields(); renderMetas(); }
   if(p==='desempenho') renderDesempenho();
   if(p==='reunioes') renderReunioes();
   if(p==='pipeline') renderPipeline();
@@ -6138,8 +6184,32 @@ function agVisiveis() {
 
 async function renderAgenda() {
   if (!agMes) agMes = agHoje().slice(0, 7);
-  await carregarEventos();
+  await Promise.all([carregarEventos(), podeVer('reunioes') ? loadReunioes().catch(() => {}) : null]);
   desenharAgenda();
+}
+// Reuniões marcadas aparecem no calendário (não em "Só minha")
+function agReunioesVis() {
+  if (!podeVer('reunioes') || agFiltro === 'meu') return [];
+  return (reunioesData || []).filter(r => r.data && (r.status === 'agendada' || r.status === 'realizada'));
+}
+function agPillReuniao(r) {
+  return `<div class="ag-pill reuniao" title="Reunião: ${esc(r.titulo)}" onclick="event.stopPropagation();goPage('reunioes:${r.id}')">🤝 ${r.horario ? r.horario + ' ' : ''}${esc(r.titulo)}</div>`;
+}
+function agPillsDia(doDia, iso) {
+  const itens = doDia.map(e => ({ h: e.horario && e.data === iso ? e.horario : '', html: `<div class="ag-pill ${e.escopo === 'pessoal' ? 'pessoal' : ''} cat-${esc(e.categoria)}" title="${esc(e.titulo)}" onclick="agDetalhe(${e.id})">${e.horario && e.data === iso ? e.horario + ' ' : ''}${esc(e.titulo)}</div>` }))
+    .concat(agReunioesVis().filter(r => r.data === iso).map(r => ({ h: r.horario || '', html: agPillReuniao(r) })))
+    .sort((a, b) => a.h.localeCompare(b.h));
+  return itens.slice(0, 3).map(i => i.html).join('') + (itens.length > 3 ? `<div class="ag-mais" onclick="agDetalheDia('${iso}')">+${itens.length - 3}</div>` : '');
+}
+function agLinhaReuniaoHTML(r) {
+  return `<div class="ag-linha ag-linha-reu" onclick="goPage('reunioes:${r.id}')">
+    <div class="ag-linha-data">${diaSemana(r.data)} ${agFmt(r.data)}${r.horario ? '<br>' + r.horario : ''}</div>
+    <div style="flex:1;min-width:0">
+      <div class="ag-linha-tit">🤝 ${esc(r.titulo)}</div>
+      <div class="ag-linha-sub">Reunião${r.status === 'realizada' ? ' · ✓ realizada' : ''}${(r.participantes || []).length ? ' · 🔒 ' + esc(audienciaReuniao(r).join(', ')) : ' · todos'}${r.mediador ? ' · ⚑ ' + esc(r.mediador) : ''}</div>
+    </div>
+    ${r.lembrete_min ? '<span title="Com lembrete">⏰</span>' : ''}
+  </div>`;
 }
 
 function agMudarMes(n) {
@@ -6173,17 +6243,17 @@ function desenharAgenda() {
       .sort((a, b) => (a.horario || '').localeCompare(b.horario || ''));
     html += `<div class="ag-cell ${dt.getMonth() !== m - 1 ? 'fora' : ''} ${iso === hoje ? 'hoje' : ''}" onclick="if(event.target===this||event.target.classList.contains('ag-num'))agNovo('${iso}')">
       <span class="ag-num">${dt.getDate()}</span>
-      ${doDia.slice(0, 3).map(e => `<div class="ag-pill ${e.escopo === 'pessoal' ? 'pessoal' : ''} cat-${esc(e.categoria)}" title="${esc(e.titulo)}" onclick="agDetalhe(${e.id})">${e.horario && e.data === iso ? e.horario + ' ' : ''}${esc(e.titulo)}</div>`).join('')}
-      ${doDia.length > 3 ? `<div class="ag-mais" onclick="agDetalheDia('${iso}')">+${doDia.length - 3}</div>` : ''}
+      ${agPillsDia(doDia, iso)}
     </div>`;
   }
   grid.innerHTML = html;
 
   // Próximos 60 dias
   const fim = agAddDias(hoje, 60);
-  const prox = evs.filter(e => (e.data_fim || e.data) >= hoje && e.data <= fim)
-    .sort((a, b) => a.data.localeCompare(b.data) || (a.horario || '').localeCompare(b.horario || ''));
-  document.getElementById('agProximos').innerHTML = prox.length ? prox.map(agLinhaHTML).join('')
+  const prox = evs.filter(e => (e.data_fim || e.data) >= hoje && e.data <= fim).map(e => ({ d: e.data, h: e.horario || '', html: agLinhaHTML(e) }))
+    .concat(agReunioesVis().filter(r => r.status === 'agendada' && r.data >= hoje && r.data <= fim).map(r => ({ d: r.data, h: r.horario || '', html: agLinhaReuniaoHTML(r) })))
+    .sort((a, b) => a.d.localeCompare(b.d) || a.h.localeCompare(b.h));
+  document.getElementById('agProximos').innerHTML = prox.length ? prox.map(x => x.html).join('')
     : '<div style="color:var(--muted);font-size:13px;padding:8px 0">Nada nos próximos 60 dias.</div>';
 }
 
@@ -6202,8 +6272,9 @@ function agLinhaHTML(e) {
 
 function agDetalheDia(iso) {
   const evs = agVisiveis().filter(e => e.data <= iso && (e.data_fim || e.data) >= iso);
+  const reus = agReunioesVis().filter(r => r.data === iso);
   agModal(`<div class="hub-modal-title">${diaSemana(iso)} ${agFmt(iso)}</div>
-    <div style="margin-top:12px">${evs.map(agLinhaHTML).join('')}</div>
+    <div style="margin-top:12px">${reus.map(agLinhaReuniaoHTML).join('')}${evs.map(agLinhaHTML).join('')}</div>
     <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px">
       <button class="btn btn-ghost" onclick="agFechar()">Fechar</button>
       <button class="btn btn-primary" onclick="agNovo('${iso}')">+ Evento neste dia</button>
@@ -6714,6 +6785,7 @@ async function renderInicio() {
   const tarefas = [carregarPendencias()];
   if (podeVer('agenda')) tarefas.push(carregarEventos().catch(() => {}));
   if (podeVer('pipeline')) tarefas.push(loadPipeline().catch(() => {}));
+  if (podeVer('metas')) tarefas.push(carregarMetas().catch(() => {}));
   await Promise.all(tarefas);
   if (el) el.dataset.ok = '1';
   desenharInicio();
@@ -6753,11 +6825,14 @@ function desenharInicio() {
       `<button class="btn btn-ciente ini-btn" onclick="event.stopPropagation();marcarCiente(${p.id},true).then(desenharInicio)">✓ Ciente</button>`)));
   }
   if (podeVer('reunioes')) {
-    reunioesData.filter(reuniaoPendenteMeu).forEach(r => pend.push(inicioItem(
-      r.status === 'enquete' ? '🗳' : (r.importante ? '⭐' : '📅'),
-      r.status === 'enquete' ? `Vote no horário: ${esc(r.titulo)}` : `Confirme a reunião: ${esc(r.titulo)}`,
-      r.status === 'enquete' ? `sugerida por ${esc(r.criador || '')}` : `${diaSemana(r.data)} ${fmtDataBR(r.data)}${r.horario ? ' às ' + r.horario : ''}`,
-      "goPage('reunioes')")));
+    reunioesData.filter(reuniaoPendenteMeu).forEach(r => {
+      const fechar = reuniaoAConfirmar(r);
+      pend.push(inicioItem(
+        fechar ? '🤔' : r.status === 'enquete' ? '🗳' : (r.importante ? '⭐' : '📅'),
+        fechar ? `Aconteceu? ${esc(r.titulo)}` : r.status === 'enquete' ? `Vote no horário: ${esc(r.titulo)}` : `Confirme a reunião: ${esc(r.titulo)}`,
+        r.status === 'enquete' ? `sugerida por ${esc(r.criador || '')}` : `${diaSemana(r.data)} ${fmtDataBR(r.data)}${r.horario ? ' às ' + r.horario : ''}${fechar ? ' · marque se foi realizada' : ''}`,
+        `goPage('reunioes:${r.id}')`));
+    });
   }
   if (podeVer('conversas')) {
     cvCanais.forEach(c => {
@@ -6789,7 +6864,7 @@ function desenharInicio() {
   }
   if (podeVer('reunioes')) {
     reunioesData.filter(r => r.status === 'agendada' && r.data >= hoje && r.data <= fim7 && audienciaReuniao(r).includes(ME.nome)).forEach(r => prox.push({
-      data: r.data, hora: r.horario || '', ic: r.importante ? '⭐' : '📅', tit: esc(r.titulo), sub: 'reunião', acao: "goPage('reunioes')" }));
+      data: r.data, hora: r.horario || '', ic: r.importante ? '⭐' : '📅', tit: esc(r.titulo), sub: 'reunião', acao: `goPage('reunioes:${r.id}')` }));
   }
   prox.sort((a, b) => a.data.localeCompare(b.data) || a.hora.localeCompare(b.hora));
 
@@ -6827,6 +6902,10 @@ function desenharInicio() {
             `${p.eta_galpao ? 'galpão' : 'ETA'} ${fmtDataBR(d)} · ${esc((etapasData.find(e => e.id === p.etapaId) || {}).nome || '')}${(p.skus || []).length ? ' · ' + p.skus.length + ' SKUs' : ''}`,
             "goPage('pipeline')", u ? `<span class="pl-chip urg-${u.cls}">${u.label}</span>` : '');
         }).join('') : '<div class="ini-vazio">Nenhum contêiner previsto para os próximos 15 dias.</div>'}
+      </div>` : ''}
+      ${podeVer('metas') && metasDoMesHTML() ? `<div class="box ini-box">
+        <div class="box-title ini-box-tit">Metas do mês</div>
+        ${metasDoMesHTML()}
       </div>` : ''}
       ${ultDec.length ? `<div class="box ini-box">
         <div class="box-title ini-box-tit">Últimas decisões</div>
@@ -6914,12 +6993,19 @@ async function renderPlanilhas() {
 
 // ── METAS ──
 let metaFilterCat = 'todas';
-const META_CATS = {
-  'vendas':'Vendas','administrativo':'Administrativo','pos-venda':'Pós-venda',
-  'marketing':'Marketing','importacao':'Importação','financeiro':'Financeiro','rh':'RH'
-};
+// Categorias enxutas (as antigas são mapeadas para estas)
+const META_CATS = { vendas: 'Vendas', operacao: 'Operação', importacao: 'Importação', financeiro: 'Financeiro', equipe: 'Equipe', outros: 'Outros' };
+const META_CAT_LEGADO = { administrativo: 'operacao', 'pos-venda': 'operacao', marketing: 'vendas', rh: 'equipe' };
 const META_STATUS_LABELS = {'andamento':'Em andamento','concluida':'Concluída','pausada':'Pausada'};
 const META_STATUS_CLASS = {'andamento':'st-andamento','concluida':'st-concluida','pausada':'st-pausada'};
+const META_CANAIS = { todos: 'Todos os canais', ML: 'Mercado Livre', Shopee: 'Shopee', TikTok: 'TikTok', Amazon: 'Amazon', Magalu: 'Magalu' };
+let _metasCache = [];
+let _metasFat = {};
+
+function metaCat(m) { const c = m.categoria || 'outros'; return META_CATS[c] ? c : (META_CAT_LEGADO[c] || 'outros'); }
+function metaMesLabel(p) { if (!p) return ''; const [y, mo] = p.split('-').map(Number); return MESES_PT[mo - 1] + '/' + y; }
+function metaPeriodoDatas(p) { const [y, mo] = p.split('-').map(Number); return [`${p}-01`, new Date(Date.UTC(y, mo, 0)).toISOString().slice(0, 10)]; }
+function metaNome(m) { return m.nome || (m.tipo === 'faturamento' ? `Faturamento ${m.canal && m.canal !== 'todos' ? (META_CANAIS[m.canal] || m.canal) : 'total'} · ${metaMesLabel(m.periodo)}` : 'Meta'); }
 
 function getPrazoBadge(prazo, status) {
   if (!prazo || status === 'concluida' || status === 'pausada') return '';
@@ -6934,19 +7020,23 @@ function getPrazoBadge(prazo, status) {
 
 function toggleMetaFormFields(){
   const tipo = document.getElementById('metaTipo').value;
+  document.getElementById('metaFieldsFat').style.display = tipo==='faturamento'?'grid':'none';
   document.getElementById('metaFieldsNum').style.display = tipo==='numerica'?'grid':'none';
   document.getElementById('metaFieldsQual').style.display = tipo==='qualitativa'?'grid':'none';
+  document.getElementById('metaFatDica').style.display = tipo==='faturamento'?'block':'none';
+  document.getElementById('metaNome').placeholder = tipo==='faturamento' ? 'opcional — ex: Faturamento Shopee novembro' : 'ex: Ter gerente de conta no Mercado Livre';
+  if (tipo === 'faturamento' && !document.getElementById('metaMes').value) document.getElementById('metaMes').value = isoHoje().slice(0, 7);
 }
 
 function filterMetas(cat){
   metaFilterCat = cat;
-  document.querySelectorAll('.meta-cat-pill').forEach(el=>{
-    el.classList.toggle('active', el.textContent.trim().toLowerCase()===cat ||
-      (cat==='todas' && el.textContent.trim().toLowerCase()==='todas') ||
-      (cat==='pos-venda' && el.textContent.trim().toLowerCase()==='pós-venda') ||
-      (cat==='importacao' && el.textContent.trim().toLowerCase()==='importação'));
-  });
-  renderMetas();
+  desenharMetas();
+}
+function renderMetaFiltros() {
+  const el = document.getElementById('metaFilters'); if (!el) return;
+  const usadas = new Set(_metasCache.map(metaCat));
+  el.innerHTML = [['todas', 'Todas'], ...Object.entries(META_CATS).filter(([k]) => usadas.has(k))]
+    .map(([k, l]) => `<button class="meta-cat-pill ${metaFilterCat === k ? 'active' : ''}" onclick="filterMetas('${k}')">${l}</button>`).join('');
 }
 
 function migrateMetas(lista){
@@ -6962,43 +7052,49 @@ function migrateMetas(lista){
 }
 
 async function addMeta(){
-  const nome = document.getElementById('metaNome').value.trim();
-  const empresa = document.getElementById('metaEmpresa').value;
+  const nomeDigitado = document.getElementById('metaNome').value.trim();
   const categoria = document.getElementById('metaCategoria').value;
   const tipo = document.getElementById('metaTipo').value;
-  if(!nome) return;
-
   const now = new Date().toISOString();
-  const meta = { id:Date.now(), nome, empresa, categoria, tipo, created_at:now, historico:[] };
+  const meta = { id: Date.now(), nome: nomeDigitado, empresa: 'LOGBOX', categoria, tipo, created_at: now, historico: [], avisos: [] };
+  const por = ME ? ME.nome : '';
 
-  if(tipo==='numerica'){
+  if (tipo === 'faturamento') {
+    const alvo = parseFloat(document.getElementById('metaFatAlvo').value) || 0;
+    const periodo = document.getElementById('metaMes').value;
+    const canal = document.getElementById('metaCanal').value;
+    if (!periodo) { alert('Escolha o mês da meta.'); return; }
+    if (!alvo) { alert('Defina o valor da meta.'); return; }
+    Object.assign(meta, { alvo, atual: null, periodo, canal });
+    meta.nome = nomeDigitado || metaNome(meta);
+    meta.historico.push({ date: now, tipo: 'criacao', de: null, para: alvo, nota: `Meta criada: ${fmt(alvo)} em ${metaMesLabel(periodo)} (${META_CANAIS[canal] || canal})`, por });
+  } else if (tipo === 'numerica') {
+    if (!nomeDigitado) { alert('Dê um nome para a meta.'); return; }
     const alvo = parseFloat(document.getElementById('metaAlvo').value)||0;
     const atual = parseFloat(document.getElementById('metaAtual').value)||0;
     if(!alvo){alert('Defina um valor para a meta.');return;}
     meta.alvo = alvo;
     meta.atual = atual;
-    meta.historico.push({date:now, tipo:'criacao', de:null, para:atual, nota:'Meta criada com valor inicial'});
+    meta.historico.push({date:now, tipo:'criacao', de:null, para:atual, nota:'Meta criada com valor inicial', por});
   } else {
+    if (!nomeDigitado) { alert('Dê um nome para a meta.'); return; }
     const status = document.getElementById('metaStatus').value;
     const prazo = document.getElementById('metaPrazo').value || '';
     meta.status = status;
     meta.prazo = prazo;
-    meta.historico.push({date:now, tipo:'criacao', de:null, para:status, nota:'Meta criada' + (prazo ? ' com prazo ' + new Date(prazo+'T12:00:00').toLocaleDateString('pt-BR') : '')});
+    meta.historico.push({date:now, tipo:'criacao', de:null, para:status, nota:'Meta criada' + (prazo ? ' com prazo ' + new Date(prazo+'T12:00:00').toLocaleDateString('pt-BR') : ''), por});
   }
 
   if(db){
     const {error} = await db.from('metas').insert(meta);
-    if(error){console.error(error);alert('Erro ao salvar.');return;}
+    if(error){console.error(error);alert('Erro ao salvar: ' + error.message);return;}
   } else {
     const lista = loadLs('hub_metas',[]);
     lista.push(meta);
     saveLs('hub_metas',lista);
   }
-  createNotif({ tipo:'meta', titulo:`🎯 Nova meta: ${meta.nome}`, corpo:`${meta.empresa} · ${META_CATS[meta.categoria]||meta.categoria}${ME?' · por '+ME.nome:''}`, link_pagina:'metas', para: semMim(usuariosComAba('metas')) });
-  document.getElementById('metaNome').value='';
-  document.getElementById('metaAlvo').value='';
-  document.getElementById('metaAtual').value='';
-  document.getElementById('metaPrazo').value='';
+  createNotif({ tipo:'meta', titulo:`🎯 Nova meta: ${meta.nome}`, corpo:`${META_CATS[meta.categoria]||meta.categoria}${ME?' · por '+ME.nome:''}`, link_pagina:'metas', para: semMim(usuariosComAba('metas')) });
+  ['metaNome','metaAlvo','metaAtual','metaPrazo','metaFatAlvo'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
   renderMetas();
 }
 
@@ -7030,11 +7126,10 @@ function toggleMetaHistory(id){
   const btn = document.getElementById('meta-hist-btn-'+id);
   if(!el) return;
   el.classList.toggle('open');
-  if(btn) btn.textContent = el.classList.contains('open') ? '▾ Ocultar histórico' : '▸ Ver histórico';
+  if(btn) btn.textContent = el.classList.contains('open') ? '▾ Ocultar histórico' : `▸ Ver histórico (${btn.dataset.n})`;
 }
 
 async function saveMetaUpdate(id){
-  // Busca a meta no cache (Supabase) ou localStorage
   let lista = [];
   if(db){
     const {data,error} = await db.from('metas').select('*').eq('id',id);
@@ -7047,17 +7142,24 @@ async function saveMetaUpdate(id){
   if(!m) return;
   if(!m.historico) m.historico = [];
   const now = new Date().toISOString();
+  const por = ME ? ME.nome : '';
   const noteEl = document.getElementById('meta-note-'+id);
   const nota = noteEl ? noteEl.value.trim() : '';
 
-  if(m.tipo==='numerica'){
+  if (m.tipo === 'faturamento') {
+    const novo = parseFloat(document.getElementById('meta-input-'+id).value);
+    if (isNaN(novo) || novo <= 0) return;
+    if (novo === m.alvo && !nota) return;
+    m.historico.push({ date: now, tipo: 'alvo', de: m.alvo, para: novo, nota: nota || `Meta: ${fmt(m.alvo)} → ${fmt(novo)}`, por });
+    m.alvo = novo;
+  } else if(m.tipo==='numerica'){
     const inp = document.getElementById('meta-input-'+id);
     if(!inp) return;
     const novoAtual = parseFloat(inp.value);
     if(isNaN(novoAtual)) return;
     const anterior = m.atual;
     m.atual = novoAtual;
-    m.historico.push({date:now, tipo:'atualizacao', de:anterior, para:novoAtual, nota:nota||`Valor atualizado de ${fmt(anterior)} para ${fmt(novoAtual)}`});
+    m.historico.push({date:now, tipo:'atualizacao', de:anterior, para:novoAtual, nota:nota||`Valor atualizado de ${fmt(anterior)} para ${fmt(novoAtual)}`, por});
   } else {
     const sel = document.getElementById('meta-status-edit-'+id);
     if(!sel) return;
@@ -7068,10 +7170,11 @@ async function saveMetaUpdate(id){
     const anterior = m.status;
     m.status = novoStatus;
     m.prazo = novoPrazo;
+    if (prazoMudou) m.avisos = [];
     let notaAuto = '';
     if(novoStatus !== anterior) notaAuto += `Status: ${META_STATUS_LABELS[anterior]} → ${META_STATUS_LABELS[novoStatus]}`;
     if(prazoMudou) notaAuto += (notaAuto?' · ':'') + (novoPrazo ? 'Prazo: ' + new Date(novoPrazo+'T12:00:00').toLocaleDateString('pt-BR') : 'Prazo removido');
-    m.historico.push({date:now, tipo:'status', de:anterior, para:novoStatus, nota:nota||notaAuto});
+    m.historico.push({date:now, tipo:'status', de:anterior, para:novoStatus, nota: nota ? (notaAuto ? notaAuto + ' — ' + nota : nota) : (notaAuto || 'Comentário'), por});
   }
 
   if(db){
@@ -7085,19 +7188,16 @@ async function saveMetaUpdate(id){
 
 function renderMetaSummary(lista){
   const el = document.getElementById('metaSummary');
-  const total = lista.length;
-  const numMetas = lista.filter(m=>m.tipo==='numerica');
-  const qualMetas = lista.filter(m=>m.tipo==='qualitativa');
-  const concluidas = qualMetas.filter(m=>m.status==='concluida').length;
-  const atingidas = numMetas.filter(m=>m.alvo>0&&m.atual>=m.alvo).length;
-  const emAndamento = lista.filter(m=>(m.tipo==='qualitativa'&&m.status==='andamento')||(m.tipo==='numerica'&&m.alvo>0&&m.atual<m.alvo)).length;
+  if (!el) return;
+  const hojeMes = isoHoje().slice(0, 7);
+  const ativa = m => m.tipo === 'faturamento' ? m.periodo >= hojeMes : m.tipo === 'qualitativa' ? m.status === 'andamento' : (m.alvo > 0 && m.atual < m.alvo);
+  const atingida = m => m.tipo === 'faturamento' ? ((_metasFat[m.id] || {}).realizado || 0) >= m.alvo : m.tipo === 'qualitativa' ? m.status === 'concluida' : (m.alvo > 0 && m.atual >= m.alvo);
   const hoje = new Date(); hoje.setHours(0,0,0,0);
   const vencidas = lista.filter(m=>m.tipo==='qualitativa'&&m.status==='andamento'&&m.prazo&&new Date(m.prazo+'T12:00:00')<hoje).length;
-
   el.innerHTML = `
-    <div class="meta-summary-card"><div class="meta-summary-val">${total}</div><div class="meta-summary-label">Total de metas</div></div>
-    <div class="meta-summary-card"><div class="meta-summary-val" style="color:var(--green)">${atingidas+concluidas}</div><div class="meta-summary-label">Concluídas / Atingidas</div></div>
-    <div class="meta-summary-card"><div class="meta-summary-val" style="color:var(--blue)">${emAndamento}</div><div class="meta-summary-label">Em andamento</div></div>
+    <div class="meta-summary-card"><div class="meta-summary-val">${lista.length}</div><div class="meta-summary-label">Total de metas</div></div>
+    <div class="meta-summary-card"><div class="meta-summary-val" style="color:var(--green)">${lista.filter(atingida).length}</div><div class="meta-summary-label">Concluídas / Atingidas</div></div>
+    <div class="meta-summary-card"><div class="meta-summary-val" style="color:var(--blue)">${lista.filter(m => ativa(m) && !atingida(m)).length}</div><div class="meta-summary-label">Em andamento</div></div>
     <div class="meta-summary-card"><div class="meta-summary-val" style="color:${vencidas>0?'var(--red)':'inherit'}">${vencidas}</div><div class="meta-summary-label">Fora do prazo</div></div>
   `;
 }
@@ -7108,22 +7208,62 @@ function renderHistoryTimeline(historico){
     const d = new Date(h.date);
     const dateStr = d.toLocaleDateString('pt-BR',{day:'2-digit',month:'short'});
     const timeStr = d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-    const noteHtml = h.nota ? `<div class="meta-hist-note">${h.nota}</div>` : '';
     let desc = '';
     if(h.tipo==='criacao') desc = 'Meta criada';
     else if(h.tipo==='atualizacao') desc = `Valor: ${fmt(h.de)} → ${fmt(h.para)}`;
-    else if(h.tipo==='status') desc = `${META_STATUS_LABELS[h.de]||h.de} → ${META_STATUS_LABELS[h.para]||h.para}`;
-    else desc = h.nota||'Atualização';
+    else if(h.tipo==='alvo') desc = `Meta: ${fmt(h.de)} → ${fmt(h.para)}`;
+    else if(h.tipo==='status') desc = h.de === h.para ? 'Comentário' : `${META_STATUS_LABELS[h.de]||h.de} → ${META_STATUS_LABELS[h.para]||h.para}`;
+    else desc = 'Atualização';
+    const noteHtml = h.nota && h.nota !== desc ? `<div class="meta-hist-note">${esc(h.nota)}</div>` : '';
     return `<div class="meta-hist-item">
-      <div class="meta-hist-date">${dateStr} ${timeStr}</div>
+      <div class="meta-hist-date">${dateStr} ${timeStr}${h.por ? `<br><b style="color:${corDe(h.por)}">${esc(h.por)}</b>` : ''}</div>
       <div><div class="meta-hist-text">${desc}</div>${noteHtml}</div>
     </div>`;
   }).join('');
 }
 
-async function renderMetas(){
-  const el = document.getElementById('metasLista');
-  el.innerHTML = loadingHTML();
+// Faturamento realizado de cada meta automática (mesmos dados do Dashboard / Magis5)
+async function metaFatCalcular(lista) {
+  const fats = lista.filter(m => m.tipo === 'faturamento' && m.periodo);
+  const res = {};
+  if (!fats.length) return res;
+  const hoje = isoHoje();
+  let min = null, max = null;
+  fats.forEach(m => {
+    const [ini, fim] = metaPeriodoDatas(m.periodo);
+    if (ini > hoje) return;
+    const ate = fim > hoje ? hoje : fim;
+    if (!min || ini < min) min = ini;
+    if (!max || ate > max) max = ate;
+  });
+  if (min && typeof loadDiasCacheSupabase === 'function') {
+    if (max === hoje) delete dashCache['dia__' + hoje];
+    await loadDiasCacheSupabase(min, max);
+  }
+  fats.forEach(m => {
+    const [ini, fim] = metaPeriodoDatas(m.periodo);
+    if (ini > hoje) { res[m.id] = { futuro: true, realizado: 0, ini }; return; }
+    const ate = fim > hoje ? hoje : fim;
+    const dias = getDiasRange(ini, ate);
+    const ag = agregaPeriodo(dias, m.canal && m.canal !== 'todos' ? m.canal : 'todos');
+    const realizado = ag.totais.faturamento || 0;
+    const total = getDiasRange(ini, fim).length;
+    const r = { realizado, emCurso: fim >= hoje, total, diasComDados: ag.diasComDados };
+    if (r.emCurso) {
+      const agora = new Date();
+      const frac = Math.max(0.05, (agora.getHours() * 60 + agora.getMinutes()) / 1440);
+      const decorridos = dias.length - 1 + frac;
+      r.projecao = realizado / decorridos * total;
+      const restam = total - dias.length;              // dias inteiros depois de hoje
+      r.restam = restam;
+      r.porDia = restam > 0 ? Math.max(0, (m.alvo - realizado) / (restam + (1 - frac))) : null;
+    }
+    res[m.id] = r;
+  });
+  return res;
+}
+
+async function carregarMetas() {
   let lista = [];
   if(db){
     const {data,error} = await db.from('metas').select('*').order('created_at',{ascending:true});
@@ -7131,31 +7271,77 @@ async function renderMetas(){
   } else {
     lista = migrateMetas(loadLs('hub_metas',[]));
   }
+  _metasCache = lista;
+  try { _metasFat = await metaFatCalcular(lista); } catch (e) { console.warn('metas faturamento', e); _metasFat = {}; }
+  return lista;
+}
 
+async function renderMetas(){
+  const el = document.getElementById('metasLista');
+  if (el && !_metasCache.length) el.innerHTML = loadingHTML();
+  await carregarMetas();
+  desenharMetas();
+}
+
+function metaFatCorpoHTML(m) {
+  const f = _metasFat[m.id] || { realizado: 0 };
+  const pct = m.alvo > 0 ? Math.round(f.realizado / m.alvo * 100) : 0;
+  const cor = pct >= 100 ? 'var(--green)' : pct >= 70 ? 'var(--amber)' : 'var(--red)';
+  let rodape = '';
+  if (f.futuro) rodape = `Começa em ${fmtDataBR(f.ini)} · o valor entra sozinho conforme as vendas`;
+  else if (f.emCurso) {
+    const pp = m.alvo > 0 ? Math.round(f.projecao / m.alvo * 100) : 0;
+    rodape = `<span>No ritmo atual fecha em <strong style="color:${pp >= 100 ? 'var(--green)' : 'var(--amber)'}">${fmt(f.projecao)}</strong> (${pp}%)</span>`
+      + (pct < 100 && f.porDia != null ? `<span>Para bater: <strong>${fmt(f.porDia)}</strong> por dia até o fim do mês</span>` : '')
+      + (pct >= 100 ? '<span>🎉 Meta batida!</span>' : '');
+  } else rodape = pct >= 100 ? `<span>✓ Meta batida — fechou em ${pct}%</span>` : `<span>Fechou em ${pct}% da meta</span>`;
+  return `
+    <div class="meta-vals">
+      <div class="meta-val-item"><strong>${fmt(m.alvo)}</strong>Meta</div>
+      <div class="meta-val-item"><strong style="color:${cor}">${fmt(f.realizado)}</strong>Realizado</div>
+      <div class="meta-val-item"><strong style="color:${cor}">${pct}%</strong>Atingimento</div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width:${Math.min(100, pct)}%;background:${cor}"></div></div>
+    <div class="meta-fat-rodape">${rodape}</div>`;
+}
+
+function desenharMetas() {
+  const el = document.getElementById('metasLista');
+  if (!el) return;
+  const lista = _metasCache;
   renderMetaSummary(lista);
-
-  // Filter by category
-  let filtered = lista;
-  if(metaFilterCat!=='todas'){
-    filtered = lista.filter(m=>m.categoria===metaFilterCat);
-  }
-
+  renderMetaFiltros();
+  let filtered = metaFilterCat === 'todas' ? lista : lista.filter(m => metaCat(m) === metaFilterCat);
   if(!filtered.length){
     el.innerHTML = emptyHTML(metaFilterCat==='todas'?'Nenhuma meta cadastrada.':'Nenhuma meta nesta categoria.');
     return;
   }
+  // Mais recentes e ativas primeiro
+  const hojeMes = isoHoje().slice(0, 7);
+  const peso = m => m.tipo === 'faturamento' ? (m.periodo === hojeMes ? 0 : m.periodo > hojeMes ? 1 : 3) : (m.tipo === 'qualitativa' && m.status !== 'andamento') ? 3 : 2;
+  filtered = [...filtered].sort((a, b) => peso(a) - peso(b) || String(b.periodo || b.created_at).localeCompare(String(a.periodo || a.created_at)));
 
   el.innerHTML = filtered.map(m=>{
-    const catClass = 'cat-'+m.categoria;
-    const catLabel = META_CATS[m.categoria]||m.categoria;
-    const tipoLabel = m.tipo==='numerica'?'Numérica':'Qualitativa';
-    const histCount = (m.historico||[]).length;
-    const histHTML = renderHistoryTimeline(m.historico||[]);
+    const cat = metaCat(m);
+    const catLabel = META_CATS[cat];
+    const tipoLabel = m.tipo === 'faturamento' ? '⚡ Automática · Magis5' : m.tipo==='numerica' ? 'Numérica' : 'Qualitativa';
+    const hist = m.historico || [];
+    const ultima = hist.length ? hist[hist.length - 1] : null;
+    const histHTML = renderHistoryTimeline(hist);
+    const empresa = m.empresa && !['LOGBOX', 'Geral'].includes(m.empresa) ? `<span class="meta-empresa">${esc(m.empresa)}</span>` : '';
 
-    let bodyHTML = '';
-    let editHTML = '';
-
-    if(m.tipo==='numerica'){
+    let bodyHTML = '', editHTML = '';
+    const nota = `<textarea class="meta-edit-note" id="meta-note-${m.id}" placeholder="Comentário (opcional) — fica no histórico com seu nome" rows="1"></textarea>`;
+    const botoes = `<div style="display:flex;gap:6px;width:100%;justify-content:flex-end;margin-top:4px">
+          <button class="btn btn-primary" style="padding:7px 14px;font-size:12px" onclick="saveMetaUpdate(${m.id})">Salvar</button>
+          <button class="btn btn-ghost" style="padding:7px 10px;font-size:12px" onclick="toggleMetaEdit(${m.id})">Cancelar</button>
+        </div>`;
+    if (m.tipo === 'faturamento') {
+      bodyHTML = `<div class="meta-fat-info">${esc(META_CANAIS[m.canal] || m.canal || 'Todos os canais')} · ${metaMesLabel(m.periodo)}</div>` + metaFatCorpoHTML(m);
+      editHTML = `<span style="font-size:11px;color:var(--muted);font-weight:600;white-space:nowrap">Valor da meta (R$):</span>
+        <input class="meta-edit-input" id="meta-input-${m.id}" type="number" value="${m.alvo}" onkeydown="if(event.key==='Enter')saveMetaUpdate(${m.id})">
+        ${nota}${botoes}`;
+    } else if(m.tipo==='numerica'){
       const pctVal = Math.min(100, m.alvo>0?Math.round((m.atual/m.alvo)*100):0);
       const cor = pctVal>=100?'var(--green)':pctVal>=70?'var(--amber)':'var(--red)';
       bodyHTML = `
@@ -7165,16 +7351,12 @@ async function renderMetas(){
           <div class="meta-val-item"><strong style="color:${cor}">${pctVal}%</strong>Atingimento</div>
         </div>
         <div class="progress-bar"><div class="progress-fill" style="width:${pctVal}%;background:${cor}"></div></div>
-        <div class="progress-pct">${pctVal}% atingido</div>`;
+        <div class="progress-pct">${pctVal}% atingido · atualizado à mão</div>`;
       editHTML = `
         <span style="font-size:11px;color:var(--muted);font-weight:600;white-space:nowrap">Novo valor (R$):</span>
         <input class="meta-edit-input" id="meta-input-${m.id}" type="number" value="${m.atual}" placeholder="Valor atualizado"
           onkeydown="if(event.key==='Enter')saveMetaUpdate(${m.id})">
-        <textarea class="meta-edit-note" id="meta-note-${m.id}" placeholder="Observação (opcional)..." rows="1"></textarea>
-        <div style="display:flex;gap:6px;width:100%;justify-content:flex-end;margin-top:4px">
-          <button class="btn btn-primary" style="padding:7px 14px;font-size:12px" onclick="saveMetaUpdate(${m.id})">Salvar</button>
-          <button class="btn btn-ghost" style="padding:7px 10px;font-size:12px" onclick="toggleMetaEdit(${m.id})">Cancelar</button>
-        </div>`;
+        ${nota}${botoes}`;
     } else {
       const stClass = META_STATUS_CLASS[m.status]||'st-andamento';
       const stLabel = META_STATUS_LABELS[m.status]||m.status;
@@ -7184,7 +7366,7 @@ async function renderMetas(){
         ${prazoBadge}
       </div>`;
       editHTML = `
-        <span style="font-size:11px;color:var(--muted);font-weight:600;white-space:nowrap">Novo status:</span>
+        <span style="font-size:11px;color:var(--muted);font-weight:600;white-space:nowrap">Status:</span>
         <select class="meta-edit-select" id="meta-status-edit-${m.id}">
           <option value="andamento"${m.status==='andamento'?' selected':''}>Em andamento</option>
           <option value="concluida"${m.status==='concluida'?' selected':''}>Concluída</option>
@@ -7194,34 +7376,60 @@ async function renderMetas(){
           <span class="field-label" style="font-size:10px">Prazo</span>
           <input class="field-input" type="date" id="meta-prazo-edit-${m.id}" value="${m.prazo||''}" style="padding:6px 9px;font-size:12px">
         </div>
-        <textarea class="meta-edit-note" id="meta-note-${m.id}" placeholder="Observação (opcional)..." rows="1"></textarea>
-        <div style="display:flex;gap:6px;width:100%;justify-content:flex-end;margin-top:4px">
-          <button class="btn btn-primary" style="padding:7px 14px;font-size:12px" onclick="saveMetaUpdate(${m.id})">Salvar</button>
-          <button class="btn btn-ghost" style="padding:7px 10px;font-size:12px" onclick="toggleMetaEdit(${m.id})">Cancelar</button>
-        </div>`;
+        ${nota}${botoes}`;
     }
+    const ultLinha = ultima && ultima.tipo !== 'criacao' ? `<div class="meta-ultima">última atualização: ${ultima.por ? esc(ultima.por) + ' · ' : ''}${new Date(ultima.date).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })}${ultima.nota ? ' — ' + esc(ultima.nota.slice(0, 80)) : ''}</div>` : '';
 
-    return `<div class="meta-item">
+    return `<div class="meta-item" id="meta-${m.id}">
       <div class="meta-header">
         <div>
-          <div class="meta-nome">${m.nome}</div>
+          <div class="meta-nome">${esc(metaNome(m))}</div>
           <div class="meta-info-line">
-            <span class="meta-empresa">${m.empresa}</span>
-            <span class="meta-cat-badge ${catClass}">${catLabel}</span>
-            <span class="meta-tipo-badge">${tipoLabel}</span>
+            ${empresa}
+            <span class="meta-cat-badge cat-${cat}">${catLabel}</span>
+            <span class="meta-tipo-badge ${m.tipo === 'faturamento' ? 'auto' : ''}">${tipoLabel}</span>
           </div>
         </div>
         <div style="display:flex;gap:8px">
-          <button class="btn btn-edit" onclick="toggleMetaEdit(${m.id})">✏ Atualizar</button>
+          <button class="btn btn-edit" onclick="toggleMetaEdit(${m.id})">✏ ${m.tipo === 'faturamento' ? 'Ajustar meta' : 'Atualizar'}</button>
           <button class="btn btn-danger" onclick="deleteMeta(${m.id})">Remover</button>
         </div>
       </div>
       ${bodyHTML}
+      ${ultLinha}
       <div class="meta-edit-row" id="meta-edit-${m.id}">${editHTML}</div>
-      ${histCount>0?`
-        <div class="meta-history-toggle" id="meta-hist-btn-${m.id}" onclick="toggleMetaHistory(${m.id})">▸ Ver histórico (${histCount})</div>
+      ${hist.length>0?`
+        <div class="meta-history-toggle" id="meta-hist-btn-${m.id}" data-n="${hist.length}" onclick="toggleMetaHistory(${m.id})">▸ Ver histórico (${hist.length})</div>
         <div class="meta-history" id="meta-hist-${m.id}">${histHTML}</div>
       `:''}
+    </div>`;
+  }).join('');
+}
+
+// Metas do mês para a tela Início (só barra / status)
+function metasDoMesHTML() {
+  const hojeMes = isoHoje().slice(0, 7);
+  const fimMes = metaPeriodoDatas(hojeMes)[1];
+  const itens = _metasCache.filter(m =>
+    (m.tipo === 'faturamento' && m.periodo === hojeMes) ||
+    (m.tipo === 'numerica' && m.alvo > 0 && m.atual < m.alvo) ||
+    (m.tipo === 'qualitativa' && m.status === 'andamento' && m.prazo && m.prazo <= fimMes)).slice(0, 6);
+  if (!itens.length) return '';
+  return itens.map(m => {
+    let pct = null, dir = '';
+    if (m.tipo === 'faturamento') {
+      const f = _metasFat[m.id] || { realizado: 0 };
+      pct = m.alvo > 0 ? Math.round(f.realizado / m.alvo * 100) : 0;
+      dir = `${fmt(f.realizado)} de ${fmt(m.alvo)}${f.projecao ? ' · ritmo ' + Math.round(f.projecao / m.alvo * 100) + '%' : ''}`;
+    } else if (m.tipo === 'numerica') {
+      pct = Math.round(m.atual / m.alvo * 100);
+      dir = `${fmt(m.atual)} de ${fmt(m.alvo)}`;
+    } else dir = getPrazoBadge(m.prazo, m.status) || 'em andamento';
+    const cor = pct == null ? '' : pct >= 100 ? 'var(--green)' : pct >= 70 ? 'var(--amber)' : 'var(--red)';
+    return `<div class="ini-meta" onclick="goPage('metas')">
+      <div class="ini-meta-top"><span class="ini-meta-nome">${esc(metaNome(m))}</span>${pct != null ? `<strong style="color:${cor}">${pct}%</strong>` : ''}</div>
+      ${pct != null ? `<div class="progress-bar" style="margin:4px 0"><div class="progress-fill" style="width:${Math.min(100, pct)}%;background:${cor}"></div></div>` : ''}
+      <div class="ini-meta-sub">${dir}</div>
     </div>`;
   }).join('');
 }
@@ -7240,7 +7448,7 @@ function setupRealtime() {
       window._rtReu = setTimeout(() => {
         const a = document.activeElement;
         const digitando = a && a.closest && a.closest('#listaReunioes') && a.value;
-        if (curPage === 'reunioes' && !digitando) renderReunioes(); else loadReunioes().then(atualizarBadgesNav);
+        if (curPage === 'reunioes' && !digitando) renderReunioes(); else loadReunioes().then(() => { atualizarBadgesNav(); if (curPage === 'agenda' && !document.getElementById('modalAgenda')) desenharAgenda(); });
       }, 400);
     })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'eventos' }, () => {
@@ -7263,7 +7471,7 @@ function setupRealtime() {
       if (curPage === 'planilhas') renderPlanilhas();
     })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'metas' }, () => {
-      if (curPage === 'metas') renderMetas();
+      if (curPage === 'metas') renderMetas(); else if (curPage === 'inicio') carregarMetas().then(agendarDesenhoInicio);
     })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'desempenho' }, () => {
       if (curPage === 'desempenho') renderDesempenho();
@@ -7877,8 +8085,14 @@ async function campoFresco(id, campo) {
   return r ? (r[campo] || []) : [];
 }
 
+// Reunião que já passou e ninguém disse se aconteceu
+function reuniaoAConfirmar(r) { return r.status === 'agendada' && !!r.data && r.data < isoHoje(); }
+const R_LEMBRETES = { '': 'só o aviso do dia (9h)', '15': '15 min antes', '60': '1h antes', '1440': '1 dia antes' };
+
 function reuniaoPendenteMeu(r) {
   if (!ME || !audienciaReuniao(r).includes(ME.nome)) return false;
+  if (r.status === 'cancelada') return false;
+  if (reuniaoAConfirmar(r)) return true;
   if (r.status === 'enquete') return !((r.enquete?.opcoes) || []).some(o => (o.votos || []).includes(ME.nome));
   if (r.status === 'realizada') return false;
   return (r.data || '') >= isoHoje() && !(r.vistos || []).includes(ME.nome);
@@ -7921,6 +8135,8 @@ async function addReuniao() {
     status: 'agendada', pauta: [], decisoes: [], passoss: [],
     vistos: [ME.nome], participantes: [...rPara], importante: rImportante,
     criador: ME.nome, enquete: null,
+    lembrete_min: document.getElementById('rLembrete').value ? Number(document.getElementById('rLembrete').value) : null,
+    avisos_enviados: [],
     created_at: new Date().toISOString()
   };
   if (rModo === 'data') {
@@ -7957,6 +8173,7 @@ async function addReuniao() {
     createNotif({ tipo: 'reuniao', titulo: `${r.importante ? '⭐ Reunião importante' : '📅 Nova reunião'}: ${titulo}`,
       corpo: `${diaSemana(r.data)} ${fmtDataBR(r.data)}${r.horario ? ' às ' + r.horario : ''} · marcada por ${ME.nome}`, link_pagina: 'reunioes', para });
   }
+  document.getElementById('rLembrete').value = '';
   ['rTitulo', 'rData', 'rHorario', 'rMediador', 'rOpData0', 'rOpHora0', 'rOpData1', 'rOpHora1', 'rOpData2', 'rOpHora2']
     .forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
   rPara.clear(); rImportante = false; rModo = 'data';
@@ -8040,7 +8257,7 @@ async function definirHorario(id, idx) {
   }
   const remarcando = r.status !== 'enquete';
   if (!confirm(`${remarcando ? 'Remarcar' : 'Marcar'} "${r.titulo}" para ${diaSemana(data)} ${fmtDataBR(data)}${horario ? ' às ' + horario : ''}?`)) return;
-  const campos = { status: 'agendada', data, horario, vistos: [ME.nome] };
+  const campos = { status: 'agendada', data, horario, vistos: [ME.nome], avisos_enviados: [] };
   if (r.enquete) campos.enquete = Object.assign({}, r.enquete, { aberta: false, definida: { data, horario } });
   if (!await atualizarReuniao(id, campos)) return;
   createNotif({
@@ -8094,9 +8311,21 @@ async function reenviarNotifReuniao(id) {
 async function marcarRealizada(id) {
   const r = reunioesData.find(x => x.id === id);
   if (!r) return;
-  await atualizarReuniao(id, { status: r.status === 'realizada' ? 'agendada' : 'realizada' });
-  rerenderCard(id, true);
+  await atualizarReuniao(id, { status: (r.status === 'realizada' || r.status === 'cancelada') ? 'agendada' : 'realizada' });
+  renderReunioes();
   atualizarBadgesNav();
+}
+// Fecha uma reunião que já passou: realizada ou não aconteceu
+async function reuniaoFechar(id, status) {
+  if (!await atualizarReuniao(id, { status })) return;
+  renderReunioes();
+  atualizarBadgesNav();
+}
+async function reuniaoLembrete(id, valor) {
+  const r = reunioesData.find(x => x.id === id); if (!r) return;
+  const lembrete_min = valor ? Number(valor) : null;
+  await atualizarReuniao(id, { lembrete_min, avisos_enviados: (r.avisos_enviados || []).filter(a => a !== 'lembrete') });
+  rerenderCard(id, true);
 }
 async function deleteReuniao(id) {
   if (!confirm('Remover esta reunião? Pauta e decisões somem junto.')) return;
@@ -8150,15 +8379,19 @@ function buildReuniaoCard(r, open) {
     badgeData = `<div class="reuniao-data-badge"><div class="reuniao-data-dia">${dia}</div><div class="reuniao-data-mes">${mes}</div></div>`;
   }
 
+  const aConfirmar = reuniaoAConfirmar(r);
   const statusBadge = enq
     ? '<span class="reuniao-status-enquete">🗳 Enquete</span>'
     : r.status === 'realizada'
       ? '<span class="reuniao-status-realizada">✓ Realizada</span>'
-      : '<span class="reuniao-status-agendada">● Agendada</span>';
+      : r.status === 'cancelada'
+        ? '<span class="reuniao-status-cancelada">✗ Não aconteceu</span>'
+        : aConfirmar ? '<span class="reuniao-status-confirmar">? A confirmar</span>'
+        : '<span class="reuniao-status-agendada">● Agendada</span>';
 
   const linhaQuando = enq
     ? `${opcoes.length} opções de horário · votação aberta`
-    : `${diaSemana(r.data)} ${dataFmt}${horaStr}`;
+    : `${diaSemana(r.data)} ${dataFmt}${horaStr}${r.status === 'agendada' && !aConfirmar && r.lembrete_min ? ' · ⏰ ' + (R_LEMBRETES[String(r.lembrete_min)] || r.lembrete_min + ' min antes') : ''}`;
   const linhaQuem = [
     r.criador ? 'criada por ' + esc(r.criador) : '',
     (r.participantes || []).length ? '🔒 ' + esc(aud.join(', ')) : 'todos',
@@ -8220,7 +8453,7 @@ function buildReuniaoCard(r, open) {
       </div>`
     : '<div style="font-size:12px;color:var(--muted);padding:6px 0">Nenhuma decisão registrada ainda. Elas também aparecem no Mural de decisões.</div>';
 
-  const passosAntigos = (r.passoss || []).length ? `<div class="reuniao-section">
+  const passosAntigos = false ? `<div class="reuniao-section">
       <div class="reuniao-section-title">Próximos passos (registro antigo)</div>
       ${(r.passoss || []).map((p, i) => `<div class="passo-item">
         <div class="passo-check ${p.feito ? 'done' : ''}" onclick="togglePasso(${r.id},${i})">${p.feito ? '✓' : ''}</div>
@@ -8274,10 +8507,14 @@ function buildReuniaoCard(r, open) {
       <div class="reuniao-badges">
         ${r.importante ? '<span class="reuniao-imp">⭐ Importante</span>' : ''}
         ${statusBadge}
-        ${pendente ? `<span class="reuniao-pendentes">${enq ? 'falta seu voto' : 'confirme ciência'}</span>` : ''}
+        ${pendente ? `<span class="reuniao-pendentes">${enq ? 'falta seu voto' : aConfirmar ? 'falta fechar' : 'confirme ciência'}</span>` : ''}
       </div>
       <span class="reuniao-toggle ${open ? 'open' : ''}" id="rtoggle-${r.id}">▾</span>
     </div>
+    ${aConfirmar ? `<div class="reu-aconteceu">
+      <span>🤔 Essa reunião já passou. Ela aconteceu?</span>
+      ${souAud ? `<span style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn btn-ciente" onclick="reuniaoFechar(${r.id},'realizada')">✓ Foi realizada</button><button class="btn btn-ghost" onclick="reuniaoFechar(${r.id},'cancelada')">✗ Não aconteceu</button></span>` : ''}
+    </div>` : ''}
     <div class="reuniao-body ${open ? 'open' : ''}" id="rbody-${r.id}">
       ${enqueteHTML}
 
@@ -8300,12 +8537,15 @@ function buildReuniaoCard(r, open) {
       </div>
 
       ${passosAntigos}
+      ${souAud && r.status === 'agendada' && !aConfirmar ? `<div class="reu-lembrete">⏰ Lembrete:
+        <select class="field-input" onchange="reuniaoLembrete(${r.id},this.value)">${Object.entries(R_LEMBRETES).map(([k, l]) => `<option value="${k}" ${String(r.lembrete_min ?? '') === k ? 'selected' : ''}>${k ? '+ ' + l : l}</option>`).join('')}</select>
+        <small>vale para todos da reunião</small></div>` : ''}
       ${cienteHTML}
       ${remarcarHTML}
 
       ${((souAud && !enq) || podeRemover) ? `<div class="reuniao-footer">
         <div style="display:flex;gap:8px;flex-wrap:wrap">
-          ${souAud && !enq ? `<button class="btn btn-ghost" onclick="marcarRealizada(${r.id})">${r.status === 'realizada' ? '↺ Reabrir reunião' : '✓ Marcar como realizada'}</button>` : ''}
+          ${souAud && !enq && !aConfirmar ? `<button class="btn btn-ghost" onclick="marcarRealizada(${r.id})">${(r.status === 'realizada' || r.status === 'cancelada') ? '↺ Reabrir reunião' : '✓ Marcar como realizada'}</button>` : ''}
           ${souCriador && !enq && r.status !== 'realizada' ? `<button class="btn btn-ghost" onclick="toggleRemarcar(${r.id})">🔁 Remarcar</button>` : ''}
         </div>
         ${podeRemover ? `<button class="btn btn-danger" onclick="deleteReuniao(${r.id})">Remover reunião</button>` : ''}
@@ -8320,29 +8560,45 @@ async function renderReunioes() {
   atualizarBadgesNav();
   const el = document.getElementById('listaReunioes');
   if (!el) return;
+  desenharReunioes();
+}
+
+let reuVerPassadas = false;
+let reuDestacar = null;
+function desenharReunioes() {
+  const el = document.getElementById('listaReunioes');
+  if (!el) return;
   const hoje = isoHoje();
-  const grupo = r => {
-    if (reuniaoPendenteMeu(r)) return 0;
-    if (r.status === 'enquete') return 1;
-    if (r.status === 'realizada') return 4;
-    return (r.data || '') >= hoje ? 2 : 3;
-  };
-  const sorted = [...reunioesData].sort((a, b) => {
-    const ga = grupo(a), gb = grupo(b);
-    if (ga !== gb) return ga - gb;
-    if (ga <= 2) {
-      if (!!b.importante !== !!a.importante && (a.data || '') === (b.data || '')) return b.importante ? 1 : -1;
-      return (a.data || '').localeCompare(b.data || '') || (a.horario || '').localeCompare(b.horario || '');
-    }
-    return (b.data || '').localeCompare(a.data || '');
-  });
-  if (!sorted.length) {
-    el.innerHTML = emptyHTML('Nenhuma reunião ainda. Crie a primeira acima.');
-    return;
-  }
-  // Mantém abertos os cards que estavam abertos
+  const porData = (a, b) => (a.data || '').localeCompare(b.data || '') || (a.horario || '').localeCompare(b.horario || '');
+  const fechar = reunioesData.filter(reuniaoAConfirmar).sort(porData).reverse();
+  const enquetes = reunioesData.filter(r => r.status === 'enquete').sort(porData);
+  const proximas = reunioesData.filter(r => r.status === 'agendada' && (r.data || '') >= hoje)
+    .sort((a, b) => ((a.data === b.data && !!b.importante !== !!a.importante) ? (b.importante ? 1 : -1) : 0) || porData(a, b));
+  let passadas = reunioesData.filter(r => r.status === 'realizada' || r.status === 'cancelada').sort(porData).reverse();
+  const q = ((document.getElementById('reuBusca') || {}).value || '').trim().toLowerCase();
+  if (q) passadas = passadas.filter(r => [r.titulo, ...(r.pauta || []), ...(r.decisoes || []), ...decisoesDaReuniao(r.id).map(d => d.texto)].join(' ').toLowerCase().includes(q));
+  if (reuDestacar && reunioesData.some(r => r.id === reuDestacar && (r.status === 'realizada' || r.status === 'cancelada'))) reuVerPassadas = true;
+
+  if (!reunioesData.length) { el.innerHTML = emptyHTML('Nenhuma reunião ainda. Crie a primeira acima.'); return; }
   const abertos = new Set([...el.querySelectorAll('.reuniao-body.open')].map(b => b.id.replace('rbody-', '')));
-  el.innerHTML = sorted.map(r => buildReuniaoCard(r, abertos.has(String(r.id)))).join('');
+  if (reuDestacar) abertos.add(String(reuDestacar));
+  const card = r => buildReuniaoCard(r, abertos.has(String(r.id)));
+  const sec = (tit, sub, lista) => lista.length ? `<div class="reu-sec">${tit}<small>${sub}</small></div>${lista.map(card).join('')}` : '';
+  const totalPassadas = reunioesData.filter(r => r.status === 'realizada' || r.status === 'cancelada').length;
+
+  el.innerHTML =
+    sec('🤔 Aconteceu?', 'reuniões que já passaram e ninguém fechou', fechar) +
+    sec('🗳 Enquetes de horário', 'votação aberta', enquetes) +
+    (proximas.length ? sec('📅 Próximas', '', proximas) : `<div class="reu-sec">📅 Próximas</div><div class="reu-vazio">Nenhuma reunião marcada.</div>`) +
+    (totalPassadas ? `<div class="reu-sec reu-sec-tog" onclick="reuVerPassadas=!reuVerPassadas;desenharReunioes()">${reuVerPassadas ? '▾' : '▸'} Passadas (${totalPassadas})<small>realizadas e as que não aconteceram</small></div>
+      ${reuVerPassadas ? `<input class="field-input reu-busca" id="reuBusca" placeholder="🔍 Buscar por título, pauta ou decisão…" value="${esc(q)}" oninput="clearTimeout(window._reuBT);window._reuBT=setTimeout(()=>{desenharReunioes();const i=document.getElementById('reuBusca');if(i){i.focus();i.selectionStart=i.selectionEnd=i.value.length;}},250)">
+        ${passadas.length ? passadas.map(card).join('') : '<div class="reu-vazio">Nada encontrado.</div>'}` : ''}` : '');
+
+  if (reuDestacar) {
+    const alvo = document.getElementById('rcard-' + reuDestacar);
+    reuDestacar = null;
+    if (alvo) { alvo.scrollIntoView({ block: 'center', behavior: 'smooth' }); alvo.classList.add('cv-flash'); setTimeout(() => alvo.classList.remove('cv-flash'), 2200); }
+  }
 }
 
 // ── BANNER DE CONFIGURAÇÃO ──
@@ -8789,6 +9045,7 @@ async function sendPushNotification(notif) {
 
 // ── Verificação de prazos de metas ──
 async function checkMetasPrazos() {
+  return; // os avisos de prazo das metas agora saem pelo servidor (3 dias antes e no dia, 9h), para todos com a aba
   if (!db) return;
   try {
     const { data, error } = await db.from('metas').select('*').eq('status', 'andamento');
