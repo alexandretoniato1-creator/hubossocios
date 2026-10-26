@@ -1143,6 +1143,71 @@ select.field-input{cursor:pointer}
 .cv-arq .btn{font-size:11px;padding:4px 10px}
 .cv-arq-lista{display:flex;flex-direction:column;gap:6px;max-height:60vh;overflow-y:auto}
 .cv-arq-lista .cv-arq{max-width:none}
+/* ── Comunicados v2 ── */
+.com-tools{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:8px}
+.com-tool{display:inline-flex;align-items:center;gap:4px;font-size:12px;border:1.5px solid var(--border);border-radius:5px;padding:4px 10px;cursor:pointer;user-select:none;background:var(--surface)}
+.com-tool:hover{border-color:var(--text)}
+.com-tool.on{background:var(--text);color:var(--bg);border-color:var(--text)}
+.com-tools .cv-cam{display:none}
+@media (pointer:coarse){.com-tools .cv-cam{display:inline-flex}}
+.com-dica{font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-left:4px}
+.com-rasc{font-size:10px;color:var(--green);font-family:'IBM Plex Mono',monospace;margin-left:auto}
+#comFila{margin-top:8px}
+.cv-fila-chip.novo{border-color:var(--green)}
+.com-enq-box{margin-top:10px;border:1.5px dashed var(--border2);border-radius:6px;padding:10px 12px}
+.com-enq-op{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.com-enq-op input{flex:1;font-size:13px;padding:7px 10px}
+.com-enq-op a{color:var(--red);text-decoration:none;font-weight:700;padding:0 4px}
+.com-add-op{font-size:12px;color:var(--blue)}
+.com-check{display:inline-flex;align-items:center;gap:6px;font-size:12px;cursor:pointer}
+.com-check small{color:var(--muted);font-size:11px}
+.com-pede-dica{font-size:11px;color:var(--red);font-family:'IBM Plex Mono',monospace;margin-top:6px;min-height:0}
+.com-pede-dica:empty{display:none}
+.com-busca{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap}
+.com-busca .field-input{font-size:12px;padding:6px 10px}
+.com-busca input{width:240px}
+.com-acoes{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.com-acoes .btn{font-size:11px;padding:5px 12px}
+.com-quando{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-top:6px}
+.com-anexos{margin-top:10px}
+.post-texto.cv-texto{font-size:14px}
+.com-enq{margin-top:10px;display:flex;flex-direction:column;gap:6px;max-width:560px}
+.com-enq-linha{position:relative;display:flex;align-items:center;gap:8px;border:1.5px solid var(--border);border-radius:6px;padding:8px 10px;overflow:hidden;font-size:13px;background:var(--surface)}
+.com-enq-linha.clicavel{cursor:pointer}
+.com-enq-linha.clicavel:hover{border-color:var(--text)}
+.com-enq-linha.meu{border-color:var(--blue)}
+.com-enq-linha.vence{border-color:var(--green)}
+.com-enq-bar{position:absolute;left:0;top:0;bottom:0;background:var(--blue-bg);z-index:0;transition:width .3s}
+.com-enq-linha.vence .com-enq-bar{background:var(--green-bg)}
+.com-enq-linha > span{position:relative;z-index:1}
+.com-enq-radio{color:var(--blue);width:14px}
+.com-enq-txt{flex:1;min-width:0}
+.com-enq-quem{display:flex;gap:3px}
+.com-enq-quem b{font-size:10px;font-family:'IBM Plex Mono',monospace;border:1.5px solid currentColor;border-radius:50%;width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center}
+.com-enq-n{font-family:'IBM Plex Mono',monospace;font-weight:700;min-width:16px;text-align:right}
+.com-enq-rod{font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace}
+.com-enq-rod a{color:var(--blue)}
+.com-enq.encerrada .com-enq-radio{color:var(--muted)}
+.com-arq-tog{margin:18px 0 8px;font-size:12px;font-weight:700;cursor:pointer;color:var(--muted);user-select:none}
+.com-arq-tog small{font-weight:400;font-family:'IBM Plex Mono',monospace;font-size:10px;margin-left:6px}
+.com-arq-lista{opacity:.85}
+.com-vazio-ativos{color:var(--muted);font-size:13px;padding:14px 4px}
+.post-item.cv-flash{animation:cvflash 2.2s ease}
+.cv-quote-com{border-left-color:var(--amber)}
+.urg-banner{display:flex;align-items:center;gap:10px;background:rgba(184,50,50,.08);border:1.5px solid var(--red);border-radius:6px;padding:8px 12px;margin:-12px 0 18px}
+.urg-banner.hidden{display:none}
+.urg-ic{font-size:18px}
+.urg-txt{flex:1;min-width:0;font-size:13px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.urg-txt strong{color:var(--red)}
+.urg-banner .btn{font-size:11px;padding:5px 10px;white-space:nowrap}
+@media(max-width:768px){
+  .com-busca{margin-left:0;width:100%}
+  .com-busca input{flex:1;width:auto;min-width:0}
+  .com-dica{display:none}
+  .urg-banner{margin:0 0 14px;flex-wrap:wrap}
+  .urg-txt{white-space:normal;flex-basis:100%}
+  .post-actions{flex-wrap:wrap;gap:8px}
+}
 /* ── Conversas v2 ── */
 .notif-dnd{padding:8px 20px;border-top:none;border-bottom:0}
 .notif-dnd + .notif-footer{border-top:1.5px solid var(--border)}
@@ -1345,6 +1410,7 @@ select.field-input{cursor:pointer}
 
 <!-- MAIN -->
 <div class="main">
+  <div id="urgBanner" class="urg-banner hidden"></div>
   <div id="subTabs" class="subtabs hidden"></div>
 
   <!-- DASHBOARD -->
@@ -1531,18 +1597,36 @@ select.field-input{cursor:pointer}
       <button class="post-filter-pill" data-f="direcionados" onclick="filterPosts('direcionados')">🔒 Direcionados</button>
       <button class="post-filter-pill" data-f="urgente" onclick="filterPosts('urgente')">Urgentes</button>
       <button class="post-filter-pill" data-f="importante" onclick="filterPosts('importante')">Importantes</button>
+      <button class="post-filter-pill" data-f="enquetes" onclick="filterPosts('enquetes')">📊 Enquetes</button>
+      <div class="com-busca">
+        <input class="field-input" id="comBusca" placeholder="🔍 Buscar texto, autor ou arquivo…" oninput="clearTimeout(window._comBuscaT);window._comBuscaT=setTimeout(desenharPosts,250)">
+        <select class="field-input" id="comPeriodo" onchange="desenharPosts()"><option value="0">Qualquer data</option><option value="7">Últimos 7 dias</option><option value="30">Últimos 30 dias</option><option value="90">Últimos 90 dias</option><option value="365">Último ano</option></select>
+      </div>
     </div>
 
     <!-- FORMULÁRIO -->
     <div class="box">
       <div class="box-title" style="margin-bottom:14px">Novo comunicado</div>
       <div class="post-form">
-        <textarea class="post-input" id="postTexto" placeholder="Escreva um aviso, resultado, decisão ou atualização..."></textarea>
+        <textarea class="post-input" id="postTexto" placeholder="Escreva um aviso, resultado, decisão ou atualização..." oninput="comSalvarRascunho()" onpaste="comColar(event)"></textarea>
+        <div class="com-tools">
+          <label class="com-tool" title="Anexar arquivos (até 50 MB cada)">📎 Anexar<input type="file" id="comFile" multiple hidden onchange="comSelecionarArquivos(this.files)"></label>
+          <label class="com-tool cv-cam" title="Tirar foto">📷 Foto<input type="file" id="comCam" accept="image/*" capture="environment" hidden onchange="comSelecionarArquivos(this.files)"></label>
+          <span class="com-tool" id="comBtnEnq" onclick="comToggleEnquete()">📊 Enquete</span>
+          <span class="com-dica">*negrito* _itálico_ - lista · Ctrl+V cola print</span>
+          <span class="com-rasc" id="comRascSt"></span>
+        </div>
+        <div class="cv-anexos-fila hidden" id="comFila"></div>
+        <div class="com-enq-box hidden" id="comEnqBox">
+          <div class="field-label" style="margin-bottom:6px">Opções da enquete (cada um vota em uma · votar já conta como ciência)</div>
+          <div id="comEnqOps"></div>
+          <a href="#" id="comBtnAddOp" class="com-add-op" onclick="event.preventDefault();comAddOpcao('');comSalvarRascunho()">+ adicionar opção</a>
+        </div>
         <div class="para-row"><span class="field-label" style="margin:0">Para</span><div id="postParaChips" class="para-chips"></div></div>
         <div class="post-row">
           <div class="field-group" style="min-width:140px">
             <span class="field-label">Prioridade</span>
-            <select class="field-input" id="postPrioridade" style="font-size:12px;padding:9px 10px">
+            <select class="field-input" id="postPrioridade" style="font-size:12px;padding:9px 10px" onchange="comPrioMudou()">
               <option value="informativo">Informativo</option>
               <option value="importante">Importante</option>
               <option value="urgente">Urgente</option>
@@ -1550,7 +1634,7 @@ select.field-input{cursor:pointer}
           </div>
           <div class="field-group" style="min-width:140px">
             <span class="field-label">Categoria</span>
-            <select class="field-input" id="postCategoria" style="font-size:12px;padding:9px 10px">
+            <select class="field-input" id="postCategoria" style="font-size:12px;padding:9px 10px" onchange="comSalvarRascunho()">
               <option value="geral">Geral</option>
               <option value="operacional">Operacional</option>
               <option value="financeiro">Financeiro</option>
@@ -1559,8 +1643,10 @@ select.field-input{cursor:pointer}
               <option value="rh">RH</option>
             </select>
           </div>
+          <label class="com-check" style="align-self:end;margin-bottom:9px"><input type="checkbox" id="postPedeCiencia" checked onchange="comSalvarRascunho()"> Pedir ciência de todos</label>
           <button class="btn btn-primary" id="btnPublicar" onclick="addPost()" style="align-self:end">Publicar</button>
         </div>
+        <div class="com-pede-dica" id="comPedeDica"></div>
       </div>
     </div>
     <div id="postsLista"></div>
@@ -2307,6 +2393,7 @@ function atualizarBadgesNav() {
   setNavCount('conversas', podeVer('conversas') ? cvContadorMenu() : 0);
   setNavCount('decisoes', podeVer('decisoes') ? decisoesData.filter(decPendenteMinha).length : 0);
   if (typeof agendarDesenhoInicio === 'function') agendarDesenhoInicio();
+  renderUrgBanner();
 }
 async function carregarPendencias() {
   if (!ME) return;
@@ -2808,6 +2895,10 @@ function goPage(p) {
   if (typeof p === 'string' && p.includes(':')) {
     const [pg, arg] = p.split(':');
     if (pg === 'conversas' && arg) { cvPendente = Number(arg); if (curPage === 'conversas' && podeVer('conversas')) { cvAbrir(cvPendente); cvPendente = null; return; } }
+    if (pg === 'comunicados' && arg) {
+      comDestacar = Number(arg);
+      if (curPage === 'comunicados' && podeVer('comunicados')) { desenharPosts(); return; }
+    }
     p = pg;
   }
   if (ME && !podeVer(p)) { const alt = primeiraAbaPermitida(); if (!alt || alt === p) return; p = alt; }
@@ -2831,6 +2922,7 @@ function goPage(p) {
   if(p==='agenda') renderAgenda();
   if(p==='decisoes') renderDecisoes();
   if(p==='anotacoes') renderAnotacoes();
+  renderUrgBanner();
 }
 
 function dTab(btn, id) {
@@ -3819,9 +3911,15 @@ let SOCIOS = ['Ale','Marcelo','Wissam','Lucas'];
 let SOCIO_COLORS = {'Ale':'#2563eb','Marcelo':'#10b981','Wissam':'#a855f7','Lucas':'#f59e0b'};
 const PRIO_LABELS = {'urgente':'Urgente','importante':'Importante','informativo':'Informativo'};
 const POST_CAT_LABELS = {'geral':'Geral','operacional':'Operacional','financeiro':'Financeiro','marketplace':'Marketplace','importacao':'Importação','rh':'RH'};
+const COM_ARQUIVA_DIAS = 30;
 let postFilterMode = 'todos';
 let postPara = new Set();
 let _postsCache = [];
+let comFila = [];            // arquivos esperando o "Publicar"
+let comEnqOn = false;        // formulário com enquete
+let comVerArquivados = false;
+let comDestacar = null;      // comunicado a destacar ao abrir (vindo das Conversas/faixa)
+let _comRascTimer = null, _comRascRestaurado = false;
 
 function migratePosts(posts){
   let changed = false;
@@ -3838,6 +3936,7 @@ function migratePosts(posts){
 function postParaToggle(n){
   if(!n) postPara.clear(); else postPara.has(n) ? postPara.delete(n) : postPara.add(n);
   renderParaChips('postParaChips', postPara, 'comunicados', 'postParaToggle');
+  comSalvarRascunho();
 }
 
 function filterPosts(mode){
@@ -3846,16 +3945,28 @@ function filterPosts(mode){
   desenharPosts();
 }
 
+function comPedeCiencia(p){ return p.pede_ciencia !== false; }
 // Eu preciso dar ciência? (estou na audiência, não sou o autor e ainda não marquei)
 function postPendenteMeu(p){
-  if(!ME) return false;
+  if(!ME || !comPedeCiencia(p)) return false;
   return p.autor!==ME.nome && audienciaPost(p).includes(ME.nome) && !(p.lidos||[]).includes(ME.nome);
 }
 // Quem ainda não deu ciência (fora o autor)
 function postFaltam(p){
+  if(!comPedeCiencia(p)) return [];
   const l = p.lidos||[];
   return audienciaPost(p).filter(n=>n!==p.autor && !l.includes(n));
 }
+// Tira os marcadores de formatação (*negrito*, _itálico_…) dos resumos de uma linha
+function semMarcadores(t){
+  return String(t || '').replace(/(^|[\s(])[*_~`]+(?=\S)/g, '$1').replace(/(\S)[*_~`]+(?=$|[\s).,!?:;])/g, '$1').replace(/^\s*[-•]\s+/gm, '• ');
+}
+function comResumo(p, n){
+  n = n || 90;
+  const t = semMarcadores(p.texto).replace(/\s+/g,' ').trim();
+  return t.slice(0,n) + (t.length>n?'…':'') + ((p.anexos||[]).length ? ` 📎${p.anexos.length}` : '');
+}
+function comDataHora(iso){ return new Date(iso).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}).replace(',',''); }
 
 async function marcarCiente(id, ciente){
   if(db){
@@ -3867,10 +3978,134 @@ async function marcarCiente(id, ciente){
     const l = new Set(p.lidos||[]);
     ciente ? l.add(ME.nome) : l.delete(ME.nome);
     p.lidos = [...l];
+    p.ciencias = Object.assign({}, p.ciencias||{});
+    if(ciente) p.ciencias[ME.nome] = new Date().toISOString(); else delete p.ciencias[ME.nome];
     if(!db) saveLs('hub_posts',_postsCache);
   }
   desenharPosts();
   atualizarBadgesNav();
+}
+
+// ── Formulário: anexos, colar print, enquete, pedir ciência, rascunho ──
+function comSelecionarArquivos(files){
+  const novos = [...files];
+  const grandes = novos.filter(f => f.size > CV_MAX_ARQ);
+  if (grandes.length) alert(`Acima de 50 MB (não dá para enviar): ${grandes.map(f => f.name).join(', ')}`);
+  comFila = [...comFila, ...novos.filter(f => f.size <= CV_MAX_ARQ)];
+  ['comFile','comCam'].forEach(id => { const i = document.getElementById(id); if (i) i.value = ''; });
+  comRenderFila();
+}
+function comColar(e){
+  const dt = e.clipboardData; if (!dt) return;
+  const arquivos = [...(dt.items||[])].filter(i => i.kind === 'file').map(i => i.getAsFile()).filter(Boolean);
+  if (!arquivos.length || (dt.getData('text/plain')||'').trim()) return;
+  e.preventDefault();
+  comSelecionarArquivos(arquivos.map(f => (f.name && !/^image\.\w+$/i.test(f.name)) ? f
+    : new File([f], `print-${cvCarimbo()}.${((f.type||'image/png').split('/')[1]||'png').replace('jpeg','jpg')}`, { type: f.type || 'image/png' })));
+}
+function comRemoverDaFila(i){ comFila.splice(i,1); comRenderFila(); }
+function comRenderFila(){
+  const el = document.getElementById('comFila'); if (!el) return;
+  el.classList.toggle('hidden', !comFila.length);
+  el.innerHTML = comFila.map((f,i) => {
+    if (!f._thumb && /^image\//.test(f.type||'')) { try { f._thumb = URL.createObjectURL(f); } catch(e) {} }
+    return `<span class="cv-fila-chip">${f._thumb ? `<img src="${f._thumb}" alt="">` : docIcone(f.name)} <span>${esc(f.name)}</span> <small>${docTamanho(f.size)}</small><a href="#" onclick="event.preventDefault();comRemoverDaFila(${i})">×</a></span>`;
+  }).join('');
+}
+async function comSubirArquivos(postId, lista, btn){
+  const anexos = [];
+  try {
+    for (let i = 0; i < lista.length; i++) {
+      if (btn) btn.textContent = `Enviando ${i+1}/${lista.length}…`;
+      const f = await cvComprimir(lista[i]);
+      const caminho = `${postId}/${ME.id}/${Date.now()}-${docNomeSeguro(f.name)}`;
+      const up = await db.storage.from('comunicados').upload(caminho, f, { contentType: f.type || 'application/octet-stream', upsert: false });
+      if (up.error) throw new Error(`${f.name}: ${up.error.message}`);
+      anexos.push({ caminho, nome: f.name, tamanho: f.size, tipo: f.type || '' });
+    }
+  } catch (e) {
+    if (anexos.length) await db.storage.from('comunicados').remove(anexos.map(a => a.caminho));
+    throw e;
+  }
+  return anexos;
+}
+
+function comToggleEnquete(on){
+  comEnqOn = on === undefined ? !comEnqOn : on;
+  const box = document.getElementById('comEnqBox');
+  box.classList.toggle('hidden', !comEnqOn);
+  document.getElementById('comBtnEnq').classList.toggle('on', comEnqOn);
+  if (comEnqOn && !box.querySelectorAll('.com-enq-op').length) { comAddOpcao(''); comAddOpcao(''); }
+  document.getElementById('postTexto').placeholder = comEnqOn ? 'Escreva a pergunta da enquete…' : 'Escreva um aviso, resultado, decisão ou atualização...';
+  comSalvarRascunho();
+}
+function comAddOpcao(valor){
+  const lista = document.getElementById('comEnqOps');
+  if (lista.children.length >= 6) return;
+  const d = document.createElement('div');
+  d.className = 'com-enq-op';
+  d.innerHTML = `<input class="field-input" maxlength="120" placeholder="Opção ${lista.children.length+1}" oninput="comSalvarRascunho()"><a href="#" title="Remover opção" onclick="event.preventDefault();this.parentNode.remove();comSalvarRascunho()">×</a>`;
+  d.querySelector('input').value = valor || '';
+  lista.appendChild(d);
+  document.getElementById('comBtnAddOp').classList.toggle('hidden', lista.children.length >= 6);
+}
+function comOpcoesForm(){ return [...document.querySelectorAll('#comEnqOps input')].map(i => i.value.trim()); }
+function comPrioMudou(){
+  const urg = document.getElementById('postPrioridade').value === 'urgente';
+  const chk = document.getElementById('postPedeCiencia');
+  if (urg) chk.checked = true;
+  chk.disabled = urg;
+  document.getElementById('comPedeDica').textContent = urg ? 'urgente sempre pede ciência · o hub lembra sozinho quem faltar (4h e 24h depois)' : '';
+  comSalvarRascunho();
+}
+
+function comChaveRascunho(){ return 'hub_com_rascunho_' + (ME ? ME.id : 'x'); }
+let _comRestaurando = false;
+function comSalvarRascunho(){
+  if (_comRestaurando) return;
+  clearTimeout(_comRascTimer);
+  _comRascTimer = setTimeout(() => {
+    const t = document.getElementById('postTexto'); if (!t) return;
+    const r = {
+      texto: t.value, prioridade: document.getElementById('postPrioridade').value,
+      categoria: document.getElementById('postCategoria').value, para: [...postPara],
+      pede: document.getElementById('postPedeCiencia').checked, enq: comEnqOn, opcoes: comOpcoesForm()
+    };
+    const vazio = !r.texto.trim() && !r.para.length && !r.enq;
+    saveLs(comChaveRascunho(), vazio ? null : r);
+    const st = document.getElementById('comRascSt');
+    if (st) st.textContent = vazio ? '' : '✓ rascunho salvo';
+  }, 400);
+}
+function comRestaurarRascunho(){
+  if (_comRascRestaurado) return;
+  _comRascRestaurado = true;
+  const r = loadLs(comChaveRascunho(), null);
+  if (!r) return;
+  _comRestaurando = true;
+  document.getElementById('postTexto').value = r.texto || '';
+  if (r.prioridade) document.getElementById('postPrioridade').value = r.prioridade;
+  if (r.categoria) document.getElementById('postCategoria').value = r.categoria;
+  postPara = new Set((r.para || []).filter(n => usuariosComAba('comunicados').includes(n)));
+  renderParaChips('postParaChips', postPara, 'comunicados', 'postParaToggle');
+  document.getElementById('postPedeCiencia').checked = r.pede !== false;
+  if (r.enq) { document.getElementById('comEnqOps').innerHTML = ''; (r.opcoes && r.opcoes.length ? r.opcoes : ['', '']).forEach(comAddOpcao); comToggleEnquete(true); }
+  comPrioMudou();
+  _comRestaurando = false;
+  const st = document.getElementById('comRascSt'); if (st) st.textContent = '✓ rascunho recuperado';
+}
+function comLimparForm(){
+  document.getElementById('postTexto').value = '';
+  postPara.clear(); renderParaChips('postParaChips', postPara, 'comunicados', 'postParaToggle');
+  document.getElementById('postPrioridade').value = 'informativo';
+  document.getElementById('postPedeCiencia').checked = true;
+  document.getElementById('comEnqOps').innerHTML = '';
+  comToggleEnquete(false);
+  comFila = []; comRenderFila();
+  comPrioMudou();
+  clearTimeout(_comRascTimer);
+  saveLs(comChaveRascunho(), null);
+  const st = document.getElementById('comRascSt'); if (st) st.textContent = '';
 }
 
 async function addPost(){
@@ -3878,38 +4113,70 @@ async function addPost(){
   const autor = ME ? ME.nome : 'Sócio';
   const prioridade = document.getElementById('postPrioridade').value;
   const categoria = document.getElementById('postCategoria').value;
-  if(!texto) return;
+  const pede_ciencia = prioridade === 'urgente' || document.getElementById('postPedeCiencia').checked;
+  if(!texto && !comFila.length) return;
+  let enquete = null;
+  if (comEnqOn) {
+    const ops = comOpcoesForm().filter(Boolean);
+    if (!texto) { alert('Escreva a pergunta da enquete.'); return; }
+    if (ops.length < 2) { alert('A enquete precisa de pelo menos 2 opções.'); return; }
+    enquete = { opcoes: ops.map(t => ({ texto: t, votos: [] })), encerrada: false };
+  }
   const btn = document.getElementById('btnPublicar');
   btn.disabled=true; btn.textContent='...';
 
   const destinatarios = [...postPara];
+  const id = Date.now();
+  let anexos = [];
+  if (db && comFila.length) {
+    try { anexos = await comSubirArquivos(id, comFila, btn); }
+    catch (e) { alert('Erro ao enviar arquivo: ' + e.message); btn.disabled=false; btn.textContent='Publicar'; return; }
+  }
   const post = {
-    id:Date.now(), texto, autor, prioridade, categoria,
-    lidos:[autor], destinatarios,
+    id, texto, autor, prioridade, categoria,
+    lidos:[autor], destinatarios, anexos, pede_ciencia, enquete,
     created_at:new Date().toISOString()
   };
 
   if(db){
     const {error} = await db.from('comunicados').insert(post);
-    if(error){ console.error(error); alert('Erro ao publicar: '+error.message); btn.disabled=false; btn.textContent='Publicar'; return; }
+    if(error){
+      if (anexos.length) await db.storage.from('comunicados').remove(anexos.map(a => a.caminho));
+      console.error(error); alert('Erro ao publicar: '+error.message); btn.disabled=false; btn.textContent='Publicar'; return;
+    }
   } else {
     const posts = loadLs('hub_posts',[]);
     posts.unshift(post);
     saveLs('hub_posts',posts);
   }
-  const pre = prioridade==='urgente' ? '🚨 ' : prioridade==='importante' ? '❗ ' : '📢 ';
+  const pre = enquete ? '📊 ' : prioridade==='urgente' ? '🚨 ' : prioridade==='importante' ? '❗ ' : '📢 ';
+  const tipoTxt = enquete ? 'Enquete' : pede_ciencia ? 'Comunicado' : 'Aviso';
   createNotif({
     tipo:'comunicado',
-    titulo:`${pre}Comunicado de ${autor}${destinatarios.length?' (para você)':''}`,
-    corpo: texto.slice(0,80) + (texto.length>80?'…':''),
-    link_pagina:'comunicados',
+    titulo:`${pre}${tipoTxt} de ${autor}${destinatarios.length?' (para você)':''}`,
+    corpo: comResumo(post, 80),
+    link_pagina:'comunicados:' + id,
     para: semMim(audienciaPost(post))
   });
-  document.getElementById('postTexto').value='';
-  postPara.clear(); postParaToggle(null);
-  document.getElementById('postPrioridade').value='informativo';
+  comLimparForm();
   btn.disabled=false; btn.textContent='Publicar';
-  renderPosts();
+  await renderPosts();
+  if (db && texto && !anexos.length && cvPrimeiraUrl(texto)) comBuscarPrevia(id, texto);
+}
+
+// Prévia do primeiro link (título, imagem e descrição)
+async function comBuscarPrevia(id, texto){
+  const url = cvPrimeiraUrl(texto); if (!url) return;
+  try {
+    const r = await fetch(`${SUPABASE_URL}/functions/v1/link-preview?url=${encodeURIComponent(url)}`, { headers: authH() });
+    if (!r.ok) return;
+    const p = await r.json();
+    if (!p || !p.titulo) return;
+    const previa = { url: p.url || url, titulo: p.titulo, descricao: p.descricao || '', imagem: p.imagem || '', site: p.site || '' };
+    const { error } = await db.from('comunicados').update({ previa }).eq('id', id);
+    if (error) return;
+    const x = _postsCache.find(y => y.id === id); if (x) { x.previa = previa; desenharPosts(); }
+  } catch (e) { /* sem prévia */ }
 }
 
 async function reenviarNotifPost(id) {
@@ -3920,8 +4187,8 @@ async function reenviarNotifPost(id) {
   await createNotif({
     tipo:'comunicado',
     titulo:`🔔 Lembrete: comunicado de ${post.autor}`,
-    corpo:(post.texto||'').slice(0,80) + ((post.texto||'').length > 80 ? '…' : ''),
-    link_pagina:'comunicados',
+    corpo: comResumo(post, 80),
+    link_pagina:'comunicados:' + id,
     para: faltam
   });
   showToast({ tipo:'comunicado', titulo:'Lembrete enviado', corpo:`Aguardando: ${faltam.join(', ')}` });
@@ -3929,15 +4196,218 @@ async function reenviarNotifPost(id) {
 
 async function deletePost(id){
   if(!confirm('Remover este comunicado?')) return;
+  const p = _postsCache.find(x=>x.id===id);
   if(db){
     const {error} = await db.from('comunicados').delete().eq('id',id);
     if(error){ alert('Erro ao remover: '+error.message); return; }
+    const arqs = ((p && p.anexos) || []).map(a => a.caminho);
+    if (arqs.length) await db.storage.from('comunicados').remove(arqs);
   } else {
     saveLs('hub_posts', loadLs('hub_posts',[]).filter(p=>p.id!==id));
   }
   _postsCache = _postsCache.filter(p=>p.id!==id);
   desenharPosts();
   atualizarBadgesNav();
+}
+
+// ── Editar (só quem escreveu) ──
+let comEdit = null; // { id, manter:[anexos], novos:[File] }
+function comEditar(id){
+  const p = _postsCache.find(x=>x.id===id); if (!p || !ME || p.autor !== ME.nome) return;
+  comEdit = { id, manter: [...(p.anexos||[])], novos: [] };
+  const algumCiente = (p.lidos||[]).some(n => n !== p.autor);
+  cvModal('modalComEdit', `
+    <div class="hub-modal-title">✎ Editar comunicado</div>
+    <textarea class="post-input" id="ceTexto" style="margin-top:12px;min-height:110px" onpaste="comEditColar(event)">${esc(p.texto||'')}</textarea>
+    <div class="post-row">
+      <div class="field-group" style="min-width:140px"><span class="field-label">Prioridade</span>
+        <select class="field-input" id="cePrio" style="font-size:12px;padding:9px 10px">${Object.entries(PRIO_LABELS).reverse().map(([k,l])=>`<option value="${k}" ${p.prioridade===k?'selected':''}>${l}</option>`).join('')}</select></div>
+      <div class="field-group" style="min-width:140px"><span class="field-label">Categoria</span>
+        <select class="field-input" id="ceCat" style="font-size:12px;padding:9px 10px">${Object.entries(POST_CAT_LABELS).map(([k,l])=>`<option value="${k}" ${p.categoria===k?'selected':''}>${l}</option>`).join('')}</select></div>
+    </div>
+    <div class="field-label" style="margin-top:12px">Arquivos</div>
+    <div id="ceArqs" class="cv-anexos-fila"></div>
+    <label class="com-tool" style="display:inline-flex;margin-top:4px">📎 Adicionar arquivos<input type="file" multiple hidden onchange="comEditAdd(this.files);this.value=''"></label>
+    ${comPedeCiencia(p) ? `<label class="com-check" style="margin-top:12px"><input type="checkbox" id="ceReabrir" ${algumCiente ? '' : 'disabled'}> Pedir ciência de todos de novo <small>${algumCiente ? '(use se a mudança for importante)' : '(ninguém deu ciência ainda)'}</small></label>` : `<label class="com-check" style="margin-top:12px"><input type="checkbox" id="ceReabrir"> Passar a pedir ciência de todos</label>`}
+    <div id="ceMsg" style="font-size:12px;color:var(--red);min-height:18px;margin-top:8px;font-family:'IBM Plex Mono',monospace"></div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:6px">
+      <button class="btn btn-ghost" onclick="document.getElementById('modalComEdit').remove()">Cancelar</button>
+      <button class="btn btn-primary" id="ceBtn" onclick="comSalvarEdicao()">Salvar</button>
+    </div>`, 560);
+  comEditRender();
+}
+function comEditAdd(files){ comEdit.novos = [...comEdit.novos, ...[...files].filter(f => f.size <= CV_MAX_ARQ)]; comEditRender(); }
+function comEditColar(e){
+  const dt = e.clipboardData; if (!dt) return;
+  const arquivos = [...(dt.items||[])].filter(i => i.kind === 'file').map(i => i.getAsFile()).filter(Boolean);
+  if (!arquivos.length || (dt.getData('text/plain')||'').trim()) return;
+  e.preventDefault();
+  comEditAdd(arquivos.map(f => new File([f], `print-${cvCarimbo()}.png`, { type: f.type || 'image/png' })));
+}
+function comEditRender(){
+  const el = document.getElementById('ceArqs'); if (!el || !comEdit) return;
+  const chips = comEdit.manter.map((a,i) => `<span class="cv-fila-chip">${docIcone(a.nome)} <span>${esc(a.nome)}</span><a href="#" title="Tirar" onclick="event.preventDefault();comEdit.manter.splice(${i},1);comEditRender()">×</a></span>`)
+    .concat(comEdit.novos.map((f,i) => `<span class="cv-fila-chip novo">＋ ${docIcone(f.name)} <span>${esc(f.name)}</span><a href="#" onclick="event.preventDefault();comEdit.novos.splice(${i},1);comEditRender()">×</a></span>`));
+  el.classList.toggle('hidden', !chips.length);
+  el.innerHTML = chips.join('');
+}
+async function comSalvarEdicao(){
+  const p = _postsCache.find(x=>x.id===comEdit.id); if (!p) return;
+  const msg = document.getElementById('ceMsg'), btn = document.getElementById('ceBtn');
+  const texto = document.getElementById('ceTexto').value.trim();
+  if (!texto && !comEdit.manter.length && !comEdit.novos.length) { msg.textContent = 'O comunicado não pode ficar vazio.'; return; }
+  btn.disabled = true;
+  let novos = [];
+  try { novos = comEdit.novos.length ? await comSubirArquivos(p.id, comEdit.novos, btn) : []; }
+  catch (e) { msg.textContent = e.message; btn.disabled = false; btn.textContent = 'Salvar'; return; }
+  const anexos = [...comEdit.manter, ...novos];
+  const upd = { texto, prioridade: document.getElementById('cePrio').value, categoria: document.getElementById('ceCat').value, anexos };
+  const urlNova = cvPrimeiraUrl(texto);
+  const mudouLink = !p.previa || p.previa.url !== urlNova || anexos.length;
+  if (mudouLink) upd.previa = null;
+  const { error } = await db.from('comunicados').update(upd).eq('id', p.id);
+  if (error) {
+    if (novos.length) await db.storage.from('comunicados').remove(novos.map(a => a.caminho));
+    msg.textContent = error.message; btn.disabled = false; btn.textContent = 'Salvar'; return;
+  }
+  const removidos = (p.anexos||[]).filter(a => !anexos.some(b => b.caminho === a.caminho)).map(a => a.caminho);
+  if (removidos.length) await db.storage.from('comunicados').remove(removidos);
+  const reabrir = document.getElementById('ceReabrir') && document.getElementById('ceReabrir').checked;
+  if (reabrir) {
+    const r = await db.rpc('hub_comunicado_reabrir_ciencia', { p_id: p.id });
+    if (r.error) { alert('Salvo, mas não deu para pedir ciência de novo: ' + r.error.message); }
+    else createNotif({ tipo:'comunicado', titulo:`✎ ${ME.nome} atualizou um comunicado — dê ciência de novo`, corpo: texto.slice(0,80), link_pagina:'comunicados:' + p.id, para: semMim(audienciaPost(p)) });
+  }
+  document.getElementById('modalComEdit').remove();
+  comEdit = null;
+  await renderPosts();
+  if (mudouLink && urlNova && !anexos.length) comBuscarPrevia(p.id, texto);
+}
+
+// ── Enquete ──
+async function comVotar(id, i){
+  const p = _postsCache.find(x=>x.id===id); if (!p || !p.enquete) return;
+  const jaVotei = ((p.enquete.opcoes[i] || {}).votos || []).includes(ME.nome);
+  const { data, error } = await db.rpc('hub_comunicado_votar', { p_id: id, p_opcao: i, p_votar: !jaVotei });
+  if (error) { alert('Erro: ' + error.message); return; }
+  p.enquete = data;
+  if (!jaVotei && !(p.lidos||[]).includes(ME.nome)) { p.lidos = [...(p.lidos||[]), ME.nome]; p.ciencias = Object.assign({}, p.ciencias, { [ME.nome]: new Date().toISOString() }); }
+  desenharPosts(); atualizarBadgesNav();
+}
+async function comEncerrarEnquete(id, encerrar){
+  const { error } = await db.rpc('hub_comunicado_encerrar_enquete', { p_id: id, p_encerrar: encerrar });
+  if (error) { alert('Erro: ' + error.message); return; }
+  const p = _postsCache.find(x=>x.id===id); if (p && p.enquete) p.enquete.encerrada = encerrar;
+  desenharPosts();
+}
+function comEnqueteHTML(p){
+  const e = p.enquete; if (!e || !(e.opcoes||[]).length) return '';
+  const aud = audienciaPost(p);
+  const total = e.opcoes.reduce((s,o) => s + (o.votos||[]).length, 0);
+  const podeVotar = ME && aud.includes(ME.nome) && !e.encerrada;
+  const faltam = aud.filter(n => !e.opcoes.some(o => (o.votos||[]).includes(n)));
+  const max = Math.max(0, ...e.opcoes.map(o => (o.votos||[]).length));
+  return `<div class="com-enq ${e.encerrada ? 'encerrada' : ''}">
+    ${e.opcoes.map((o,i) => {
+      const v = o.votos || [], meu = ME && v.includes(ME.nome);
+      const pct = total ? Math.round(v.length / total * 100) : 0;
+      return `<div class="com-enq-linha ${meu ? 'meu' : ''} ${podeVotar ? 'clicavel' : ''} ${e.encerrada && v.length === max && max ? 'vence' : ''}" ${podeVotar ? `onclick="comVotar(${p.id},${i})"` : ''}>
+        <div class="com-enq-bar" style="width:${pct}%"></div>
+        <span class="com-enq-radio">${meu ? '◉' : '○'}</span>
+        <span class="com-enq-txt">${esc(o.texto)}</span>
+        <span class="com-enq-quem">${v.map(n => `<b style="color:${corDe(n)}" title="${esc(n)}">${esc(n.charAt(0))}</b>`).join('')}</span>
+        <span class="com-enq-n">${v.length}</span>
+      </div>`;
+    }).join('')}
+    <div class="com-enq-rod">${e.encerrada ? '🔒 Votação encerrada' : podeVotar ? 'Clique para votar · clique de novo para tirar o voto' : 'Votação aberta'} · ${total} voto${total===1?'':'s'}${faltam.length && !e.encerrada ? ' · faltam ' + esc(faltam.join(', ')) : ''}
+      ${ME && p.autor === ME.nome ? ` · <a href="#" onclick="event.preventDefault();comEncerrarEnquete(${p.id},${!e.encerrada})">${e.encerrada ? 'reabrir votação' : 'encerrar votação'}</a>` : ''}</div>
+  </div>`;
+}
+
+// ── Anexos ──
+function comAnexosHTML(p){
+  const lista = p.anexos || []; if (!lista.length) return '';
+  return `<div class="cv-anexos com-anexos">${lista.map((a,i) => cvEhImagem(a.nome)
+    ? `<div class="cv-img" title="${esc(a.nome)}" onclick="comAbrirAnexo(${p.id},${i},false)"><img data-ccam="${esc(a.caminho)}" alt="${esc(a.nome)}"></div>`
+    : `<div class="cv-arq">
+        <span class="cv-arq-ic">${docIcone(a.nome)}</span>
+        <div class="cv-arq-info"><div class="cv-arq-nome" title="${esc(a.nome)}">${esc(a.nome)}</div><small>${docTamanho(a.tamanho||0)}</small></div>
+        ${cvAbreNoNavegador(a.nome) ? `<button class="btn btn-ghost" onclick="comAbrirAnexo(${p.id},${i},false)">Abrir</button>` : ''}
+        <button class="btn btn-primary" onclick="comAbrirAnexo(${p.id},${i},true)">Baixar</button>
+      </div>`).join('')}</div>`;
+}
+async function comCarregarThumbs(){
+  if (!db) return;
+  const els = [...document.querySelectorAll('#postsLista img[data-ccam]:not([src])')];
+  if (!els.length) return;
+  const agora = Date.now();
+  const faltam = [...new Set(els.map(i => i.dataset.ccam).filter(c => !(cvUrlCache['c:'+c] && cvUrlCache['c:'+c].exp > agora)))];
+  if (faltam.length) {
+    const { data } = await db.storage.from('comunicados').createSignedUrls(faltam, 3600);
+    (data || []).forEach(d => { if (d.signedUrl) cvUrlCache['c:'+d.path] = { url: d.signedUrl, exp: agora + 50*60000 }; });
+  }
+  els.forEach(el => { const c = cvUrlCache['c:'+el.dataset.ccam]; if (c && el.isConnected) el.src = c.url; });
+}
+async function comAbrirAnexo(postId, idx, baixar){
+  const p = _postsCache.find(x=>x.id===postId);
+  const a = p && (p.anexos||[])[idx]; if (!a) return;
+  const win = baixar ? null : window.open('', '_blank');
+  const { data, error } = await db.storage.from('comunicados').createSignedUrl(a.caminho, 300, baixar ? { download: a.nome } : undefined);
+  if (error || !data) { if (win) win.close(); alert('Não foi possível abrir: ' + (error ? error.message : '')); return; }
+  if (win) { win.location = data.signedUrl; return; }
+  const link = document.createElement('a');
+  link.href = data.signedUrl; link.download = a.nome; document.body.appendChild(link); link.click(); link.remove();
+}
+
+// ── Comentar: leva para as Conversas citando o comunicado ──
+async function comComentar(id){
+  const p = _postsCache.find(x=>x.id===id); if (!p) return;
+  if (!podeVer('conversas')) { alert('Você não tem acesso às Conversas.'); return; }
+  if (!cvCanais.length) await cvCarregarCanais();
+  const dest = p.destinatarios || [];
+  _comComentarPost = p;
+  if (!dest.length) {
+    const g = cvCanais.find(c => c.tipo === 'canal' && c.nome === 'geral' && !c.arquivado) || cvCanais.find(c => c.tipo === 'canal' && !c.arquivado && !(c.membros||[]).length);
+    if (!g) { alert('Nenhum canal aberto a todos para comentar.'); return; }
+    comCitarEm(g.id); return;
+  }
+  // Comunicado direcionado: a conversa fica só entre quem recebeu (mensagem direta)
+  const outros = semMim([...new Set([p.autor, ...dest])]);
+  if (outros.length === 1) { comComentarCom(outros[0]); return; }
+  cvModal('modalComComentar', `<div class="hub-modal-title">💬 Comentar com quem?</div>
+    <div class="hub-modal-sub">Este comunicado é direcionado, então a conversa vai para uma mensagem direta.</div>
+    <div class="cv-enc-lista" style="margin-top:10px">${outros.map(n => `<div class="cv-item" data-n="${esc(n)}" onclick="comComentarCom(this.dataset.n)"><span class="cv-dot" style="background:${corDe(n)}">${esc(n.charAt(0).toUpperCase())}</span><span class="cv-nome">${esc(n)}</span></div>`).join('')}</div>
+    <div style="display:flex;justify-content:flex-end;margin-top:10px"><button class="btn btn-ghost" onclick="document.getElementById('modalComComentar').remove()">Cancelar</button></div>`, 420);
+}
+let _comComentarPost = null;
+function comCitarEm(canalId){
+  const p = _comComentarPost; if (!p || !canalId) return;
+  document.getElementById('modalComComentar')?.remove();
+  cvCitacaoPendente = { canal: canalId, autor: p.autor, trecho: '📢 Comunicado: ' + comResumo(p, 120), comunicado: p.id };
+  goPage('conversas:' + canalId);
+}
+async function comComentarCom(nome){ const id = await comDmCom(nome); if (id) comCitarEm(id); }
+async function comDmCom(nome){
+  let dm = cvDmDe(nome);
+  if (dm) return dm.id;
+  const { data, error } = await db.rpc('hub_abrir_dm', { p_outro: nome });
+  if (error) { alert('Erro: ' + error.message); return null; }
+  await cvCarregarCanais();
+  return data;
+}
+
+// ── Faixa de urgente no topo do hub ──
+function renderUrgBanner(){
+  const el = document.getElementById('urgBanner'); if (!el) return;
+  const urg = (ME && podeVer('comunicados') ? _postsCache : []).filter(p => p.prioridade === 'urgente' && postPendenteMeu(p))
+    .sort((a,b) => new Date(a.created_at) - new Date(b.created_at));
+  if (!urg.length || curPage === 'comunicados') { el.classList.add('hidden'); el.innerHTML = ''; return; }
+  const p = urg[0];
+  el.classList.remove('hidden');
+  el.innerHTML = `<span class="urg-ic">🚨</span>
+    <div class="urg-txt" onclick="goPage('comunicados:${p.id}')"><strong>Urgente de ${esc(p.autor)}${urg.length > 1 ? ` (+${urg.length - 1})` : ''}:</strong> ${esc(comResumo(p, 140))}</div>
+    <button class="btn btn-ghost" onclick="goPage('comunicados:${p.id}')">Ver</button>
+    <button class="btn btn-ciente" onclick="marcarCiente(${p.id},true)">✓ Estou ciente</button>`;
 }
 
 function renderPostSummary(posts){
@@ -3970,9 +4440,91 @@ async function renderPosts(){
   const el = document.getElementById('postsLista');
   if(el && !_postsCache.length) el.innerHTML = loadingHTML();
   renderParaChips('postParaChips', postPara, 'comunicados', 'postParaToggle');
+  comRestaurarRascunho();
   await carregarPosts();
   desenharPosts();
   atualizarBadgesNav();
+}
+
+// Arquivado: tudo resolvido (ciência de todos ou sem pedido, enquete fechada) e mais antigo que 30 dias
+function comArquivado(p){
+  if (Date.now() - new Date(p.created_at) < COM_ARQUIVA_DIAS * 86400000) return false;
+  if (postFaltam(p).length) return false;
+  if (p.enquete && !p.enquete.encerrada) return false;
+  return true;
+}
+
+function comCardHTML(p){
+  const dataFmt = new Date(p.created_at).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'});
+  const prioClass = 'prio-'+(p.prioridade||'informativo');
+  const prioLabel = PRIO_LABELS[p.prioridade]||'Informativo';
+  const catLabel = POST_CAT_LABELS[p.categoria]||p.categoria||'Geral';
+  const lidos = p.lidos||[];
+  const cien = p.ciencias||{};
+  const aud = audienciaPost(p).filter(n=>n!==p.autor);
+  const cientes = aud.filter(n=>lidos.includes(n));
+  const dest = p.destinatarios||[];
+  const pendente = postPendenteMeu(p);
+  const souAutor = ME && p.autor===ME.nome;
+  const podeGerir = souAutor || (ME && ME.is_admin);
+  const faltam = postFaltam(p);
+  const pede = comPedeCiencia(p);
+
+  let ciencia = '';
+  if (pede) {
+    const avatarsHTML = aud.map(s=>{
+      const ok = lidos.includes(s);
+      const color = corDe(s);
+      const st = ok ? `border-color:${color};color:${color};background:${color}15` : '';
+      const quando = ok ? (cien[s] ? 'ciente em ' + comDataHora(cien[s]) : 'ciente') : 'aguardando';
+      return `<div class="post-avatar ${ok?'read':'unread'} alheio" title="${esc(s)}: ${quando}" style="${st}">${esc(s.charAt(0).toUpperCase())}</div>`;
+    }).join('');
+    const quandoLista = cientes.map(n => `<span><b style="color:${corDe(n)}">${esc(n)}</b> ${cien[n] ? comDataHora(cien[n]) : ''}</span>`).join('');
+    ciencia = `<div class="post-read-section">
+        <span class="post-read-label">Ciente:</span>
+        ${avatarsHTML || '<span style="font-size:11px;color:var(--muted)">—</span>'}
+        <span class="post-read-count">${cientes.length}/${aud.length}</span>
+      </div>
+      ${quandoLista ? `<div class="com-quando">✓ ${quandoLista}</div>` : ''}`;
+  } else {
+    ciencia = `<div class="post-read-section"><span class="post-read-label">ℹ️ Só para informar · sem pedido de ciência</span></div>`;
+  }
+
+  let meuCiente = '';
+  if(pede && ME && !souAutor && audienciaPost(p).includes(ME.nome)){
+    meuCiente = lidos.includes(ME.nome)
+      ? `<span class="ciente-ok">✓ Você está ciente${cien[ME.nome] ? ' desde ' + comDataHora(cien[ME.nome]) : ''} · <a href="#" onclick="event.preventDefault();marcarCiente(${p.id},false)">desfazer</a></span>`
+      : `<button class="btn btn-ciente" onclick="marcarCiente(${p.id},true)">✓ Estou ciente</button>`;
+  }
+
+  return `<div class="post-item ${pendente?'pendente':''}" id="post-${p.id}">
+    <div class="post-prio-bar ${prioClass}"></div>
+    <div class="post-body">
+      <div class="post-meta">
+        <span class="post-autor" style="color:${corDe(p.autor)}">${esc(p.autor)}</span>
+        <span class="post-data">${dataFmt}</span>
+        ${p.editado_em ? `<span class="post-data" title="Editado em ${comDataHora(p.editado_em)}">(editado)</span>` : ''}
+        <span class="post-prio-label ${prioClass}">${prioLabel}</span>
+        <span class="post-cat-label">${esc(catLabel)}</span>
+        ${p.enquete ? '<span class="post-cat-label">📊 Enquete</span>' : ''}
+        ${dest.length?`<span class="post-para" title="Só essas pessoas veem">🔒 Para: ${esc(dest.join(', '))}</span>`:''}
+      </div>
+      ${(p.texto||'').trim() ? `<div class="post-texto cv-texto">${cvFormatar(p.texto)}</div>` : ''}
+      ${comEnqueteHTML(p)}
+      ${cvPreviaHTML(p)}
+      ${comAnexosHTML(p)}
+      ${ciencia}
+      <div class="post-actions">
+        <div>${meuCiente}</div>
+        <div class="com-acoes">
+          ${podeVer('conversas') ? `<button class="btn btn-ghost" onclick="comComentar(${p.id})" title="Abre as Conversas citando este comunicado">💬 Comentar</button>` : ''}
+          ${souAutor && db ? `<button class="btn btn-ghost" onclick="comEditar(${p.id})">✎ Editar</button>` : ''}
+          ${podeGerir && faltam.length ? `<button class="btn btn-ghost" onclick="reenviarNotifPost(${p.id})">↺ Lembrar quem não viu (${faltam.length})</button>` : ''}
+          ${podeGerir ? `<button class="btn btn-danger" onclick="deletePost(${p.id})">Remover</button>` : ''}
+        </div>
+      </div>
+    </div>
+  </div>`;
 }
 
 function desenharPosts(){
@@ -3986,9 +4538,20 @@ function desenharPosts(){
   else if(postFilterMode==='direcionados') filtered = posts.filter(p=>(p.destinatarios||[]).length);
   else if(postFilterMode==='urgente') filtered = posts.filter(p=>p.prioridade==='urgente');
   else if(postFilterMode==='importante') filtered = posts.filter(p=>p.prioridade==='importante');
+  else if(postFilterMode==='enquetes') filtered = posts.filter(p=>p.enquete);
+
+  // Busca (texto, autor, nome de arquivo, opções da enquete) e período
+  const q = ((document.getElementById('comBusca')||{}).value || '').trim().toLowerCase();
+  const dias = Number((document.getElementById('comPeriodo')||{}).value || 0);
+  if (q) filtered = filtered.filter(p => [(p.texto||''), p.autor, ...(p.anexos||[]).map(a=>a.nome), ...((p.enquete&&p.enquete.opcoes)||[]).map(o=>o.texto)].join(' ').toLowerCase().includes(q));
+  if (dias) filtered = filtered.filter(p => Date.now() - new Date(p.created_at) <= dias * 86400000);
+
+  if (comDestacar && !filtered.some(p => p.id === comDestacar) && posts.some(p => p.id === comDestacar)) {
+    filtered = posts; // veio de um link: mostra tudo para achar o comunicado
+  }
 
   if(!filtered.length){
-    el.innerHTML = emptyHTML(postFilterMode==='todos'?'Nenhum comunicado ainda.':postFilterMode==='pendentes'?'Nada aguardando sua ciência. ✓':'Nenhum comunicado neste filtro.');
+    el.innerHTML = emptyHTML(q || dias ? 'Nada encontrado com essa busca.' : postFilterMode==='todos'?'Nenhum comunicado ainda.':postFilterMode==='pendentes'?'Nada aguardando sua ciência. ✓':'Nenhum comunicado neste filtro.');
     return;
   }
 
@@ -4000,60 +4563,22 @@ function desenharPosts(){
     return new Date(b.created_at)-new Date(a.created_at);
   });
 
-  el.innerHTML = filtered.map(p=>{
-    const dataFmt = new Date(p.created_at).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'});
-    const prioClass = 'prio-'+(p.prioridade||'informativo');
-    const prioLabel = PRIO_LABELS[p.prioridade]||'Informativo';
-    const catLabel = POST_CAT_LABELS[p.categoria]||p.categoria||'Geral';
-    const lidos = p.lidos||[];
-    const aud = audienciaPost(p).filter(n=>n!==p.autor);
-    const cientes = aud.filter(n=>lidos.includes(n)).length;
-    const dest = p.destinatarios||[];
-    const pendente = postPendenteMeu(p);
-    const souAutor = ME && p.autor===ME.nome;
-    const podeGerir = souAutor || (ME && ME.is_admin);
-    const faltam = postFaltam(p);
+  // Arquivados ficam recolhidos (na busca aparecem junto)
+  const buscando = !!(q || dias);
+  const ativos = buscando ? filtered : filtered.filter(p => !comArquivado(p));
+  const arquivados = buscando ? [] : filtered.filter(comArquivado);
+  if (comDestacar && arquivados.some(p => p.id === comDestacar)) comVerArquivados = true;
 
-    const avatarsHTML = aud.map(s=>{
-      const ok = lidos.includes(s);
-      const color = corDe(s);
-      const st = ok ? `border-color:${color};color:${color};background:${color}15` : '';
-      return `<div class="post-avatar ${ok?'read':'unread'} alheio" title="${esc(s)}: ${ok?'ciente':'aguardando'}" style="${st}">${esc(s.charAt(0).toUpperCase())}</div>`;
-    }).join('');
+  el.innerHTML = (ativos.length ? ativos.map(comCardHTML).join('') : '<div class="com-vazio-ativos">Nada recente. ✓</div>')
+    + (arquivados.length ? `<div class="com-arq-tog" onclick="comVerArquivados=!comVerArquivados;desenharPosts()">${comVerArquivados ? '▾' : '▸'} Arquivados (${arquivados.length}) <small>resolvidos há mais de ${COM_ARQUIVA_DIAS} dias</small></div>
+        ${comVerArquivados ? `<div class="com-arq-lista">${arquivados.map(comCardHTML).join('')}</div>` : ''}` : '');
+  comCarregarThumbs();
 
-    let meuCiente = '';
-    if(ME && !souAutor && audienciaPost(p).includes(ME.nome)){
-      meuCiente = lidos.includes(ME.nome)
-        ? `<span class="ciente-ok">✓ Você está ciente · <a href="#" onclick="event.preventDefault();marcarCiente(${p.id},false)">desfazer</a></span>`
-        : `<button class="btn btn-ciente" onclick="marcarCiente(${p.id},true)">✓ Estou ciente</button>`;
-    }
-
-    return `<div class="post-item ${pendente?'pendente':''}">
-      <div class="post-prio-bar ${prioClass}"></div>
-      <div class="post-body">
-        <div class="post-meta">
-          <span class="post-autor" style="color:${corDe(p.autor)}">${esc(p.autor)}</span>
-          <span class="post-data">${dataFmt}</span>
-          <span class="post-prio-label ${prioClass}">${prioLabel}</span>
-          <span class="post-cat-label">${esc(catLabel)}</span>
-          ${dest.length?`<span class="post-para" title="Só essas pessoas veem">🔒 Para: ${esc(dest.join(', '))}</span>`:''}
-        </div>
-        <div class="post-texto">${esc(p.texto).replace(/\n/g,'<br>')}</div>
-        <div class="post-read-section">
-          <span class="post-read-label">Ciente:</span>
-          ${avatarsHTML || '<span style="font-size:11px;color:var(--muted)">—</span>'}
-          <span class="post-read-count">${cientes}/${aud.length}</span>
-        </div>
-        <div class="post-actions">
-          <div>${meuCiente}</div>
-          <div style="display:flex;gap:6px">
-            ${podeGerir && faltam.length ? `<button class="btn btn-ghost" style="font-size:11px;padding:5px 12px" onclick="reenviarNotifPost(${p.id})">↺ Lembrar quem não viu (${faltam.length})</button>` : ''}
-            ${podeGerir ? `<button class="btn btn-danger" onclick="deletePost(${p.id})">Remover</button>` : ''}
-          </div>
-        </div>
-      </div>
-    </div>`;
-  }).join('');
+  if (comDestacar) {
+    const alvo = document.getElementById('post-' + comDestacar);
+    comDestacar = null;
+    if (alvo) { alvo.scrollIntoView({ block: 'center', behavior: 'smooth' }); alvo.classList.add('cv-flash'); setTimeout(() => alvo.classList.remove('cv-flash'), 2200); }
+  }
 }
 
 // ── CONVERSAS (canais por tema + mensagens diretas) ──
@@ -4068,7 +4593,8 @@ let cvMsgs = [];            // mensagens do canal aberto
 let cvTemMais = false;      // há mensagens mais antigas
 let cvTemMaisNovas = false; // janela aberta no meio do histórico (veio de busca/resposta)
 let cvEditando = null;      // id da mensagem em edição
-let cvRespondendo = null;   // { id, autor, trecho }
+let cvRespondendo = null;   // { id, autor, trecho, comunicado? }
+let cvCitacaoPendente = null; // citação vinda do "Comentar" de um comunicado
 let cvLeituras = {};        // nome -> lido_ate (canal aberto)
 let cvFixadas = [];         // mensagens fixadas do canal aberto
 let cvDivisorId = null;     // primeira mensagem não lida ao abrir
@@ -4095,7 +4621,7 @@ function cvHora(iso) { return new Date(iso).toLocaleTimeString('pt-BR', { hour: 
 function cvCarimbo() { const d = new Date(); return `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}-${String(d.getHours()).padStart(2, '0')}${String(d.getMinutes()).padStart(2, '0')}${String(d.getSeconds()).padStart(2, '0')}`; }
 function cvResumoMsg(m, n) {
   n = n || 90;
-  const t = (m.texto || '').replace(/\s+/g, ' ').trim();
+  const t = semMarcadores(m.texto).replace(/\s+/g, ' ').trim();
   const an = m.anexos || [];
   const voz = an.find(a => a.voz);
   if (m.apagada) return 'mensagem apagada';
@@ -4275,6 +4801,7 @@ async function cvAbrir(id, recarregar) {
   cvMarcarLido();
   cvRenderSide();
   cvRenderDigitando();
+  if (cvCitacaoPendente && cvCitacaoPendente.canal === id) { const q = cvCitacaoPendente; cvCitacaoPendente = null; cvMostrarResposta({ id: null, autor: q.autor, trecho: q.trecho, comunicado: q.comunicado }); }
   if (window.innerWidth > 768) inp.focus();
 }
 
@@ -4590,7 +5117,7 @@ function cvMsgHTML(m, agrupada, ultimaMinha) {
   const enc = m.encaminhada_de && !m.apagada
     ? `<div class="cv-enc">↪ Encaminhada${m.encaminhada_de.autor ? ' · original de ' + esc(m.encaminhada_de.autor) : ''}${m.encaminhada_de.canal ? ' (' + esc(m.encaminhada_de.canal) + ')' : ''}</div>` : '';
   const quote = m.resposta && !m.apagada
-    ? `<div class="cv-quote" onclick="cvIrPara(${Number(m.resposta_a) || 0})" title="Ir para a mensagem original"><strong style="color:${corDe(m.resposta.autor)}">${esc(m.resposta.autor || '')}</strong><span>${esc(m.resposta.trecho || '')}</span></div>` : '';
+    ? `<div class="cv-quote ${m.resposta.comunicado ? 'cv-quote-com' : ''}" onclick="${m.resposta.comunicado ? `goPage('comunicados:${Number(m.resposta.comunicado) || 0}')` : `cvIrPara(${Number(m.resposta_a) || 0})`}" title="${m.resposta.comunicado ? 'Abrir o comunicado' : 'Ir para a mensagem original'}"><strong style="color:${corDe(m.resposta.autor)}">${esc(m.resposta.autor || '')}</strong><span>${esc(m.resposta.trecho || '')}</span></div>` : '';
   const pin = m.fixada && !m.apagada ? `<span class="cv-pin-mini" title="Fixada por ${esc(m.fixada_por || '')}">📌</span>` : '';
   const conteudo = `${enc}${quote}${temTexto ? `<div class="cv-texto">${corpo}</div>` : ''}${cvPreviaHTML(m)}${cvAnexosHTML(m)}${reac ? `<div class="cv-reacs">${reac}</div>` : ''}${cvVistoHTML(m, ultimaMinha)}`;
   const acoes = m.apagada ? '' : `<div class="cv-acoes" onclick="event.stopPropagation()">
@@ -4713,7 +5240,11 @@ function cvMencoesDoTexto(texto, c) {
 async function cvInserir(c, o) {
   const minhaAnterior = c.id === cvAtual ? [...cvMsgs].reverse().find(m => ME && m.autor === ME.nome) : null;
   const row = { canal_id: c.id, autor: ME.nome, texto: o.texto || '', mencoes: o.mencoes || [], anexos: o.anexos || [] };
-  if (o.resposta) { row.resposta_a = o.resposta.id; row.resposta = { autor: o.resposta.autor, trecho: o.resposta.trecho }; }
+  if (o.resposta) {
+    row.resposta_a = o.resposta.id || null;
+    row.resposta = { autor: o.resposta.autor, trecho: o.resposta.trecho };
+    if (o.resposta.comunicado) row.resposta.comunicado = o.resposta.comunicado;
+  }
   if (o.encaminhada_de) row.encaminhada_de = o.encaminhada_de;
   if (o.previa) row.previa = o.previa;
   const { data, error } = await db.from('mensagens').insert(row).select().single();
@@ -4748,7 +5279,7 @@ async function cvAvisar(c, m, minhaAnterior, mencoesTexto, resposta) {
     const soResposta = resposta && !mencoesTexto.includes('todos') ? menc.filter(n => n === resposta.autor && !mencoesTexto.includes(n)) : [];
     const mencionados = menc.filter(n => !soResposta.includes(n));
     if (mencionados.length) createNotif({ tipo: 'conversa', titulo: `💬 ${ME.nome} mencionou ${mencoesTexto.includes('todos') ? 'todos' : 'você'} em #${c.nome}`, corpo: resumo, link_pagina: link, para: mencionados });
-    if (soResposta.length) createNotif({ tipo: 'conversa', titulo: `↩ ${ME.nome} respondeu você em #${c.nome}`, corpo: resumo, link_pagina: link, para: soResposta });
+    if (soResposta.length) createNotif({ tipo: 'conversa', titulo: resposta.comunicado ? `💬 ${ME.nome} comentou seu comunicado em #${c.nome}` : `↩ ${ME.nome} respondeu você em #${c.nome}`, corpo: resumo, link_pagina: link, para: soResposta });
     const geral = quem.filter(q => q.motivo === 'canal').map(q => q.nome);
     if (geral.length && !recente) createNotif({ tipo: 'conversa', titulo: `💬 ${ME.nome} em #${c.nome}`, corpo: resumo, link_pagina: link, para: geral });
   } catch (e) { console.warn('aviso conversa', e); }
@@ -4899,10 +5430,13 @@ function cvInserirMencao(nome) {
 // ── Responder ──
 function cvResponder(id) {
   const m = cvMsgs.find(x => x.id === id); if (!m || m.apagada) return;
+  cvMostrarResposta({ id: m.id, autor: m.autor, trecho: cvResumoMsg(m, 140) });
+}
+function cvMostrarResposta(r) {
   if (cvEditando) cvCancelarEdicao();
-  cvRespondendo = { id: m.id, autor: m.autor, trecho: cvResumoMsg(m, 140) };
+  cvRespondendo = r;
   const bar = document.getElementById('cvReplyBar');
-  bar.innerHTML = `<div class="cv-quote"><strong style="color:${corDe(m.autor)}">↩ Respondendo ${esc(m.autor)}</strong><span>${esc(cvRespondendo.trecho)}</span></div><a href="#" title="Cancelar resposta" onclick="event.preventDefault();cvCancelarResposta()">✕</a>`;
+  bar.innerHTML = `<div class="cv-quote"><strong style="color:${corDe(r.autor)}">↩ ${r.comunicado ? 'Comentando comunicado de' : 'Respondendo'} ${esc(r.autor)}</strong><span>${esc(r.trecho)}</span></div><a href="#" title="Cancelar" onclick="event.preventDefault();cvCancelarResposta()">✕</a>`;
   bar.classList.remove('hidden');
   document.querySelectorAll('.cv-msg.tocada').forEach(x => x.classList.remove('tocada'));
   document.getElementById('cvInput').focus();
@@ -6214,7 +6748,7 @@ function desenharInicio() {
   if (podeVer('comunicados')) {
     _postsCache.filter(postPendenteMeu).slice(0, 5).forEach(p => pend.push(inicioItem(
       p.prioridade === 'urgente' ? '🚨' : p.prioridade === 'importante' ? '❗' : '📢',
-      `Comunicado de ${esc(p.autor)}`, esc((p.texto || '').slice(0, 90)) + ((p.texto || '').length > 90 ? '…' : ''),
+      `${p.enquete ? 'Enquete' : 'Comunicado'} de ${esc(p.autor)}`, esc(comResumo(p, 90)),
       "goPage('comunicados')",
       `<button class="btn btn-ciente ini-btn" onclick="event.stopPropagation();marcarCiente(${p.id},true).then(desenharInicio)">✓ Ciente</button>`)));
   }
