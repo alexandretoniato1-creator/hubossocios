@@ -335,6 +335,35 @@ tr.sku-row:hover td { background:var(--surface2); }
   background:var(--surface);color:var(--text);outline:none;
 }
 .field-input:focus{border-color:var(--text)}
+/* ── Links ── */
+.lk-barra{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.lk-barra .field-input{width:100%;font-size:13px}
+.lk-filtros{display:flex;flex-wrap:wrap;gap:2px}
+.lk-sec{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:18px 0 8px}
+.lk-sec:first-child{margin-top:4px}
+.lk-grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.lk-card{display:flex;flex-direction:column;gap:8px;padding:12px 14px;border:1.5px solid var(--border);border-radius:6px;background:var(--surface);transition:border-color .15s;min-width:0}
+.lk-card:hover{border-color:var(--border2)}
+.lk-card.pessoal{border-style:dashed}
+.lk-card-top{display:flex;align-items:flex-start;gap:10px;min-width:0}
+.lk-ic{font-size:22px;line-height:1;flex-shrink:0}
+.lk-tit{flex:1;min-width:0}
+.lk-nome{font-size:14px;font-weight:600;overflow-wrap:anywhere}
+.lk-pess{font-size:11px}
+.lk-host{font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lk-star{cursor:pointer;font-size:18px;color:var(--muted);line-height:1;user-select:none;flex-shrink:0}
+.lk-star.on{color:#e0a800}
+.lk-desc{font-size:12px;color:var(--text);opacity:.85;overflow-wrap:anywhere}
+.lk-rod{display:flex;align-items:center;gap:10px;margin-top:auto}
+.lk-rod a{text-decoration:none;color:var(--muted);font-size:13px}
+.lk-rod a:hover{color:var(--text)}
+.lk-quem{font-size:11px;color:var(--muted);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lk-rod .lk-abrir{color:var(--bg);padding:6px 12px;font-size:12px}
+.lk-ruim{font-size:11px;color:var(--red)}
+.lk-atalhos{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.lk-atalho{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border:1.5px solid var(--border);border-radius:18px;background:var(--surface);color:var(--text);text-decoration:none;font-size:13px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lk-atalho:hover{border-color:var(--text)}
+@media(max-width:700px){.lk-grade{grid-template-columns:minmax(0,1fr)}}
 .planilha-item{
   display:flex;align-items:center;justify-content:space-between;
   padding:12px 16px;border:1.5px solid var(--border);border-radius:4px;
@@ -1992,41 +2021,16 @@ select.field-input{cursor:pointer}
 
   <!-- PLANILHAS -->
   <div id="page-planilhas" class="hidden fade-in">
-    <div class="page-header">
-      <div class="page-title">Links</div>
-      <div class="page-sub">planilhas, sistemas e painéis · organizados por empresa</div>
-    </div>
-    <div class="box">
-      <div class="box-title" style="margin-bottom:14px">Adicionar link</div>
-      <div class="planilha-form">
-        <div class="field-group">
-          <span class="field-label">Nome</span>
-          <input class="field-input" id="plNome" placeholder="ex: Publicidade Fevereiro">
-        </div>
-        <div class="field-group">
-          <span class="field-label">Empresa</span>
-          <select class="field-input" id="plEmpresa">
-            <option>FASTWEB</option><option>BTMX</option><option>FALCOM</option><option>OCTO</option><option>LOGBOX</option><option>Geral</option>
-          </select>
-        </div>
-        <div class="field-group">
-          <span class="field-label">Link (planilha, sistema, painel…)</span>
-          <input class="field-input" id="plLink" placeholder="https://...">
-        </div>
-        <button class="btn btn-primary" onclick="addPlanilha()" style="align-self:end">Salvar</button>
+    <div class="page-header" style="display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap">
+      <div>
+        <div class="page-title">Links</div>
+        <div class="page-sub">planilhas, sistemas e pastas · ★ favorite para ter no Início</div>
       </div>
+      <button class="btn btn-primary" onclick="lkEditar(null)">+ Adicionar link</button>
     </div>
-    <!-- Busca e filtro por empresa -->
-    <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap">
-      <div style="position:relative;flex:1;min-width:200px">
-        <input class="field-input" id="plSearch" placeholder="🔍  Buscar por nome…"
-          oninput="filterPlanilhas()"
-          style="width:100%;padding-left:14px;font-size:13px">
-      </div>
-      <select class="field-input" id="plFiltroEmpresa" onchange="filterPlanilhas()" style="font-size:12px;padding:9px 10px;min-width:130px">
-        <option value="">Todas as empresas</option>
-        <option>FASTWEB</option><option>BTMX</option><option>FALCOM</option><option>OCTO</option><option>LOGBOX</option><option>Geral</option>
-      </select>
+    <div class="lk-barra">
+      <input class="field-input" id="plSearch" placeholder="🔍  Buscar por nome, descrição ou endereço…" oninput="filterPlanilhas()">
+      <div id="lkFiltros" class="lk-filtros"></div>
     </div>
     <div id="planilhasLista"></div>
   </div>
@@ -7368,6 +7372,7 @@ async function renderInicio() {
   if (podeVer('agenda')) tarefas.push(carregarEventos().catch(() => {}));
   if (podeVer('pipeline')) tarefas.push(loadPipeline().catch(() => {}));
   if (podeVer('metas')) tarefas.push(carregarMetas().catch(() => {}));
+  if (podeVer('planilhas')) tarefas.push(lkCarregar().catch(() => {}));
   await Promise.all(tarefas);
   if (el) el.dataset.ok = '1';
   desenharInicio();
@@ -7465,6 +7470,7 @@ function desenharInicio() {
     <div class="ini-hero">
       <div class="ini-saud">${saud}, ${esc(ME.nome)}</div>
       <div class="ini-resumo">${agora.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' })} · ${nPend ? `<strong>${nPend} coisa${nPend > 1 ? 's' : ''} esperando por você</strong>` : 'tudo em dia ✓'}</div>
+      ${podeVer('planilhas') ? lkAtalhosHTML() : ''}
       ${podeVer('agenda') && agForaHoje().length ? `<div class="ini-fora" onclick="goPage('agenda')">🏖 Fora hoje: ${agForaHoje().map(n => `<b style="color:${corDe(n)}">${esc(n)}</b>`).join(', ')}</div>` : ''}
     </div>
     <div class="ini-grid">
@@ -7497,82 +7503,179 @@ function desenharInicio() {
     </div>`;
 }
 
-// ── PLANILHAS ──
-async function addPlanilha() {
-  const nome = document.getElementById('plNome').value.trim();
-  const empresa = document.getElementById('plEmpresa').value;
-  const link = document.getElementById('plLink').value.trim();
-  if (!nome || !link) return;
-  if (db) {
-    const { error } = await db.from('planilhas').insert({ nome, empresa, link });
-    if (error) { console.error(error); alert('Erro ao salvar. Tente novamente.'); }
-    else { document.getElementById('plNome').value=''; document.getElementById('plLink').value=''; renderPlanilhas(); }
-  } else {
-    const lista = loadLs('hub_planilhas', []);
-    lista.unshift({ id: Date.now(), nome, empresa, link, created_at: new Date().toISOString() });
-    saveLs('hub_planilhas', lista);
-    document.getElementById('plNome').value=''; document.getElementById('plLink').value='';
-    renderPlanilhas();
-  }
-}
-
-async function deletePlanilha(id) {
-  if (!confirm('Remover esta planilha?')) return;
-  if (db) {
-    const { error } = await db.from('planilhas').delete().eq('id', id);
-    if (error) console.error(error);
-  } else {
-    let lista = loadLs('hub_planilhas', []);
-    lista = lista.filter(p => p.id !== id);
-    saveLs('hub_planilhas', lista);
-  }
-  renderPlanilhas();
-}
-
+// ── LINKS ──
+const LK_GRUPOS = { planilhas: '📗 Planilhas', sistemas: '⚙ Sistemas e hubs', arquivos: '📁 Pastas e arquivos', gestao: '📋 Gestão', marketplaces: '🛒 Marketplaces', outros: '🔗 Outros' };
 let _planilhasCache = [];
+let lkFavs = new Set();
+let lkFiltro = 'todos';   // todos | favoritos | pessoal | <grupo>
+
+function lkUrlSegura(u) { return /^https?:\/\/[^\s<>"]+$/i.test(String(u || '').trim()) ? String(u).trim() : null; }
+function lkHost(u) { try { return new URL(u).hostname.replace(/^www\./, ''); } catch (e) { return ''; } }
+// Ícone e "tipo" pelo endereço
+function lkTipo(u) {
+  const s = String(u || '').toLowerCase();
+  if (s.includes('docs.google.com/spreadsheets') || s.includes('sheets.google')) return ['📗', 'Google Planilhas', 'planilhas'];
+  if (s.includes('docs.google.com/document')) return ['📄', 'Google Docs', 'arquivos'];
+  if (s.includes('docs.google.com/presentation')) return ['📙', 'Google Apresentações', 'arquivos'];
+  if (s.includes('drive.google.com')) return ['📁', 'Google Drive', 'arquivos'];
+  if (s.includes('trello.com')) return ['📋', 'Trello', 'gestao'];
+  if (s.includes('notion.so') || s.includes('notion.site')) return ['📓', 'Notion', 'gestao'];
+  if (s.includes('mercadolivre') || s.includes('mercadolibre')) return ['🛒', 'Mercado Livre', 'marketplaces'];
+  if (s.includes('shopee')) return ['🛍', 'Shopee', 'marketplaces'];
+  if (s.includes('amazon')) return ['📦', 'Amazon', 'marketplaces'];
+  if (s.includes('magazineluiza') || s.includes('magalu')) return ['🏬', 'Magalu', 'marketplaces'];
+  if (s.includes('tiktok')) return ['🎵', 'TikTok Shop', 'marketplaces'];
+  if (s.includes('magis5')) return ['🔄', 'Magis5', 'sistemas'];
+  if (s.includes('github.io') || s.includes('web.app') || s.includes('firebaseapp') || s.includes('vercel.app') || s.includes('netlify')) return ['⚙', 'Sistema', 'sistemas'];
+  if (/\.(xlsx?|csv)(\?|$)/.test(s)) return ['📗', 'Planilha', 'planilhas'];
+  return ['🔗', 'Link', 'outros'];
+}
+function lkPodeEditar(p) { return !!ME && (!p.criado_por || p.criado_por === ME.nome); }
+
+async function renderPlanilhas() {
+  const el = document.getElementById('planilhasLista');
+  if (el && !_planilhasCache.length) el.innerHTML = loadingHTML();
+  await lkCarregar();
+  filterPlanilhas();
+}
+async function lkCarregar() {
+  if (!db) { _planilhasCache = loadLs('hub_planilhas', []); return; }
+  const [l, f] = await Promise.all([
+    db.from('planilhas').select('*').order('created_at', { ascending: false }),
+    db.from('link_favoritos').select('link_id').eq('usuario', ME ? ME.nome : '')
+  ]);
+  if (!l.error && l.data) _planilhasCache = l.data;
+  if (!f.error && f.data) lkFavs = new Set(f.data.map(x => x.link_id));
+}
+
+function lkCardHTML(p) {
+  const url = lkUrlSegura(p.link);
+  const [ic, tipo] = lkTipo(p.link);
+  const fav = lkFavs.has(p.id);
+  const pode = lkPodeEditar(p);
+  return `<div class="lk-card ${p.escopo === 'pessoal' ? 'pessoal' : ''}">
+    <div class="lk-card-top">
+      <span class="lk-ic">${ic}</span>
+      <div class="lk-tit">
+        <div class="lk-nome">${esc(p.nome)}${p.escopo === 'pessoal' ? ' <span class="lk-pess" title="Só você vê">🔒</span>' : ''}</div>
+        <div class="lk-host">${esc(tipo)}${lkHost(p.link) && tipo !== lkHost(p.link) ? ' · ' + esc(lkHost(p.link)) : ''}</div>
+      </div>
+      <span class="lk-star ${fav ? 'on' : ''}" title="${fav ? 'Tirar dos favoritos' : 'Favoritar (aparece no Início)'}" onclick="lkToggleFav(${p.id})">${fav ? '★' : '☆'}</span>
+    </div>
+    ${p.descricao ? `<div class="lk-desc">${esc(p.descricao)}</div>` : ''}
+    <div class="lk-rod">
+      <span class="lk-quem">${p.criado_por ? 'por ' + esc(p.criado_por) : ''}</span>
+      ${pode ? `<a href="#" onclick="event.preventDefault();lkEditar(${p.id})" title="Editar">✎</a><a href="#" class="lk-rem" onclick="event.preventDefault();deletePlanilha(${p.id})" title="Remover">🗑</a>` : ''}
+      ${url ? `<a class="btn btn-primary lk-abrir" href="${esc(url)}" target="_blank" rel="noopener noreferrer">Abrir →</a>` : '<span class="lk-ruim">link inválido</span>'}
+    </div>
+  </div>`;
+}
 
 function renderPlanilhaItems(lista) {
-  const el = document.getElementById('planilhasLista');
-  if (!lista.length) { el.innerHTML = emptyHTML('Nenhum link encontrado.'); return; }
-  el.innerHTML = lista.map(p => {
-    const dataFmt = new Date(p.created_at).toLocaleDateString('pt-BR');
-    return `<div class="planilha-item">
-      <div class="planilha-info">
-        <span class="planilha-icon">📊</span>
-        <div><div class="planilha-nome">${p.nome}</div><div class="planilha-empresa">${p.empresa} · ${dataFmt}</div></div>
-      </div>
-      <div style="display:flex;align-items:center;gap:12px">
-        <a class="planilha-link" href="${p.link}" target="_blank">Abrir →</a>
-        <button class="btn btn-danger" onclick="deletePlanilha(${p.id})">Remover</button>
-      </div>
-    </div>`;
-  }).join('');
+  const el = document.getElementById('planilhasLista'); if (!el) return;
+  if (!lista.length) { el.innerHTML = emptyHTML(_planilhasCache.length ? 'Nenhum link encontrado.' : 'Nenhum link cadastrado ainda. Use “+ Adicionar link”.'); return; }
+  const favs = lista.filter(p => lkFavs.has(p.id));
+  let html = '';
+  if (lkFiltro === 'todos' && favs.length) html += `<div class="lk-sec">★ Seus favoritos</div><div class="lk-grade">${favs.map(lkCardHTML).join('')}</div>`;
+  const resto = lkFiltro === 'todos' ? lista.filter(p => !lkFavs.has(p.id)) : lista;
+  const grupos = Object.keys(LK_GRUPOS).filter(g => resto.some(p => (LK_GRUPOS[p.grupo] ? p.grupo : 'outros') === g));
+  grupos.forEach(g => {
+    const doGrupo = resto.filter(p => (LK_GRUPOS[p.grupo] ? p.grupo : 'outros') === g).sort((a, b) => a.nome.localeCompare(b.nome));
+    html += `<div class="lk-sec">${LK_GRUPOS[g]}</div><div class="lk-grade">${doGrupo.map(lkCardHTML).join('')}</div>`;
+  });
+  el.innerHTML = html;
 }
 
 function filterPlanilhas() {
   const q = (document.getElementById('plSearch')?.value || '').toLowerCase().trim();
-  const emp = document.getElementById('plFiltroEmpresa')?.value || '';
-  let filtered = _planilhasCache;
-  if (q) filtered = filtered.filter(p => p.nome.toLowerCase().includes(q));
-  if (emp) filtered = filtered.filter(p => p.empresa === emp);
-  renderPlanilhaItems(filtered);
+  const chips = document.getElementById('lkFiltros');
+  if (chips) {
+    const usados = Object.keys(LK_GRUPOS).filter(g => _planilhasCache.some(p => (LK_GRUPOS[p.grupo] ? p.grupo : 'outros') === g));
+    const temPess = _planilhasCache.some(p => p.escopo === 'pessoal');
+    chips.innerHTML = [['todos', 'Todos'], ['favoritos', '★ Favoritos'], ...usados.map(g => [g, LK_GRUPOS[g]]), ...(temPess ? [['pessoal', '🔒 Só meus']] : [])]
+      .map(([k, l]) => `<span class="aba-chip ${lkFiltro === k ? 'on' : ''}" onclick="lkFiltro='${k}';filterPlanilhas()">${l}</span>`).join('');
+  }
+  let lista = _planilhasCache;
+  if (q) lista = lista.filter(p => [p.nome, p.descricao, p.link, lkTipo(p.link)[1]].join(' ').toLowerCase().includes(q));
+  if (lkFiltro === 'favoritos') lista = lista.filter(p => lkFavs.has(p.id));
+  else if (lkFiltro === 'pessoal') lista = lista.filter(p => p.escopo === 'pessoal');
+  else if (lkFiltro !== 'todos') lista = lista.filter(p => (LK_GRUPOS[p.grupo] ? p.grupo : 'outros') === lkFiltro);
+  renderPlanilhaItems(lista);
 }
 
-async function renderPlanilhas() {
-  const el = document.getElementById('planilhasLista');
-  el.innerHTML = loadingHTML();
-  let lista = [];
-  if (db) {
-    const { data, error } = await db.from('planilhas')
-      .select('*').order('created_at', { ascending: false });
-    if (!error && data) lista = data;
-  } else {
-    lista = loadLs('hub_planilhas', []);
-  }
-  _planilhasCache = lista;
-  if (!lista.length) { el.innerHTML = emptyHTML('Nenhum link cadastrado ainda.'); return; }
+async function lkToggleFav(id) {
+  const tinha = lkFavs.has(id);
+  tinha ? lkFavs.delete(id) : lkFavs.add(id);
+  filterPlanilhas();
+  const { error } = tinha
+    ? await db.from('link_favoritos').delete().eq('link_id', id).eq('usuario', ME.nome)
+    : await db.from('link_favoritos').insert({ link_id: id, usuario: ME.nome });
+  if (error) { tinha ? lkFavs.add(id) : lkFavs.delete(id); filterPlanilhas(); alert('Erro: ' + error.message); }
+  if (typeof agendarDesenhoInicio === 'function') agendarDesenhoInicio();
+}
+
+// ── Adicionar / editar ──
+let lkGrupoMexido = false;
+function lkEditar(id) {
+  const p = id ? _planilhasCache.find(x => x.id === id) : null;
+  if (p && !lkPodeEditar(p)) return;
+  lkGrupoMexido = !!p;
+  cvModal('modalLink', `
+    <div class="hub-modal-title">${p ? '✎ Editar link' : '+ Adicionar link'}</div>
+    <div class="field-group" style="margin-top:12px"><span class="field-label">Endereço</span>
+      <input class="field-input" id="lkUrl" placeholder="https://…" value="${p ? esc(p.link) : ''}" oninput="lkSugerirGrupo()"></div>
+    <div class="ag-form-grid" style="margin-top:10px">
+      <div class="field-group"><span class="field-label">Nome</span><input class="field-input" id="lkNome" placeholder="ex: Planilha de precificação" value="${p ? esc(p.nome) : ''}"></div>
+      <div class="field-group"><span class="field-label">Grupo</span><select class="field-input" id="lkGrupo" onchange="lkGrupoMexido=true">${Object.entries(LK_GRUPOS).map(([k, l]) => `<option value="${k}" ${(p ? p.grupo : 'outros') === k ? 'selected' : ''}>${l}</option>`).join('')}</select></div>
+    </div>
+    <div class="field-group" style="margin-top:10px"><span class="field-label">Para que serve (opcional)</span>
+      <input class="field-input" id="lkDesc" maxlength="140" placeholder="ex: precificação com Lucro Real" value="${p ? esc(p.descricao || '') : ''}"></div>
+    <label class="com-check" style="margin-top:12px"><input type="checkbox" id="lkPess" ${p && p.escopo === 'pessoal' ? 'checked' : ''}> 🔒 Só eu vejo (link pessoal)</label>
+    <div id="lkMsg" style="font-size:12px;color:var(--red);min-height:16px;margin-top:8px"></div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:6px">
+      <button class="btn btn-ghost" onclick="document.getElementById('modalLink').remove()">Cancelar</button>
+      <button class="btn btn-primary" id="lkBtn" onclick="lkSalvar(${p ? p.id : 'null'})">Salvar</button>
+    </div>`, 480);
+  setTimeout(() => document.getElementById(p ? 'lkNome' : 'lkUrl')?.focus(), 50);
+}
+function lkSugerirGrupo() {
+  if (lkGrupoMexido) return;
+  const u = document.getElementById('lkUrl').value;
+  document.getElementById('lkGrupo').value = lkTipo(u)[2];
+}
+async function lkSalvar(id) {
+  const msg = document.getElementById('lkMsg');
+  let link = document.getElementById('lkUrl').value.trim();
+  if (link && !/^[a-z]+:/i.test(link)) link = 'https://' + link;
+  const nome = document.getElementById('lkNome').value.trim() || lkHost(link);
+  if (!lkUrlSegura(link)) { msg.textContent = 'Cole um endereço que comece com http:// ou https://'; return; }
+  if (!nome) { msg.textContent = 'Dê um nome ao link.'; return; }
+  const campos = { nome, link, grupo: document.getElementById('lkGrupo').value, descricao: document.getElementById('lkDesc').value.trim(), escopo: document.getElementById('lkPess').checked ? 'pessoal' : 'geral', empresa: 'Geral' };
+  document.getElementById('lkBtn').disabled = true;
+  const { error } = id ? await db.from('planilhas').update(campos).eq('id', id) : await db.from('planilhas').insert({ ...campos, criado_por: ME.nome });
+  if (error) { msg.textContent = error.message; document.getElementById('lkBtn').disabled = false; return; }
+  document.getElementById('modalLink').remove();
+  renderPlanilhas();
+}
+async function addPlanilha() { lkEditar(null); }
+
+async function deletePlanilha(id) {
+  const p = _planilhasCache.find(x => x.id === id); if (!p) return;
+  if (!confirm(`Remover o link "${p.nome}"?`)) return;
+  const { error } = await db.from('planilhas').delete().eq('id', id);
+  if (error) { alert('Erro: ' + error.message); return; }
+  _planilhasCache = _planilhasCache.filter(x => x.id !== id);
+  lkFavs.delete(id);
   filterPlanilhas();
 }
+
+// Atalhos (favoritos) para a tela Início
+function lkAtalhosHTML() {
+  const favs = _planilhasCache.filter(p => lkFavs.has(p.id) && lkUrlSegura(p.link)).sort((a, b) => a.nome.localeCompare(b.nome));
+  if (!favs.length) return '';
+  return `<div class="lk-atalhos">${favs.map(p => `<a class="lk-atalho" href="${esc(lkUrlSegura(p.link))}" target="_blank" rel="noopener noreferrer" title="${esc(p.descricao || p.nome)}"><span>${lkTipo(p.link)[0]}</span>${esc(p.nome)}</a>`).join('')}</div>`;
+}
+
 
 // ── METAS ──
 let metaFilterCat = 'todas';
@@ -8055,7 +8158,7 @@ function setupRealtime() {
       }, 500);
     })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'planilhas' }, () => {
-      if (curPage === 'planilhas') renderPlanilhas();
+      if (curPage === 'planilhas') renderPlanilhas(); else if (curPage === 'inicio') lkCarregar().then(agendarDesenhoInicio);
     })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'metas' }, () => {
       if (curPage === 'metas') renderMetas(); else if (curPage === 'inicio') carregarMetas().then(agendarDesenhoInicio);
