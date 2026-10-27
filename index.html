@@ -1143,6 +1143,61 @@ select.field-input{cursor:pointer}
 .cv-arq .btn{font-size:11px;padding:4px 10px}
 .cv-arq-lista{display:flex;flex-direction:column;gap:6px;max-height:60vh;overflow-y:auto}
 .cv-arq-lista .cv-arq{max-width:none}
+/* ── Agenda v2 ── */
+.ag-visoes{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.ag-sep{width:1px;height:18px;background:var(--border2);margin:0 4px;align-self:center}
+.ag-tag{font-size:9px;font-family:'IBM Plex Mono',monospace;padding:1px 4px;border-radius:3px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ag-tag.feriado{background:#e8f5ee;color:#1a6b3c}
+.ag-tag.comercial{background:#fff1e0;color:#a04c00}
+.ag-pill.ausencia{background:#fdf6d8;color:#7a5a00;border-left-color:#d4a017}
+.ag-pill.sala{background:#eef0f4;color:#334;border-left-color:#556}
+.ag-pill.cont{background:#e6eef8;color:#1a3f7a;border-left-color:#1a3f7a}
+.ag-linha-data-com .ag-linha-tit{font-weight:500;color:var(--muted)}
+.ag-det-anexos{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.ag-serie-aviso{font-size:12px;background:var(--surface2);border-radius:5px;padding:8px 10px;margin-bottom:10px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.ag-serie-aviso label{display:inline-flex;gap:4px;align-items:center;cursor:pointer}
+.ag-semana{display:flex;flex-direction:column;gap:8px}
+.ag-sem-dia{background:var(--surface);border:1.5px solid var(--border);border-radius:6px;padding:8px 10px}
+.ag-sem-dia.hoje{border-color:var(--text)}
+.ag-sem-dia.passado{opacity:.6}
+.ag-sem-cab{display:flex;justify-content:space-between;align-items:center;font-size:13px;cursor:pointer;margin-bottom:4px}
+.ag-sem-cab em{font-style:normal;font-size:10px;background:var(--text);color:var(--bg);border-radius:8px;padding:1px 6px;margin-left:4px}
+.ag-sem-add{color:var(--muted);font-size:16px}
+.ag-sem-tags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:4px}
+.ag-sem-tags .ag-tag{font-size:10px}
+.ag-sem-item{display:flex;gap:8px;align-items:flex-start;padding:6px 0;border-top:1px solid var(--border);cursor:pointer}
+.ag-sem-ic{width:20px;text-align:center}
+.ag-sem-tit{font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis}
+.ag-sem-sub{font-size:11px;color:var(--muted)}
+.ag-sem-vazio{font-size:12px;color:var(--muted)}
+.sala-intro{font-size:12px;color:var(--muted);margin-bottom:12px}
+.sala-dia{background:var(--surface);border:1.5px solid var(--border);border-radius:6px;padding:10px 14px;margin-bottom:8px}
+.sala-dia.hoje{border-color:var(--text)}
+.sala-cab{display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:6px}
+.sala-cab .btn{font-size:11px;padding:4px 10px}
+.sala-res{display:flex;align-items:center;gap:12px;padding:7px 0;border-top:1px solid var(--border)}
+.sala-res.minha .sala-hora{background:var(--text);color:var(--bg)}
+.sala-hora{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;background:var(--surface2);border-radius:4px;padding:3px 8px;white-space:nowrap}
+.sala-info{flex:1;min-width:0}
+.sala-tit{font-size:13px;font-weight:600}
+.sala-quem{font-size:11px;color:var(--muted)}
+.sala-acts{display:flex;gap:4px;flex-wrap:wrap}
+.sala-acts .btn{font-size:11px;padding:4px 8px}
+.sala-livre{font-size:12px;color:var(--green);padding:4px 0}
+.sala-msg{font-size:12px;margin-top:10px;min-height:16px;line-height:1.5}
+.sala-msg.ok{color:var(--green)}
+.sala-msg.erro{color:var(--red)}
+.ini-fora{font-size:13px;margin-top:6px;cursor:pointer}
+.nota-chk{display:flex;align-items:flex-start;gap:6px;cursor:pointer;margin:2px 0}
+.nota-chk input{margin-top:3px}
+.nota-chk.feito span{text-decoration:line-through;color:var(--muted)}
+.nota-prog{font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--muted);margin-bottom:4px}
+@media(max-width:768px){
+  .ag-toolbar{flex-direction:column;align-items:stretch}
+  #agNav{justify-content:space-between}
+  .sala-res{flex-wrap:wrap}
+  .sala-acts{width:100%;justify-content:flex-end}
+}
 /* ── Gestão: reuniões e metas ── */
 .reu-sec{display:flex;align-items:baseline;gap:8px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:22px 0 10px}
 .reu-sec small{font-weight:400;text-transform:none;letter-spacing:0;font-family:'IBM Plex Mono',monospace;font-size:10px}
@@ -1764,23 +1819,26 @@ select.field-input{cursor:pointer}
   <div id="page-agenda" class="hidden fade-in">
     <div class="page-header">
       <div class="page-title">Agenda</div>
-      <div class="page-sub">feiras e eventos dos sócios · seus compromissos privados (🔒)</div>
+      <div class="page-sub">feiras e eventos dos sócios · seus compromissos privados (🔒) · sala de reunião</div>
     </div>
+    <div class="ag-visoes"><div id="agVisoes" class="para-chips"></div><button class="btn btn-primary" id="agBtnNovo" onclick="agNovo(null)">+ Evento</button></div>
     <div class="ag-toolbar">
-      <div style="display:flex;align-items:center;gap:6px">
+      <div style="display:flex;align-items:center;gap:6px" id="agNav">
         <button class="btn btn-ghost" onclick="agMudarMes(-1)">‹</button>
         <div class="ag-mes" id="agMesTitulo"></div>
         <button class="btn btn-ghost" onclick="agMudarMes(1)">›</button>
         <button class="btn btn-ghost" style="font-size:11px" onclick="agIrHoje()">Hoje</button>
       </div>
       <div id="agFiltros" class="para-chips"></div>
-      <button class="btn btn-primary" onclick="agNovo(null)">+ Evento</button>
     </div>
-    <div class="ag-grid" id="agGrid"></div>
-    <div class="box" style="margin-top:16px">
-      <div class="box-title" style="margin-bottom:8px">Próximos 60 dias</div>
-      <div id="agProximos"></div>
+    <div id="agCalBox">
+      <div class="ag-grid" id="agGrid"></div>
+      <div class="box" style="margin-top:16px">
+        <div class="box-title" style="margin-bottom:8px">Próximos 60 dias</div>
+        <div id="agProximos"></div>
+      </div>
     </div>
+    <div id="agSala" class="hidden"></div>
   </div>
 
   <!-- ANOTAÇÕES -->
@@ -1791,11 +1849,12 @@ select.field-input{cursor:pointer}
     </div>
     <div class="nota-nova" id="notaNovaBox">
       <input class="nota-in-tit" id="notaTit" placeholder="Título">
-      <textarea class="nota-in-txt" id="notaTxt" rows="3" placeholder="Anote uma ideia, um número, um lembrete…"></textarea>
+      <textarea class="nota-in-txt" id="notaTxt" rows="3" placeholder="Anote uma ideia, um número, um lembrete… (☑ Lista cria itens para marcar)"></textarea>
       <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
         <span class="field-label" style="margin:0">⏰ Lembrar em</span>
         <input class="field-input" type="datetime-local" id="notaLem" style="padding:6px 8px;font-size:12px;max-width:210px">
         <div id="notaCores" style="display:flex;gap:4px"></div>
+        <button class="btn btn-ghost" style="font-size:11px" title="Transforma a linha em item de checklist" onclick="notaInserirItem('notaTxt')">☑ Lista</button>
         <button class="btn btn-primary" style="margin-left:auto" onclick="notaSalvarNova()">Salvar</button>
       </div>
     </div>
@@ -2033,6 +2092,12 @@ select.field-input{cursor:pointer}
       <div id="rQuandoData" class="rf-quando">
         <div class="field-group"><label class="field-label">Data</label><input class="field-input" type="date" id="rData"></div>
         <div class="field-group"><label class="field-label">Horário</label><input class="field-input" type="time" id="rHorario"></div>
+      </div>
+      <div class="para-row"><span class="field-label" style="margin:0">Duração</span>
+        <select class="field-input" id="rDuracao" style="width:auto;font-size:12px;padding:6px 10px">
+          <option value="30">30 min</option><option value="60" selected>1 hora</option><option value="90">1h30</option><option value="120">2 horas</option><option value="180">3 horas</option><option value="240">4 horas</option>
+        </select>
+        <label class="com-check"><input type="checkbox" id="rNaSala" checked> 🚪 Na sala de reunião (reserva a sala)</label>
       </div>
       <div class="para-row"><span class="field-label" style="margin:0">Lembrete</span>
         <select class="field-input" id="rLembrete" style="width:auto;font-size:12px;padding:6px 10px">
@@ -2937,6 +3002,10 @@ function goPage(p) {
   if (typeof p === 'string' && p.includes(':')) {
     const [pg, arg] = p.split(':');
     if (pg === 'conversas' && arg) { cvPendente = Number(arg); if (curPage === 'conversas' && podeVer('conversas')) { cvAbrir(cvPendente); cvPendente = null; return; } }
+    if (pg === 'agenda' && arg === 'sala') {
+      agVisao = 'sala';
+      if (curPage === 'agenda' && podeVer('agenda')) { desenharAgenda(); return; }
+    }
     if (pg === 'reunioes' && arg) {
       reuDestacar = Number(arg);
       if (curPage === 'reunioes' && podeVer('reunioes')) { desenharReunioes(); return; }
@@ -6162,20 +6231,33 @@ async function salvarNaoPerturbe() {
 }
 
 // ── AGENDA (geral dos sócios + pessoal) ──
-const AG_CATS = { feira: '🏬 Feira', evento: '🎤 Evento', viagem: '✈️ Viagem', externa: '🤝 Reunião externa', compromisso: '📌 Compromisso', lembrete: '🔔 Lembrete' };
+const AG_CATS = { feira: '🏬 Feira', evento: '🎤 Evento', viagem: '✈️ Viagem', externa: '🤝 Reunião externa', compromisso: '📌 Compromisso', lembrete: '🔔 Lembrete', ausencia: '🏖 Fora / férias' };
 const AG_LEMBRETES = [['', 'Sem lembrete'], ['0', 'Na hora (dia todo: 8h)'], ['15', '15 min antes'], ['60', '1 hora antes'], ['1440', '1 dia antes']];
 let eventosData = [];
-let agMes = null;          // 'YYYY-MM'
+let reservasSala = [];
+let agMes = null;          // 'YYYY-MM' (computador: mês)
+let agSemana = null;       // segunda-feira da semana (celular: semana)
 let agFiltro = 'tudo';     // tudo | geral | meu
+let agVisao = 'cal';       // cal | sala
 let agEscopoNovo = 'geral';
+let agCamadas = { datas: true, conteineres: true };
+try { agCamadas = Object.assign(agCamadas, JSON.parse(localStorage.getItem('hub_ag_camadas') || '{}')); } catch (e) { /* ok */ }
 
 function agHoje() { return isoHoje(); }
 function agFmt(d) { return d ? d.split('-').reverse().join('/') : ''; }
 function agAddDias(d, n) { const x = new Date(d + 'T12:00:00'); x.setDate(x.getDate() + n); return x.toISOString().slice(0, 10); }
+function agMobile() { return window.innerWidth <= 768; }
+function agSegunda(iso) { const d = new Date(iso + 'T12:00:00'); const dow = (d.getDay() + 6) % 7; return agAddDias(iso, -dow); }
+function agHora(t) { return t ? String(t).slice(0, 5) : ''; }
+function agFaixa(ini, fim) { return ini ? (fim ? `${agHora(ini)}–${agHora(fim)}` : agHora(ini)) : ''; }
 
 async function carregarEventos() {
   const { data, error } = await db.from('eventos').select('*').order('data', { ascending: true });
   if (!error && data) eventosData = data;
+}
+async function carregarReservas() {
+  const { data, error } = await db.from('reservas_sala').select('*').gte('data', agAddDias(agHoje(), -62)).order('data', { ascending: true }).order('inicio', { ascending: true });
+  if (!error && data) reservasSala = data;
 }
 
 function agVisiveis() {
@@ -6184,108 +6266,247 @@ function agVisiveis() {
 
 async function renderAgenda() {
   if (!agMes) agMes = agHoje().slice(0, 7);
-  await Promise.all([carregarEventos(), podeVer('reunioes') ? loadReunioes().catch(() => {}) : null]);
+  if (!agSemana) agSemana = agSegunda(agHoje());
+  const t = [carregarEventos(), carregarReservas().catch(() => {})];
+  if (podeVer('reunioes')) t.push(loadReunioes().catch(() => {}));
+  if (podeVer('pipeline') && !(typeof pedidosData !== 'undefined' && pedidosData.length)) t.push(loadPipeline().catch(() => {}));
+  await Promise.all(t);
   desenharAgenda();
 }
-// Reuniões marcadas aparecem no calendário (não em "Só minha")
+
+// ── Datas comerciais e feriados nacionais ──
+const _agDatasCache = {};
+function agPascoa(y) {
+  const a = y % 19, b = Math.floor(y / 100), c = y % 100, d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25), g = Math.floor((b - f + 1) / 3);
+  const h = (19 * a + b - d - g + 15) % 30, i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451);
+  const mes = Math.floor((h + l - 7 * m + 114) / 31), dia = ((h + l - 7 * m + 114) % 31) + 1;
+  return `${y}-${String(mes).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
+}
+function agNesimoDomingo(y, mes, n) { // n-ésimo domingo do mês (mes 1-12)
+  const d = new Date(y, mes - 1, 1); const primeiro = (7 - d.getDay()) % 7 + 1;
+  return `${y}-${String(mes).padStart(2, '0')}-${String(primeiro + (n - 1) * 7).padStart(2, '0')}`;
+}
+function agDatasAno(y) {
+  if (_agDatasCache[y]) return _agDatasCache[y];
+  const m = {};
+  const add = (iso, nome, tipo) => (m[iso] = m[iso] || []).push({ nome, tipo });
+  const p = n => String(n).padStart(2, '0');
+  const pas = agPascoa(y);
+  [['01-01', 'Confraternização Universal'], ['04-21', 'Tiradentes'], ['05-01', 'Dia do Trabalho'], ['09-07', 'Independência'], ['10-12', 'N. Sra. Aparecida'],
+   ['11-02', 'Finados'], ['11-15', 'Proclamação da República'], ['11-20', 'Consciência Negra'], ['12-25', 'Natal']].forEach(([d, n]) => add(`${y}-${d}`, n, 'feriado'));
+  add(agAddDias(pas, -48), 'Carnaval', 'feriado'); add(agAddDias(pas, -47), 'Carnaval', 'feriado');
+  add(agAddDias(pas, -2), 'Sexta-feira Santa', 'feriado'); add(agAddDias(pas, 60), 'Corpus Christi', 'feriado');
+  add(`${y}-03-15`, 'Dia do Consumidor', 'comercial');
+  add(agNesimoDomingo(y, 5, 2), 'Dia das Mães', 'comercial');
+  add(`${y}-06-12`, 'Dia dos Namorados', 'comercial');
+  add(agNesimoDomingo(y, 8, 2), 'Dia dos Pais', 'comercial');
+  add(`${y}-09-15`, 'Dia do Cliente', 'comercial');
+  add(`${y}-10-12`, 'Dia das Crianças', 'comercial');
+  // Black Friday: sexta depois da 4ª quinta de novembro
+  const nov1 = new Date(y, 10, 1); const q1 = (4 - nov1.getDay() + 7) % 7 + 1; const bf = `${y}-11-${p(q1 + 21 + 1)}`;
+  add(bf, 'Black Friday', 'comercial'); add(agAddDias(bf, 3), 'Cyber Monday', 'comercial');
+  for (let i = 3; i <= 12; i++) add(`${y}-${p(i)}-${p(i)}`, `${i}.${i}`, 'comercial');
+  _agDatasCache[y] = m;
+  return m;
+}
+function agDatasDia(iso) { return agCamadas.datas ? (agDatasAno(Number(iso.slice(0, 4)))[iso] || []) : []; }
+function agTagsHTML(iso) {
+  return agDatasDia(iso).map(d => `<div class="ag-tag ${d.tipo}" title="${d.tipo === 'feriado' ? 'Feriado nacional' : 'Data comercial'}">${d.tipo === 'feriado' ? '🇧🇷' : '🛍'} ${esc(d.nome)}</div>`).join('');
+}
+
+// ── Itens de um dia (eventos, ausências, reuniões, sala, contêineres) ──
 function agReunioesVis() {
   if (!podeVer('reunioes') || agFiltro === 'meu') return [];
   return (reunioesData || []).filter(r => r.data && (r.status === 'agendada' || r.status === 'realizada'));
 }
-function agPillReuniao(r) {
-  return `<div class="ag-pill reuniao" title="Reunião: ${esc(r.titulo)}" onclick="event.stopPropagation();goPage('reunioes:${r.id}')">🤝 ${r.horario ? r.horario + ' ' : ''}${esc(r.titulo)}</div>`;
+function agReservasVis() { return agFiltro === 'meu' ? reservasSala.filter(r => ME && r.dono === ME.nome && !r.reuniao_id) : reservasSala.filter(r => !r.reuniao_id); }
+function agConteineresVis() {
+  if (!agCamadas.conteineres || agFiltro === 'meu' || !podeVer('pipeline') || typeof pedidosData === 'undefined') return [];
+  return pedidosData.filter(p => p.eta_galpao || p.eta);
 }
-function agPillsDia(doDia, iso) {
-  const itens = doDia.map(e => ({ h: e.horario && e.data === iso ? e.horario : '', html: `<div class="ag-pill ${e.escopo === 'pessoal' ? 'pessoal' : ''} cat-${esc(e.categoria)}" title="${esc(e.titulo)}" onclick="agDetalhe(${e.id})">${e.horario && e.data === iso ? e.horario + ' ' : ''}${esc(e.titulo)}</div>` }))
-    .concat(agReunioesVis().filter(r => r.data === iso).map(r => ({ h: r.horario || '', html: agPillReuniao(r) })))
-    .sort((a, b) => a.h.localeCompare(b.h));
-  return itens.slice(0, 3).map(i => i.html).join('') + (itens.length > 3 ? `<div class="ag-mais" onclick="agDetalheDia('${iso}')">+${itens.length - 3}</div>` : '');
+function agItensDia(iso) {
+  const itens = [];
+  agVisiveis().filter(e => e.data <= iso && (e.data_fim || e.data) >= iso).forEach(e => {
+    const aus = e.categoria === 'ausencia';
+    const h = !aus && e.horario && e.data === iso ? e.horario : '';
+    const tit = aus ? `${esc(e.dono)} fora${e.titulo && e.titulo !== e.dono + ' fora' ? ' · ' + esc(e.titulo) : ''}` : esc(e.titulo);
+    itens.push({ h: aus ? '' : (h || '~'), ord: aus ? 0 : 2,
+      pill: `<div class="ag-pill ${aus ? 'ausencia' : ''} ${e.escopo === 'pessoal' ? 'pessoal' : ''} cat-${esc(e.categoria)}" title="${tit}" onclick="event.stopPropagation();agDetalhe(${e.id})">${aus ? '🏖 ' : ''}${h ? agHora(h) + ' ' : ''}${tit}</div>`,
+      linha: agLinhaCurta(aus ? '🏖' : (e.escopo === 'pessoal' ? '🔒' : '🗓'), tit, [aus ? 'fora / férias' : (AG_CATS[e.categoria] || ''), h ? agFaixa(e.horario, e.horario_fim) : (aus ? '' : 'dia todo'), e.local ? '📍 ' + esc(e.local) : '', e.serie_id ? '🔁' : '', (e.anexos || []).length ? '📎' : ''], `agDetalhe(${e.id})`) });
+  });
+  agReunioesVis().filter(r => r.data === iso).forEach(r => {
+    itens.push({ h: r.horario || '~', ord: 1,
+      pill: `<div class="ag-pill reuniao" title="Reunião: ${esc(r.titulo)}" onclick="event.stopPropagation();goPage('reunioes:${r.id}')">${r.na_sala ? '🚪' : '🤝'} ${r.horario ? agHora(r.horario) + ' ' : ''}${esc(r.titulo)}</div>`,
+      linha: agLinhaCurta('🤝', esc(r.titulo), ['reunião', r.horario ? agFaixa(r.horario, agHoraMais(r.horario, r.duracao_min || 60)) : '', r.na_sala ? '🚪 sala' : '', r.status === 'realizada' ? '✓ realizada' : ''], `goPage('reunioes:${r.id}')`) });
+  });
+  agReservasVis().filter(r => r.data === iso).forEach(r => {
+    itens.push({ h: agHora(r.inicio), ord: 1,
+      pill: `<div class="ag-pill sala" title="Sala: ${esc(r.titulo)} (${esc(r.dono)})" onclick="event.stopPropagation();agVerSala()">🚪 ${agFaixa(r.inicio, r.fim)} ${esc(r.titulo || 'Sala')}</div>`,
+      linha: agLinhaCurta('🚪', `Sala · ${esc(r.titulo || 'reservada')}`, [agFaixa(r.inicio, r.fim), 'por ' + esc(r.dono), r.serie_id ? '🔁' : ''], 'agVerSala()') });
+  });
+  agConteineresVis().filter(p => (p.eta_galpao || p.eta) === iso).forEach(p => {
+    const gal = !!p.eta_galpao;
+    itens.push({ h: '', ord: 0,
+      pill: `<div class="ag-pill cont" title="Contêiner ${esc(p.ref)}" onclick="event.stopPropagation();goPage('pipeline')">🚢 ${esc(p.ref)}${gal ? ' no galpão' : ' (ETA)'}</div>`,
+      linha: agLinhaCurta('🚢', `Contêiner ${esc(p.ref)}`, [gal ? 'previsão no galpão' : 'ETA no porto', esc(p.empresa || ''), (p.skus || []).length ? p.skus.length + ' SKUs' : ''], "goPage('pipeline')") });
+  });
+  return itens.sort((a, b) => a.ord - b.ord || a.h.localeCompare(b.h));
 }
-function agLinhaReuniaoHTML(r) {
-  return `<div class="ag-linha ag-linha-reu" onclick="goPage('reunioes:${r.id}')">
-    <div class="ag-linha-data">${diaSemana(r.data)} ${agFmt(r.data)}${r.horario ? '<br>' + r.horario : ''}</div>
-    <div style="flex:1;min-width:0">
-      <div class="ag-linha-tit">🤝 ${esc(r.titulo)}</div>
-      <div class="ag-linha-sub">Reunião${r.status === 'realizada' ? ' · ✓ realizada' : ''}${(r.participantes || []).length ? ' · 🔒 ' + esc(audienciaReuniao(r).join(', ')) : ' · todos'}${r.mediador ? ' · ⚑ ' + esc(r.mediador) : ''}</div>
-    </div>
-    ${r.lembrete_min ? '<span title="Com lembrete">⏰</span>' : ''}
-  </div>`;
+function agHoraMais(h, min) {
+  const [hh, mm] = String(h).split(':').map(Number); const t = Math.min(23 * 60 + 59, hh * 60 + mm + (min || 0));
+  return `${String(Math.floor(t / 60)).padStart(2, '0')}:${String(t % 60).padStart(2, '0')}`;
+}
+function agLinhaCurta(ic, tit, sub, acao) {
+  return `<div class="ag-sem-item" onclick="${acao}"><span class="ag-sem-ic">${ic}</span><div style="min-width:0;flex:1"><div class="ag-sem-tit">${tit}</div><div class="ag-sem-sub">${sub.filter(Boolean).join(' · ')}</div></div></div>`;
 }
 
+// ── Navegação ──
 function agMudarMes(n) {
+  if (agMobile() && agVisao === 'cal') { agSemana = agAddDias(agSemana || agSegunda(agHoje()), 7 * n); desenharAgenda(); return; }
   const [y, m] = agMes.split('-').map(Number);
   const d = new Date(y, m - 1 + n, 1);
   agMes = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
   desenharAgenda();
 }
-function agIrHoje() { agMes = agHoje().slice(0, 7); desenharAgenda(); }
+function agIrHoje() { agMes = agHoje().slice(0, 7); agSemana = agSegunda(agHoje()); desenharAgenda(); }
 function agSetFiltro(f) { agFiltro = f; desenharAgenda(); }
+function agSetVisao(v) { agVisao = v; desenharAgenda(); }
+function agVerSala() { agFechar(); if (curPage !== 'agenda') { goPage('agenda:sala'); return; } agSetVisao('sala'); }
+function agToggleCamada(k) {
+  agCamadas[k] = !agCamadas[k];
+  try { localStorage.setItem('hub_ag_camadas', JSON.stringify(agCamadas)); } catch (e) { /* ok */ }
+  desenharAgenda();
+}
+let _agResizeT = null, _agEraMobile = null;
+window.addEventListener('resize', () => {
+  clearTimeout(_agResizeT);
+  _agResizeT = setTimeout(() => { if (curPage === 'agenda' && _agEraMobile !== agMobile()) desenharAgenda(); }, 250);
+});
 
 function desenharAgenda() {
   const grid = document.getElementById('agGrid');
   if (!grid) return;
-  const [y, m] = agMes.split('-').map(Number);
-  const tit = new Date(y, m - 1, 1).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
-  document.getElementById('agMesTitulo').textContent = tit.charAt(0).toUpperCase() + tit.slice(1);
-  document.getElementById('agFiltros').innerHTML = [['tudo', 'Tudo'], ['geral', '👥 Sócios'], ['meu', '🔒 Só minha']]
-    .map(([k, l]) => `<span class="aba-chip ${agFiltro === k ? 'on' : ''}" onclick="agSetFiltro('${k}')">${l}</span>`).join('');
-
-  const evs = agVisiveis();
-  const primeiro = new Date(y, m - 1, 1);
-  const inicio = new Date(primeiro); inicio.setDate(1 - primeiro.getDay());
+  _agEraMobile = agMobile();
   const hoje = agHoje();
-  let html = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map(d => `<div class="ag-dow">${d}</div>`).join('');
-  for (let i = 0; i < 42; i++) {
-    const dt = new Date(inicio); dt.setDate(inicio.getDate() + i);
-    const iso = `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-${String(dt.getDate()).padStart(2, '0')}`;
-    if (i === 35 && dt.getMonth() !== m - 1) break;
-    const doDia = evs.filter(e => e.data <= iso && (e.data_fim || e.data) >= iso)
-      .sort((a, b) => (a.horario || '').localeCompare(b.horario || ''));
-    html += `<div class="ag-cell ${dt.getMonth() !== m - 1 ? 'fora' : ''} ${iso === hoje ? 'hoje' : ''}" onclick="if(event.target===this||event.target.classList.contains('ag-num'))agNovo('${iso}')">
-      <span class="ag-num">${dt.getDate()}</span>
-      ${agPillsDia(doDia, iso)}
-    </div>`;
+  const sala = agVisao === 'sala';
+  document.getElementById('agVisoes').innerHTML =
+    `<span class="aba-chip ${!sala ? 'on' : ''}" onclick="agSetVisao('cal')">📅 Calendário</span><span class="aba-chip ${sala ? 'on' : ''}" onclick="agSetVisao('sala')">🚪 Sala de reunião</span>`;
+  document.getElementById('agNav').classList.toggle('hidden', sala);
+  document.getElementById('agFiltros').classList.toggle('hidden', sala);
+  document.getElementById('agBtnNovo').textContent = sala ? '+ Reservar sala' : '+ Evento';
+  document.getElementById('agBtnNovo').onclick = sala ? () => agReservar(null) : () => agNovo(null);
+  document.getElementById('agSala').classList.toggle('hidden', !sala);
+  document.getElementById('agCalBox').classList.toggle('hidden', sala);
+  if (sala) { desenharSala(); return; }
+
+  document.getElementById('agFiltros').innerHTML = [['tudo', 'Tudo'], ['geral', '👥 Sócios'], ['meu', '🔒 Só minha']]
+    .map(([k, l]) => `<span class="aba-chip ${agFiltro === k ? 'on' : ''}" onclick="agSetFiltro('${k}')">${l}</span>`).join('')
+    + `<span class="ag-sep"></span><span class="aba-chip ${agCamadas.datas ? 'on' : ''}" onclick="agToggleCamada('datas')" title="Feriados nacionais e datas comerciais">🛍 Datas</span>`
+    + (podeVer('pipeline') ? `<span class="aba-chip ${agCamadas.conteineres ? 'on' : ''}" onclick="agToggleCamada('conteineres')" title="Chegada prevista dos contêineres">🚢 Contêineres</span>` : '');
+
+  if (agMobile()) {
+    // Celular: semana em lista
+    if (!agSemana) agSemana = agSegunda(hoje);
+    const fimSem = agAddDias(agSemana, 6);
+    const f = d => new Date(d + 'T12:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }).replace('.', '');
+    document.getElementById('agMesTitulo').textContent = `${f(agSemana)} – ${f(fimSem)}`;
+    grid.className = 'ag-semana';
+    let html = '';
+    for (let i = 0; i < 7; i++) {
+      const iso = agAddDias(agSemana, i);
+      const itens = agItensDia(iso);
+      const tags = agTagsHTML(iso);
+      html += `<div class="ag-sem-dia ${iso === hoje ? 'hoje' : ''} ${iso < hoje ? 'passado' : ''}">
+        <div class="ag-sem-cab" onclick="agNovo('${iso}')"><span><strong>${diaSemana(iso)}</strong> ${agFmt(iso).slice(0, 5)}${iso === hoje ? ' <em>hoje</em>' : ''}</span><span class="ag-sem-add">＋</span></div>
+        ${tags ? `<div class="ag-sem-tags">${tags}</div>` : ''}
+        ${itens.length ? itens.map(x => x.linha).join('') : '<div class="ag-sem-vazio">—</div>'}
+      </div>`;
+    }
+    grid.innerHTML = html;
+  } else {
+    const [y, m] = agMes.split('-').map(Number);
+    const tit = new Date(y, m - 1, 1).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+    document.getElementById('agMesTitulo').textContent = tit.charAt(0).toUpperCase() + tit.slice(1);
+    grid.className = 'ag-grid';
+    const primeiro = new Date(y, m - 1, 1);
+    const inicio = new Date(primeiro); inicio.setDate(1 - primeiro.getDay());
+    let html = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map(d => `<div class="ag-dow">${d}</div>`).join('');
+    for (let i = 0; i < 42; i++) {
+      const dt = new Date(inicio); dt.setDate(inicio.getDate() + i);
+      const iso = `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-${String(dt.getDate()).padStart(2, '0')}`;
+      if (i === 35 && dt.getMonth() !== m - 1) break;
+      const itens = agItensDia(iso);
+      html += `<div class="ag-cell ${dt.getMonth() !== m - 1 ? 'fora' : ''} ${iso === hoje ? 'hoje' : ''}" onclick="if(event.target===this||event.target.classList.contains('ag-num'))agNovo('${iso}')">
+        <span class="ag-num">${dt.getDate()}</span>
+        ${agTagsHTML(iso)}
+        ${itens.slice(0, 3).map(x => x.pill).join('')}
+        ${itens.length > 3 ? `<div class="ag-mais" onclick="event.stopPropagation();agDetalheDia('${iso}')">+${itens.length - 3}</div>` : ''}
+      </div>`;
+    }
+    grid.innerHTML = html;
   }
-  grid.innerHTML = html;
 
   // Próximos 60 dias
   const fim = agAddDias(hoje, 60);
-  const prox = evs.filter(e => (e.data_fim || e.data) >= hoje && e.data <= fim).map(e => ({ d: e.data, h: e.horario || '', html: agLinhaHTML(e) }))
+  const prox = agVisiveis().filter(e => (e.data_fim || e.data) >= hoje && e.data <= fim).map(e => ({ d: e.data, h: e.horario || '', html: agLinhaHTML(e) }))
     .concat(agReunioesVis().filter(r => r.status === 'agendada' && r.data >= hoje && r.data <= fim).map(r => ({ d: r.data, h: r.horario || '', html: agLinhaReuniaoHTML(r) })))
+    .concat(reservasSala.filter(r => !r.reuniao_id && ME && r.dono === ME.nome && r.data >= hoje && r.data <= fim).map(r => ({ d: r.data, h: agHora(r.inicio), html: agLinhaGenerica(r.data, agFaixa(r.inicio, r.fim), `🚪 Sala · ${esc(r.titulo || 'reservada')}`, `sua reserva${r.serie_id ? ' · 🔁 toda semana' : ''}`, 'agVerSala()') })))
+    .concat(agConteineresVis().filter(p => { const d = p.eta_galpao || p.eta; return d >= hoje && d <= fim; }).map(p => ({ d: p.eta_galpao || p.eta, h: '', html: agLinhaGenerica(p.eta_galpao || p.eta, '', `🚢 Contêiner ${esc(p.ref)}`, `${p.eta_galpao ? 'previsão no galpão' : 'ETA no porto'}${p.empresa ? ' · ' + esc(p.empresa) : ''}`, "goPage('pipeline')") })))
+    .concat(Object.entries(agCamadas.datas ? Object.assign({}, agDatasAno(Number(hoje.slice(0, 4))), agDatasAno(Number(hoje.slice(0, 4)) + 1)) : {})
+      .filter(([d]) => d >= hoje && d <= fim).flatMap(([d, l]) => l.map(x => ({ d, h: '', html: agLinhaGenerica(d, '', `${x.tipo === 'feriado' ? '🇧🇷' : '🛍'} ${esc(x.nome)}`, x.tipo === 'feriado' ? 'feriado nacional' : 'data comercial', '', 'ag-linha-data-com') }))))
     .sort((a, b) => a.d.localeCompare(b.d) || a.h.localeCompare(b.h));
   document.getElementById('agProximos').innerHTML = prox.length ? prox.map(x => x.html).join('')
     : '<div style="color:var(--muted);font-size:13px;padding:8px 0">Nada nos próximos 60 dias.</div>';
 }
 
+function agLinhaGenerica(data, hora, tit, sub, acao, cls) {
+  return `<div class="ag-linha ${cls || ''}" ${acao ? `onclick="${acao}"` : ''}>
+    <div class="ag-linha-data">${diaSemana(data)} ${agFmt(data)}${hora ? '<br>' + hora : ''}</div>
+    <div style="flex:1;min-width:0"><div class="ag-linha-tit">${tit}</div><div class="ag-linha-sub">${sub}</div></div>
+  </div>`;
+}
 function agLinhaHTML(e) {
   const vou = e.participantes || [];
+  const aus = e.categoria === 'ausencia';
   const periodo = e.data_fim && e.data_fim !== e.data ? `${agFmt(e.data)} → ${agFmt(e.data_fim)}` : `${diaSemana(e.data)} ${agFmt(e.data)}`;
   return `<div class="ag-linha" onclick="agDetalhe(${e.id})">
-    <div class="ag-linha-data">${periodo}${e.horario ? '<br>' + e.horario : ''}</div>
+    <div class="ag-linha-data">${periodo}${e.horario && !aus ? '<br>' + agFaixa(e.horario, e.horario_fim) : ''}</div>
     <div style="flex:1;min-width:0">
-      <div class="ag-linha-tit">${e.escopo === 'pessoal' ? '🔒 ' : ''}${esc(e.titulo)}</div>
-      <div class="ag-linha-sub">${AG_CATS[e.categoria] || esc(e.categoria)}${e.local ? ' · 📍 ' + esc(e.local) : ''}${e.escopo === 'geral' && vou.length ? ' · vão: ' + esc(vou.join(', ')) : ''}${e.escopo === 'geral' ? ' · por ' + esc(e.dono) : ''}</div>
+      <div class="ag-linha-tit">${aus ? `🏖 ${esc(e.dono)} fora` : (e.escopo === 'pessoal' ? '🔒 ' : '') + esc(e.titulo)}${e.serie_id ? ' <span title="Repete">🔁</span>' : ''}${(e.anexos || []).length ? ' <span title="Com anexos">📎</span>' : ''}</div>
+      <div class="ag-linha-sub">${aus ? esc(e.titulo || 'fora / férias') : (AG_CATS[e.categoria] || esc(e.categoria))}${e.local ? ' · 📍 ' + esc(e.local) : ''}${e.escopo === 'geral' && vou.length && !aus ? ' · vão: ' + esc(vou.join(', ')) : ''}${e.escopo === 'geral' && !aus ? ' · por ' + esc(e.dono) : ''}</div>
     </div>
     ${e.lembrete_min != null ? '<span title="Com lembrete">⏰</span>' : ''}
   </div>`;
 }
+function agLinhaReuniaoHTML(r) {
+  return `<div class="ag-linha ag-linha-reu" onclick="goPage('reunioes:${r.id}')">
+    <div class="ag-linha-data">${diaSemana(r.data)} ${agFmt(r.data)}${r.horario ? '<br>' + agFaixa(r.horario, agHoraMais(r.horario, r.duracao_min || 60)) : ''}</div>
+    <div style="flex:1;min-width:0">
+      <div class="ag-linha-tit">${r.na_sala ? '🚪' : '🤝'} ${esc(r.titulo)}</div>
+      <div class="ag-linha-sub">Reunião${r.na_sala ? ' · na sala' : ''}${r.status === 'realizada' ? ' · ✓ realizada' : ''}${(r.participantes || []).length ? ' · 🔒 ' + esc(audienciaReuniao(r).join(', ')) : ' · todos'}${r.mediador ? ' · ⚑ ' + esc(r.mediador) : ''}</div>
+    </div>
+    ${r.lembrete_min ? '<span title="Com lembrete">⏰</span>' : ''}
+  </div>`;
+}
 
 function agDetalheDia(iso) {
-  const evs = agVisiveis().filter(e => e.data <= iso && (e.data_fim || e.data) >= iso);
-  const reus = agReunioesVis().filter(r => r.data === iso);
+  const itens = agItensDia(iso);
+  const tags = agTagsHTML(iso);
   agModal(`<div class="hub-modal-title">${diaSemana(iso)} ${agFmt(iso)}</div>
-    <div style="margin-top:12px">${reus.map(agLinhaReuniaoHTML).join('')}${evs.map(agLinhaHTML).join('')}</div>
-    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px">
+    ${tags ? `<div class="ag-sem-tags" style="margin-top:8px">${tags}</div>` : ''}
+    <div style="margin-top:12px">${itens.map(x => x.linha).join('') || '<div class="ag-sem-vazio">Nada neste dia.</div>'}</div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px;flex-wrap:wrap">
       <button class="btn btn-ghost" onclick="agFechar()">Fechar</button>
+      <button class="btn btn-ghost" onclick="agReservar('${iso}')">🚪 Reservar sala</button>
       <button class="btn btn-primary" onclick="agNovo('${iso}')">+ Evento neste dia</button>
     </div>`);
 }
 
-function agModal(inner) {
+function agModal(inner, maxW) {
   agFechar();
   const m = document.createElement('div');
   m.className = 'hub-modal'; m.id = 'modalAgenda';
-  m.innerHTML = `<div class="hub-modal-box" style="max-width:480px">${inner}</div>`;
+  m.innerHTML = `<div class="hub-modal-box" style="max-width:${maxW || 480}px">${inner}</div>`;
   m.addEventListener('click', e => { if (e.target === m) agFechar(); });
   document.body.appendChild(m);
 }
@@ -6294,29 +6515,51 @@ function agFechar() { document.getElementById('modalAgenda')?.remove(); }
 function agDetalhe(id) {
   const e = eventosData.find(x => x.id === id); if (!e) return;
   const podeEditar = ME && (e.dono === ME.nome || (e.escopo === 'geral' && ME.is_admin));
+  const aus = e.categoria === 'ausencia';
   const vou = e.participantes || [];
   const euVou = ME && vou.includes(ME.nome);
   const periodo = e.data_fim && e.data_fim !== e.data ? `${diaSemana(e.data)} ${agFmt(e.data)} até ${diaSemana(e.data_fim)} ${agFmt(e.data_fim)}` : `${diaSemana(e.data)} ${agFmt(e.data)}`;
   const lem = AG_LEMBRETES.find(l => l[0] === (e.lembrete_min == null ? '' : String(e.lembrete_min)));
+  const rec = e.recorrencia || null;
   agModal(`
     <div class="ag-det-cat">${AG_CATS[e.categoria] || esc(e.categoria)} · ${e.escopo === 'pessoal' ? '🔒 só você vê' : '👥 agenda dos sócios'}</div>
-    <div class="hub-modal-title" style="margin-top:4px">${esc(e.titulo)}</div>
-    <div class="ag-det-linha">📅 ${periodo}${e.horario ? ' · ' + e.horario : ' · dia todo'}</div>
+    <div class="hub-modal-title" style="margin-top:4px">${aus ? `🏖 ${esc(e.dono)} fora` : esc(e.titulo)}</div>
+    ${aus && e.titulo ? `<div class="ag-det-linha">${esc(e.titulo)}</div>` : ''}
+    <div class="ag-det-linha">📅 ${periodo}${aus ? '' : e.horario ? ' · ' + agFaixa(e.horario, e.horario_fim) : ' · dia todo'}</div>
+    ${e.serie_id ? `<div class="ag-det-linha">🔁 Repete ${rec && rec.freq === 'mensal' ? 'todo mês' : 'toda semana'}${rec && rec.ate ? ' até ' + agFmt(rec.ate) : ''}</div>` : ''}
     ${e.local ? `<div class="ag-det-linha">📍 ${esc(e.local)}</div>` : ''}
     ${e.lembrete_min != null ? `<div class="ag-det-linha">⏰ ${lem ? lem[1] : ''}</div>` : ''}
     ${e.descricao ? `<div class="ag-det-desc">${esc(e.descricao).replace(/\n/g, '<br>')}</div>` : ''}
-    ${e.escopo === 'geral' ? `<div class="ag-det-vou">
+    ${(e.anexos || []).length ? `<div class="ag-det-anexos">${e.anexos.map((a, i) => `<div class="cv-arq">
+        <span class="cv-arq-ic">${docIcone(a.nome)}</span>
+        <div class="cv-arq-info"><div class="cv-arq-nome" title="${esc(a.nome)}">${esc(a.nome)}</div><small>${docTamanho(a.tamanho || 0)}</small></div>
+        ${cvAbreNoNavegador(a.nome) ? `<button class="btn btn-ghost" onclick="agAbrirAnexo(${e.id},${i},false)">Abrir</button>` : ''}
+        <button class="btn btn-primary" onclick="agAbrirAnexo(${e.id},${i},true)">Baixar</button></div>`).join('')}</div>` : ''}
+    ${e.escopo === 'geral' && !aus ? `<div class="ag-det-vou">
         <div style="font-size:12px;color:var(--muted)">Quem vai: ${vou.length ? vou.map(n => `<strong style="color:${corDe(n)}">${esc(n)}</strong>`).join(', ') : 'ninguém marcou ainda'}</div>
         <button class="btn ${euVou ? 'btn-ciente-on' : 'btn-ciente'}" onclick="agVou(${e.id},${!euVou})">${euVou ? '✓ Eu vou (desmarcar)' : 'Eu vou'}</button>
       </div>
       <div style="font-size:11px;color:var(--muted);margin-top:6px">Criado por ${esc(e.dono)}. ${vou.length ? 'O lembrete vai para quem marcou que vai.' : 'Sem confirmações, o lembrete vai para todos.'}</div>` : ''}
     <div style="display:flex;justify-content:space-between;gap:8px;margin-top:16px;flex-wrap:wrap">
-      <div>${podeEditar ? `<button class="btn btn-danger" onclick="agExcluir(${e.id})">Excluir</button>` : ''}</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">${podeEditar ? (e.serie_id
+        ? `<button class="btn btn-danger" onclick="agExcluir(${e.id},false)">Excluir este</button><button class="btn btn-danger" onclick="agExcluir(${e.id},true)">Este e os próximos</button>`
+        : `<button class="btn btn-danger" onclick="agExcluir(${e.id},false)">Excluir</button>`) : ''}</div>
       <div style="display:flex;gap:8px">
         <button class="btn btn-ghost" onclick="agFechar()">Fechar</button>
         ${podeEditar ? `<button class="btn btn-primary" onclick="agNovo(null,${e.id})">Editar</button>` : ''}
       </div>
     </div>`);
+}
+
+async function agAbrirAnexo(id, idx, baixar) {
+  const e = eventosData.find(x => x.id === id);
+  const a = e && (e.anexos || [])[idx]; if (!a) return;
+  const win = baixar ? null : window.open('', '_blank');
+  const { data, error } = await db.storage.from('agenda').createSignedUrl(a.caminho, 300, baixar ? { download: a.nome } : undefined);
+  if (error || !data) { if (win) win.close(); alert('Não foi possível abrir: ' + (error ? error.message : '')); return; }
+  if (win) { win.location = data.signedUrl; return; }
+  const link = document.createElement('a');
+  link.href = data.signedUrl; link.download = a.nome; document.body.appendChild(link); link.click(); link.remove();
 }
 
 async function agVou(id, vou) {
@@ -6334,76 +6577,306 @@ function agSetEscopo(s) {
     `<span class="aba-chip ${s === 'pessoal' ? 'on' : ''}" onclick="agSetEscopo('pessoal')">🔒 Só eu vejo</span>`;
 }
 
+// ── Criar / editar evento ──
+let agArqNovos = [], agArqManter = [];
 function agNovo(dataIso, id) {
   const e = id ? eventosData.find(x => x.id === id) : null;
   agEscopoNovo = e ? e.escopo : (agFiltro === 'meu' ? 'pessoal' : 'geral');
+  agArqNovos = []; agArqManter = e ? [...(e.anexos || [])] : [];
+  const daqui3m = agAddDias(dataIso || agHoje(), 91);
   agModal(`
     <div class="hub-modal-title">${e ? 'Editar evento' : 'Novo na agenda'}</div>
     <div class="para-chips" id="agEscopoChips" style="margin:12px 0 10px"></div>
-    <div class="field-group" style="margin-bottom:10px"><span class="field-label">Título</span><input class="field-input" id="agTit" placeholder="ex: Feira de Cantão" value="${e ? esc(e.titulo) : ''}"></div>
     <div class="ag-form-grid">
-      <div class="field-group"><span class="field-label">Tipo</span><select class="field-input" id="agCat">${Object.entries(AG_CATS).map(([k, l]) => `<option value="${k}" ${e && e.categoria === k ? 'selected' : ''}>${l}</option>`).join('')}</select></div>
-      <div class="field-group"><span class="field-label">Horário (opcional)</span><input class="field-input" type="time" id="agHora" value="${e ? esc(e.horario || '') : ''}"></div>
+      <div class="field-group"><span class="field-label">Tipo</span><select class="field-input" id="agCat" onchange="agTipoMudou()">${Object.entries(AG_CATS).map(([k, l]) => `<option value="${k}" ${(e ? e.categoria === k : k === 'compromisso') ? 'selected' : ''}>${l}</option>`).join('')}</select></div>
+      <div class="field-group"><span class="field-label" id="agTitLabel">Título</span><input class="field-input" id="agTit" placeholder="ex: Feira de Cantão" value="${e ? esc(e.titulo) : ''}"></div>
       <div class="field-group"><span class="field-label">Data</span><input class="field-input" type="date" id="agData" value="${e ? e.data : (dataIso || agHoje())}"></div>
-      <div class="field-group"><span class="field-label">Até (vários dias)</span><input class="field-input" type="date" id="agFim" value="${e && e.data_fim ? e.data_fim : ''}"></div>
+      <div class="field-group"><span class="field-label">Até o dia (vários dias)</span><input class="field-input" type="date" id="agFim" value="${e && e.data_fim ? e.data_fim : ''}"></div>
+      <div class="field-group ag-so-hora"><span class="field-label">Das (opcional)</span><input class="field-input" type="time" id="agHora" value="${e ? esc(e.horario || '') : ''}"></div>
+      <div class="field-group ag-so-hora"><span class="field-label">Até (horário)</span><input class="field-input" type="time" id="agHoraFim" value="${e ? esc(e.horario_fim || '') : ''}"></div>
     </div>
-    <div class="field-group" style="margin:10px 0"><span class="field-label">Local</span><input class="field-input" id="agLocal" placeholder="ex: São Paulo Expo" value="${e ? esc(e.local || '') : ''}"></div>
-    <div class="field-group" style="margin-bottom:10px"><span class="field-label">Detalhes</span><textarea class="field-input" id="agDesc" rows="3" style="resize:vertical">${e ? esc(e.descricao || '') : ''}</textarea></div>
-    <div class="field-group"><span class="field-label">Lembrete por notificação</span><select class="field-input" id="agLem">${AG_LEMBRETES.map(([v, l]) => `<option value="${v}" ${(e ? (e.lembrete_min == null ? '' : String(e.lembrete_min)) : '1440') === v ? 'selected' : ''}>${l}</option>`).join('')}</select></div>
+    <div class="field-group ag-nao-aus" style="margin:10px 0"><span class="field-label">Local</span><input class="field-input" id="agLocal" placeholder="ex: São Paulo Expo" value="${e ? esc(e.local || '') : ''}"></div>
+    <div class="field-group" style="margin:10px 0"><span class="field-label">Detalhes</span><textarea class="field-input" id="agDesc" rows="2" style="resize:vertical">${e ? esc(e.descricao || '') : ''}</textarea></div>
+    ${e ? (e.serie_id ? `<div class="ag-serie-aviso">🔁 Este evento se repete. Ao salvar: <label><input type="radio" name="agSerieModo" value="este" checked> só este</label> <label><input type="radio" name="agSerieModo" value="proximos"> este e os próximos</label></div>` : '') : `
+    <div class="ag-form-grid ag-nao-aus" style="margin-bottom:10px">
+      <div class="field-group"><span class="field-label">Repetir</span><select class="field-input" id="agRep" onchange="document.getElementById('agRepAteBox').classList.toggle('hidden',!this.value)"><option value="">Não repete</option><option value="semanal">Toda semana</option><option value="mensal">Todo mês</option></select></div>
+      <div class="field-group hidden" id="agRepAteBox"><span class="field-label">Até</span><input class="field-input" type="date" id="agRepAte" value="${daqui3m}"></div>
+    </div>`}
+    <div class="field-group ag-nao-aus" style="margin-bottom:10px"><span class="field-label">Lembrete por notificação</span><select class="field-input" id="agLem">${AG_LEMBRETES.map(([v, l]) => `<option value="${v}" ${(e ? (e.lembrete_min == null ? '' : String(e.lembrete_min)) : '1440') === v ? 'selected' : ''}>${l}</option>`).join('')}</select></div>
+    <div class="field-group ag-nao-aus"><span class="field-label">Anexos (ingresso, roteiro…)</span>
+      <div id="agArqLista" class="cv-anexos-fila hidden"></div>
+      <label class="com-tool" style="display:inline-flex;align-self:flex-start">📎 Anexar arquivos<input type="file" multiple hidden onchange="agArqAdd(this.files);this.value=''"></label>
+    </div>
     <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:16px">
       <button class="btn btn-ghost" onclick="agFechar()">Cancelar</button>
       <button class="btn btn-primary" id="agBtnSalvar" onclick="agSalvar(${e ? e.id : 'null'})">Salvar</button>
-    </div>`);
+    </div>`, 520);
   agSetEscopo(agEscopoNovo);
+  agTipoMudou(true);
+  agArqRender();
   setTimeout(() => document.getElementById('agTit')?.focus(), 50);
+}
+function agTipoMudou(inicial) {
+  const aus = document.getElementById('agCat').value === 'ausencia';
+  document.querySelectorAll('#modalAgenda .ag-so-hora, #modalAgenda .ag-nao-aus').forEach(el => el.classList.toggle('hidden', aus));
+  document.getElementById('agTitLabel').textContent = aus ? 'Motivo (opcional)' : 'Título';
+  document.getElementById('agTit').placeholder = aus ? 'ex: férias, viagem à China' : 'ex: Feira de Cantão';
+  document.getElementById('agEscopoChips').classList.toggle('hidden', aus);
+  if (aus) agSetEscopo('geral');
+  if (aus && !inicial && !document.getElementById('agFim').value) document.getElementById('agFim').value = agAddDias(document.getElementById('agData').value || agHoje(), 1);
+}
+function agArqAdd(files) { agArqNovos = [...agArqNovos, ...[...files].filter(f => f.size <= CV_MAX_ARQ)]; agArqRender(); }
+function agArqRender() {
+  const el = document.getElementById('agArqLista'); if (!el) return;
+  const chips = agArqManter.map((a, i) => `<span class="cv-fila-chip">${docIcone(a.nome)} <span>${esc(a.nome)}</span><a href="#" onclick="event.preventDefault();agArqManter.splice(${i},1);agArqRender()">×</a></span>`)
+    .concat(agArqNovos.map((f, i) => `<span class="cv-fila-chip novo">＋ ${docIcone(f.name)} <span>${esc(f.name)}</span><a href="#" onclick="event.preventDefault();agArqNovos.splice(${i},1);agArqRender()">×</a></span>`));
+  el.classList.toggle('hidden', !chips.length);
+  el.innerHTML = chips.join('');
+}
+async function agSubirArquivos(pasta, lista) {
+  const anexos = [];
+  for (const f0 of lista) {
+    const f = await cvComprimir(f0);
+    const caminho = `${pasta}/${ME.id}/${Date.now()}-${docNomeSeguro(f.name)}`;
+    const up = await db.storage.from('agenda').upload(caminho, f, { contentType: f.type || 'application/octet-stream', upsert: false });
+    if (up.error) throw new Error(`${f.name}: ${up.error.message}`);
+    anexos.push({ caminho, nome: f.name, tamanho: f.size, tipo: f.type || '' });
+  }
+  return anexos;
+}
+// Datas de uma série (toda semana / todo mês) até a data final, no máximo 1 ano
+function agDatasSerie(ini, freq, ate) {
+  const lim = agAddDias(ini, 366);
+  const fim = ate && ate < lim ? ate : lim;
+  const out = [];
+  if (freq === 'semanal') { for (let d = ini; d <= fim; d = agAddDias(d, 7)) out.push(d); }
+  else {
+    const [y, m, dia] = ini.split('-').map(Number);
+    for (let k = 0; k < 13; k++) {
+      const dt = new Date(y, m - 1 + k, dia);
+      if (dt.getDate() !== dia) continue; // mês sem esse dia (ex.: 31)
+      const iso = `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
+      if (iso > fim) break;
+      out.push(iso);
+    }
+  }
+  return out;
 }
 
 async function agSalvar(id) {
-  const titulo = document.getElementById('agTit').value.trim();
+  const cat = document.getElementById('agCat').value;
+  const aus = cat === 'ausencia';
+  let titulo = document.getElementById('agTit').value.trim();
   const data = document.getElementById('agData').value;
   let data_fim = document.getElementById('agFim').value || null;
+  if (aus && !titulo) titulo = 'Fora';
   if (!titulo || !data) { alert('Preencha título e data.'); return; }
   if (data_fim && data_fim < data) { alert('A data final é antes da inicial.'); return; }
   if (data_fim === data) data_fim = null;
-  const lem = document.getElementById('agLem').value;
+  const horario = aus ? '' : (document.getElementById('agHora').value || '');
+  const horario_fim = aus || !horario ? '' : (document.getElementById('agHoraFim').value || '');
+  if (horario && horario_fim && horario_fim <= horario && !data_fim) { alert('O horário final é antes do inicial.'); return; }
+  const lem = aus ? '' : document.getElementById('agLem').value;
   const campos = {
-    titulo, data, data_fim,
-    horario: document.getElementById('agHora').value || '',
-    local: document.getElementById('agLocal').value.trim(),
+    titulo, data, data_fim, horario, horario_fim,
+    local: aus ? '' : document.getElementById('agLocal').value.trim(),
     descricao: document.getElementById('agDesc').value.trim(),
-    categoria: document.getElementById('agCat').value,
-    escopo: agEscopoNovo,
+    categoria: cat,
+    escopo: aus ? 'geral' : agEscopoNovo,
     lembrete_min: lem === '' ? null : Number(lem)
   };
-  document.getElementById('agBtnSalvar').disabled = true;
-  if (id) {
-    const antes = eventosData.find(x => x.id === id);
-    if (antes && (antes.data !== campos.data || antes.horario !== campos.horario || antes.lembrete_min !== campos.lembrete_min)) campos.avisos_enviados = [];
-    const { error } = await db.from('eventos').update(campos).eq('id', id);
-    if (error) { alert('Erro: ' + error.message); document.getElementById('agBtnSalvar').disabled = false; return; }
-    if (antes && campos.escopo === 'geral' && (antes.data !== campos.data || antes.horario !== campos.horario)) {
-      createNotif({ tipo: 'agenda', titulo: `🗓 Mudou na agenda: ${titulo}`, corpo: `${agFmt(data)}${campos.horario ? ' às ' + campos.horario : ''}${campos.local ? ' · ' + campos.local : ''}`, link_pagina: 'agenda', para: semMim(usuariosComAba('agenda')) });
+  const btn = document.getElementById('agBtnSalvar');
+  btn.disabled = true;
+  const falha = msg => { alert(msg); btn.disabled = false; btn.textContent = 'Salvar'; };
+  const quandoTxt = `${agFmt(data)}${data_fim ? ' a ' + agFmt(data_fim) : ''}${horario ? ' às ' + horario : ''}${campos.local ? ' · ' + campos.local : ''}`;
+  try {
+    if (id) {
+      const antes = eventosData.find(x => x.id === id);
+      const modo = (document.querySelector('input[name="agSerieModo"]:checked') || {}).value || 'este';
+      let novos = [];
+      if (agArqNovos.length) { btn.textContent = 'Enviando…'; novos = await agSubirArquivos(antes && antes.serie_id && modo === 'proximos' ? 's' + antes.serie_id : id, agArqNovos); }
+      campos.anexos = [...agArqManter, ...novos];
+      if (antes && (antes.data !== campos.data || antes.horario !== campos.horario || antes.lembrete_min !== campos.lembrete_min)) campos.avisos_enviados = [];
+      if (antes && antes.serie_id && modo === 'proximos') {
+        const { data: _d, ...semData } = campos; delete semData.data_fim;   // datas de cada ocorrência ficam como estão
+        const { error } = await db.from('eventos').update(semData).eq('serie_id', antes.serie_id).gte('data', antes.data);
+        if (error) return falha('Erro: ' + error.message);
+      } else {
+        const { error } = await db.from('eventos').update(campos).eq('id', id);
+        if (error) return falha('Erro: ' + error.message);
+      }
+      const removidos = ((antes && antes.anexos) || []).filter(a => !campos.anexos.some(b => b.caminho === a.caminho)).map(a => a.caminho);
+      if (removidos.length && !(antes && antes.serie_id)) await db.storage.from('agenda').remove(removidos);
+      if (antes && campos.escopo === 'geral' && (antes.data !== campos.data || antes.horario !== campos.horario)) {
+        createNotif({ tipo: 'agenda', titulo: `🗓 Mudou na agenda: ${titulo}`, corpo: quandoTxt, link_pagina: 'agenda', para: semMim(usuariosComAba('agenda')) });
+      }
+    } else {
+      const freq = aus ? '' : (document.getElementById('agRep') || {}).value || '';
+      if (!freq) {
+        const { data: novo, error } = await db.from('eventos').insert({ ...campos, dono: ME.nome, participantes: [] }).select().single();
+        if (error) return falha('Erro: ' + error.message);
+        if (agArqNovos.length && novo) {
+          btn.textContent = 'Enviando…';
+          const anexos = await agSubirArquivos(novo.id, agArqNovos);
+          await db.from('eventos').update({ anexos }).eq('id', novo.id);
+        }
+      } else {
+        const ate = document.getElementById('agRepAte').value;
+        const datas = agDatasSerie(data, freq, ate);
+        const dur = data_fim ? Math.round((new Date(data_fim) - new Date(data)) / 86400000) : 0;
+        const serie_id = Date.now();
+        let anexos = [];
+        if (agArqNovos.length) { btn.textContent = 'Enviando…'; anexos = await agSubirArquivos('s' + serie_id, agArqNovos); }
+        const linhas = datas.map(d => ({ ...campos, data: d, data_fim: dur ? agAddDias(d, dur) : null, dono: ME.nome, participantes: [], serie_id, recorrencia: { freq, ate: datas[datas.length - 1] }, anexos }));
+        const { error } = await db.from('eventos').insert(linhas);
+        if (error) return falha('Erro: ' + error.message);
+      }
+      if (campos.escopo === 'geral') {
+        const rep = freq === 'semanal' ? ' · toda semana' : freq === 'mensal' ? ' · todo mês' : '';
+        createNotif({ tipo: 'agenda', titulo: aus ? `🏖 ${ME.nome} estará fora` : `🗓 Novo na agenda: ${titulo}`, corpo: `${quandoTxt}${rep} · por ${ME.nome}`, link_pagina: 'agenda', para: semMim(usuariosComAba('agenda')) });
+      }
     }
-  } else {
-    const { error } = await db.from('eventos').insert({ ...campos, dono: ME.nome, participantes: [] });
-    if (error) { alert('Erro: ' + error.message); document.getElementById('agBtnSalvar').disabled = false; return; }
-    if (campos.escopo === 'geral') {
-      createNotif({ tipo: 'agenda', titulo: `🗓 Novo na agenda: ${titulo}`, corpo: `${agFmt(data)}${data_fim ? ' a ' + agFmt(data_fim) : ''}${campos.horario ? ' às ' + campos.horario : ''}${campos.local ? ' · ' + campos.local : ''} · por ${ME.nome}`, link_pagina: 'agenda', para: semMim(usuariosComAba('agenda')) });
-    }
-  }
+  } catch (err) { return falha('Erro ao enviar arquivo: ' + err.message); }
   agFechar();
   agMes = data.slice(0, 7);
+  agSemana = agSegunda(data);
   renderAgenda();
 }
 
-async function agExcluir(id) {
+async function agExcluir(id, proximos) {
   const e = eventosData.find(x => x.id === id); if (!e) return;
-  if (!confirm(`Excluir "${e.titulo}" da agenda?`)) return;
-  const { error } = await db.from('eventos').delete().eq('id', id);
+  if (!confirm(proximos ? `Excluir "${e.titulo}" deste dia em diante?` : `Excluir "${e.titulo}" da agenda?`)) return;
+  const q = proximos && e.serie_id
+    ? db.from('eventos').delete().eq('serie_id', e.serie_id).gte('data', e.data)
+    : db.from('eventos').delete().eq('id', id);
+  const { error } = await q;
   if (error) { alert('Erro: ' + error.message); return; }
+  if ((e.anexos || []).length && !e.serie_id) await db.storage.from('agenda').remove(e.anexos.map(a => a.caminho));
   agFechar();
-  eventosData = eventosData.filter(x => x.id !== id);
+  eventosData = eventosData.filter(x => proximos && e.serie_id ? !(x.serie_id === e.serie_id && x.data >= e.data) : x.id !== id);
   desenharAgenda();
+}
+
+// ── Sala de reunião ──
+function desenharSala() {
+  const el = document.getElementById('agSala'); if (!el) return;
+  const hoje = agHoje();
+  let html = '<div class="sala-intro">Uma reserva por horário. Ninguém cancela a reserva de outro sócio — combinem pelas Conversas. Reuniões marcadas “na sala” aparecem aqui sozinhas.</div>';
+  for (let i = 0; i < 14; i++) {
+    const iso = agAddDias(hoje, i);
+    const dow = new Date(iso + 'T12:00:00').getDay();
+    const doDia = reservasSala.filter(r => r.data === iso).sort((a, b) => String(a.inicio).localeCompare(String(b.inicio)));
+    if ((dow === 0 || dow === 6) && !doDia.length) continue;
+    html += `<div class="sala-dia ${i === 0 ? 'hoje' : ''}">
+      <div class="sala-cab"><span><strong>${i === 0 ? 'Hoje' : i === 1 ? 'Amanhã' : diaSemana(iso)}</strong> ${agFmt(iso).slice(0, 5)}</span><button class="btn btn-ghost" onclick="agReservar('${iso}')">+ Reservar</button></div>
+      ${doDia.length ? doDia.map(r => {
+        const meu = ME && r.dono === ME.nome;
+        const reu = r.reuniao_id ? (reunioesData || []).find(x => x.id === r.reuniao_id) : null;
+        return `<div class="sala-res ${meu ? 'minha' : ''}">
+          <span class="sala-hora">${agFaixa(r.inicio, r.fim)}</span>
+          <div class="sala-info" ${r.reuniao_id ? `onclick="goPage('reunioes:${r.reuniao_id}')" style="cursor:pointer"` : ''}>
+            <div class="sala-tit">${r.reuniao_id ? '🤝 ' : ''}${esc(r.titulo || 'Reservada')}${r.serie_id ? ' <span title="Toda semana">🔁</span>' : ''}</div>
+            <div class="sala-quem"><b style="color:${corDe(r.dono)}">${esc(r.dono)}</b>${r.reuniao_id ? ' · reunião' + (reu && (reu.participantes || []).length ? '' : ' de todos') : ''}</div>
+          </div>
+          ${meu && !r.reuniao_id ? (r.serie_id
+            ? `<span class="sala-acts"><button class="btn btn-ghost" onclick="salaCancelar(${r.id},false)">Cancelar este</button><button class="btn btn-ghost" onclick="salaCancelar(${r.id},true)">e os próximos</button></span>`
+            : `<span class="sala-acts"><button class="btn btn-ghost" onclick="salaCancelar(${r.id},false)">Cancelar</button></span>`) : ''}
+        </div>`;
+      }).join('') : '<div class="sala-livre">✓ Livre o dia todo</div>'}
+    </div>`;
+  }
+  el.innerHTML = html;
+}
+
+function salaConflitos(data, ini, fim, ignorarId) {
+  return reservasSala.filter(r => r.data === data && r.id !== ignorarId && agHora(r.inicio) < fim && agHora(r.fim) > ini);
+}
+function agReservar(dataIso) {
+  const d = dataIso || agHoje();
+  const agora = new Date();
+  const prox = `${String(Math.min(22, agora.getHours() + 1)).padStart(2, '0')}:00`;
+  const ini = d === agHoje() && prox > '08:00' ? prox : '09:00';
+  agModal(`
+    <div class="hub-modal-title">🚪 Reservar a sala de reunião</div>
+    <div class="ag-form-grid" style="margin-top:12px">
+      <div class="field-group"><span class="field-label">Dia</span><input class="field-input" type="date" id="srData" value="${d}" oninput="salaChecar()"></div>
+      <div class="field-group"><span class="field-label">Para quê</span><input class="field-input" id="srTit" placeholder="ex: call com fornecedor"></div>
+      <div class="field-group"><span class="field-label">Das</span><input class="field-input" type="time" id="srIni" value="${ini}" oninput="salaAjustarFim();salaChecar()"></div>
+      <div class="field-group"><span class="field-label">Até</span><input class="field-input" type="time" id="srFim" value="${agHoraMais(ini, 60)}" oninput="salaChecar()"></div>
+    </div>
+    <label class="com-check" style="margin-top:12px"><input type="checkbox" id="srRep" onchange="document.getElementById('srAteBox').classList.toggle('hidden',!this.checked);salaChecar()"> 🔁 Repetir toda semana</label>
+    <div class="field-group hidden" id="srAteBox" style="margin-top:8px;max-width:220px"><span class="field-label">Até</span><input class="field-input" type="date" id="srAte" value="${agAddDias(d, 91)}" oninput="salaChecar()"></div>
+    <div id="srMsg" class="sala-msg"></div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px">
+      <button class="btn btn-ghost" onclick="agFechar()">Cancelar</button>
+      <button class="btn btn-primary" id="srBtn" onclick="salaSalvar()">Reservar</button>
+    </div>`, 460);
+  salaChecar();
+  setTimeout(() => document.getElementById('srTit')?.focus(), 50);
+}
+function salaAjustarFim() {
+  const i = document.getElementById('srIni').value, f = document.getElementById('srFim');
+  if (i && (!f.value || f.value <= i)) f.value = agHoraMais(i, 60);
+}
+function salaDatasPedido() {
+  const d = document.getElementById('srData').value;
+  if (!document.getElementById('srRep').checked) return [d];
+  const ate = document.getElementById('srAte').value;
+  const lim = agAddDias(d, 183);
+  const out = [];
+  for (let x = d; x <= (ate && ate < lim ? ate : lim); x = agAddDias(x, 7)) out.push(x);
+  return out;
+}
+function salaChecar() {
+  const msg = document.getElementById('srMsg'); if (!msg) return;
+  const ini = document.getElementById('srIni').value, fim = document.getElementById('srFim').value;
+  if (!ini || !fim || fim <= ini) { msg.className = 'sala-msg erro'; msg.textContent = 'O horário final precisa ser depois do inicial.'; return; }
+  const datas = salaDatasPedido();
+  const conf = datas.map(d => ({ d, c: salaConflitos(d, ini, fim) })).filter(x => x.c.length);
+  if (!conf.length) { msg.className = 'sala-msg ok'; msg.textContent = datas.length > 1 ? `✓ Sala livre nas ${datas.length} semanas` : '✓ Sala livre nesse horário'; return; }
+  msg.className = 'sala-msg erro';
+  msg.innerHTML = conf.slice(0, 4).map(x => x.c.map(r => `⚠ ${datas.length > 1 ? agFmt(x.d).slice(0, 5) + ': ' : ''}ocupada das ${agFaixa(r.inicio, r.fim).replace('–', ' às ')} por <b>${esc(r.dono)}</b>${r.titulo ? ' (' + esc(r.titulo) + ')' : ''}`).join('<br>')).join('<br>')
+    + (conf.length > 4 ? `<br>… e mais ${conf.length - 4} datas` : '')
+    + (datas.length > 1 && conf.length < datas.length ? `<br><small>Dá para reservar só as ${datas.length - conf.length} semanas livres.</small>` : '');
+}
+async function salaSalvar() {
+  const ini = document.getElementById('srIni').value, fim = document.getElementById('srFim').value;
+  const titulo = document.getElementById('srTit').value.trim();
+  if (!ini || !fim || fim <= ini) { salaChecar(); return; }
+  const datas = salaDatasPedido();
+  const livres = datas.filter(d => !salaConflitos(d, ini, fim).length);
+  if (!livres.length) { salaChecar(); return; }
+  if (livres.length < datas.length && !confirm(`${datas.length - livres.length} semana(s) já estão ocupadas. Reservar só as ${livres.length} livres?`)) return;
+  const serie_id = datas.length > 1 ? Date.now() : null;
+  const btn = document.getElementById('srBtn'); btn.disabled = true;
+  const { error } = await db.from('reservas_sala').insert(livres.map(d => ({ data: d, inicio: ini, fim, titulo, dono: ME.nome, serie_id })));
+  if (error) {
+    btn.disabled = false;
+    await carregarReservas(); salaChecar();
+    alert(/sobreposicao|exclusion|conflicting/i.test(error.message) ? 'Alguém acabou de reservar esse horário. Veja os horários livres e tente de novo.' : 'Erro: ' + error.message);
+    return;
+  }
+  agFechar();
+  await carregarReservas();
+  agVisao = 'sala';
+  desenharAgenda();
+}
+async function salaCancelar(id, proximos) {
+  const r = reservasSala.find(x => x.id === id); if (!r) return;
+  if (!confirm(proximos ? 'Cancelar esta reserva e as próximas da série?' : `Cancelar a reserva de ${agFmt(r.data).slice(0, 5)} (${agFaixa(r.inicio, r.fim)})?`)) return;
+  const q = proximos && r.serie_id
+    ? db.from('reservas_sala').delete().eq('serie_id', r.serie_id).gte('data', r.data)
+    : db.from('reservas_sala').delete().eq('id', id);
+  const { error } = await q;
+  if (error) { alert('Erro: ' + error.message); return; }
+  await carregarReservas();
+  desenharAgenda();
+}
+
+// Quem está fora hoje (para a tela Início)
+function agForaHoje() {
+  const hoje = agHoje();
+  return [...new Set(eventosData.filter(e => e.categoria === 'ausencia' && e.data <= hoje && (e.data_fim || e.data) >= hoje).map(e => e.dono))];
 }
 
 // ── ANOTAÇÕES (privadas) ──
@@ -6444,7 +6917,7 @@ function desenharNotas() {
   el.innerHTML = lista.map(n => `<div class="nota-card" style="background:${n.cor || 'var(--surface)'}" onclick="notaEditar(${n.id})">
     ${n.fixada ? '<span class="nota-pin">📌</span>' : ''}
     ${n.titulo ? `<div class="nota-tit">${esc(n.titulo)}</div>` : ''}
-    <div class="nota-txt">${esc(n.texto).replace(/\n/g, '<br>')}</div>
+    <div class="nota-txt">${notaTextoHTML(n)}</div>
     ${notaLembreteFmt(n)}
     <div class="nota-acts" onclick="event.stopPropagation()">
       <span title="${n.fixada ? 'Desafixar' : 'Fixar no topo'}" onclick="notaAtualizar(${n.id},{fixada:${!n.fixada}})">📌</span>
@@ -6452,6 +6925,39 @@ function desenharNotas() {
       <span title="Excluir" onclick="notaExcluir(${n.id})">🗑</span>
     </div>
   </div>`).join('');
+}
+
+// Checklist: linhas que começam com [ ] ou [x]
+const NOTA_ITEM_RE = /^(\s*(?:-\s*)?)\[( |x|X)\]\s?(.*)$/;
+function notaTextoHTML(n) {
+  const linhas = String(n.texto || '').split('\n');
+  const itens = linhas.filter(l => NOTA_ITEM_RE.test(l));
+  const feitos = itens.filter(l => /\[(x|X)\]/.test(l)).length;
+  const corpo = linhas.map((l, i) => {
+    const m = l.match(NOTA_ITEM_RE);
+    if (!m) return esc(l) + '<br>';
+    const ok = m[2].toLowerCase() === 'x';
+    return `<label class="nota-chk ${ok ? 'feito' : ''}" onclick="event.stopPropagation()"><input type="checkbox" ${ok ? 'checked' : ''} onchange="notaMarcarItem(${n.id},${i},this.checked)"> <span>${esc(m[3])}</span></label>`;
+  }).join('');
+  return (itens.length ? `<div class="nota-prog">☑ ${feitos}/${itens.length}</div>` : '') + corpo;
+}
+async function notaMarcarItem(id, idx, ok) {
+  const n = notasData.find(x => x.id === id); if (!n) return;
+  const linhas = String(n.texto || '').split('\n');
+  const m = (linhas[idx] || '').match(NOTA_ITEM_RE); if (!m) return;
+  linhas[idx] = `${m[1]}[${ok ? 'x' : ' '}] ${m[3]}`;
+  await notaAtualizar(id, { texto: linhas.join('\n') });
+}
+// Botão "☑ Lista": transforma a linha atual (ou as selecionadas) em itens de checklist
+function notaInserirItem(campoId) {
+  const t = document.getElementById(campoId); if (!t) return;
+  const v = t.value, a = t.selectionStart, b = t.selectionEnd;
+  const ini = v.lastIndexOf('\n', a - 1) + 1;
+  let fim = v.indexOf('\n', b); if (fim < 0) fim = v.length;
+  const bloco = v.slice(ini, fim).split('\n').map(l => NOTA_ITEM_RE.test(l) ? l : '[ ] ' + l).join('\n');
+  t.value = v.slice(0, ini) + bloco + v.slice(fim);
+  const pos = ini + bloco.length;
+  t.focus(); t.selectionStart = t.selectionEnd = pos;
 }
 
 function notaLembreteISO(v) { return v ? new Date(v).toISOString() : null; }
@@ -6503,6 +7009,7 @@ function notaEditar(id) {
       <span class="field-label" style="margin:0">⏰ Lembrar em</span>
       <input class="field-input" type="datetime-local" id="neLem" style="padding:6px 8px;font-size:12px;max-width:210px" value="${notaLocalInput(n.lembrete_em)}">
       <div id="neCores" style="display:flex;gap:4px"></div>
+      <button class="btn btn-ghost" style="font-size:11px" onclick="notaInserirItem('neTxt')">☑ Lista</button>
     </div>
     <div style="display:flex;justify-content:space-between;gap:8px;margin-top:16px">
       <button class="btn btn-danger" onclick="notaExcluir(${n.id})">Excluir</button>
@@ -6883,6 +7390,7 @@ function desenharInicio() {
     <div class="ini-hero">
       <div class="ini-saud">${saud}, ${esc(ME.nome)}</div>
       <div class="ini-resumo">${agora.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' })} · ${nPend ? `<strong>${nPend} coisa${nPend > 1 ? 's' : ''} esperando por você</strong>` : 'tudo em dia ✓'}</div>
+      ${podeVer('agenda') && agForaHoje().length ? `<div class="ini-fora" onclick="goPage('agenda')">🏖 Fora hoje: ${agForaHoje().map(n => `<b style="color:${corDe(n)}">${esc(n)}</b>`).join(', ')}</div>` : ''}
     </div>
     <div class="ini-grid">
       <div class="box ini-box">
@@ -7450,6 +7958,10 @@ function setupRealtime() {
         const digitando = a && a.closest && a.closest('#listaReunioes') && a.value;
         if (curPage === 'reunioes' && !digitando) renderReunioes(); else loadReunioes().then(() => { atualizarBadgesNav(); if (curPage === 'agenda' && !document.getElementById('modalAgenda')) desenharAgenda(); });
       }, 400);
+    })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'reservas_sala' }, () => {
+      clearTimeout(window._rtSala);
+      window._rtSala = setTimeout(async () => { await carregarReservas(); if (curPage === 'agenda' && !document.getElementById('modalAgenda')) desenharAgenda(); }, 400);
     })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'eventos' }, () => {
       clearTimeout(window._rtAg);
@@ -8136,6 +8648,8 @@ async function addReuniao() {
     vistos: [ME.nome], participantes: [...rPara], importante: rImportante,
     criador: ME.nome, enquete: null,
     lembrete_min: document.getElementById('rLembrete').value ? Number(document.getElementById('rLembrete').value) : null,
+    duracao_min: Number(document.getElementById('rDuracao').value) || 60,
+    na_sala: document.getElementById('rNaSala').checked,
     avisos_enviados: [],
     created_at: new Date().toISOString()
   };
@@ -8143,6 +8657,9 @@ async function addReuniao() {
     r.data = document.getElementById('rData').value;
     r.horario = document.getElementById('rHorario').value || '';
     if (!r.data) { alert('Preencha a data.'); return; }
+    if (r.na_sala && !r.horario) { alert('Para reservar a sala, informe o horário (ou desmarque "Na sala de reunião").'); return; }
+    const conf = typeof salaConflitos === 'function' && r.na_sala ? salaConflitos(r.data, r.horario, agHoraMais(r.horario, r.duracao_min)) : [];
+    if (conf.length) { alert(`A sala está ocupada das ${agFaixa(conf[0].inicio, conf[0].fim).replace('–', ' às ')} por ${conf[0].dono}${conf[0].titulo ? ' (' + conf[0].titulo + ')' : ''}. Escolha outro horário ou desmarque "Na sala de reunião".`); return; }
   } else {
     const opcoes = [0, 1, 2].map(i => ({
       data: document.getElementById('rOpData' + i).value,
@@ -8174,6 +8691,8 @@ async function addReuniao() {
       corpo: `${diaSemana(r.data)} ${fmtDataBR(r.data)}${r.horario ? ' às ' + r.horario : ''} · marcada por ${ME.nome}`, link_pagina: 'reunioes', para });
   }
   document.getElementById('rLembrete').value = '';
+  document.getElementById('rDuracao').value = '60';
+  document.getElementById('rNaSala').checked = true;
   ['rTitulo', 'rData', 'rHorario', 'rMediador', 'rOpData0', 'rOpHora0', 'rOpData1', 'rOpHora1', 'rOpData2', 'rOpHora2']
     .forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
   rPara.clear(); rImportante = false; rModo = 'data';
@@ -8258,6 +8777,10 @@ async function definirHorario(id, idx) {
   const remarcando = r.status !== 'enquete';
   if (!confirm(`${remarcando ? 'Remarcar' : 'Marcar'} "${r.titulo}" para ${diaSemana(data)} ${fmtDataBR(data)}${horario ? ' às ' + horario : ''}?`)) return;
   const campos = { status: 'agendada', data, horario, vistos: [ME.nome], avisos_enviados: [] };
+  const durEl = document.getElementById('rDefDur-' + id), salaEl = document.getElementById('rDefSala-' + id);
+  if (durEl) campos.duracao_min = Number(durEl.value) || 60;
+  if (salaEl) campos.na_sala = salaEl.checked;
+  if ((campos.na_sala ?? r.na_sala) && !horario) { campos.na_sala = false; showToast({ tipo: 'reuniao', titulo: 'Sem horário, sem reserva', corpo: 'A sala só é reservada quando a reunião tem horário.' }); }
   if (r.enquete) campos.enquete = Object.assign({}, r.enquete, { aberta: false, definida: { data, horario } });
   if (!await atualizarReuniao(id, campos)) return;
   createNotif({
@@ -8391,7 +8914,7 @@ function buildReuniaoCard(r, open) {
 
   const linhaQuando = enq
     ? `${opcoes.length} opções de horário · votação aberta`
-    : `${diaSemana(r.data)} ${dataFmt}${horaStr}${r.status === 'agendada' && !aConfirmar && r.lembrete_min ? ' · ⏰ ' + (R_LEMBRETES[String(r.lembrete_min)] || r.lembrete_min + ' min antes') : ''}`;
+    : `${diaSemana(r.data)} ${dataFmt}${r.horario ? ' · ' + r.horario + '–' + agHoraMais(r.horario, r.duracao_min || 60) : ''}${r.na_sala ? ' · 🚪 sala' : ''}${r.status === 'agendada' && !aConfirmar && r.lembrete_min ? ' · ⏰ ' + (R_LEMBRETES[String(r.lembrete_min)] || r.lembrete_min + ' min antes') : ''}`;
   const linhaQuem = [
     r.criador ? 'criada por ' + esc(r.criador) : '',
     (r.participantes || []).length ? '🔒 ' + esc(aud.join(', ')) : 'todos',
@@ -8493,6 +9016,8 @@ function buildReuniaoCard(r, open) {
       <span class="field-label" style="margin:0">Nova data:</span>
       <input class="field-input" type="date" id="rDefData-${r.id}" style="padding:6px 8px;font-size:12px" value="${esc(r.data || '')}">
       <input class="field-input" type="time" id="rDefHora-${r.id}" style="padding:6px 8px;font-size:12px" value="${esc(r.horario || '')}">
+      <select class="field-input" id="rDefDur-${r.id}" style="padding:6px 8px;font-size:12px;width:auto">${[30, 60, 90, 120, 180, 240].map(m => `<option value="${m}" ${(r.duracao_min || 60) === m ? 'selected' : ''}>${m < 60 ? m + ' min' : (m / 60) + 'h'}</option>`).join('')}</select>
+      <label class="com-check"><input type="checkbox" id="rDefSala-${r.id}" ${r.na_sala ? 'checked' : ''}> 🚪 na sala</label>
       <button class="btn btn-primary" style="font-size:11px" onclick="definirHorario(${r.id},-1)">Salvar e avisar</button>
     </div>` : '';
 
@@ -8556,6 +9081,7 @@ function buildReuniaoCard(r, open) {
 
 async function renderReunioes() {
   reuniaoFormChips();
+  if (typeof carregarReservas === 'function') carregarReservas().catch(() => {});
   await Promise.all([loadReunioes(), podeVer('decisoes') || podeVer('reunioes') ? carregarDecisoes() : Promise.resolve()]);
   atualizarBadgesNav();
   const el = document.getElementById('listaReunioes');
