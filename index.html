@@ -12,11 +12,10 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Hub">
-<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAEoElEQVR4nO3dzXLbNhiGUdiTS+ii0316/9fT7D1e+B6aRUcZldEPRYLkxxfnrBMTEB4iiKwR39oB/vrzj3+PuC77+vj8etv7mrtcUMC0tk/gm11AxDyyVdxdf6iIWaJn3O+9fpCYWapnO6vvDCHT09rdetUOLWZ6W9vUortByOxhyW798g4tZvaypLWXghYze3u1udlBi5mjvNLerKDFzNHmNvg0aDFTxZwWHwYtZqp51mS33xRCBXeDtjtT1aM2bwYtZqq716gjB1F+C9ruzFncavX92R+AyqbNOnIQRdBE+RW04wZndd2uHZoogibKe2uOG5zfpWE7NFEETRRBE+XN+ZkkdmiiCJoogiaKoIny7egBvOLHj38Ou/b3738fct0R57zGKd7lOHJRp/Za5BHn3EPpoCst6tRWizzinHsqe4auvLCtbTO+EefcW8mgz/DCtdZ3nCPOeQvlgq7+gk31GO+Ic95KuaBhjVJBV77zH1kz7hHnvKVSQcNaZYKuesfPtWT8I855a2WChh4ETRRBE0XQRBE0UQRNFEETRdBEETRRBE0UQRNF0EQRNFEETRRBE0XQRBE0UQRNFEETRdBEETRRBE0UQRNF0EQRNFEETRRBE0XQRBE0UQRNlDJBn+EJS48sGf+Ic95amaChh1JBV7zj51gz7hHnvKVSQcNa5YKueuff02O8I855K+WCbq32C3at5zhHnPMWSgbdWv0XbovxjTjn3ko/vP6i0tOW9lrUEefcwymCvjhykY9a1BHnvMapgoZnyp6hYQlBE0XQRBE0UQRNFEETRdBEETRRBE0UQRNF0ET5dvQAXjHiB3VGnPMap/hw0ogfpRxxzj2UDrrSok5ttcgjzrmnskFXXtiL3gt8a85HRlRtPHOUDPoMMV/0WuDpnCuFU3lsU+Xe5ThTzK31GW/1YKbjqbxG5YIeXbWYL6qOa6pU0JXv/EfWjPv671aP5np8VdeqVNCwVpmgq97xcy0Z/5l254vqu3SZoKEHQRNF0EQRNFEETRRBE0XQRBE0UQRNFEETRdBEETRRBE0UQRNF0EQRNFEETRRBE0XQRBE0UQRNFEETRdBEETRRBE0UQRNF0EQRNFEETRRBE6VM0Gf5Otl7loy/+lfT3lL9K4DLBA09lAq64h0/x5pxn2mXrr47t1YsaOpGXXVcU+WCrnrn39NjvNUfm1b9sXPXSj54s7V6i3qLJ8nWUzbo1mpH7VnfNZUO+qLSIu+1qCPOuYdTBH1x5CIftagjznmNUwUNz5R7lwPWEDRRBE0UQRNF0EQRNFHePz6/3o4eBPTw8fn1ZocmiqCJImiivLf239nj6IHAGpeG7dBEETRRfgXt2MFZXbdrhyaKoInyv6AdOzibabO/7dCi5ixuterIQZSbQdulqe5eo3d3aFFT1aM2HTmI8jBouzTVPGvy6Q4taqqY0+KsI4eoOdrcBmefoUXNUV5p76X/FIqavb3a3MvvcoiavSxpbVWcvuiRLazZNFe9D223pre1TXUL0m7NGr02x26/KbRbs1TPdjaL0I7NI1ttgLvsquKmtX3+FT/kmCDwMRxxDP0JC/GK4wR1qKsAAAAASUVORK5CYII=">
-<link rel="icon" type="image/png" sizes="32x32" href="icone-32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="icone-16.png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="icon-16.png">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <style>
 :root{
@@ -2392,18 +2391,6 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 
 const CONFIGURED = !SUPABASE_URL.includes('SEU-PROJETO');
 
-// ── TABELA NECESSÁRIA NO SUPABASE (executar no SQL Editor) ──
-// CREATE TABLE IF NOT EXISTS notificacoes (
-//   id BIGINT PRIMARY KEY,
-//   tipo TEXT NOT NULL,
-//   titulo TEXT NOT NULL,
-//   corpo TEXT,
-//   link_pagina TEXT,
-//   lida BOOLEAN DEFAULT FALSE,
-//   created_at TIMESTAMPTZ DEFAULT NOW()
-// );
-// ALTER TABLE notificacoes ENABLE ROW LEVEL SECURITY;
-// CREATE POLICY "allow_all" ON notificacoes FOR ALL USING (true) WITH CHECK (true);
 let db = null;
 
 if (CONFIGURED) {
@@ -2458,18 +2445,36 @@ document.getElementById('pwdInput').addEventListener('keydown', e => { if (e.key
 document.getElementById('userInput').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('pwdInput').focus(); });
 
 async function doLogout() {
+  // O aparelho deixa de receber os avisos desta pessoa (importante em celular/computador compartilhado)
+  try {
+    const sub = await getPushSubscription();
+    if (sub) {
+      await Promise.race([fetch(PUSH_FUNCTION_URL + '/unsubscribe', { method: 'POST', headers: { ...authH(), 'Content-Type': 'application/json' }, body: JSON.stringify({ endpoint: sub.endpoint }) }), new Promise(r => setTimeout(r, 2500))]);
+      await sub.unsubscribe().catch(() => {});
+      saveLs('hub_push_enabled', false);
+    }
+  } catch(e) {}
   try { await db.auth.signOut(); } catch(e) {}
   location.reload();
 }
 
+// Sai mostrando um aviso na tela de login (sem o recarregamento automático apagar a mensagem)
+async function sairComAviso(msg) {
+  window._saindoComMsg = true;
+  try { await db.auth.signOut(); } catch(e) {}
+  mostrarLogin(msg);
+}
+
 async function carregarUsuarios() {
-  const { data } = await db.from('perfis').select('*').order('created_at', { ascending: true });
+  const { data, error } = await db.from('perfis').select('*').order('created_at', { ascending: true });
+  if (error) return false;
   USUARIOS = (data || []);
   const ativos = USUARIOS.filter(u => u.ativo);
   // Mantém compatibilidade com o restante do hub (lidos/vistos por nome)
   SOCIOS = ativos.filter(u => u.tipo === 'socio').map(u => u.nome);
   SOCIO_COLORS = {};
   ativos.forEach(u => { SOCIO_COLORS[u.nome] = u.cor; });
+  return true;
 }
 
 function podeVer(aba) {
@@ -2486,7 +2491,10 @@ function esc(s) {
 function usuariosComAba(aba) {
   return USUARIOS.filter(u => u.ativo && (u.abas || []).includes(aba)).map(u => u.nome);
 }
-function corDe(nome) { return SOCIO_COLORS[nome] || 'var(--muted)'; }
+// Horário vindo do banco: só aceita HH:MM (o resto vira vazio — evita código escondido no campo)
+function horaSegura(h) { return /^\d{1,2}:\d{2}(:\d{2})?$/.test(String(h || '')) ? String(h).slice(0, 5) : ''; }
+function corSegura(c) { return /^#[0-9a-f]{3,8}$/i.test(String(c || '')) ? c : 'var(--muted)'; }
+function corDe(nome) { return corSegura(SOCIO_COLORS[nome]); }
 function semMim(lista) { return (lista || []).filter(n => !ME || n !== ME.nome); }
 // Quem participa de um comunicado: autor + destinatários; sem destinatário = todos com a aba
 function audienciaPost(p) {
@@ -2593,7 +2601,7 @@ function aplicarPermissoes() {
   document.getElementById('meRole').textContent = ME.is_admin ? 'admin' : (ME.tipo === 'socio' ? 'sócio' : 'gerente');
   const av = document.getElementById('meAvatar');
   av.textContent = ME.nome.charAt(0).toUpperCase();
-  av.style.background = ME.cor;
+  av.style.background = corSegura(ME.cor);
 }
 
 function primeiraAbaPermitida() {
@@ -2602,10 +2610,12 @@ function primeiraAbaPermitida() {
 }
 
 async function entrarNoHub(uid) {
-  await carregarUsuarios();
+  let carregou = await carregarUsuarios();
+  if (!carregou) { await new Promise(r => setTimeout(r, 1500)); carregou = await carregarUsuarios(); }
+  if (!carregou) { mostrarLogin('Sem conexão com o servidor. Confira a internet e tente de novo.'); return; }
   ME = USUARIOS.find(u => u.id === uid) || null;
-  if (!ME) { await db.auth.signOut(); mostrarLogin('Usuário sem perfil cadastrado. Fale com o administrador.'); return; }
-  if (!ME.ativo) { await db.auth.signOut(); mostrarLogin('Este acesso está desativado.'); return; }
+  if (!ME) { await sairComAviso('Usuário sem perfil cadastrado. Fale com o administrador.'); return; }
+  if (!ME.ativo) { await sairComAviso('Este acesso está desativado.'); return; }
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
   aplicarPermissoes();
@@ -2627,7 +2637,7 @@ async function verificarSessao() {
   }
   db.auth.onAuthStateChange((evt, session) => {
     ACCESS_TOKEN = session?.access_token || null;
-    if (evt === 'SIGNED_OUT') location.reload();
+    if (evt === 'SIGNED_OUT' && !window._saindoComMsg) location.reload();
   });
 }
 
@@ -2687,11 +2697,18 @@ async function criarUsuario() {
   const cor = document.getElementById('nuCor').value;
   if (!nome || !user || !senha) { msg.style.color = 'var(--red)'; msg.textContent = 'Preencha nome, usuário e senha.'; return; }
   if (!nuAbasSel.size) { msg.style.color = 'var(--red)'; msg.textContent = 'Libere pelo menos uma aba.'; return; }
+  const erro = t => { msg.style.color = 'var(--red)'; msg.textContent = t; };
+  if (!/^[a-z0-9._-]{2,30}$/.test(user)) return erro('Usuário: só letras minúsculas, números, ponto, hífen ou _ (sem espaço nem acento).');
+  if (senha.length < 6) return erro('A senha precisa ter pelo menos 6 caracteres.');
+  if (USUARIOS.some(u => u.nome.trim().toLowerCase() === nome.toLowerCase())) return erro(`Já existe alguém chamado "${nome}". Use um nome diferente (ex.: com o sobrenome).`);
+  const btn = document.querySelector('[onclick="criarUsuario()"]');
+  if (btn) { if (btn.disabled) return; btn.disabled = true; }
   const { error } = await db.rpc('hub_criar_usuario', {
     p_username: user, p_nome: nome, p_senha: senha, p_tipo: tipo,
     p_abas: [...nuAbasSel], p_cor: cor, p_is_admin: false
   });
-  if (error) { msg.style.color = 'var(--red)'; msg.textContent = error.message; return; }
+  if (btn) btn.disabled = false;
+  if (error) return erro(error.message);
   msg.style.color = 'var(--green)';
   msg.textContent = `✓ Criado. Passe para ${nome}: usuário "${user}" e a senha temporária. Ele troca no primeiro acesso.`;
   ['nuNome','nuUser','nuSenha'].forEach(id => document.getElementById(id).value = '');
@@ -2709,14 +2726,14 @@ async function renderUsuarios() {
     const souEu = u.id === ME.id;
     return `<tr class="usr-row" style="${u.ativo?'':'opacity:.45'}">
       <td><div style="display:flex;align-items:center;gap:8px">
-        <div class="user-avatar" style="background:${u.cor};width:26px;height:26px;font-size:11px">${u.nome.charAt(0)}</div>
-        <strong>${u.nome}</strong>${u.is_admin?' <span class="badge ok">admin</span>':''}</div></td>
-      <td style="font-family:'IBM Plex Mono',monospace;font-size:12px">${u.username}</td>
+        <div class="user-avatar" style="background:${corSegura(u.cor)};width:26px;height:26px;font-size:11px">${esc(u.nome.charAt(0))}</div>
+        <strong>${esc(u.nome)}</strong>${u.is_admin?' <span class="badge ok">admin</span>':''}</div></td>
+      <td style="font-family:'IBM Plex Mono',monospace;font-size:12px">${esc(u.username)}</td>
       <td style="font-size:12px">${u.tipo === 'socio' ? 'Sócio' : 'Gerente'}</td>
       <td style="max-width:360px">${chips}</td>
       <td style="font-size:11px;font-family:'IBM Plex Mono',monospace">${u.ativo ? (u.trocar_senha ? '<span style="color:var(--amber)">aguardando 1º acesso</span>' : '<span style="color:var(--green)">ativo</span>') : 'desativado'}</td>
       <td style="white-space:nowrap">
-        <button class="btn btn-ghost" style="font-size:11px;padding:4px 10px" onclick="redefinirSenhaUsuario('${u.id}','${u.nome}')">Redefinir senha</button>
+        <button class="btn btn-ghost" style="font-size:11px;padding:4px 10px" onclick="redefinirSenhaUsuario('${u.id}')">Redefinir senha</button>
         ${souEu ? '' : `<button class="btn ${u.ativo?'btn-danger':'btn-ghost'}" style="font-size:11px;padding:4px 10px" onclick="toggleAtivoUsuario('${u.id}',${!u.ativo})">${u.ativo?'Desativar':'Reativar'}</button>`}
       </td>
     </tr>`;
@@ -2725,11 +2742,13 @@ async function renderUsuarios() {
 
 async function toggleAbaUsuario(id, aba) {
   const u = USUARIOS.find(x => x.id === id); if (!u) return;
-  const abas = new Set(u.abas || []);
+  const antes = [...(u.abas || [])];
+  const abas = new Set(antes);
   abas.has(aba) ? abas.delete(aba) : abas.add(aba);
   if (id === ME.id && !abas.size) { alert('Você precisa manter pelo menos uma aba.'); return; }
-  const { error } = await db.from('perfis').update({ abas: [...abas] }).eq('id', id);
-  if (error) { alert('Erro: ' + error.message); return; }
+  u.abas = [...abas];   // já vale para o próximo clique, mesmo antes de o banco responder
+  const { error } = await db.from('perfis').update({ abas: u.abas }).eq('id', id);
+  if (error) { u.abas = antes; alert('Erro: ' + error.message); renderUsuarios(); return; }
   if (id === ME.id) { ME.abas = [...abas]; aplicarPermissoes(); }
   renderUsuarios();
 }
@@ -2742,7 +2761,8 @@ async function toggleAtivoUsuario(id, ativo) {
   renderUsuarios();
 }
 
-async function redefinirSenhaUsuario(id, nome) {
+async function redefinirSenhaUsuario(id) {
+  const nome = (USUARIOS.find(x => x.id === id) || {}).nome || '';
   const nova = prompt(`Nova senha temporária para ${nome} (mín. 6 caracteres).\nEle será obrigado a trocar no próximo acesso:`);
   if (nova === null) return;
   if (nova.length < 6) { alert('A senha precisa ter pelo menos 6 caracteres.'); return; }
@@ -3041,8 +3061,8 @@ async function refreshDashboard() {
     if (r.ok) { const d = await r.json(); if (d && d.totais) { const { ok, data, pedidos, ...pl } = d; dashCache['dia__' + brtHoje()] = pl; } }
   } catch (e) { console.log('atualizar:', e); }
   perfComparacaoData = null;
-  await renderDashboard();
-  if (btn) { btn.disabled = false; btn.textContent = '↺ Atualizar'; }
+  try { await renderDashboard(); }
+  finally { if (btn) { btn.disabled = false; btn.textContent = '↺ Atualizar'; } }
 }
 
 // ── UTILS ──
@@ -3100,6 +3120,7 @@ function goPage(p) {
   document.querySelectorAll('.nav-item').forEach(el => el.classList.toggle('active', el.dataset.grupo === (gAtivo ? gAtivo.id : p)));
   document.querySelectorAll('[id^="page-"]').forEach(el => el.classList.add('hidden'));
   document.getElementById('page-'+p).classList.remove('hidden');
+  if (curPage === 'conversas' && p !== 'conversas' && cvRec) cvGravarParar(false);   // não deixa gravando escondido
   curPage = p;
   renderSubTabs(p);
   if(p==='dashboard'){renderDashboard()}
@@ -3388,13 +3409,14 @@ async function getConfig(chave) {
 }
 async function setConfig(chave, valor) {
   try {
-    await fetch(`${SUPABASE_URL}/rest/v1/hub_config`, {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/hub_config`, {
       method: 'POST',
       headers: { ...authH(),
         'Content-Type': 'application/json', 'Prefer': 'resolution=merge-duplicates' },
       body: JSON.stringify({ chave, valor, updated_at: new Date().toISOString() })
     });
-  } catch(e) { console.log('setConfig erro', e); }
+    return r.ok;
+  } catch(e) { console.log('setConfig erro', e); return false; }
 }
 
 function rsCard(label, valor, sub, opts = {}) {
@@ -3408,7 +3430,7 @@ function rsCard(label, valor, sub, opts = {}) {
 }
 
 function rsDelta(atual, anterior, sufixo) {
-  if (!anterior) return '';
+  if (!anterior || !isFinite(anterior) || !isFinite(atual)) return '';
   const d = (atual - anterior) / anterior * 100;
   const cor = d >= 0 ? 'var(--green)' : 'var(--red)';
   return `<span style="color:${cor}">${d>=0?'↑':'↓'} ${Math.abs(d).toFixed(1)}%</span> ${sufixo||''}`;
@@ -3425,11 +3447,11 @@ async function renderResumo() {
 
   // 1. Dados do dia + ontem até mesmo horário (reaproveita perfComparacaoData se fresco)
   let comp = perfComparacaoData;
-  if (!comp || comp._fromCache) {
+  if (!comp || comp._fromCache || !comp._em || Date.now() - comp._em > 5 * 60000 || (comp.hoje && comp.hoje.data !== hoje)) {
     try {
       const r = await fetch(`${SUPABASE_URL}/functions/v1/magis5-sync?acao=ate_agora`,
         { headers: { ...authH() } });
-      if (r.ok) { comp = await r.json(); perfComparacaoData = comp; if (comp.hoje) dashCache['dia__'+hoje] = comp.hoje; }
+      if (r.ok) { comp = await r.json(); comp._em = Date.now(); perfComparacaoData = comp; if (comp.hoje) dashCache['dia__'+hoje] = comp.hoje; }
     } catch(e) {}
   }
   const hT = comp?.hoje?.totais || {};
@@ -3456,7 +3478,9 @@ async function renderResumo() {
   const [ano, m] = mes.split('-').map(Number);
   const diasNoMes = new Date(ano, m, 0).getDate();
   const diasRestantes = diasNoMes - diaNum;
-  const projecao = fatMes + media7 * diasRestantes;
+  // Hoje ainda não acabou: conta o maior entre o que já vendeu hoje e a média, mais a média nos dias que faltam
+  const fatHoje = hT.faturamento || 0;
+  const projecao = (fatMes - fatHoje) + Math.max(fatHoje, media7) + media7 * diasRestantes;
 
   // Linha 1 — pulso
   if (pulso) pulso.innerHTML =
@@ -3505,59 +3529,63 @@ async function renderResumo() {
 
 async function editarMetaMes(mes) {
   const atual = await getConfig('meta_mes_' + mes);
-  const v = prompt('Meta de faturamento para ' + (MONTH_LABELS[mes] || mes) + ' (R$):', atual || '');
+  const v = prompt('Meta de faturamento para ' + (MONTH_LABELS[mes] || mes) + ' (R$) — ex.: 1.500.000 ou 1500000,50:', atual ? Number(atual).toLocaleString('pt-BR') : '');
   if (v === null) return;
-  const num = parseFloat(String(v).replace(/\./g,'').replace(',','.'));
+  // Aceita "1.500.000", "1500000,50" e "1500000.5": vírgula é sempre decimal; ponto só é decimal se for o único e tiver 1–2 casas
+  let t = String(v).replace(/[^\d.,]/g, '');
+  if (t.includes(',')) t = t.replace(/\./g, '').replace(',', '.');
+  else if (!/^\d+\.\d{1,2}$/.test(t)) t = t.replace(/\./g, '');
+  const num = parseFloat(t);
   if (isNaN(num) || num <= 0) { alert('Valor inválido.'); return; }
-  await setConfig('meta_mes_' + mes, num);
+  const ok = await setConfig('meta_mes_' + mes, num);
+  if (!ok) { alert('Não foi possível salvar a meta.'); return; }
   renderResumo();
 }
 
+let _rsAgendaSeq = 0;
 async function renderResumoAgenda() {
   const el = document.getElementById('rsAgenda');
   if (!el) return;
+  const seq = ++_rsAgendaSeq;
   const hoje = brtHoje();
-
-  // Comunicados últimos 7 dias
-  let posts = [];
-  try {
-    if (db) { const {data} = await db.from('comunicados').select('*').order('created_at',{ascending:false}).limit(50); posts = data || []; }
-    else posts = loadLs('hub_posts', []);
-  } catch(e) {}
-  const corte7 = new Date(Date.now() - 7*86400000).toISOString();
-  const recentes = posts.filter(p => (p.created_at||'') >= corte7);
-  const ultimo = posts[0];
-  const aguardandoMim = posts.filter(postPendenteMeu).length;
-
-  // Próxima reunião
-  try { await loadReunioes(); } catch(e) {}
-  const prox = (reunioesData||[]).filter(r => r.status === 'agendada' && r.data >= hoje).sort((a,b)=>a.data.localeCompare(b.data))[0];
-  const enqMeuVoto = (reunioesData||[]).filter(r => r.status === 'enquete' && reuniaoPendenteMeu(r)).length;
-
-  // Pipeline — ETA nos próximos 7 dias
-  try { await loadPipeline(); } catch(e) {}
   const fim7 = diaOffset(hoje, 7);
-  const chegando = (pedidosData||[]).filter(p => p.eta && p.eta >= hoje && p.eta <= fim7).sort((a,b)=>a.eta.localeCompare(b.eta));
-
   const fmtD = d => d ? d.split('-').reverse().slice(0,2).join('/') : '';
-
-  el.innerHTML =
-    rsCard('Comunicados', recentes.length ? `${recentes.length} <span style="font-size:12px;color:var(--muted)">nos últimos 7 dias</span>` : '<span style="font-size:13px;color:var(--muted)">nenhum recente</span>',
-      aguardandoMim ? `<span style="color:var(--red);font-weight:600">${aguardandoMim} aguardando sua ciência</span>` : (ultimo ? `último: ${esc(ultimo.autor||'')} — ${esc((ultimo.texto||'').slice(0,50))}${(ultimo.texto||'').length>50?'…':''}` : ''), { onclick:"goPage('comunicados')", valStyle:'font-size:20px' }) +
-    rsCard('Próxima reunião', prox ? `<span style="font-size:15px">${prox.importante?'⭐ ':''}${esc(prox.titulo)}</span>` : '<span style="font-size:13px;color:var(--muted)">nenhuma agendada</span>',
-      (prox ? `${new Date(prox.data+'T12:00:00').toLocaleDateString('pt-BR')}${prox.horario?' às '+prox.horario:''}` : '') + (enqMeuVoto ? `${prox?' · ':''}<span style="color:var(--amber);font-weight:600">🗳 ${enqMeuVoto} enquete${enqMeuVoto>1?'s':''} esperando seu voto</span>` : ''), { onclick:"goPage('reunioes')" }) +
-    rsCard('Pipeline — chegando', chegando.length ? `${chegando.length} <span style="font-size:12px;color:var(--muted)">pedidos em 7 dias</span>` : '<span style="font-size:13px;color:var(--muted)">nada previsto</span>',
-      chegando.slice(0,2).map(p => `${p.ref||''} · ETA ${fmtD(p.eta)}`).join(' · '), { onclick:"goPage('pipeline')", valStyle:'font-size:20px' });
-
-  // Agenda — próximo evento (dos sócios ou meu)
-  if (podeVer('agenda') && db) {
-    try {
-      const { data: evs } = await db.from('eventos').select('*').gte('data', diaOffset(hoje, -30)).order('data', { ascending: true }).limit(60);
-      const proxEv = (evs || []).filter(e => (e.data_fim || e.data) >= hoje).sort((a, b) => a.data.localeCompare(b.data) || (a.horario || '').localeCompare(b.horario || ''))[0];
-      el.innerHTML += rsCard('Agenda', proxEv ? `<span style="font-size:15px">${proxEv.escopo === 'pessoal' ? '🔒 ' : ''}${esc(proxEv.titulo)}</span>` : '<span style="font-size:13px;color:var(--muted)">nada marcado</span>',
-        proxEv ? `${new Date(proxEv.data + 'T12:00:00').toLocaleDateString('pt-BR')}${proxEv.horario ? ' às ' + proxEv.horario : ''}${proxEv.local ? ' · ' + esc(proxEv.local) : ''}` : '', { onclick: "goPage('agenda')" });
-    } catch (e) {}
+  // Cada cartão só aparece para quem tem a aba correspondente; tudo carregado em paralelo
+  const [posts, , , evs] = await Promise.all([
+    podeVer('comunicados') && db ? db.from('comunicados').select('*').order('created_at',{ascending:false}).limit(50).then(r => r.data || [], () => []) : Promise.resolve([]),
+    podeVer('reunioes') ? loadReunioes().catch(() => {}) : Promise.resolve(),
+    podeVer('pipeline') ? loadPipeline().catch(() => {}) : Promise.resolve(),
+    podeVer('agenda') && db ? db.from('eventos').select('*').gte('data', diaOffset(hoje, -30)).order('data', { ascending: true }).limit(60).then(r => r.data || [], () => []) : Promise.resolve([])
+  ]);
+  if (seq !== _rsAgendaSeq) return;   // outra atualização começou depois desta
+  const cards = [];
+  if (podeVer('comunicados')) {
+    const corte7 = new Date(Date.now() - 7*86400000).toISOString();
+    const recentes = posts.filter(p => (p.created_at||'') >= corte7);
+    const ultimo = posts[0];
+    const aguardandoMim = posts.filter(postPendenteMeu).length;
+    cards.push(rsCard('Comunicados', recentes.length ? `${recentes.length} <span style="font-size:12px;color:var(--muted)">nos últimos 7 dias</span>` : '<span style="font-size:13px;color:var(--muted)">nenhum recente</span>',
+      aguardandoMim ? `<span style="color:var(--red);font-weight:600">${aguardandoMim} aguardando sua ciência</span>` : (ultimo ? `último: ${esc(ultimo.autor||'')} — ${esc(semMarcadores(ultimo.texto||'').slice(0,50))}${(ultimo.texto||'').length>50?'…':''}` : ''), { onclick:"goPage('comunicados')", valStyle:'font-size:20px' }));
   }
+  if (podeVer('reunioes')) {
+    const prox = (reunioesData||[]).filter(r => r.status === 'agendada' && r.data >= hoje).sort((a,b)=>a.data.localeCompare(b.data) || (a.horario||'').localeCompare(b.horario||''))[0];
+    const enqMeuVoto = (reunioesData||[]).filter(r => r.status === 'enquete' && reuniaoPendenteMeu(r)).length;
+    cards.push(rsCard('Próxima reunião', prox ? `<span style="font-size:15px">${prox.importante?'⭐ ':''}${esc(prox.titulo)}</span>` : '<span style="font-size:13px;color:var(--muted)">nenhuma agendada</span>',
+      (prox ? `${fmtDataBR(prox.data)}${prox.horario?' às '+esc(prox.horario):''}` : '') + (enqMeuVoto ? `${prox?' · ':''}<span style="color:var(--amber);font-weight:600">🗳 ${enqMeuVoto} enquete${enqMeuVoto>1?'s':''} esperando seu voto</span>` : ''), { onclick: prox ? `goPage('reunioes:${prox.id}')` : "goPage('reunioes')" }));
+  }
+  if (podeVer('pipeline')) {
+    const etaDe = p => p.eta_galpao || p.eta || '';
+    const chegando = (pedidosData||[]).filter(p => p.status_origem !== 'chegou' && etaDe(p) >= hoje && etaDe(p) <= fim7).sort((a,b)=>etaDe(a).localeCompare(etaDe(b)));
+    cards.push(rsCard('Pipeline — chegando', chegando.length ? `${chegando.length} <span style="font-size:12px;color:var(--muted)">contêiner${chegando.length>1?'es':''} em 7 dias</span>` : '<span style="font-size:13px;color:var(--muted)">nada previsto</span>',
+      chegando.slice(0,2).map(p => `${esc(p.ref||'')} · ${p.eta_galpao ? 'galpão' : 'ETA'} ${fmtD(etaDe(p))}`).join(' · '), { onclick:"goPage('pipeline')", valStyle:'font-size:20px' }));
+  }
+  if (podeVer('agenda')) {
+    const proxEv = (evs || []).filter(e => (e.data_fim || e.data) >= hoje).sort((a, b) => a.data.localeCompare(b.data) || (a.horario || '').localeCompare(b.horario || ''))[0];
+    cards.push(rsCard('Agenda', proxEv ? `<span style="font-size:15px">${proxEv.escopo === 'pessoal' ? '🔒 ' : ''}${esc(proxEv.titulo)}</span>` : '<span style="font-size:13px;color:var(--muted)">nada marcado</span>',
+      proxEv ? `${fmtDataBR(proxEv.data)}${proxEv.horario ? ' às ' + esc(proxEv.horario) : ''}${proxEv.local ? ' · ' + esc(proxEv.local) : ''}` : '', { onclick: "goPage('agenda')" }));
+  }
+  el.innerHTML = cards.join('');
+  el.style.display = cards.length ? '' : 'none';
 
   // Linha 4 — metas em andamento
   renderResumoMetas();
@@ -3566,6 +3594,9 @@ async function renderResumoAgenda() {
 async function renderResumoMetas() {
   const el = document.getElementById('rsMetas');
   if (!el) return;
+  const box = el.closest('.box') || el;
+  if (!podeVer('metas')) { box.style.display = 'none'; return; }
+  box.style.display = '';
   let lista = [];
   try {
     if (db) { const {data} = await db.from('metas').select('*').order('created_at',{ascending:true}); lista = data || []; }
@@ -3578,8 +3609,8 @@ async function renderResumoMetas() {
       const pct = m.alvo ? Math.min(100, (m.atual||0)/m.alvo*100) : 0;
       return `<div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer" onclick="goPage('metas')">
         <div style="flex:1;min-width:0">
-          <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.nome}</div>
-          <div style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace">${m.empresa||''}${m.categoria?' · '+(typeof META_CATS!=='undefined'?(META_CATS[m.categoria]||m.categoria):m.categoria):''}</div>
+          <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(m.nome)}</div>
+          <div style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace">${esc(m.empresa||'')}${m.categoria?' · '+esc(typeof META_CATS!=='undefined'?(META_CATS[m.categoria]||m.categoria):m.categoria):''}</div>
         </div>
         <div style="width:140px;height:5px;background:var(--border);border-radius:3px"><div style="height:5px;width:${pct.toFixed(0)}%;background:var(--green);border-radius:3px"></div></div>
         <div style="font-size:11px;font-family:'IBM Plex Mono',monospace;width:44px;text-align:right">${pct.toFixed(0)}%</div>
@@ -3588,8 +3619,8 @@ async function renderResumoMetas() {
     const prazo = m.prazo ? new Date(m.prazo+'T12:00:00').toLocaleDateString('pt-BR') : '';
     return `<div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer" onclick="goPage('metas')">
       <div style="flex:1;min-width:0">
-        <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.nome}</div>
-        <div style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace">${m.empresa||''}${prazo?' · prazo '+prazo:''}</div>
+        <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(m.nome)}</div>
+        <div style="font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace">${esc(m.empresa||'')}${prazo?' · prazo '+prazo:''}</div>
       </div>
       <span class="badge warn">em andamento</span>
     </div>`;
@@ -3617,8 +3648,8 @@ function getPerfRange() {
   const hoje = new Date();
   const brt  = new Date(hoje.getTime() - 3 * 60 * 60 * 1000);
   const todayStr = brt.toISOString().slice(0, 10);
-  const ano  = brt.getFullYear();
-  const mes  = brt.getMonth() + 1;
+  const ano  = brt.getUTCFullYear();      // brt já está deslocada 3h: usar UTC para não deslocar duas vezes
+  const mes  = brt.getUTCMonth() + 1;
 
   if (perfPeriodo === 'hoje')  return { from: todayStr, to: todayStr };
   if (perfPeriodo === 'ontem') {
@@ -4458,6 +4489,7 @@ async function comSalvarEdicao(){
   const urlNova = cvPrimeiraUrl(texto);
   const mudouLink = !p.previa || p.previa.url !== urlNova || anexos.length;
   if (mudouLink) upd.previa = null;
+  if (upd.prioridade === 'urgente' && !comPedeCiencia(p)) upd.pede_ciencia = true;   // urgente sempre pede ciência (faixa e lembretes)
   const { error } = await db.from('comunicados').update(upd).eq('id', p.id);
   if (error) {
     if (novos.length) await db.storage.from('comunicados').remove(novos.map(a => a.caminho));
@@ -4649,7 +4681,7 @@ function comArquivado(p){
 
 function comCardHTML(p){
   const dataFmt = new Date(p.created_at).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'});
-  const prioClass = 'prio-'+(p.prioridade||'informativo');
+  const prioClass = 'prio-'+(PRIO_LABELS[p.prioridade] ? p.prioridade : 'informativo');
   const prioLabel = PRIO_LABELS[p.prioridade]||'Informativo';
   const catLabel = POST_CAT_LABELS[p.categoria]||p.categoria||'Geral';
   const lidos = p.lidos||[];
@@ -4864,7 +4896,7 @@ async function renderConversas() {
   // No celular abre na lista de conversas (a menos que tenha vindo de uma notificação)
   if (window.innerWidth <= 768 && !veioDeLink) { document.getElementById('cvWrap').classList.remove('chat-open'); cvAtual = null; cvRenderSide(); return; }
   if (!alvo || !cvCanal(alvo)) alvo = (cvCanais.find(c => c.tipo === 'canal' && c.nome === 'geral' && !c.arquivado) || cvCanais.find(c => c.tipo === 'canal' && !c.arquivado) || {}).id || null;
-  if (alvo) await cvAbrir(alvo, alvo !== cvAtual);
+  if (alvo) await cvAbrir(alvo, alvo !== cvAtual || cvSujo);
   else cvRenderVazio();
 }
 
@@ -4973,6 +5005,7 @@ async function cvAbrir(id, recarregar) {
   document.getElementById('cvCompose').classList.remove('hidden');
   cvRenderHead();
   if (mudou || recarregar) {
+    cvSujo = false;
     document.getElementById('cvMsgs').innerHTML = loadingHTML();
     inp.value = cvRascunhos[id] || ''; cvAutoAltura();
     cvTemMaisNovas = false; cvNovasAbaixo = 0; cvDivisorId = null; cvQtdNovas = 0; cvFixadas = [];
@@ -5005,8 +5038,15 @@ function cvRolarAteDivisor() {
   cvAtualizarFlutuantes();
 }
 
+let cvSujo = false;
 function cvVoltar() {
   document.getElementById('cvWrap').classList.remove('chat-open');
+  // Sai da conversa de verdade: guarda o rascunho e volta a contar as novas mensagens dela
+  const inp = document.getElementById('cvInput');
+  if (cvAtual && !cvEditando && inp) cvRascunhos[cvAtual] = inp.value;
+  if (cvRec) cvGravarParar(false);
+  cvAtual = null;
+  cvRenderSide();
 }
 
 function cvRenderHead() {
@@ -5131,7 +5171,7 @@ async function cvCarregarMsgs(antesDe) {
   if (id !== cvAtual) return;
   const lote = (data || []).reverse();
   cvTemMais = (data || []).length === CV_PAGE;
-  cvMsgs = antesDe ? [...lote, ...cvMsgs] : lote;
+  cvMsgs = antesDe ? [...lote.filter(x => !cvMsgs.some(y => y.id === x.id)), ...cvMsgs] : lote;
   if (!antesDe) cvTemMaisNovas = false;
 }
 
@@ -5149,17 +5189,21 @@ async function cvCarregarJanela(iso) {
   cvTemMaisNovas = depois.length === 60;
 }
 
+let _cvCarregandoAntigas = false;
 async function cvMaisAntigas() {
-  if (!cvMsgs.length) return;
+  if (!cvMsgs.length || _cvCarregandoAntigas) return;
   const box = document.getElementById('cvMsgs');
   const alturaAntes = box.scrollHeight, topoAntes = box.scrollTop;
-  await cvCarregarMsgs(cvMsgs[0].created_at);
+  _cvCarregandoAntigas = true;
+  try { await cvCarregarMsgs(cvMsgs[0].created_at); } finally { _cvCarregandoAntigas = false; }
   cvRenderMsgs(false);
   box.scrollTop = box.scrollHeight - alturaAntes + topoAntes;
 }
 async function cvMaisNovas() {
   const ult = cvMsgs[cvMsgs.length - 1]; if (!ult) return;
-  const { data } = await db.from('mensagens').select('*').eq('canal_id', cvAtual).gt('created_at', ult.created_at).order('created_at', { ascending: true }).limit(CV_PAGE);
+  const id = cvAtual;
+  const { data } = await db.from('mensagens').select('*').eq('canal_id', id).gt('created_at', ult.created_at).order('created_at', { ascending: true }).limit(CV_PAGE);
+  if (id !== cvAtual) return;   // trocou de conversa no meio
   const novas = (data || []).filter(x => !cvMsgs.some(y => y.id === x.id));
   cvMsgs = [...cvMsgs, ...novas];
   cvTemMaisNovas = (data || []).length === CV_PAGE;
@@ -5416,7 +5460,8 @@ function cvMarcarLido() {
   atualizarBadgesNav();
   clearTimeout(_cvLidoTimer);
   const id = cvAtual;
-  _cvLidoTimer = setTimeout(() => db.rpc('hub_marcar_canal_lido', { p_canal: id }), 600);
+  // (a chamada só é enviada quando alguém espera a resposta — por isso o .then)
+  _cvLidoTimer = setTimeout(() => { db.rpc('hub_marcar_canal_lido', { p_canal: id }).then(({ error }) => { if (error) console.warn('marcar lido:', error.message); }); }, 600);
 }
 document.addEventListener('visibilitychange', () => {
   if (!document.hidden && curPage === 'conversas' && cvAtual) { cvMarcarLido(); cvRenderSide(); }
@@ -5495,7 +5540,9 @@ async function cvBuscarPrevia(m) {
   } catch (e) { /* sem prévia */ }
 }
 
+let _cvSubindo = false;
 async function enviarMensagem() {
+  if (_cvSubindo) return;   // ainda enviando os arquivos da mensagem anterior (Enter duas vezes)
   const inp = document.getElementById('cvInput');
   const texto = inp.value.trim();
   const c = cvCanal(cvAtual);
@@ -5515,7 +5562,7 @@ async function enviarMensagem() {
     const { error } = await db.from('mensagens').update(upd).eq('id', id);
     if (error) { alert('Erro ao editar: ' + error.message); return; }
     if (m) Object.assign(m, upd);
-    cvEditando = null; inp.value = ''; cvAutoAltura();
+    cvEditando = null; inp.value = cvRascunhoAntesEdicao || ''; cvRascunhoAntesEdicao = ''; cvAutoAltura();
     document.getElementById('cvEditBar').classList.add('hidden');
     cvRenderMsgs(false);
     if (m && mudouLink && urlNova) cvBuscarPrevia(m);
@@ -5529,10 +5576,10 @@ async function enviarMensagem() {
   let anexos = [];
   const btn = document.getElementById('cvBtnEnviar');
   if (cvAnexosFila.length) {
-    btn.disabled = true;
+    btn.disabled = true; _cvSubindo = true;
     try { anexos = await cvSubirAnexos(c.id); }
-    catch (e) { btn.disabled = false; cvRotuloEnviar(); alert('Erro ao enviar arquivo: ' + e.message); inp.value = texto; return; }
-    btn.disabled = false;
+    catch (e) { btn.disabled = false; _cvSubindo = false; cvRotuloEnviar(); alert('Erro ao enviar arquivo: ' + e.message); inp.value = texto; return; }
+    btn.disabled = false; _cvSubindo = false;
     cvAnexosFila = []; cvRenderFila();
   }
   cvCancelarResposta(true);
@@ -5684,15 +5731,17 @@ async function cvReagir(id, emoji) {
 function cvEditar(id) {
   const m = cvMsgs.find(x => x.id === id); if (!m) return;
   cvCancelarResposta(true);
-  cvEditando = id;
   const inp = document.getElementById('cvInput');
+  if (!cvEditando) cvRascunhoAntesEdicao = inp.value;   // guarda o que estava escrevendo
+  cvEditando = id;
   inp.value = m.texto; cvAutoAltura(); inp.focus();
   document.getElementById('cvEditBar').classList.remove('hidden');
   cvRenderMsgs(false);
 }
+let cvRascunhoAntesEdicao = '';
 function cvCancelarEdicao() {
   cvEditando = null;
-  document.getElementById('cvInput').value = ''; cvAutoAltura();
+  document.getElementById('cvInput').value = cvRascunhoAntesEdicao || ''; cvRascunhoAntesEdicao = ''; cvAutoAltura();
   document.getElementById('cvEditBar').classList.add('hidden');
   cvRenderMsgs(false);
 }
@@ -5882,14 +5931,18 @@ function cvRenderDigitando() {
 
 // ── Mensagem de voz ──
 let cvRec = null;
+let _cvRecIniciando = false;
 async function cvGravarIniciar() {
-  if (!cvAtual || cvRec) return;
+  if (!cvAtual || cvRec || _cvRecIniciando) return;
   const c = cvCanal(cvAtual);
   if (c && c.arquivado) { alert('Este canal está arquivado.'); return; }
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder) { alert('Este navegador não permite gravar áudio aqui.'); return; }
   let stream;
+  _cvRecIniciando = true;   // evita dois gravadores se tocar duas vezes enquanto o navegador pede permissão
   try { stream = await navigator.mediaDevices.getUserMedia({ audio: true }); }
-  catch (e) { alert('Sem acesso ao microfone. Libere a permissão do microfone para o site nas configurações do navegador.'); return; }
+  catch (e) { _cvRecIniciando = false; alert('Sem acesso ao microfone. Libere a permissão do microfone para o site nas configurações do navegador.'); return; }
+  _cvRecIniciando = false;
+  if (cvRec || !cvAtual || curPage !== 'conversas') { stream.getTracks().forEach(t => t.stop()); return; }
   const mime = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg;codecs=opus'].find(t => MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(t)) || '';
   let mr;
   try { mr = new MediaRecorder(stream, mime ? { mimeType: mime } : undefined); }
@@ -6049,6 +6102,7 @@ function setupConversasRT() {
       const c = cvCanal(m.canal_id);
       if (c) c.ultima_msg_at = m.created_at;
       cvParouDeDigitar(m.canal_id, m.autor);
+      if (m.canal_id === cvAtual && curPage !== 'conversas') cvSujo = true;   // ao voltar, recarrega as mensagens
       if (m.canal_id === cvAtual && curPage === 'conversas') {
         const minha = ME && m.autor === ME.nome;
         if (cvTemMaisNovas) { if (!minha) cvNovasAbaixo++; cvAtualizarFlutuantes(); }
@@ -6332,7 +6386,7 @@ function agFaixa(ini, fim) { return ini ? (fim ? `${agHora(ini)}–${agHora(fim)
 
 async function carregarEventos() {
   const { data, error } = await db.from('eventos').select('*').order('data', { ascending: true });
-  if (!error && data) eventosData = data;
+  if (!error && data) eventosData = data.map(e => ({ ...e, horario: horaSegura(e.horario), horario_fim: horaSegura(e.horario_fim) }));
 }
 async function carregarReservas() {
   const { data, error } = await db.from('reservas_sala').select('*').gte('data', agAddDias(agHoje(), -62)).order('data', { ascending: true }).order('inicio', { ascending: true });
@@ -6796,8 +6850,12 @@ async function agSalvar(id) {
         if (error) return falha('Erro: ' + error.message);
         if (agArqNovos.length && novo) {
           btn.textContent = 'Enviando…';
-          const anexos = await agSubirArquivos(novo.id, agArqNovos);
-          await db.from('eventos').update({ anexos }).eq('id', novo.id);
+          // O evento já foi criado: se o arquivo falhar, não deixa salvar de novo (evita evento duplicado)
+          try {
+            const anexos = await agSubirArquivos(novo.id, agArqNovos);
+            const r = await db.from('eventos').update({ anexos }).eq('id', novo.id);
+            if (r.error) throw r.error;
+          } catch (e) { alert('O evento foi salvo, mas o arquivo não foi enviado (' + e.message + '). Abra o evento e anexe de novo.'); }
         }
       } else {
         const ate = document.getElementById('agRepAte').value;
@@ -6966,7 +7024,7 @@ let notaCorNova = '';
 
 async function renderAnotacoes() {
   notaCorNovaRender();
-  const { data, error } = await db.from('notas').select('*').order('updated_at', { ascending: false });
+  const { data, error } = await db.from('notas').select('*').eq('dono', ME.nome).order('updated_at', { ascending: false });
   if (!error && data) notasData = data;
   desenharNotas();
 }
@@ -6993,7 +7051,7 @@ function desenharNotas() {
   const lista = notasData.filter(n => !!n.arquivada === notaVerArquivadas && (!q || (n.titulo + ' ' + n.texto).toLowerCase().includes(q)))
     .sort((a, b) => (b.fixada - a.fixada) || new Date(b.updated_at) - new Date(a.updated_at));
   if (!lista.length) { el.innerHTML = `<div style="color:var(--muted);font-size:13px;padding:24px 0;text-align:center">${notaVerArquivadas ? 'Nada arquivado.' : q ? 'Nada encontrado.' : 'Nenhuma anotação ainda.'}</div>`; return; }
-  el.innerHTML = lista.map(n => `<div class="nota-card" style="background:${n.cor || 'var(--surface)'}" onclick="notaEditar(${n.id})">
+  el.innerHTML = lista.map(n => `<div class="nota-card" style="background:${n.cor ? corSegura(n.cor) : 'var(--surface)'}" onclick="notaEditar(${n.id})">
     ${n.fixada ? '<span class="nota-pin">📌</span>' : ''}
     ${n.titulo ? `<div class="nota-tit">${esc(n.titulo)}</div>` : ''}
     <div class="nota-txt">${notaTextoHTML(n)}</div>
@@ -7025,7 +7083,9 @@ async function notaMarcarItem(id, idx, ok) {
   const linhas = String(n.texto || '').split('\n');
   const m = (linhas[idx] || '').match(NOTA_ITEM_RE); if (!m) return;
   linhas[idx] = `${m[1]}[${ok ? 'x' : ' '}] ${m[3]}`;
-  await notaAtualizar(id, { texto: linhas.join('\n') });
+  const antes = n.texto;
+  n.texto = linhas.join('\n');   // atualiza já: marcar dois itens rápido não perde o primeiro
+  if (!(await notaAtualizar(id, { texto: n.texto }))) { n.texto = antes; desenharNotas(); }
 }
 // Botão "☑ Lista": transforma a linha atual (ou as selecionadas) em itens de checklist
 function notaInserirItem(campoId) {
@@ -7046,12 +7106,16 @@ function notaLocalInput(iso) {
   return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
 }
 
+let _notaSalvando = false;
 async function notaSalvarNova() {
   const titulo = document.getElementById('notaTit').value.trim();
   const texto = document.getElementById('notaTxt').value.trim();
   if (!titulo && !texto) return;
+  if (_notaSalvando) return;
   const lembrete_em = notaLembreteISO(document.getElementById('notaLem').value);
+  _notaSalvando = true;
   const { error } = await db.from('notas').insert({ dono: ME.nome, titulo, texto, cor: notaCorNova, lembrete_em });
+  _notaSalvando = false;
   if (error) { alert('Erro: ' + error.message); return; }
   document.getElementById('notaTit').value = ''; document.getElementById('notaTxt').value = ''; document.getElementById('notaLem').value = '';
   notaCorNova = '';
@@ -7061,9 +7125,10 @@ async function notaSalvarNova() {
 async function notaAtualizar(id, campos) {
   campos.updated_at = new Date().toISOString();
   const { error } = await db.from('notas').update(campos).eq('id', id);
-  if (error) { alert('Erro: ' + error.message); return; }
+  if (error) { alert('Erro: ' + error.message); return false; }
   const n = notasData.find(x => x.id === id); if (n) Object.assign(n, campos);
   desenharNotas();
+  return true;
 }
 
 async function notaExcluir(id) {
@@ -7078,7 +7143,7 @@ async function notaExcluir(id) {
 let notaCorEdit = '';
 function notaEditar(id) {
   const n = notasData.find(x => x.id === id); if (!n) return;
-  notaCorEdit = n.cor || '';
+  notaCorEdit = NOTA_CORES.includes(n.cor) ? n.cor : '';
   const m = document.createElement('div');
   m.className = 'hub-modal'; m.id = 'modalNota';
   m.innerHTML = `<div class="hub-modal-box" id="notaEditBox" style="max-width:520px;background:${notaCorEdit || 'var(--bg)'}">
@@ -7110,8 +7175,8 @@ async function notaSalvarEdicao(id) {
   const campos = { titulo: document.getElementById('neTit').value.trim(), texto: document.getElementById('neTxt').value.trim(), cor: notaCorEdit, lembrete_em };
   const t = v => v ? new Date(v).getTime() : 0;
   if (t(lembrete_em) !== t(n.lembrete_em)) campos.lembrete_enviado = false;
-  document.getElementById('modalNota').remove();
-  await notaAtualizar(id, campos);
+  // Só fecha depois de salvar: se der erro, o texto editado continua na tela
+  if (await notaAtualizar(id, campos)) document.getElementById('modalNota')?.remove();
 }
 
 // ── MURAL DE DECISÕES ──
@@ -7170,7 +7235,7 @@ function desenharDecisoes() {
   const cats = [...new Set(todas.map(d => d.categoria || 'geral'))];
   document.getElementById('decCats').innerHTML = cats.length > 1
     ? `<span class="aba-chip ${decFiltroCat ? '' : 'on'}" onclick="decSetCat('')">Todas as áreas</span>` +
-      cats.map(c => `<span class="aba-chip ${decFiltroCat === c ? 'on' : ''}" onclick="decSetCat('${esc(c)}')">${esc(decCatLabel(c))}</span>`).join('')
+      cats.map(c => `<span class="aba-chip ${decFiltroCat === c ? 'on' : ''}" data-c="${esc(c)}" onclick="decSetCat(this.dataset.c)">${esc(decCatLabel(c))}</span>`).join('')
     : '';
 
   const q = (document.getElementById('decBusca').value || '').trim().toLowerCase();
@@ -7297,6 +7362,7 @@ async function decExcluir(id) {
 
 function decEditar(id) {
   const d = decisoesData.find(x => x.id === id); if (!d) return;
+  document.getElementById('modalDec')?.remove();
   const m = document.createElement('div');
   m.className = 'hub-modal'; m.id = 'modalDec';
   m.innerHTML = `<div class="hub-modal-box" style="max-width:500px">
@@ -7358,6 +7424,10 @@ async function avisarAta(id) {
   const decs = decisoesDaReuniao(id).filter(d => d.status === 'vigente');
   const para = semMim(audienciaReuniao(r));
   if (!decs.length || !para.length) return;
+  // Evita avisar todo mundo de novo com cliques repetidos (1 aviso por minuto por reunião)
+  window._ataAvisada = window._ataAvisada || {};
+  if (Date.now() - (window._ataAvisada[id] || 0) < 60000) { showToast({ tipo: 'decisao', titulo: 'Ata já enviada', corpo: 'Os participantes acabaram de ser avisados.' }); return; }
+  window._ataAvisada[id] = Date.now();
   await createNotif({ tipo: 'decisao', titulo: `📝 Ata: ${r.titulo}`, corpo: `${decs.length} decis${decs.length > 1 ? 'ões registradas' : 'ão registrada'} — confirme ciência no Mural de decisões`, link_pagina: 'decisoes', para });
   showToast({ tipo: 'decisao', titulo: 'Ata enviada', corpo: `Avisados: ${para.join(', ')}` });
 }
@@ -7458,7 +7528,7 @@ function desenharInicio() {
   // ── Contêineres chegando ──
   let cont = [];
   if (podeVer('pipeline')) {
-    cont = pedidosData.filter(p => p.status_origem !== 'chegou' && (p.eta_galpao || p.eta) && (p.eta_galpao || p.eta) <= fim15 && (p.eta_galpao || p.eta) >= agAddDias(hoje, -10))
+    cont = pedidosData.filter(p => p.status_origem !== 'chegou' && (etapasData.find(e => e.id === p.etapaId) || {}).chave !== 'chegou' && (p.eta_galpao || p.eta) && (p.eta_galpao || p.eta) <= fim15 && (p.eta_galpao || p.eta) >= agAddDias(hoje, -10))
       .sort((a, b) => (a.eta_galpao || a.eta).localeCompare(b.eta_galpao || b.eta));
   }
 
@@ -7695,7 +7765,7 @@ function metaNome(m) { return m.nome || (m.tipo === 'faturamento' ? `Faturamento
 
 function getPrazoBadge(prazo, status) {
   if (!prazo || status === 'concluida' || status === 'pausada') return '';
-  const hoje = new Date(); hoje.setHours(0,0,0,0);
+  const hoje = new Date(isoHoje() + 'T12:00:00');   // os dois ao meio-dia: a diferença é sempre um número inteiro de dias
   const dt = new Date(prazo + 'T12:00:00');
   const diffDias = Math.round((dt - hoje) / (1000*60*60*24));
   const dataFmt = dt.toLocaleDateString('pt-BR', {day:'2-digit', month:'short'});
@@ -7898,7 +7968,7 @@ function renderHistoryTimeline(historico){
     if(h.tipo==='criacao') desc = 'Meta criada';
     else if(h.tipo==='atualizacao') desc = `Valor: ${fmt(h.de)} → ${fmt(h.para)}`;
     else if(h.tipo==='alvo') desc = `Meta: ${fmt(h.de)} → ${fmt(h.para)}`;
-    else if(h.tipo==='status') desc = h.de === h.para ? 'Comentário' : `${META_STATUS_LABELS[h.de]||h.de} → ${META_STATUS_LABELS[h.para]||h.para}`;
+    else if(h.tipo==='status') desc = h.de === h.para ? 'Comentário' : `${META_STATUS_LABELS[h.de]||esc(h.de)} → ${META_STATUS_LABELS[h.para]||esc(h.para)}`;
     else desc = 'Atualização';
     const noteHtml = h.nota && h.nota !== desc ? `<div class="meta-hist-note">${esc(h.nota)}</div>` : '';
     return `<div class="meta-hist-item">
@@ -8045,7 +8115,7 @@ function desenharMetas() {
         ${nota}${botoes}`;
     } else {
       const stClass = META_STATUS_CLASS[m.status]||'st-andamento';
-      const stLabel = META_STATUS_LABELS[m.status]||m.status;
+      const stLabel = META_STATUS_LABELS[m.status]||esc(m.status);
       const prazoBadge = getPrazoBadge(m.prazo, m.status);
       bodyHTML = `<div style="margin:8px 0;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
         <span class="meta-status-badge ${stClass}">${stLabel}</span>
@@ -8158,10 +8228,17 @@ function setupRealtime() {
       }, 500);
     })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'planilhas' }, () => {
-      if (curPage === 'planilhas') renderPlanilhas(); else if (curPage === 'inicio') lkCarregar().then(agendarDesenhoInicio);
+      clearTimeout(window._rtLk);
+      window._rtLk = setTimeout(() => { if (curPage === 'planilhas' && !document.getElementById('modalLink')) renderPlanilhas(); else if (curPage === 'inicio') lkCarregar().then(agendarDesenhoInicio); }, 400);
     })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'metas' }, () => {
-      if (curPage === 'metas') renderMetas(); else if (curPage === 'inicio') carregarMetas().then(agendarDesenhoInicio);
+      clearTimeout(window._rtMeta);
+      window._rtMeta = setTimeout(() => {
+        // Não apaga a edição/comentário que alguém está digitando numa meta
+        const a = document.activeElement;
+        const digitando = a && a.closest && a.closest('#page-metas') && /INPUT|TEXTAREA|SELECT/.test(a.tagName);
+        if (curPage === 'metas' && !digitando) renderMetas(); else if (curPage === 'inicio') carregarMetas().then(agendarDesenhoInicio);
+      }, 500);
     })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'desempenho' }, () => {
       clearTimeout(window._rtDp);
@@ -8172,14 +8249,16 @@ function setupRealtime() {
       window._rtDp = setTimeout(() => { if (curPage === 'desempenho' && !document.getElementById('modalDp') && !document.getElementById('modalDpFuncs')) renderDesempenho(); }, 400);
     })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'etapas' }, () => {
-      if (curPage === 'pipeline') renderPipeline();
+      clearTimeout(window._rtPl);
+      window._rtPl = setTimeout(() => { if (curPage === 'pipeline' && document.getElementById('plModalOverlay').classList.contains('hidden')) renderPipeline(); }, 1500);
     })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'pedidos' }, () => {
       clearTimeout(window._rtPl);
       window._rtPl = setTimeout(() => { if (curPage === 'pipeline' && document.getElementById('plModalOverlay').classList.contains('hidden')) renderPipeline(); }, 1500);
     })
     .subscribe(status => {
-      if (status === 'SUBSCRIBED') setSyncStatus('online');
+      if (status === 'SUBSCRIBED') { setSyncStatus('online'); if (window._rtCaiu) { window._rtCaiu = false; resyncHub(); } }
+      else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT' || status === 'CLOSED') { setSyncStatus('connecting'); window._rtCaiu = true; }
     });
 }
 
@@ -8269,7 +8348,7 @@ function dpSetFiltro(campo, v) {
 }
 
 function dpItemHTML(d, naFicha) {
-  const [ic, rot] = DP_TIPOS[d.tipo] || ['•', d.tipo];
+  const [ic, rot] = DP_TIPOS[d.tipo] || ['•', esc(d.tipo)];
   const meu = ME && d.registrado_por === ME.nome;
   const fb = d.tipo === 'erro' || d.tipo === 'advertencia';
   const data = new Date(d.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit' });
@@ -8415,8 +8494,12 @@ async function dpSalvar(editId) {
       if (error) return falha('Erro: ' + error.message);
       if (dpArqNovos.length && data) {
         btn.textContent = 'Enviando…';
-        const anexos = await dpSubir(data.id, dpArqNovos);
-        await db.from('desempenho').update({ anexos }).eq('id', data.id);
+        // O registro já foi criado: se o arquivo falhar, avisa e fecha (não deixa registrar duas vezes)
+        try {
+          const anexos = await dpSubir(data.id, dpArqNovos);
+          const r = await db.from('desempenho').update({ anexos }).eq('id', data.id);
+          if (r.error) throw r.error;
+        } catch (e) { alert('O registro foi salvo, mas o arquivo não foi enviado (' + e.message + '). Abra o registro em “Editar” e anexe de novo.'); }
       }
       const [ic, rot] = DP_TIPOS[dpTipoNovo];
       createNotif({ tipo: 'desempenho', titulo: `📋 ${func.nome} — ${ic} ${rot}`, corpo: `${descricao.slice(0, 70)} · por ${ME.nome}`, link_pagina: 'desempenho', para: semMim(usuariosComAba('desempenho')) });
@@ -8563,11 +8646,12 @@ async function savePedido(pedido) {
       },
       { onConflict: 'id' }
     );
-    if (error) console.error('Erro ao salvar pedido:', error);
     showSync(false);
+    if (error) { console.error('Erro ao salvar pedido:', error); alert('Não foi possível salvar o pedido: ' + error.message); return false; }
   } else {
     saveLs('hub_pedidos', pedidosData);
   }
+  return true;
 }
 
 function savePipeline() {
@@ -8587,7 +8671,7 @@ function updateEtapaSelect() {
   const sel = document.getElementById('pEtapa');
   if (!sel) return;
   sel.innerHTML = etapasData.length
-    ? etapasData.map(e => `<option value="${e.id}">${e.nome}</option>`).join('')
+    ? etapasData.map(e => `<option value="${e.id}">${esc(e.nome)}</option>`).join('')
     : '<option value="">— Crie etapas primeiro —</option>';
 }
 
@@ -8616,12 +8700,14 @@ async function addEtapa() {
 async function removeEtapa(id) {
   const count = pedidosData.filter(p => p.etapaId === id).length;
   if (count && !confirm(`Esta etapa tem ${count} pedido(s). Remover mesmo assim?`)) return;
-  etapasData = etapasData.filter(e => e.id !== id);
   if (db) {
     showSync(true);
-    await db.from('etapas').delete().eq('id', id);
+    const { error } = await db.from('etapas').delete().eq('id', id);
     showSync(false);
+    if (error) { alert('Não foi possível remover a etapa: ' + error.message); return; }
+    etapasData = etapasData.filter(e => e.id !== id);
   } else {
+    etapasData = etapasData.filter(e => e.id !== id);
     saveLs('hub_etapas', etapasData);
   }
   renderPipeline();
@@ -8658,8 +8744,8 @@ async function addPedido() {
   const eta = document.getElementById('pEta').value;
   const obs = document.getElementById('pObs').value.trim();
   const p = { id: Date.now(), ref, empresa, etapaId, moeda, valor, embarque, eta, skus: [], obs, created_at: new Date().toISOString() };
+  if (!(await savePedido(p))) return;
   pedidosData.unshift(p);
-  await savePedido(p);
   ['pRef','pValor','pEmbarque','pEta','pObs'].forEach(id => { const el = document.getElementById(id); if(el) el.value=''; });
   document.getElementById('novoPedidoForm').classList.add('hidden');
   renderPipeline();
@@ -8697,7 +8783,8 @@ function openPlModal(id) {
       ? (p.skus || []).map(s => `<div class="pl-sku-ro"><span>${esc(s.nome)}</span><strong>${(Number(s.qty) || 0).toLocaleString('pt-BR')}</strong></div>`).join('') + `<div class="pl-sku-ro tot"><span>${p.skus.length} SKUs</span><strong>${tot.toLocaleString('pt-BR')} un.</strong></div>`
       : '<div style="font-size:12px;color:var(--muted);padding:4px 0">Lista de produtos ainda pendente no Hub Importação.</div>';
   } else {
-    renderPlSkuList(p.skus || []);
+    plSkusEdit = (p.skus || []).map(x => ({ ...x }));
+    renderPlSkuList(plSkusEdit);
   }
   document.getElementById('plModalOverlay').classList.remove('hidden');
 }
@@ -8708,14 +8795,23 @@ function closePlModal(e) {
   plModalId = null;
 }
 
+let plSkusEdit = [];   // cópia em edição: só vai para o pedido ao Salvar
+function plLerSkusDaTela() {
+  document.querySelectorAll('#plSkuList .pl-sku-row').forEach(row => {
+    const i = Number(row.querySelector('[data-field="nome"]').dataset.idx);
+    if (!plSkusEdit[i]) return;
+    plSkusEdit[i].nome = row.querySelector('[data-field="nome"]').value;
+    plSkusEdit[i].qty = row.querySelector('[data-field="qty"]').value;
+  });
+}
 function renderPlSkuList(skus) {
   const list = document.getElementById('plSkuList');
   if (!list) return;
   if (!skus.length) { list.innerHTML = '<div style="font-size:12px;color:var(--muted);padding:4px 0">Nenhum SKU adicionado ainda.</div>'; return; }
   list.innerHTML = skus.map((s, i) => `
     <div class="pl-sku-row" id="plskurow-${i}">
-      <input class="pl-sku-name" value="${s.nome||''}" placeholder="SKU" data-idx="${i}" data-field="nome">
-      <input class="pl-sku-qty" type="number" value="${s.qty||''}" placeholder="Qtd" data-idx="${i}" data-field="qty">
+      <input class="pl-sku-name" value="${esc(s.nome||'')}" placeholder="SKU" data-idx="${i}" data-field="nome">
+      <input class="pl-sku-qty" type="number" value="${esc(s.qty||'')}" placeholder="Qtd" data-idx="${i}" data-field="qty">
       <button class="btn btn-danger" style="padding:4px 9px;font-size:11px;flex-shrink:0" onclick="removePlSkuRow(${i})">×</button>
     </div>`).join('');
 }
@@ -8723,9 +8819,9 @@ function renderPlSkuList(skus) {
 function addPlSkuRow() {
   const p = pedidosData.find(x => x.id === plModalId);
   if (!p) return;
-  if (!p.skus) p.skus = [];
-  p.skus.push({ nome: '', qty: '' });
-  renderPlSkuList(p.skus);
+  plLerSkusDaTela();   // não perde o que já foi digitado
+  plSkusEdit.push({ nome: '', qty: '' });
+  renderPlSkuList(plSkusEdit);
   // Focus last name input
   const inputs = document.querySelectorAll('.pl-sku-name');
   if (inputs.length) inputs[inputs.length-1].focus();
@@ -8733,9 +8829,10 @@ function addPlSkuRow() {
 
 function removePlSkuRow(idx) {
   const p = pedidosData.find(x => x.id === plModalId);
-  if (!p || !p.skus) return;
-  p.skus.splice(idx, 1);
-  renderPlSkuList(p.skus);
+  if (!p) return;
+  plLerSkusDaTela();
+  plSkusEdit.splice(idx, 1);
+  renderPlSkuList(plSkusEdit);
 }
 
 async function savePlModal() {
@@ -8750,6 +8847,7 @@ async function savePlModal() {
     desenharPipeline();
     return;
   }
+  const antes = { embarque: p.embarque, eta: p.eta, obs: p.obs, skus: p.skus };
   p.embarque = document.getElementById('plEditEmbarque').value;
   p.eta = document.getElementById('plEditEta').value;
   p.obs = document.getElementById('plEditObs').value.trim();
@@ -8760,7 +8858,7 @@ async function savePlModal() {
     const qty = row.querySelector('[data-field="qty"]')?.value || '';
     if (nome) p.skus.push({ nome, qty: parseInt(qty)||0 });
   });
-  await savePedido(p);
+  if (!(await savePedido(p))) { Object.assign(p, antes); return; }   // modal continua aberto
   document.getElementById('plModalOverlay').classList.add('hidden');
   plModalId = null;
   renderPipeline();
@@ -8770,12 +8868,14 @@ async function deletePlPedido() {
   if (!plModalId) return;
   if (!confirm('Remover este pedido do pipeline?')) return;
   const id = plModalId;
-  pedidosData = pedidosData.filter(x => x.id !== id);
   if (db) {
     showSync(true);
-    await db.from('pedidos').delete().eq('id', id);
+    const { error } = await db.from('pedidos').delete().eq('id', id);
     showSync(false);
+    if (error) { alert('Não foi possível remover: ' + error.message); return; }
+    pedidosData = pedidosData.filter(x => x.id !== id);
   } else {
+    pedidosData = pedidosData.filter(x => x.id !== id);
     saveLs('hub_pedidos', pedidosData);
   }
   document.getElementById('plModalOverlay').classList.add('hidden');
@@ -8789,8 +8889,9 @@ async function movePlPedido(dir) {
   const ei = etapasData.findIndex(e => e.id === p.etapaId);
   const ni = ei + dir;
   if (ni < 0 || ni >= etapasData.length) return;
+  const antes = p.etapaId;
   p.etapaId = etapasData[ni].id;
-  await savePedido(p);
+  if (!(await savePedido(p))) { p.etapaId = antes; return; }
   const etapa = etapasData[ni];
   document.getElementById('plModalSub').textContent = (p.empresa || '') + ' · ' + etapa.nome;
   document.getElementById('plBtnL').disabled = ni <= 0;
@@ -8923,8 +9024,8 @@ async function renderPipeline() {
   if (mc) {
     mc.innerHTML = etapasData.length
       ? etapasData.map((e, i) => `<div class="etapa-row">
-          <div class="etapa-color-dot" style="background:${e.cor}"></div>
-          <span class="etapa-nome-display">${e.nome}</span>
+          <div class="etapa-color-dot" style="background:${corSegura(e.cor)}"></div>
+          <span class="etapa-nome-display">${esc(e.nome)}</span>
           <button class="btn btn-ghost" style="padding:2px 8px;font-size:11px" ${i===0?'disabled':''} onclick="moveEtapa(${e.id},-1)">↑</button>
           <button class="btn btn-ghost" style="padding:2px 8px;font-size:11px" ${i===etapasData.length-1?'disabled':''} onclick="moveEtapa(${e.id},1)">↓</button>
           <button class="btn btn-danger" style="padding:2px 8px;font-size:10px" onclick="removeEtapa(${e.id})">×</button>
@@ -8977,9 +9078,9 @@ function desenharPipeline() {
       cards = cards.slice(0, 8);
     }
     return `<div class="pipeline-col">
-      <div class="pipeline-col-header" style="background:${etapa.cor}18">
-        <span class="pipeline-col-name" style="color:${etapa.cor}">${etapa.nome}</span>
-        <span class="pipeline-col-count" style="color:${etapa.cor};background:${etapa.cor}20">${total}</span>
+      <div class="pipeline-col-header" style="background:${corSegura(etapa.cor)}18">
+        <span class="pipeline-col-name" style="color:${corSegura(etapa.cor)}">${esc(etapa.nome)}</span>
+        <span class="pipeline-col-count" style="color:${corSegura(etapa.cor)};background:${corSegura(etapa.cor)}20">${total}</span>
       </div>
       <div class="pipeline-col-body">
         ${cards.length ? cards.map(p => buildPedidoCard(p, etapa)).join('') : '<div class="pipeline-empty">vazio</div>'}
@@ -9024,7 +9125,9 @@ async function loadReunioes() {
         decisoes: r.decisoes || [],
         passoss: r.passoss || [],
         vistos: r.vistos || [],
-        participantes: r.participantes || []
+        participantes: r.participantes || [],
+        horario: horaSegura(r.horario),
+        enquete: r.enquete && Array.isArray(r.enquete.opcoes) ? { ...r.enquete, opcoes: r.enquete.opcoes.map(o => ({ ...o, horario: horaSegura(o.horario), data: /^\d{4}-\d{2}-\d{2}$/.test(o.data || '') ? o.data : '' })) } : r.enquete
       }));
       return;
     }
@@ -9035,12 +9138,18 @@ async function loadReunioes() {
 // Atualiza só os campos informados (não sobrescreve votos/ciência de outras pessoas)
 async function atualizarReuniao(id, campos) {
   const r = reunioesData.find(x => x.id === id);
+  const antes = r ? Object.fromEntries(Object.keys(campos).map(k => [k, r[k]])) : null;
   if (r) Object.assign(r, campos);
   if (db) {
     showSync(true);
     const { error } = await db.from('reunioes').update(campos).eq('id', id);
     showSync(false);
-    if (error) { console.error('Erro ao salvar reunião:', error); alert('Erro ao salvar: ' + error.message); return false; }
+    if (error) {
+      if (r && antes) Object.assign(r, antes);   // desfaz na tela o que não foi salvo
+      console.error('Erro ao salvar reunião:', error); alert('Erro ao salvar: ' + error.message);
+      if (curPage === 'reunioes') desenharReunioes();
+      return false;
+    }
   } else {
     saveLs('hub_reunioes', reunioesData);
   }
@@ -9618,30 +9727,20 @@ async function initApp(paginaInicial) {
   if (CONFIGURED && db) {
     setSyncStatus('connecting');
     setupRealtime();
-    // Load obs and fiscal from Supabase into localStorage cache
-    try {
-      const [obsRes, fiscalRes] = await Promise.all([
-        db.from('dashboard_sku_obs').select('*'),
-        db.from('dashboard_sku_fiscal').select('*')
-      ]);
-      if (obsRes.data && obsRes.data.length) {
-        const obsMap = {};
-        obsRes.data.forEach(r => { obsMap[r.chave] = r.obs; });
-        saveLs('hub_sku_obs', obsMap);
-      }
-      if (fiscalRes.data && fiscalRes.data.length) {
-        const fiscalMap = {};
-        fiscalRes.data.forEach(r => { fiscalMap[r.chave] = r.dados; });
-        saveLs('hub_sku_fiscal', fiscalMap);
-      }
-    } catch(e) { console.error('Erro ao carregar dados fiscais/obs:', e); }
   } else {
     setSyncStatus('local');
     showSetupBanner();
   }
 
+  // Link de notificação com o app fechado (?p=conversas:12) abre direto na página certa
+  try {
+    const pUrl = new URLSearchParams(location.search).get('p');
+    if (pUrl && /^[a-z]+(:[A-Za-z0-9_-]+)?$/.test(pUrl) && podeVer(pUrl.split(':')[0])) paginaInicial = pUrl;
+    if (pUrl) history.replaceState(null, '', location.pathname);
+  } catch (e) {}
   // Abre na primeira aba liberada para quem está logado
   goPage(paginaInicial || primeiraAbaPermitida() || 'dashboard');
+  paginaInicial = (paginaInicial || '').split(':')[0];
   // Sincronização do histórico só para quem vê o dashboard
   // Histórico da Magis5 agora é salvo pelo servidor (agendamento a cada 10 min + revisão noturna)
   // Pré-carrega as demais abas liberadas (badges, contadores)
@@ -9831,7 +9930,7 @@ function renderNotifList() {
     const unreadClass = notifLida(n) ? '' : 'unread';
     const corpus = n.corpo ? `<div class="notif-item-body">${esc(n.corpo)}</div>` : '';
     return `<div class="notif-item ${unreadClass}" onclick="openNotif(${n.id})">
-      <div class="notif-icon ${n.tipo}"><span>${icon}</span></div>
+      <div class="notif-icon ${esc(n.tipo)}"><span>${icon}</span></div>
       <div class="notif-content">
         <div class="notif-item-title">${esc(n.titulo)}</div>
         ${corpus}
@@ -9945,7 +10044,7 @@ async function togglePushPermission() {
   btn.disabled = true;
 
   try {
-    const reg = await navigator.serviceWorker.ready;
+    const reg = await Promise.race([navigator.serviceWorker.ready, new Promise((_, rej) => setTimeout(() => rej(new Error('o app ainda não terminou de instalar — recarregue a página e tente de novo')), 10000))]);
     const sub = await reg.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
@@ -9967,8 +10066,8 @@ async function togglePushPermission() {
 async function getPushSubscription() {
   if (!('serviceWorker' in navigator)) return null;
   try {
-    const reg = await navigator.serviceWorker.ready;
-    return await reg.pushManager.getSubscription();
+    const reg = await navigator.serviceWorker.getRegistration();   // não fica esperando se o app não instalou
+    return reg && reg.pushManager ? await reg.pushManager.getSubscription() : null;
   } catch { return null; }
 }
 
@@ -9977,16 +10076,19 @@ async function savePushSubscriptionToDB(sub) {
   const auth = sub.getKey('auth');
   const p256dh = btoa(String.fromCharCode(...new Uint8Array(key))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'');
   const authStr = btoa(String.fromCharCode(...new Uint8Array(auth))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'');
-  // Usa o endpoint /subscribe da Edge Function push-notify
-  await fetch(PUSH_FUNCTION_URL + '/subscribe', {
+  // O servidor identifica a pessoa pelo login (não aceita nome enviado pelo navegador)
+  const r = await fetch(PUSH_FUNCTION_URL + '/subscribe', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ endpoint: sub.endpoint, keys: { p256dh, auth: authStr }, usuario: ME ? ME.nome : null })
+    headers: { ...authH(), 'Content-Type': 'application/json' },
+    body: JSON.stringify({ endpoint: sub.endpoint, keys: { p256dh, auth: authStr } })
   });
+  if (!r.ok) throw new Error('o servidor recusou o cadastro do aparelho (' + r.status + ')');
 }
 
 async function removePushSubscriptionFromDB(endpoint) {
-  if (db) await db.from('push_subscriptions').delete().eq('endpoint', endpoint);
+  try {
+    await fetch(PUSH_FUNCTION_URL + '/unsubscribe', { method: 'POST', headers: { ...authH(), 'Content-Type': 'application/json' }, body: JSON.stringify({ endpoint }) });
+  } catch (e) {}
 }
 
 function urlBase64ToUint8Array(base64String) {
@@ -10002,7 +10104,7 @@ async function updatePushBtn() {
   const sub = await getPushSubscription();
   if (sub && Notification.permission === 'granted') {
     // Vincula este aparelho ao usuário logado (1x por sessão) para o push ir só para quem deve
-    if (ME && !window._pushVinculado) { window._pushVinculado = true; savePushSubscriptionToDB(sub).catch(() => {}); }
+    if (ME && !window._pushVinculado) { window._pushVinculado = true; savePushSubscriptionToDB(sub).catch(() => { window._pushVinculado = false; }); }
     btn.classList.add('active');
     btn.textContent = '✓ Ativo';
     saveLs('hub_push_enabled', true);
@@ -10018,7 +10120,7 @@ async function sendPushNotification(notif) {
   try {
     await fetch(PUSH_FUNCTION_URL + '/test', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { ...authH(), 'Content-Type': 'application/json' },
       body: JSON.stringify({
         title: notif.titulo,
         body: notif.corpo || '',
@@ -10029,39 +10131,8 @@ async function sendPushNotification(notif) {
   } catch(e) { console.log('Push remoto não disponível:', e); }
 }
 
-// ── Verificação de prazos de metas ──
-async function checkMetasPrazos() {
-  return; // os avisos de prazo das metas agora saem pelo servidor (3 dias antes e no dia, 9h), para todos com a aba
-  if (!db) return;
-  try {
-    const { data, error } = await db.from('metas').select('*').eq('status', 'andamento');
-    if (error || !data) return;
-    const hoje = new Date();
-    for (const meta of data) {
-      if (!meta.prazo || meta.tipo !== 'qualitativa') continue;
-      const prazo = new Date(meta.prazo + 'T12:00:00');
-      const diffDays = Math.ceil((prazo - hoje) / (1000 * 60 * 60 * 24));
-      // Check if already notified
-      const notifKey = 'hub_notif_meta_' + meta.id + '_' + meta.prazo;
-      const alreadyNotified = loadLs(notifKey, false);
-      if (alreadyNotified) continue;
-      if (diffDays < 0) {
-        await createNotif({ tipo:'prazo', titulo:'Meta vencida: ' + meta.nome, corpo:`Prazo era ${new Date(meta.prazo+'T12:00:00').toLocaleDateString('pt-BR')} — ${meta.empresa}`, link_pagina:'metas', para:[ME.nome] });
-        saveLs(notifKey, true);
-      } else if (diffDays <= 3) {
-        await createNotif({ tipo:'meta', titulo:'Meta próxima do prazo: ' + meta.nome, corpo:`Faltam ${diffDays} dia${diffDays!==1?'s':''} — ${meta.empresa}`, link_pagina:'metas', para:[ME.nome] });
-        saveLs(notifKey, true);
-      }
-    }
-  } catch(e) { console.error('Erro ao checar prazos:', e); }
-}
-
 // ── Init notificações ──
 async function initNotifs() {
-  await loadNotifs();
-  updateNotifBadge();
-  await updatePushBtn();
-  atualizarBtnNaoPerturbe();
   // Notificações novas direcionadas a mim chegam em tempo real (cada uma é criada uma única vez por quem fez a ação)
   if (db) {
     db.channel('hub-notif-' + (ME ? ME.id : 'anon'))
@@ -10071,10 +10142,39 @@ async function initNotifs() {
         if (addNotifLocal(n)) showToast(n);
       })
       .subscribe();
-    // Check meta deadlines once on init, then every 30 min
-    await checkMetasPrazos();
-    setInterval(checkMetasPrazos, 30 * 60 * 1000);
   }
+  await loadNotifs();
+  updateNotifBadge();
+  atualizarBtnNaoPerturbe();
+  updatePushBtn();   // sem esperar: se o app não instalou direito, o resto não trava
+  // (os avisos de prazo das metas saem pelo servidor: 3 dias antes e no dia, às 9h)
+}
+
+// ── Voltou para o hub (celular desbloqueado, aba reaberta, internet voltou): busca o que chegou enquanto estava fora ──
+let _hubOcultoDesde = 0;
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) { _hubOcultoDesde = Date.now(); return; }
+  if (_hubOcultoDesde && Date.now() - _hubOcultoDesde > 60000) resyncHub();
+});
+window.addEventListener('online', () => resyncHub());
+let _resyncEm = 0;
+async function resyncHub() {
+  if (!ME || !db || Date.now() - _resyncEm < 15000) return;
+  _resyncEm = Date.now();
+  try {
+    const { data } = await db.from('perfis').select('ativo').eq('id', ME.id).maybeSingle();
+    if (data && data.ativo === false) { await sairComAviso('Este acesso foi desativado.'); return; }
+    await loadNotifs(); updateNotifBadge();
+    await carregarPendencias();
+    // Só redesenha a aba se a pessoa não estiver no meio de uma edição
+    const editando = document.querySelector('.hub-modal') || (document.activeElement && /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName));
+    if (curPage === 'conversas') { await cvCarregarCanais(); cvRenderSide(); if (cvAtual && !cvTemMaisNovas) await cvMaisNovas(); }
+    else if (!editando) {
+      const re = { inicio: renderInicio, comunicados: renderPosts, reunioes: renderReunioes, decisoes: renderDecisoes, agenda: renderAgenda, pipeline: renderPipeline, metas: renderMetas, planilhas: renderPlanilhas, desempenho: renderDesempenho, anotacoes: renderAnotacoes, dashboard: renderDashboard }[curPage];
+      if (re) re();
+    }
+    atualizarBadgesNav();
+  } catch (e) { console.warn('resync:', e); }
 }
 
 // PWA Service Worker
