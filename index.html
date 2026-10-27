@@ -1143,6 +1143,56 @@ select.field-input{cursor:pointer}
 .cv-arq .btn{font-size:11px;padding:4px 10px}
 .cv-arq-lista{display:flex;flex-direction:column;gap:6px;max-height:60vh;overflow-y:auto}
 .cv-arq-lista .cv-arq{max-width:none}
+/* ── Pipeline v2 ── */
+.pl-resumo{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}
+.pl-res-card{background:var(--surface);border:1.5px solid var(--border);border-radius:8px;padding:12px 14px;min-width:0}
+.pl-res-val{font-size:24px;font-weight:700;font-family:'IBM Plex Mono',monospace;line-height:1.1}
+.pl-res-rot{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-top:2px}
+.pl-res-sub{font-size:11px;color:var(--muted);margin-top:6px;font-family:'IBM Plex Mono',monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pl-res-card.perto .pl-res-val{color:#b8461f}
+.pl-res-card.atraso{border-color:#f0b8b8;background:#fdf3f3}
+.pl-res-card.atraso .pl-res-val{color:var(--red)}
+.pl-res-card.ok .pl-res-val{color:var(--green)}
+.pl-toolbar{flex-wrap:nowrap!important;justify-content:flex-start}
+.pl-toolbar #plBusca{max-width:260px;padding:7px 10px;font-size:12px}
+.pl-toolbar .pl-sync-info{margin-left:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.pl-tb-btn{padding:6px 12px;font-size:15px;line-height:1;flex-shrink:0}
+@media(min-width:769px){
+  .pipeline-board{display:grid;grid-template-columns:repeat(var(--pl-cols,5),minmax(0,1fr));overflow-x:visible}
+  .pipeline-col{min-width:0;max-width:none}
+}
+.pl-card{padding:10px 12px;border-left-width:4px}
+.pl-card.sit-atraso{border-left-color:var(--red)}
+.pl-card.sit-perto{border-left-color:#d9822b}
+.pl-card.sit-medio{border-left-color:#d4a017}
+.pl-card.sit-longe{border-left-color:#14967f}
+.pl-card.sit-sem{border-left-color:var(--border2)}
+.pl-card.sit-ok{border-left-color:var(--green)}
+.pl-card-top{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
+.pl-card-ref{font-size:13px;font-weight:700;font-family:'IBM Plex Mono',monospace}
+.pl-card-emp{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.pl-card-sit{font-size:12px;margin-top:4px;line-height:1.35}
+.pl-card.sit-atraso .pl-card-sit{color:var(--red);font-weight:600}
+.pl-card.sit-perto .pl-card-sit{color:#b8461f;font-weight:600}
+.pl-card-meta{font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-top:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pl-card-obs{font-size:11px;color:var(--muted);font-style:italic;margin-top:4px;line-height:1.4}
+.pl-viagem{position:relative;height:4px;background:var(--surface2);border-radius:2px;margin:10px 4px 6px}
+.pl-viagem-fill{position:absolute;left:0;top:0;bottom:0;background:var(--blue);border-radius:2px;opacity:.55}
+.pl-viagem-porto{position:absolute;top:-3px;width:2px;height:10px;background:var(--muted);transform:translateX(-1px)}
+.pl-viagem-navio{position:absolute;top:-9px;font-size:12px;transform:translateX(-50%)}
+.pl-card-skus-tog{font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-top:6px;cursor:pointer;user-select:none}
+.pl-card-skus-tog:hover{color:var(--text)}
+.pl-card-skus{font-size:11px;font-family:'IBM Plex Mono',monospace;margin-top:4px;border-top:1px solid var(--border);padding-top:4px}
+.pl-card-skus div{display:flex;justify-content:space-between;gap:6px;padding:1px 0}
+.pl-card-skus span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pipeline-card.concluido.pl-card{opacity:.75;padding:8px 12px}
+@media(max-width:768px){
+  .pl-resumo{grid-template-columns:1fr 1fr}
+  .pl-toolbar{flex-wrap:wrap!important}
+  .pl-toolbar #plBusca{max-width:none;flex:1;min-width:0}
+  .pl-toolbar .pl-sync-info{order:3;width:100%;margin-left:0}
+  .pipeline-toolbar.pl-toolbar button{flex:0 0 auto}
+}
 /* ── Agenda v2 ── */
 .ag-visoes{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
 .ag-sep{width:1px;height:18px;background:var(--border2);margin:0 4px;align-self:center}
@@ -2141,12 +2191,12 @@ select.field-input{cursor:pointer}
     </div>
 
     <!-- Toolbar -->
-    <div class="pipeline-toolbar">
-      <button class="btn btn-ghost" onclick="toggleEtapaManager()">⚙ Gerenciar etapas</button>
-      <button class="btn btn-ghost" onclick="toggleNovoPedido()">+ Pedido manual</button>
-      <input class="field-input" id="plBusca" placeholder="🔍 Contêiner ou SKU…" oninput="desenharPipeline()" style="max-width:220px;padding:7px 10px;font-size:12px">
+    <div class="pl-resumo" id="plResumo"></div>
+    <div class="pipeline-toolbar pl-toolbar">
+      <input class="field-input" id="plBusca" placeholder="🔍 Contêiner ou SKU…" oninput="desenharPipeline()">
       <span class="pl-sync-info" id="plSyncInfo"></span>
-      <button class="btn btn-primary" id="plBtnSync" onclick="sincronizarImportacao()">↻ Atualizar agora</button>
+      <button class="btn btn-ghost pl-tb-btn" id="plBtnSync" onclick="sincronizarImportacao()" title="Buscar agora no Hub Importação">↻</button>
+      <button class="btn btn-ghost pl-tb-btn" onclick="plMenu(event)" title="Mais opções">⋯</button>
     </div>
 
     <!-- Form novo pedido -->
@@ -2242,7 +2292,10 @@ select.field-input{cursor:pointer}
 
         </div>
         <div class="pl-modal-footer">
-          <button class="btn btn-danger" id="plDeleteBtn" onclick="deletePlPedido()">Remover pedido</button>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <button class="btn btn-danger" id="plDeleteBtn" onclick="deletePlPedido()">Remover pedido</button>
+            <button class="btn btn-ghost" id="plBtnComentar" onclick="plComentar()" title="Abre as Conversas citando este contêiner">💬 Comentar</button>
+          </div>
           <div style="display:flex;gap:8px;align-items:center">
             <div style="display:flex;gap:6px">
               <button class="btn btn-ghost" style="font-size:11px;padding:6px 12px" id="plBtnL" onclick="movePlPedido(-1)">← Voltar</button>
@@ -3002,6 +3055,10 @@ function goPage(p) {
   if (typeof p === 'string' && p.includes(':')) {
     const [pg, arg] = p.split(':');
     if (pg === 'conversas' && arg) { cvPendente = Number(arg); if (curPage === 'conversas' && podeVer('conversas')) { cvAbrir(cvPendente); cvPendente = null; return; } }
+    if (pg === 'pipeline' && arg) {
+      plAbrirPendente = Number(arg);
+      if (curPage === 'pipeline' && podeVer('pipeline')) { const id = plAbrirPendente; plAbrirPendente = null; openPlModal(id); return; }
+    }
     if (pg === 'agenda' && arg === 'sala') {
       agVisao = 'sala';
       if (curPage === 'agenda' && podeVer('agenda')) { desenharAgenda(); return; }
@@ -4709,7 +4766,7 @@ let cvTemMais = false;      // há mensagens mais antigas
 let cvTemMaisNovas = false; // janela aberta no meio do histórico (veio de busca/resposta)
 let cvEditando = null;      // id da mensagem em edição
 let cvRespondendo = null;   // { id, autor, trecho, comunicado? }
-let cvCitacaoPendente = null; // citação vinda do "Comentar" de um comunicado
+let cvCitacaoPendente = null; // citação vinda do "Comentar" de um comunicado ou contêiner
 let cvLeituras = {};        // nome -> lido_ate (canal aberto)
 let cvFixadas = [];         // mensagens fixadas do canal aberto
 let cvDivisorId = null;     // primeira mensagem não lida ao abrir
@@ -4916,7 +4973,7 @@ async function cvAbrir(id, recarregar) {
   cvMarcarLido();
   cvRenderSide();
   cvRenderDigitando();
-  if (cvCitacaoPendente && cvCitacaoPendente.canal === id) { const q = cvCitacaoPendente; cvCitacaoPendente = null; cvMostrarResposta({ id: null, autor: q.autor, trecho: q.trecho, comunicado: q.comunicado }); }
+  if (cvCitacaoPendente && cvCitacaoPendente.canal === id) { const q = cvCitacaoPendente; cvCitacaoPendente = null; cvMostrarResposta({ id: null, autor: q.autor, trecho: q.trecho, comunicado: q.comunicado, pipeline: q.pipeline }); }
   if (window.innerWidth > 768) inp.focus();
 }
 
@@ -5232,7 +5289,7 @@ function cvMsgHTML(m, agrupada, ultimaMinha) {
   const enc = m.encaminhada_de && !m.apagada
     ? `<div class="cv-enc">↪ Encaminhada${m.encaminhada_de.autor ? ' · original de ' + esc(m.encaminhada_de.autor) : ''}${m.encaminhada_de.canal ? ' (' + esc(m.encaminhada_de.canal) + ')' : ''}</div>` : '';
   const quote = m.resposta && !m.apagada
-    ? `<div class="cv-quote ${m.resposta.comunicado ? 'cv-quote-com' : ''}" onclick="${m.resposta.comunicado ? `goPage('comunicados:${Number(m.resposta.comunicado) || 0}')` : `cvIrPara(${Number(m.resposta_a) || 0})`}" title="${m.resposta.comunicado ? 'Abrir o comunicado' : 'Ir para a mensagem original'}"><strong style="color:${corDe(m.resposta.autor)}">${esc(m.resposta.autor || '')}</strong><span>${esc(m.resposta.trecho || '')}</span></div>` : '';
+    ? `<div class="cv-quote ${m.resposta.comunicado || m.resposta.pipeline ? 'cv-quote-com' : ''}" onclick="${m.resposta.pipeline ? `goPage('pipeline:${Number(m.resposta.pipeline) || 0}')` : m.resposta.comunicado ? `goPage('comunicados:${Number(m.resposta.comunicado) || 0}')` : `cvIrPara(${Number(m.resposta_a) || 0})`}" title="${m.resposta.pipeline ? 'Abrir o contêiner no Pipeline' : m.resposta.comunicado ? 'Abrir o comunicado' : 'Ir para a mensagem original'}"><strong style="color:${corDe(m.resposta.autor)}">${esc(m.resposta.autor || '')}</strong><span>${esc(m.resposta.trecho || '')}</span></div>` : '';
   const pin = m.fixada && !m.apagada ? `<span class="cv-pin-mini" title="Fixada por ${esc(m.fixada_por || '')}">📌</span>` : '';
   const conteudo = `${enc}${quote}${temTexto ? `<div class="cv-texto">${corpo}</div>` : ''}${cvPreviaHTML(m)}${cvAnexosHTML(m)}${reac ? `<div class="cv-reacs">${reac}</div>` : ''}${cvVistoHTML(m, ultimaMinha)}`;
   const acoes = m.apagada ? '' : `<div class="cv-acoes" onclick="event.stopPropagation()">
@@ -5359,6 +5416,7 @@ async function cvInserir(c, o) {
     row.resposta_a = o.resposta.id || null;
     row.resposta = { autor: o.resposta.autor, trecho: o.resposta.trecho };
     if (o.resposta.comunicado) row.resposta.comunicado = o.resposta.comunicado;
+    if (o.resposta.pipeline) row.resposta.pipeline = o.resposta.pipeline;
   }
   if (o.encaminhada_de) row.encaminhada_de = o.encaminhada_de;
   if (o.previa) row.previa = o.previa;
@@ -5551,7 +5609,7 @@ function cvMostrarResposta(r) {
   if (cvEditando) cvCancelarEdicao();
   cvRespondendo = r;
   const bar = document.getElementById('cvReplyBar');
-  bar.innerHTML = `<div class="cv-quote"><strong style="color:${corDe(r.autor)}">↩ ${r.comunicado ? 'Comentando comunicado de' : 'Respondendo'} ${esc(r.autor)}</strong><span>${esc(r.trecho)}</span></div><a href="#" title="Cancelar" onclick="event.preventDefault();cvCancelarResposta()">✕</a>`;
+  bar.innerHTML = `<div class="cv-quote"><strong style="color:${corDe(r.autor)}">↩ ${r.pipeline ? 'Comentando' : r.comunicado ? 'Comentando comunicado de' : 'Respondendo'} ${r.pipeline ? 'contêiner' : esc(r.autor)}</strong><span>${esc(r.trecho)}</span></div><a href="#" title="Cancelar" onclick="event.preventDefault();cvCancelarResposta()">✕</a>`;
   bar.classList.remove('hidden');
   document.querySelectorAll('.cv-msg.tocada').forEach(x => x.classList.remove('tocada'));
   document.getElementById('cvInput').focus();
@@ -8428,37 +8486,109 @@ function plUrgencia(eta) {
   return { dias, cls, label };
 }
 
+function plValorCurto(v, moeda) {
+  if (!v) return '';
+  const s = moeda === 'BRL' ? 'R$ ' : 'US$ ';
+  return s + (v >= 1e6 ? (v / 1e6).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' mi' : v >= 1e3 ? (v / 1e3).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' mil' : Number(v).toLocaleString('pt-BR'));
+}
+function plDias(iso) { return Math.round((new Date(iso + 'T12:00:00') - new Date(isoHoje() + 'T12:00:00')) / 86400000); }
+// Situação em uma linha: quando chega, se atrasou, se já está no desembaraço
+function plSituacao(p, concluido) {
+  const gal = p.eta_galpao, eta = p.eta;
+  if (concluido) return { txt: gal ? `chegou ${fmtDatePl(gal)}` : (eta ? `chegou ${fmtDatePl(eta)}` : 'concluído'), cls: 'ok' };
+  if (p.status_origem === 'desembaraco') return { txt: gal ? `🏭 desembaraço · galpão ${fmtDatePl(gal)}` : '🏭 no desembaraço', cls: gal && plDias(gal) < 0 ? 'atraso' : 'perto' };
+  if (!eta && !gal) return { txt: p.status_origem === 'fazer_booking' ? 'falta fazer o booking' : 'sem data ainda', cls: 'sem' };
+  if (eta && plDias(eta) < 0 && p.status_origem === 'em_rota') return { txt: `⚠ atrasado ${-plDias(eta)}d · ETA ${fmtDatePl(eta)}`, cls: 'atraso' };
+  const alvo = gal || eta, d = plDias(alvo);
+  const quando = d === 0 ? 'hoje' : d === 1 ? 'amanhã' : `em ${d} dias`;
+  return { txt: `${gal ? '🏭 galpão' : '⚓ porto'} ${quando} · ${fmtDatePl(alvo)}`, cls: d <= 7 ? 'perto' : d <= 15 ? 'medio' : 'longe' };
+}
+// Barra da viagem: embarque → porto (ETA) → galpão
+function plBarraViagem(p) {
+  const ini = p.embarque, fim = p.eta_galpao || p.eta;
+  if (!ini || !fim || fim <= ini) return '';
+  const t = d => new Date(d + 'T12:00:00').getTime();
+  const total = t(fim) - t(ini);
+  const pct = Math.max(0, Math.min(100, (Date.now() - t(ini)) / total * 100));
+  const porto = p.eta && p.eta_galpao && p.eta < p.eta_galpao ? Math.max(0, Math.min(100, (t(p.eta) - t(ini)) / total * 100)) : null;
+  return `<div class="pl-viagem" title="Embarque ${fmtDatePl(ini)}${p.eta ? ' · porto ' + fmtDatePl(p.eta) : ''}${p.eta_galpao ? ' · galpão ' + fmtDatePl(p.eta_galpao) : ''}">
+    <div class="pl-viagem-fill" style="width:${pct}%"></div>
+    ${porto != null ? `<span class="pl-viagem-porto" style="left:${porto}%"></span>` : ''}
+    <span class="pl-viagem-navio" style="left:${pct}%">🚢</span>
+  </div>`;
+}
+function plToggleSkus(ev, id) {
+  ev.stopPropagation();
+  const el = document.getElementById('plskus-' + id); if (!el) return;
+  el.classList.toggle('hidden');
+  ev.currentTarget.textContent = (el.classList.contains('hidden') ? '▸ ' : '▾ ') + ev.currentTarget.dataset.rot;
+}
+
 function buildPedidoCard(p, etapa) {
-  const sym = p.moeda === 'USD' ? 'US$ ' : 'R$ ';
-  const valStr = p.valor ? sym + Number(p.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : null;
   const sinc = p.origem === 'hub_importacao';
   const empColor = CANAL_CORES[p.empresa] || (p.empresa === 'MTI' ? '#8a5e00' : 'var(--blue)');
   const skus = p.skus || [];
   const concluido = p.status_origem === 'chegou' || (etapa && etapa.chave === 'chegou');
-  const urg = concluido || p.status_origem === 'desembaraco' ? null : plUrgencia(p.eta);
   const totUn = skus.reduce((a, s) => a + (Number(s.qty) || 0), 0);
-  const skuPreview = skus.length
-    ? skus.slice(0, 4).map(s => `📦 ${esc(s.nome)}${s.qty ? ' <strong>×' + Number(s.qty).toLocaleString('pt-BR') + '</strong>' : ''}`).join('<br>') + (skus.length > 4 ? `<br><span style="opacity:.7">+${skus.length - 4} SKUs · ${totUn.toLocaleString('pt-BR')} un.</span>` : '')
-    : '';
-  return `<div class="pipeline-card ${concluido ? 'concluido' : ''}" onclick="openPlModal(${p.id})">
-    <div class="pipeline-card-top">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:6px">
-        <div class="pipeline-card-empresa" style="color:${empColor}">${esc(p.empresa || '')}</div>
-        ${sinc ? '<span class="pl-sinc" title="Sincronizado do Hub Importação">🔗</span>' : '<span class="pl-sinc manual" title="Pedido manual">manual</span>'}
-      </div>
-      <div class="pipeline-card-ref">${esc(p.ref)}</div>
-      <div class="pl-chips">
-        <span class="pl-chip">📅 ETA ${p.eta ? fmtDatePl(p.eta) : '—'}</span>
-        ${urg ? `<span class="pl-chip urg-${urg.cls}">⏳ ${urg.label}</span>` : (!p.eta && !concluido ? '<span class="pl-chip urg-sem">sem ETA</span>' : '')}
-      </div>
-      ${p.eta_galpao && !concluido ? `<div class="pl-chips"><span class="pl-chip">🏭 Galpão ${fmtDatePl(p.eta_galpao)}</span></div>` : ''}
-      ${p.agente && !concluido ? `<div class="pl-agente">🚚 ${esc(p.agente)}</div>` : ''}
-      ${valStr ? `<div style="font-size:11px;font-weight:700;font-family:'IBM Plex Mono',monospace;margin-top:6px;color:${p.moeda==='USD'?'var(--blue)':'var(--green)'}">${valStr}</div>` : ''}
-      ${p.obs ? `<div style="font-size:10px;color:var(--muted);font-style:italic;margin-top:4px;line-height:1.4">${esc(p.obs)}</div>` : ''}
-      ${sinc && !skus.length && !concluido ? '<div class="pl-pendente">📝 Lista de produtos pendente</div>' : ''}
+  const sit = plSituacao(p, concluido);
+  const rotSkus = skus.length ? `${skus.length} SKU${skus.length > 1 ? 's' : ''} · ${totUn.toLocaleString('pt-BR')} un.` : '';
+  const meta = [plValorCurto(p.valor, p.moeda), !concluido && p.agente ? '🚚 ' + esc(p.agente) : ''].filter(Boolean).join(' · ');
+  return `<div class="pipeline-card pl-card ${concluido ? 'concluido' : ''} sit-${sit.cls}" onclick="openPlModal(${p.id})">
+    <div class="pl-card-top">
+      <span class="pl-card-ref">${esc(p.ref)}</span>
+      <span class="pl-card-emp" style="color:${empColor}">${esc(p.empresa || '')}</span>
+      ${sinc ? '' : '<span class="pl-sinc manual" title="Pedido manual">manual</span>'}
     </div>
-    ${skuPreview && !concluido ? `<div class="pipeline-card-skus-preview">${skuPreview}</div>` : ''}
+    <div class="pl-card-sit">${sit.txt}</div>
+    ${!concluido ? plBarraViagem(p) : ''}
+    ${meta ? `<div class="pl-card-meta">${meta}</div>` : ''}
+    ${p.obs ? `<div class="pl-card-obs">${esc(p.obs)}</div>` : ''}
+    ${sinc && !skus.length && !concluido ? '<div class="pl-pendente">📝 lista de produtos pendente</div>' : ''}
+    ${rotSkus ? `<div class="pl-card-skus-tog" data-rot="${rotSkus}" onclick="plToggleSkus(event,${p.id})">▸ ${rotSkus}</div>
+      <div class="pl-card-skus hidden" id="plskus-${p.id}">${skus.map(s => `<div><span>${esc(s.nome)}</span><b>${s.qty ? Number(s.qty).toLocaleString('pt-BR') : ''}</b></div>`).join('')}</div>` : ''}
   </div>`;
+}
+
+// ── Resumo no topo ──
+function plResumoHTML() {
+  const hoje = isoHoje(), em15 = (() => { const d = new Date(hoje + 'T12:00:00'); d.setDate(d.getDate() + 15); return d.toISOString().slice(0, 10); })();
+  const conc = p => p.status_origem === 'chegou' || ((etapasData.find(e => e.id === p.etapaId) || {}).chave === 'chegou');
+  const caminho = pedidosData.filter(p => !conc(p));
+  const valor = caminho.reduce((a, p) => a + (p.moeda !== 'BRL' ? Number(p.valor) || 0 : 0), 0);
+  const semValor = caminho.filter(p => !p.valor).length;
+  const un = caminho.reduce((a, p) => a + (p.skus || []).reduce((x, s) => x + (Number(s.qty) || 0), 0), 0);
+  const chegando = caminho.filter(p => { const d = p.eta_galpao || p.eta; return d && d >= hoje && d <= em15; })
+    .sort((a, b) => (a.eta_galpao || a.eta).localeCompare(b.eta_galpao || b.eta));
+  const atrasados = caminho.filter(p => p.status_origem === 'em_rota' && p.eta && p.eta < hoje);
+  const desemb = caminho.filter(p => p.status_origem === 'desembaraco');
+  const card = (val, rot, sub, cls, tip) => `<div class="pl-res-card ${cls || ''}" ${tip ? `title="${esc(tip)}"` : ''}><div class="pl-res-val">${val}</div><div class="pl-res-rot">${rot}</div>${sub ? `<div class="pl-res-sub">${sub}</div>` : ''}</div>`;
+  return card(caminho.length, 'a caminho', `${plValorCurto(valor, 'USD') || '—'}${semValor ? ` · ${semValor} sem valor` : ''}`, '', '') +
+    card(un ? un.toLocaleString('pt-BR') : '—', 'unidades a caminho', `${caminho.filter(p => (p.skus || []).length).length} com lista de produtos`, '', '') +
+    card(chegando.length, 'chegam em 15 dias', chegando.slice(0, 4).map(p => esc(p.ref)).join(', ') + (chegando.length > 4 ? '…' : ''), chegando.length ? 'perto' : '', chegando.map(p => `${p.ref}: ${fmtDataBR(p.eta_galpao || p.eta)}`).join(' · ')) +
+    card(atrasados.length, 'atrasados', atrasados.length ? atrasados.slice(0, 4).map(p => esc(p.ref)).join(', ') : (desemb.length ? `${desemb.length} no desembaraço` : 'nenhum'), atrasados.length ? 'atraso' : 'ok', atrasados.map(p => `${p.ref}: ETA ${fmtDataBR(p.eta)}`).join(' · '));
+}
+
+// ── Menu ⋯ (gerenciar etapas / pedido manual) ──
+function plMenu(ev) {
+  ev.stopPropagation();
+  cvPopover(ev.currentTarget, `<div class="cv-pop-tit">Pipeline</div>
+    <div class="cv-pop-op" onclick="cvFecharPopover();toggleNovoPedido()"><div>+ Pedido manual</div><small>para algo que não está no Hub Importação</small></div>
+    <div class="cv-pop-op" onclick="cvFecharPopover();toggleEtapaManager()"><div>⚙ Gerenciar etapas</div><small>as etapas vêm do Hub Importação</small></div>`, 'cv-pop-menu');
+}
+
+// ── 12. Comentar: leva às Conversas citando o contêiner ──
+async function plComentar() {
+  const p = pedidosData.find(x => x.id === plModalId); if (!p) return;
+  if (!podeVer('conversas')) { alert('Você não tem acesso às Conversas.'); return; }
+  if (!cvCanais.length) await cvCarregarCanais();
+  const g = cvCanais.find(c => c.tipo === 'canal' && c.nome === 'geral' && !c.arquivado) || cvCanais.find(c => c.tipo === 'canal' && !c.arquivado && !(c.membros || []).length);
+  if (!g) { alert('Nenhum canal aberto a todos para comentar.'); return; }
+  const etapa = etapasData.find(e => e.id === p.etapaId);
+  const sit = plSituacao(p, p.status_origem === 'chegou' || (etapa && etapa.chave === 'chegou'));
+  document.getElementById('plModalOverlay').classList.add('hidden');
+  cvCitacaoPendente = { canal: g.id, autor: 'Pipeline', trecho: `🚢 Contêiner ${p.ref} (${p.empresa || ''}) · ${etapa ? etapa.nome : ''} · ${semMarcadores(sit.txt).replace(/[🏭⚓⚠]\s?/g, '')}`, pipeline: p.id };
+  plModalId = null;
+  goPage('conversas:' + g.id);
 }
 
 async function renderPipeline() {
@@ -8489,7 +8619,9 @@ async function renderPipeline() {
   }
   desenharPipeline();
   updateEtapaSelect();
+  if (plAbrirPendente) { const id = plAbrirPendente; plAbrirPendente = null; if (pedidosData.some(p => p.id === id)) openPlModal(id); }
 }
+let plAbrirPendente = null;
 
 let _plConcluidosTodos = false;
 function desenharPipeline() {
@@ -8501,9 +8633,12 @@ function desenharPipeline() {
   const info = document.getElementById('plSyncInfo');
   if (info) {
     const semData = pedidosData.filter(p => p.origem === 'hub_importacao' && p.status_origem !== 'chegou' && (!p.eta || !p.embarque)).length;
-    info.innerHTML = (ultima ? `🔗 Hub Importação · atualizado ${formatNotifTime(ultima)}` : '🔗 ainda não sincronizado') +
-      (semData ? ` · <span style="color:var(--amber)">⚠ ${semData} sem ETD ou ETA</span>` : '');
+    info.innerHTML = (ultima ? `🔗 Hub Importação · ${formatNotifTime(ultima)}` : '🔗 ainda não sincronizado') +
+      (semData ? ` · <span style="color:var(--amber)" title="Contêineres a caminho sem data de embarque ou ETA no Hub Importação">⚠ ${semData} sem data</span>` : '');
   }
+  const res = document.getElementById('plResumo');
+  if (res) res.innerHTML = plResumoHTML();
+  board.style.setProperty('--pl-cols', etapasData.length);
   board.innerHTML = etapasData.map((etapa, ei) => {
     let cards = visiveis.filter(p => p.etapaId === etapa.id);
     const ehConcluido = etapa.chave === 'chegou';
@@ -8531,13 +8666,13 @@ function desenharPipeline() {
 
 async function sincronizarImportacao() {
   const btn = document.getElementById('plBtnSync');
-  btn.disabled = true; btn.textContent = 'Atualizando…';
+  btn.disabled = true; btn.textContent = '…';
   try {
     const r = await fetch(`${SUPABASE_URL}/functions/v1/imp-sync`, { method: 'POST', headers: authH({ 'Content-Type': 'application/json' }), body: '{}' });
     const j = await r.json().catch(() => ({}));
     if (!j.ok) alert('Não foi possível atualizar agora: ' + (j.erro || r.status));
   } catch (e) { alert('Não foi possível atualizar agora: ' + e.message); }
-  btn.disabled = false; btn.textContent = '↻ Atualizar agora';
+  btn.disabled = false; btn.textContent = '↻';
   renderPipeline();
 }
 
