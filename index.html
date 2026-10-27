@@ -1143,6 +1143,81 @@ select.field-input{cursor:pointer}
 .cv-arq .btn{font-size:11px;padding:4px 10px}
 .cv-arq-lista{display:flex;flex-direction:column;gap:6px;max-height:60vh;overflow-y:auto}
 .cv-arq-lista .cv-arq{max-width:none}
+/* ── Desempenho v2 ── */
+.dp-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.dp-toolbar-acts{margin-left:auto;display:flex;gap:8px}
+.dp-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:16px}
+.dp-stat{background:var(--surface);border:1.5px solid var(--border);border-radius:8px;padding:12px 14px}
+.dp-stat.alerta{border-color:#ecd59a;background:var(--amber-bg)}
+.dp-stat-val{font-size:24px;font-weight:700;font-family:'IBM Plex Mono',monospace;line-height:1.1}
+.dp-stat-sep{color:var(--border2);margin:0 6px}
+.dp-stat-rot{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-top:3px}
+.dp-grid{display:grid;grid-template-columns:minmax(260px,1fr) 2fr;gap:16px;align-items:start}
+.dp-eq{padding:9px 6px;border-bottom:1px solid var(--border);cursor:pointer;border-radius:4px}
+.dp-eq:hover{background:var(--surface2)}
+.dp-eq:last-child{border-bottom:none}
+.dp-eq-nome{display:flex;align-items:baseline;gap:6px;font-size:13px}
+.dp-eq-nome small{font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace}
+.dp-eq-num{display:flex;gap:10px;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;margin-top:2px}
+.dp-eq-ult{font-size:11px;color:var(--muted);margin-top:2px}
+.dp-pend{color:var(--amber);font-weight:600}
+.dp-filtros{display:flex;gap:6px;flex-wrap:wrap}
+.dp-filtros .field-input{padding:5px 8px;font-size:11px;width:auto}
+.dp-item{border:1.5px solid var(--border);border-left-width:4px;border-radius:6px;padding:10px 12px;margin-bottom:8px;background:var(--surface)}
+.dp-item.tipo-acerto{border-left-color:var(--green)}
+.dp-item.tipo-erro{border-left-color:var(--red)}
+.dp-item.tipo-observacao{border-left-color:var(--border2)}
+.dp-item.tipo-advertencia{border-left-color:#d4a017}
+.dp-item-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px}
+.dp-item-nome{font-weight:700;color:var(--text);text-decoration:none}
+.dp-item-nome:hover{text-decoration:underline}
+.dp-tipo{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:2px 8px;border-radius:10px;font-family:'IBM Plex Mono',monospace}
+.dp-tipo-acerto{background:var(--green-bg);color:var(--green)}
+.dp-tipo-erro{background:#fbe3e3;color:var(--red)}
+.dp-tipo-observacao{background:var(--surface2);color:var(--muted)}
+.dp-tipo-advertencia{background:var(--amber-bg);color:var(--amber)}
+.dp-cat{font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;text-transform:uppercase}
+.dp-data{font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-left:auto}
+.dp-item-txt{font-size:13px;line-height:1.5;margin-top:6px;overflow-wrap:anywhere}
+.dp-anexos{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;font-size:12px}
+.dp-anexos a{color:var(--blue)}
+.dp-fb{font-size:12px;margin-top:8px;padding:6px 8px;border-radius:5px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.dp-fb.pend{background:var(--amber-bg);color:var(--amber)}
+.dp-fb.ok{background:var(--green-bg);color:var(--green)}
+.dp-fb a{color:inherit}
+.dp-fb .btn{font-size:11px;padding:3px 10px}
+.dp-item-rod{display:flex;justify-content:space-between;gap:8px;font-size:11px;color:var(--muted);margin-top:8px;font-family:'IBM Plex Mono',monospace}
+.dp-item-acts{display:flex;gap:12px}
+.dp-item-acts a{color:var(--muted)}
+.dp-item-acts .dp-rem{color:var(--red)}
+.dp-vazio{font-size:13px;color:var(--muted);padding:14px 4px}
+.dp-novo-func{display:flex;gap:6px;margin-top:6px}
+.dp-novo-func .field-input{flex:1;min-width:0}
+.dp-fb-box{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px;background:var(--surface2);border-radius:6px;padding:8px 10px}
+.dp-fb-box .field-input{width:auto;padding:5px 8px;font-size:12px}
+.dp-chip-acerto.on{background:var(--green);border-color:var(--green)}
+.dp-chip-erro.on{background:var(--red);border-color:var(--red)}
+.dp-chip-advertencia.on{background:#b8860b;border-color:#b8860b}
+.dp-ficha-tab{width:100%;border-collapse:collapse;margin-top:12px;font-size:12px;font-family:'IBM Plex Mono',monospace}
+.dp-ficha-tab th{font-size:10px;color:var(--muted);text-transform:uppercase;font-weight:600;text-align:center;padding:4px}
+.dp-ficha-tab td{text-align:center;padding:5px 4px;border-top:1px solid var(--border);font-weight:700}
+.dp-ficha-tab td:first-child{text-align:left;font-weight:400;color:var(--muted)}
+.dp-ficha-lista{max-height:50vh;overflow-y:auto}
+.dp-func-form{display:grid;grid-template-columns:2fr 1.4fr 1fr auto;gap:6px;margin-top:12px}
+.dp-func-form .field-input{min-width:0;font-size:12px;padding:7px 9px}
+.dp-func-linha{display:flex;align-items:center;gap:10px;padding:7px 2px;border-bottom:1px solid var(--border);font-size:13px}
+.dp-func-linha small{display:block;font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace}
+.dp-func-linha a{font-size:11px;color:var(--muted)}
+.dp-func-linha.desl{opacity:.6}
+.dp-func-linha .field-input{min-width:0;font-size:12px;padding:5px 8px;flex:1}
+@media(max-width:768px){
+  .dp-stats{grid-template-columns:1fr 1fr}
+  .dp-grid{grid-template-columns:1fr}
+  .dp-toolbar-acts{margin-left:0;width:100%}
+  .dp-toolbar-acts .btn{flex:1}
+  .dp-func-form{grid-template-columns:1fr 1fr}
+  .dp-func-linha{flex-wrap:wrap}
+}
 /* ── Pipeline v2 ── */
 .pl-resumo{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}
 .pl-res-card{background:var(--surface);border:1.5px solid var(--border);border-radius:8px;padding:12px 14px;min-width:0}
@@ -2030,90 +2105,32 @@ select.field-input{cursor:pointer}
   <div id="page-desempenho" class="hidden fade-in">
     <div class="page-header">
       <div class="page-title">Desempenho</div>
-      <div class="page-sub">registro de acertos e erros por funcionário</div>
+      <div class="page-sub">acertos, erros e feedback da equipe · só quem tem esta aba vê</div>
     </div>
-
-    <!-- RESUMO -->
-    <div class="desemp-summary" id="desempSummary">
-      <div class="desemp-stat"><div class="desemp-stat-label">Total registros</div><div class="desemp-stat-val" id="dsTotal">—</div></div>
-      <div class="desemp-stat"><div class="desemp-stat-label">Acertos</div><div class="desemp-stat-val val-green" id="dsAcertos">—</div></div>
-      <div class="desemp-stat"><div class="desemp-stat-label">Erros</div><div class="desemp-stat-val val-red" id="dsErros">—</div></div>
-      <div class="desemp-stat"><div class="desemp-stat-label">Funcionários</div><div class="desemp-stat-val" id="dsFuncs">—</div></div>
-    </div>
-
-    <div class="two-col" style="margin-bottom:16px">
-      <!-- FORM -->
-      <div class="box" style="margin-bottom:0">
-        <div class="box-title" style="margin-bottom:14px">Novo registro</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
-          <div class="field-group">
-            <span class="field-label">Funcionário</span>
-            <input class="field-input" id="dFunc" placeholder="Nome completo">
-          </div>
-          <div class="field-group">
-            <span class="field-label">Empresa</span>
-            <select class="field-input" id="dEmpresa">
-              <option>FASTWEB</option><option>BTMX</option><option>FALCOM</option><option>OCTO</option><option>LOGBOX</option><option>Geral</option>
-            </select>
-          </div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
-          <div class="field-group">
-            <span class="field-label">Tipo</span>
-            <select class="field-input" id="dTipo">
-              <option value="acerto">✓ Acerto</option>
-              <option value="erro">✗ Erro</option>
-            </select>
-          </div>
-          <div class="field-group">
-            <span class="field-label">Categoria</span>
-            <select class="field-input" id="dCategoria">
-              <option value="operacional">Operacional</option>
-              <option value="atendimento">Atendimento</option>
-              <option value="financeiro">Financeiro</option>
-              <option value="logistica">Logística</option>
-              <option value="geral">Geral</option>
-            </select>
-          </div>
-        </div>
-        <div class="field-group" style="margin-bottom:10px;display:none">
-          <span class="field-label">Registrado por</span>
-          <input class="field-input" id="dRegistrador" placeholder="Seu nome">
-        </div>
-        <div class="field-group" style="margin-bottom:12px">
-          <span class="field-label">Descrição do ocorrido</span>
-          <textarea class="desemp-textarea" id="dDescricao" placeholder="Descreva o acerto ou erro com detalhes relevantes…"></textarea>
-        </div>
-        <button class="btn btn-primary" id="btnAddDesemp" onclick="addDesempenho()" style="width:100%">Registrar</button>
-      </div>
-
-      <!-- RANKING -->
-      <div class="box" style="margin-bottom:0">
-        <div class="box-header"><div class="box-title">Ranking de funcionários</div><div class="box-action" id="rankingPeriodo">todos os registros</div></div>
-        <div id="desempRanking"><div class="loading-row"><span class="spinner"></span>carregando…</div></div>
+    <div class="dp-toolbar">
+      <div id="dpPeriodo" class="para-chips"></div>
+      <div class="dp-toolbar-acts">
+        <button class="btn btn-ghost" onclick="dpAbrirFuncionarios()">👥 Funcionários</button>
+        <button class="btn btn-primary" onclick="dpRegistrar()">+ Registrar</button>
       </div>
     </div>
-
-    <!-- FILTROS + LISTA -->
-    <div class="box">
-      <div class="box-header" style="margin-bottom:12px">
-        <div class="box-title">Histórico</div>
-        <div style="display:flex;gap:8px;align-items:center">
-          <select class="field-input" id="filtDFunc" onchange="renderDesempenho()" style="padding:5px 8px;font-size:11px">
-            <option value="">Todos os funcionários</option>
-          </select>
-          <select class="field-input" id="filtDTipo" onchange="renderDesempenho()" style="padding:5px 8px;font-size:11px">
-            <option value="">Acertos e erros</option>
-            <option value="acerto">Só acertos</option>
-            <option value="erro">Só erros</option>
-          </select>
-          <select class="field-input" id="filtDEmp" onchange="renderDesempenho()" style="padding:5px 8px;font-size:11px">
-            <option value="">Todas empresas</option>
-            <option>FASTWEB</option><option>BTMX</option><option>FALCOM</option><option>OCTO</option><option>LOGBOX</option>
-          </select>
-        </div>
+    <div class="dp-stats" id="dpStats"></div>
+    <div class="dp-grid">
+      <div class="box dp-box-equipe">
+        <div class="box-header"><div class="box-title">Equipe</div><div class="box-action" id="dpEquipeSub"></div></div>
+        <div id="dpEquipe"></div>
       </div>
-      <div id="desempLista"></div>
+      <div class="box dp-box-hist">
+        <div class="box-header" style="flex-wrap:wrap;gap:8px;margin-bottom:10px">
+          <div class="box-title">Histórico</div>
+          <div class="dp-filtros">
+            <select class="field-input" id="dpFiltFunc" onchange="dpSetFiltro('func',this.value)"></select>
+            <select class="field-input" id="dpFiltTipo" onchange="dpSetFiltro('tipo',this.value)"></select>
+            <select class="field-input" id="dpFiltCat" onchange="dpSetFiltro('cat',this.value)"></select>
+          </div>
+        </div>
+        <div id="dpLista"></div>
+      </div>
     </div>
   </div>
 
@@ -8044,7 +8061,12 @@ function setupRealtime() {
       if (curPage === 'metas') renderMetas(); else if (curPage === 'inicio') carregarMetas().then(agendarDesenhoInicio);
     })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'desempenho' }, () => {
-      if (curPage === 'desempenho') renderDesempenho();
+      clearTimeout(window._rtDp);
+      window._rtDp = setTimeout(() => { if (curPage === 'desempenho' && !document.getElementById('modalDp')) renderDesempenho(); }, 400);
+    })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'funcionarios' }, () => {
+      clearTimeout(window._rtDp);
+      window._rtDp = setTimeout(() => { if (curPage === 'desempenho' && !document.getElementById('modalDp') && !document.getElementById('modalDpFuncs')) renderDesempenho(); }, 400);
     })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'etapas' }, () => {
       if (curPage === 'pipeline') renderPipeline();
@@ -8059,132 +8081,332 @@ function setupRealtime() {
 }
 
 // ── DESEMPENHO ──
-const catLabels = {operacional:'OPERACIONAL',atendimento:'ATENDIMENTO',financeiro:'FINANCEIRO',logistica:'LOGÍSTICA',geral:'GERAL'};
+const DP_TIPOS = { acerto: ['✓', 'Acerto'], erro: ['✗', 'Erro'], observacao: ['📌', 'Observação'], advertencia: ['⚠', 'Advertência'] };
+const DP_CATS = { operacional: 'Operacional', atendimento: 'Atendimento', logistica: 'Logística', anuncios: 'Anúncios / Marketplace', financeiro: 'Financeiro', geral: 'Geral' };
+const DP_PERIODOS = [[30, '30 dias'], [90, '90 dias'], [365, '12 meses'], [0, 'Tudo']];
+let dpRegs = [], dpFuncs = [];
+let dpPeriodo = 90;
+let dpFiltroFunc = '', dpFiltroTipo = '', dpFiltroCat = '';
+let dpArqNovos = [], dpArqManter = [];
 
-async function addDesempenho() {
-  const func = document.getElementById('dFunc').value.trim();
-  const empresa = document.getElementById('dEmpresa').value;
-  const tipo = document.getElementById('dTipo').value;
-  const categoria = document.getElementById('dCategoria').value;
-  const descricao = document.getElementById('dDescricao').value.trim();
-  const registrado_por = ME ? ME.nome : (document.getElementById('dRegistrador').value.trim() || 'Sócio');
-  if (!func || !descricao) { alert('Preencha o nome do funcionário e a descrição.'); return; }
-
-  const btn = document.getElementById('btnAddDesemp');
-  btn.disabled = true; btn.textContent = '...';
-
-  if (db) {
-    const { error } = await db.from('desempenho').insert({ func, empresa, tipo, categoria, descricao, registrado_por });
-    if (error) { console.error(error); alert('Erro ao salvar. Tente novamente.'); btn.disabled = false; btn.textContent = 'Registrar'; return; }
-  } else {
-    const lista = loadLs('hub_desempenho', []);
-    lista.unshift({ id: Date.now(), func, empresa, tipo, categoria, descricao, registrado_por, created_at: new Date().toISOString() });
-    saveLs('hub_desempenho', lista);
-  }
-  createNotif({ tipo:'desempenho', titulo:`📋 ${func} — ${tipo==='acerto'?'✓ Acerto':'✗ Erro'}`, corpo: `${descricao.slice(0,70)} · por ${registrado_por}`, link_pagina:'desempenho', para: semMim(usuariosComAba('desempenho')) });
-  document.getElementById('dFunc').value = '';
-  document.getElementById('dDescricao').value = '';
-  btn.disabled = false; btn.textContent = 'Registrar';
-  renderDesempenho();
+async function dpCarregar() {
+  if (!db) return;
+  const [r, f] = await Promise.all([
+    db.from('desempenho').select('*').order('created_at', { ascending: false }),
+    db.from('funcionarios').select('*').order('nome', { ascending: true })
+  ]);
+  if (!r.error && r.data) dpRegs = r.data;
+  if (!f.error && f.data) dpFuncs = f.data;
 }
-
-async function deleteDesempenho(id) {
-  if (!confirm('Remover este registro?')) return;
-  if (db) {
-    const { error } = await db.from('desempenho').delete().eq('id', id);
-    if (error) console.error(error);
-  } else {
-    let lista = loadLs('hub_desempenho', []);
-    lista = lista.filter(d => d.id !== id);
-    saveLs('hub_desempenho', lista);
-  }
-  renderDesempenho();
+function dpFunc(id) { return dpFuncs.find(f => f.id === id); }
+function dpNome(d) { const f = dpFunc(d.funcionario_id); return f ? f.nome : (d.func || d.funcionario || '—'); }
+function dpNoPeriodo(d) { return !dpPeriodo || (Date.now() - new Date(d.created_at)) <= dpPeriodo * 86400000; }
+function dpPrecisaFeedback(d) { return (d.tipo === 'erro' || d.tipo === 'advertencia') && !d.feedback_dado; }
+function dpHaQuanto(iso) {
+  const dias = Math.floor((Date.now() - new Date(iso)) / 86400000);
+  return dias <= 0 ? 'hoje' : dias === 1 ? 'ontem' : dias < 30 ? `há ${dias} dias` : dias < 365 ? `há ${Math.round(dias / 30)} ${Math.round(dias / 30) > 1 ? 'meses' : 'mês'}` : `há ${Math.round(dias / 365)} ano${Math.round(dias / 365) > 1 ? 's' : ''}`;
+}
+function dpContagem(regs) {
+  const c = { acerto: 0, erro: 0, observacao: 0, advertencia: 0 };
+  regs.forEach(d => { if (c[d.tipo] != null) c[d.tipo]++; });
+  return c;
 }
 
 async function renderDesempenho() {
-  const elLista = document.getElementById('desempLista');
-  const elRanking = document.getElementById('desempRanking');
-  elLista.innerHTML = loadingHTML();
+  const el = document.getElementById('dpLista');
+  if (el && !dpRegs.length) el.innerHTML = loadingHTML();
+  await dpCarregar();
+  desenharDesempenho();
+}
 
-  let todos = [];
-  if (db) {
-    const { data, error } = await db.from('desempenho')
-      .select('*').order('created_at', { ascending: false });
-    if (!error && data) todos = data;
-  } else {
-    todos = loadLs('hub_desempenho', []);
+function desenharDesempenho() {
+  const elLista = document.getElementById('dpLista'); if (!elLista) return;
+  document.getElementById('dpPeriodo').innerHTML = DP_PERIODOS.map(([d, l]) => `<span class="aba-chip ${dpPeriodo === d ? 'on' : ''}" onclick="dpPeriodo=${d};desenharDesempenho()">${l}</span>`).join('');
+  const regsP = dpRegs.filter(dpNoPeriodo);
+  const c = dpContagem(regsP);
+  const pend = regsP.filter(dpPrecisaFeedback).length;
+  document.getElementById('dpStats').innerHTML = `
+    <div class="dp-stat"><div class="dp-stat-val val-green">${c.acerto}</div><div class="dp-stat-rot">acertos</div></div>
+    <div class="dp-stat"><div class="dp-stat-val val-red">${c.erro}</div><div class="dp-stat-rot">erros</div></div>
+    <div class="dp-stat"><div class="dp-stat-val">${c.observacao}<span class="dp-stat-sep">·</span><span style="color:var(--amber)">${c.advertencia}</span></div><div class="dp-stat-rot">observações · advertências</div></div>
+    <div class="dp-stat ${pend ? 'alerta' : ''}" ${pend ? 'onclick="dpFiltroTipo=\'pendente\';desenharDesempenho()" style="cursor:pointer" title="Ver quais"' : ''}><div class="dp-stat-val">${pend}</div><div class="dp-stat-rot">feedback pendente</div></div>`;
+
+  // Equipe (item 4): por nome, sem ranking
+  const ativos = dpFuncs.filter(f => f.ativo);
+  document.getElementById('dpEquipeSub').textContent = `${ativos.length} ativo${ativos.length === 1 ? '' : 's'}`;
+  document.getElementById('dpEquipe').innerHTML = ativos.length ? ativos.map(f => {
+    const meus = dpRegs.filter(d => d.funcionario_id === f.id);
+    const cp = dpContagem(meus.filter(dpNoPeriodo));
+    const ult = meus[0];
+    const pf = meus.filter(dpPrecisaFeedback).length;
+    return `<div class="dp-eq ${dpFiltroFunc === String(f.id) ? 'on' : ''}" onclick="dpFicha(${f.id})">
+      <div class="dp-eq-nome"><strong>${esc(f.nome)}</strong>${f.setor ? `<small>${esc(f.setor)}</small>` : ''}</div>
+      <div class="dp-eq-num"><span class="val-green" title="acertos">+${cp.acerto}</span><span class="val-red" title="erros">−${cp.erro}</span>${cp.advertencia ? `<span style="color:var(--amber)" title="advertências">⚠${cp.advertencia}</span>` : ''}</div>
+      <div class="dp-eq-ult">${ult ? 'último ' + dpHaQuanto(ult.created_at) : 'sem registros'}${pf ? ` · <span class="dp-pend">${pf} feedback pendente</span>` : ''}</div>
+    </div>`;
+  }).join('') : `<div class="dp-vazio">Nenhum funcionário cadastrado. Use “👥 Funcionários”.</div>`;
+
+  // Filtros do histórico
+  const fSel = document.getElementById('dpFiltFunc');
+  fSel.innerHTML = '<option value="">Todos os funcionários</option>' + dpFuncs.map(f => `<option value="${f.id}" ${dpFiltroFunc === String(f.id) ? 'selected' : ''}>${esc(f.nome)}${f.ativo ? '' : ' (desligado)'}</option>`).join('');
+  document.getElementById('dpFiltTipo').innerHTML = '<option value="">Todos os tipos</option>' + Object.entries(DP_TIPOS).map(([k, [ic, l]]) => `<option value="${k}" ${dpFiltroTipo === k ? 'selected' : ''}>${ic} ${l}</option>`).join('') + `<option value="pendente" ${dpFiltroTipo === 'pendente' ? 'selected' : ''}>⏳ Feedback pendente</option>`;
+  document.getElementById('dpFiltCat').innerHTML = '<option value="">Todas as categorias</option>' + Object.entries(DP_CATS).map(([k, l]) => `<option value="${k}" ${dpFiltroCat === k ? 'selected' : ''}>${l}</option>`).join('');
+
+  let lista = regsP;
+  if (dpFiltroFunc) lista = lista.filter(d => String(d.funcionario_id) === dpFiltroFunc);
+  if (dpFiltroTipo === 'pendente') lista = lista.filter(dpPrecisaFeedback);
+  else if (dpFiltroTipo) lista = lista.filter(d => d.tipo === dpFiltroTipo);
+  if (dpFiltroCat) lista = lista.filter(d => d.categoria === dpFiltroCat);
+  elLista.innerHTML = lista.length ? lista.map(d => dpItemHTML(d)).join('')
+    : `<div class="dp-vazio">${dpRegs.length ? 'Nada neste período/filtro.' + (dpPeriodo ? ` <a href="#" onclick="event.preventDefault();dpPeriodo=0;desenharDesempenho()">Ver tudo</a>` : '') : 'Nenhum registro ainda.'}</div>`;
+}
+function dpSetFiltro(campo, v) {
+  if (campo === 'func') dpFiltroFunc = v; else if (campo === 'tipo') dpFiltroTipo = v; else dpFiltroCat = v;
+  desenharDesempenho();
+}
+
+function dpItemHTML(d, naFicha) {
+  const [ic, rot] = DP_TIPOS[d.tipo] || ['•', d.tipo];
+  const meu = ME && d.registrado_por === ME.nome;
+  const fb = d.tipo === 'erro' || d.tipo === 'advertencia';
+  const data = new Date(d.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit' });
+  return `<div class="dp-item tipo-${esc(d.tipo)}">
+    <div class="dp-item-meta">
+      ${naFicha ? '' : `<a href="#" class="dp-item-nome" onclick="event.preventDefault();dpFicha(${Number(d.funcionario_id) || 0})">${esc(dpNome(d))}</a>`}
+      <span class="dp-tipo dp-tipo-${esc(d.tipo)}">${ic} ${rot}</span>
+      <span class="dp-cat">${esc(DP_CATS[d.categoria] || d.categoria || '')}</span>
+      <span class="dp-data">${data}</span>
+    </div>
+    <div class="dp-item-txt">${esc(d.descricao || '').replace(/\n/g, '<br>')}</div>
+    ${(d.anexos || []).length ? `<div class="dp-anexos">${d.anexos.map((a, i) => `<a href="#" onclick="event.preventDefault();dpAbrirAnexo(${d.id},${i})">${docIcone(a.nome)} ${esc(a.nome)}</a>`).join('')}</div>` : ''}
+    ${fb ? (d.feedback_dado
+      ? `<div class="dp-fb ok">✓ Feedback dado${d.feedback_em ? ' em ' + fmtDataBR(d.feedback_em) : ''}${d.feedback_por ? ' · marcado por ' + esc(d.feedback_por) : ''} · <a href="#" onclick="event.preventDefault();dpFeedback(${d.id},false)">desfazer</a></div>`
+      : `<div class="dp-fb pend">⏳ Feedback ainda não conversado com o funcionário · <button class="btn btn-ghost" onclick="dpFeedback(${d.id},true)">✓ Já conversamos</button></div>`) : ''}
+    <div class="dp-item-rod">
+      <span>por ${esc(d.registrado_por || '—')}${d.editado_em ? ' · editado' : ''}</span>
+      ${meu ? `<span class="dp-item-acts"><a href="#" onclick="event.preventDefault();dpRegistrar(null,${d.id})">✎ Editar</a><a href="#" class="dp-rem" onclick="event.preventDefault();dpRemover(${d.id})">Remover</a></span>` : ''}
+    </div>
+  </div>`;
+}
+
+// ── Ficha do funcionário (item 3) ──
+function dpFicha(fid) {
+  const f = dpFunc(fid); if (!f) return;
+  const meus = dpRegs.filter(d => d.funcionario_id === fid);
+  const lin = (rot, regs) => { const c = dpContagem(regs); return `<tr><td>${rot}</td><td class="val-green">${c.acerto}</td><td class="val-red">${c.erro}</td><td>${c.observacao}</td><td style="color:var(--amber)">${c.advertencia}</td></tr>`; };
+  const em = dias => meus.filter(d => Date.now() - new Date(d.created_at) <= dias * 86400000);
+  cvModal('modalDpFicha', `
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+      <div>
+        <div class="hub-modal-title">${esc(f.nome)}</div>
+        <div class="hub-modal-sub" style="margin:2px 0 0">${[f.setor, f.entrada ? 'desde ' + fmtDataBR(f.entrada) : '', f.ativo ? '' : '🚪 desligado' + (f.desligado_em ? ' em ' + fmtDataBR(f.desligado_em) : '')].filter(Boolean).map(esc).join(' · ') || 'sem setor cadastrado'}</div>
+      </div>
+      <button class="btn btn-ghost" onclick="document.getElementById('modalDpFicha').remove()">Fechar</button>
+    </div>
+    <table class="dp-ficha-tab"><thead><tr><th></th><th>acertos</th><th>erros</th><th>obs.</th><th>advert.</th></tr></thead>
+      <tbody>${lin('30 dias', em(30))}${lin('90 dias', em(90))}${lin('12 meses', em(365))}${lin('Total', meus)}</tbody></table>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin:14px 0 8px">
+      <div class="reuniao-section-title" style="margin:0">Linha do tempo</div>
+      ${f.ativo ? `<button class="btn btn-primary" style="font-size:11px;padding:5px 12px" onclick="document.getElementById('modalDpFicha').remove();dpRegistrar(${f.id})">+ Registrar para ${esc(f.nome.split(' ')[0])}</button>` : ''}
+    </div>
+    <div class="dp-ficha-lista">${meus.length ? meus.map(d => dpItemHTML(d, true)).join('') : '<div class="dp-vazio">Nenhum registro ainda.</div>'}</div>`, 640);
+}
+
+// ── Registrar / editar (itens 6, 7, 8, 9, 10) ──
+let dpTipoNovo = 'acerto';
+function dpRegistrar(fid, editId) {
+  const d = editId ? dpRegs.find(x => x.id === editId) : null;
+  if (editId && (!d || !ME || d.registrado_por !== ME.nome)) return;
+  dpTipoNovo = d ? d.tipo : 'acerto';
+  dpArqNovos = []; dpArqManter = d ? [...(d.anexos || [])] : [];
+  const fsel = d ? d.funcionario_id : fid;
+  const opcoes = dpFuncs.filter(f => f.ativo || f.id === fsel);
+  cvModal('modalDp', `
+    <div class="hub-modal-title">${d ? '✎ Editar registro' : '+ Novo registro'}</div>
+    <div class="field-group" style="margin-top:12px"><span class="field-label">Funcionário</span>
+      <select class="field-input" id="dpF" onchange="document.getElementById('dpNovoBox').classList.toggle('hidden',this.value!=='novo')">
+        <option value="">Escolha…</option>
+        ${opcoes.map(f => `<option value="${f.id}" ${f.id === fsel ? 'selected' : ''}>${esc(f.nome)}${f.setor ? ' · ' + esc(f.setor) : ''}</option>`).join('')}
+        <option value="novo">+ Cadastrar novo funcionário…</option>
+      </select>
+    </div>
+    <div class="dp-novo-func hidden" id="dpNovoBox">
+      <input class="field-input" id="dpNovoNome" placeholder="Nome completo">
+      <input class="field-input" id="dpNovoSetor" placeholder="Setor (opcional)">
+    </div>
+    <div class="field-label" style="margin-top:12px">Tipo</div>
+    <div class="para-chips" id="dpTipoChips"></div>
+    <div class="field-group" style="margin-top:12px"><span class="field-label">Categoria</span>
+      <select class="field-input" id="dpCat">${Object.entries(DP_CATS).map(([k, l]) => `<option value="${k}" ${(d ? d.categoria : 'operacional') === k ? 'selected' : ''}>${l}</option>`).join('')}</select>
+    </div>
+    <div class="field-group" style="margin-top:12px"><span class="field-label">O que aconteceu</span>
+      <textarea class="desemp-textarea" id="dpDesc" placeholder="Descreva com os detalhes que importam (o quê, quando, impacto)…">${d ? esc(d.descricao || '') : ''}</textarea>
+    </div>
+    <div class="dp-fb-box" id="dpFbBox">
+      <label class="com-check"><input type="checkbox" id="dpFbDado" ${d && d.feedback_dado ? 'checked' : ''} onchange="document.getElementById('dpFbData').disabled=!this.checked"> Já conversamos com o funcionário sobre isso</label>
+      <input class="field-input" type="date" id="dpFbData" value="${d && d.feedback_em ? d.feedback_em : isoHoje()}" ${d && d.feedback_dado ? '' : 'disabled'}>
+    </div>
+    <div class="field-group" style="margin-top:12px"><span class="field-label">Anexos (print, advertência assinada…)</span>
+      <div id="dpArqLista" class="cv-anexos-fila hidden"></div>
+      <label class="com-tool" style="display:inline-flex;align-self:flex-start">📎 Anexar<input type="file" multiple hidden onchange="dpArqAdd(this.files);this.value=''"></label>
+    </div>
+    <div id="dpMsg" style="font-size:12px;color:var(--red);min-height:16px;margin-top:8px"></div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:8px">
+      <button class="btn btn-ghost" onclick="document.getElementById('modalDp').remove()">Cancelar</button>
+      <button class="btn btn-primary" id="dpBtn" onclick="dpSalvar(${d ? d.id : 'null'})">${d ? 'Salvar' : 'Registrar'}</button>
+    </div>`, 520);
+  dpTipoChips();
+  dpArqRender();
+}
+function dpTipoChips() {
+  document.getElementById('dpTipoChips').innerHTML = Object.entries(DP_TIPOS).map(([k, [ic, l]]) =>
+    `<span class="aba-chip dp-chip-${k} ${dpTipoNovo === k ? 'on' : ''}" onclick="dpTipoNovo='${k}';dpTipoChips()">${ic} ${l}</span>`).join('');
+  document.getElementById('dpFbBox').classList.toggle('hidden', !(dpTipoNovo === 'erro' || dpTipoNovo === 'advertencia'));
+}
+function dpArqAdd(files) { dpArqNovos = [...dpArqNovos, ...[...files].filter(f => f.size <= CV_MAX_ARQ)]; dpArqRender(); }
+function dpArqRender() {
+  const el = document.getElementById('dpArqLista'); if (!el) return;
+  const chips = dpArqManter.map((a, i) => `<span class="cv-fila-chip">${docIcone(a.nome)} <span>${esc(a.nome)}</span><a href="#" onclick="event.preventDefault();dpArqManter.splice(${i},1);dpArqRender()">×</a></span>`)
+    .concat(dpArqNovos.map((f, i) => `<span class="cv-fila-chip novo">＋ ${docIcone(f.name)} <span>${esc(f.name)}</span><a href="#" onclick="event.preventDefault();dpArqNovos.splice(${i},1);dpArqRender()">×</a></span>`));
+  el.classList.toggle('hidden', !chips.length);
+  el.innerHTML = chips.join('');
+}
+
+async function dpSalvar(editId) {
+  const msg = document.getElementById('dpMsg'), btn = document.getElementById('dpBtn');
+  let fv = document.getElementById('dpF').value;
+  const descricao = document.getElementById('dpDesc').value.trim();
+  if (!fv) { msg.textContent = 'Escolha o funcionário.'; return; }
+  if (!descricao) { msg.textContent = 'Descreva o que aconteceu.'; return; }
+  btn.disabled = true;
+  const falha = t => { msg.textContent = t; btn.disabled = false; btn.textContent = editId ? 'Salvar' : 'Registrar'; };
+  let func;
+  if (fv === 'novo') {
+    const nome = document.getElementById('dpNovoNome').value.trim();
+    if (!nome) return falha('Digite o nome do funcionário novo.');
+    if (dpFuncs.some(f => f.nome.toLowerCase() === nome.toLowerCase())) return falha('Já existe um funcionário com esse nome — escolha na lista.');
+    const { data, error } = await db.from('funcionarios').insert({ nome, setor: document.getElementById('dpNovoSetor').value.trim(), ativo: true, criado_por: ME.nome }).select().single();
+    if (error) return falha('Erro: ' + error.message);
+    dpFuncs.push(data); func = data;
+  } else func = dpFunc(Number(fv));
+  if (!func) return falha('Funcionário não encontrado.');
+  const fbOk = (dpTipoNovo === 'erro' || dpTipoNovo === 'advertencia') && document.getElementById('dpFbDado').checked;
+  const campos = {
+    funcionario_id: func.id, func: func.nome, empresa: 'LOGBOX', tipo: dpTipoNovo,
+    categoria: document.getElementById('dpCat').value, descricao,
+    feedback_dado: fbOk, feedback_em: fbOk ? (document.getElementById('dpFbData').value || isoHoje()) : null, feedback_por: fbOk ? ME.nome : null
+  };
+  try {
+    if (editId) {
+      const antes = dpRegs.find(x => x.id === editId);
+      let novos = [];
+      if (dpArqNovos.length) { btn.textContent = 'Enviando…'; novos = await dpSubir(editId, dpArqNovos); }
+      campos.anexos = [...dpArqManter, ...novos];
+      if (antes && antes.feedback_dado && fbOk) { campos.feedback_por = antes.feedback_por; }
+      const { error } = await db.from('desempenho').update(campos).eq('id', editId);
+      if (error) return falha('Erro: ' + error.message);
+      const rem = ((antes && antes.anexos) || []).filter(a => !campos.anexos.some(b => b.caminho === a.caminho)).map(a => a.caminho);
+      if (rem.length) await db.storage.from('desempenho').remove(rem);
+    } else {
+      const { data, error } = await db.from('desempenho').insert({ ...campos, registrado_por: ME.nome }).select().single();
+      if (error) return falha('Erro: ' + error.message);
+      if (dpArqNovos.length && data) {
+        btn.textContent = 'Enviando…';
+        const anexos = await dpSubir(data.id, dpArqNovos);
+        await db.from('desempenho').update({ anexos }).eq('id', data.id);
+      }
+      const [ic, rot] = DP_TIPOS[dpTipoNovo];
+      createNotif({ tipo: 'desempenho', titulo: `📋 ${func.nome} — ${ic} ${rot}`, corpo: `${descricao.slice(0, 70)} · por ${ME.nome}`, link_pagina: 'desempenho', para: semMim(usuariosComAba('desempenho')) });
+    }
+  } catch (e) { return falha('Erro ao enviar arquivo: ' + e.message); }
+  document.getElementById('modalDp').remove();
+  renderDesempenho();
+}
+async function dpSubir(id, lista) {
+  const out = [];
+  for (const f0 of lista) {
+    const f = await cvComprimir(f0);
+    const caminho = `${id}/${ME.id}/${Date.now()}-${docNomeSeguro(f.name)}`;
+    const up = await db.storage.from('desempenho').upload(caminho, f, { contentType: f.type || 'application/octet-stream', upsert: false });
+    if (up.error) throw new Error(`${f.name}: ${up.error.message}`);
+    out.push({ caminho, nome: f.name, tamanho: f.size, tipo: f.type || '' });
   }
+  return out;
+}
+async function dpAbrirAnexo(id, idx) {
+  const d = dpRegs.find(x => x.id === id); const a = d && (d.anexos || [])[idx]; if (!a) return;
+  const win = window.open('', '_blank');
+  const { data, error } = await db.storage.from('desempenho').createSignedUrl(a.caminho, 300);
+  if (error || !data) { if (win) win.close(); alert('Não foi possível abrir: ' + (error ? error.message : '')); return; }
+  if (win) win.location = data.signedUrl;
+}
+async function dpFeedback(id, dado) {
+  const { error } = await db.rpc('hub_desemp_feedback', { p_id: id, p_dado: dado, p_data: null });
+  if (error) { alert('Erro: ' + error.message); return; }
+  const d = dpRegs.find(x => x.id === id);
+  if (d) Object.assign(d, { feedback_dado: dado, feedback_em: dado ? isoHoje() : null, feedback_por: dado ? ME.nome : null });
+  desenharDesempenho();
+  if (document.getElementById('modalDpFicha') && d) dpFicha(d.funcionario_id);
+}
+async function dpRemover(id) {
+  const d = dpRegs.find(x => x.id === id); if (!d) return;
+  if (!confirm(`Remover este registro de ${dpNome(d)}?`)) return;
+  const { error } = await db.from('desempenho').delete().eq('id', id);
+  if (error) { alert('Erro: ' + error.message); return; }
+  if ((d.anexos || []).length) await db.storage.from('desempenho').remove(d.anexos.map(a => a.caminho));
+  dpRegs = dpRegs.filter(x => x.id !== id);
+  desenharDesempenho();
+  if (document.getElementById('modalDpFicha')) dpFicha(d.funcionario_id);
+}
 
-  // Atualizar filtro de funcionários
-  const funcs = [...new Set(todos.map(d => d.func))].sort();
-  const filtFuncEl = document.getElementById('filtDFunc');
-  const curFiltFunc = filtFuncEl.value;
-  filtFuncEl.innerHTML = '<option value="">Todos os funcionários</option>' +
-    funcs.map(f => `<option ${f===curFiltFunc?'selected':''}>${f}</option>`).join('');
-
-  // Estatísticas gerais
-  const acertos = todos.filter(d => d.tipo === 'acerto').length;
-  const erros = todos.filter(d => d.tipo === 'erro').length;
-  document.getElementById('dsTotal').textContent = todos.length;
-  document.getElementById('dsAcertos').textContent = acertos;
-  document.getElementById('dsErros').textContent = erros;
-  document.getElementById('dsFuncs').textContent = funcs.length;
-
-  // Ranking
-  const rankMap = {};
-  todos.forEach(d => {
-    if (!rankMap[d.func]) rankMap[d.func] = { func: d.func, empresa: d.empresa, acertos: 0, erros: 0 };
-    if (d.tipo === 'acerto') rankMap[d.func].acertos++;
-    else rankMap[d.func].erros++;
-  });
-  const ranking = Object.values(rankMap).sort((a, b) => (b.acertos - b.erros) - (a.acertos - a.erros));
-  elRanking.innerHTML = ranking.length ? ranking.map((r, i) => {
-    const saldo = r.acertos - r.erros;
-    const cor = saldo > 0 ? 'var(--green)' : saldo < 0 ? 'var(--red)' : 'var(--muted)';
-    return `<div class="ranking-item">
-      <span class="ranking-pos">#${i+1}</span>
-      <div style="flex:1">
-        <div class="ranking-func">${r.func}</div>
-        <div class="ranking-emp">${r.empresa}</div>
-      </div>
-      <div class="ranking-bars">
-        <span class="ranking-acerto">+${r.acertos}</span>
-        <span style="color:var(--border2);font-size:10px">/</span>
-        <span class="ranking-erro">-${r.erros}</span>
-        <span style="font-size:11px;font-weight:700;font-family:'IBM Plex Mono',monospace;color:${cor};margin-left:6px;width:28px;text-align:right">${saldo>0?'+':''}${saldo}</span>
-      </div>
-    </div>`;
-  }).join('') : emptyHTML('Nenhum registro ainda.');
-
-  // Filtros aplicados
-  const filtTipo = document.getElementById('filtDTipo').value;
-  const filtEmp = document.getElementById('filtDEmp').value;
-  const filtFunc = filtFuncEl.value;
-  let lista = todos;
-  if (filtTipo) lista = lista.filter(d => d.tipo === filtTipo);
-  if (filtEmp) lista = lista.filter(d => d.empresa === filtEmp);
-  if (filtFunc) lista = lista.filter(d => d.func === filtFunc);
-
-  if (!lista.length) { elLista.innerHTML = emptyHTML('Nenhum registro encontrado.'); return; }
-  elLista.innerHTML = lista.map(d => {
-    const dataFmt = new Date(d.created_at).toLocaleString('pt-BR');
-    return `<div class="desemp-item tipo-${d.tipo}">
-      <div class="desemp-tipo-indicator"></div>
-      <div class="desemp-body">
-        <div class="desemp-meta">
-          <span class="desemp-func">${d.func}</span>
-          <span class="desemp-emp">${d.empresa}</span>
-          <span class="desemp-tipo-badge tipo-badge-${d.tipo}">${d.tipo==='acerto'?'✓ ACERTO':'✗ ERRO'}</span>
-          <span class="desemp-cat cat-${d.categoria}">${catLabels[d.categoria]||d.categoria}</span>
-        </div>
-        <div class="desemp-texto">${d.descricao.replace(/\n/g,'<br>')}</div>
-        <div class="desemp-registrado">Registrado por ${d.registrado_por} · ${dataFmt}</div>
-      </div>
-      <div class="desemp-actions">
-        <button class="btn btn-danger" onclick="deleteDesempenho(${d.id})">Remover</button>
-      </div>
-    </div>`;
-  }).join('');
+// ── Cadastro de funcionários (item 2) ──
+function dpAbrirFuncionarios() {
+  const ativos = dpFuncs.filter(f => f.ativo), desl = dpFuncs.filter(f => !f.ativo);
+  const linha = f => `<div class="dp-func-linha ${f.ativo ? '' : 'desl'}" id="dpfl-${f.id}">
+    <div style="flex:1;min-width:0"><strong>${esc(f.nome)}</strong><small>${[f.setor, f.entrada ? 'desde ' + fmtDataBR(f.entrada) : '', f.ativo ? '' : 'desligado' + (f.desligado_em ? ' em ' + fmtDataBR(f.desligado_em) : '')].filter(Boolean).map(esc).join(' · ')}</small></div>
+    <a href="#" onclick="event.preventDefault();dpEditarFunc(${f.id})">✎</a>
+    ${f.ativo ? `<a href="#" onclick="event.preventDefault();dpDesligar(${f.id},false)">Desligar</a>` : `<a href="#" onclick="event.preventDefault();dpDesligar(${f.id},true)">Reativar</a>`}
+  </div>`;
+  cvModal('modalDpFuncs', `
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+      <div class="hub-modal-title">👥 Funcionários</div>
+      <button class="btn btn-ghost" onclick="document.getElementById('modalDpFuncs').remove()">Fechar</button>
+    </div>
+    <div class="dp-func-form">
+      <input class="field-input" id="dpfNome" placeholder="Nome completo">
+      <input class="field-input" id="dpfSetor" placeholder="Setor (ex: expedição)">
+      <input class="field-input" type="date" id="dpfEntrada" title="Data de entrada">
+      <button class="btn btn-primary" onclick="dpSalvarFunc(null)">Adicionar</button>
+    </div>
+    <div class="reuniao-section-title" style="margin:14px 0 6px">Ativos (${ativos.length})</div>
+    ${ativos.map(linha).join('') || '<div class="dp-vazio">Ninguém cadastrado.</div>'}
+    ${desl.length ? `<div class="reuniao-section-title" style="margin:14px 0 6px">Desligados (${desl.length}) — o histórico fica guardado</div>${desl.map(linha).join('')}` : ''}`, 560);
+}
+function dpEditarFunc(id) {
+  const f = dpFunc(id); const el = document.getElementById('dpfl-' + id); if (!f || !el) return;
+  el.innerHTML = `<input class="field-input" id="dpfeNome-${id}" value="${esc(f.nome)}"><input class="field-input" id="dpfeSetor-${id}" value="${esc(f.setor || '')}" placeholder="Setor"><input class="field-input" type="date" id="dpfeEntrada-${id}" value="${f.entrada || ''}"><button class="btn btn-primary" onclick="dpSalvarFunc(${id})">Salvar</button>`;
+}
+async function dpSalvarFunc(id) {
+  const g = s => document.getElementById(id ? `dpfe${s}-${id}` : `dpf${s}`);
+  const nome = g('Nome').value.trim();
+  if (!nome) return;
+  if (dpFuncs.some(f => f.id !== id && f.nome.toLowerCase() === nome.toLowerCase())) { alert('Já existe um funcionário com esse nome.'); return; }
+  const campos = { nome, setor: g('Setor').value.trim(), entrada: g('Entrada').value || null };
+  const q = id ? db.from('funcionarios').update(campos).eq('id', id) : db.from('funcionarios').insert({ ...campos, ativo: true, criado_por: ME.nome });
+  const { error } = await q;
+  if (error) { alert('Erro: ' + error.message); return; }
+  await dpCarregar();
+  desenharDesempenho();
+  dpAbrirFuncionarios();
+}
+async function dpDesligar(id, reativar) {
+  const f = dpFunc(id); if (!f) return;
+  if (!reativar && !confirm(`Marcar ${f.nome} como desligado? O histórico continua guardado.`)) return;
+  const { error } = await db.from('funcionarios').update(reativar ? { ativo: true, desligado_em: null } : { ativo: false, desligado_em: isoHoje() }).eq('id', id);
+  if (error) { alert('Erro: ' + error.message); return; }
+  await dpCarregar();
+  desenharDesempenho();
+  dpAbrirFuncionarios();
 }
 
 // ── PIPELINE ──
